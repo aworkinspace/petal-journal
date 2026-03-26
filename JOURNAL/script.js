@@ -119,6 +119,7 @@ function upsertCurrent() {
   saveAll(entries);
   selectedId = data.id;
   renderList();
+  playSaveSfx();
   toast("Saved");
 }
 
@@ -132,6 +133,12 @@ function deleteCurrent() {
 
   playDeleteSfx(); // <- joke sound
   toast("Deleted");
+}
+function playSaveSfx() {
+  const sfx = document.getElementById("saveSfx");
+  if (!sfx) return;
+  sfx.currentTime = 0;
+  sfx.play().catch(() => {});
 }
 
 function filtered(entries) {
