@@ -23,8 +23,17 @@
      target="_blank" rel="noopener">
     Support (monthly)
   </a>
-  <button class="btn" id="btnExport">Export</button>
-  <button class="btn btn-primary" id="btnNew">New entry</button>
+<a class="btn" href="login.html">Login</a>
+<div class="theme-switcher">
+  <label class="muted" for="themeSelect">Theme</label>
+  <select class="input" id="themeSelect">
+    <option value="petal">Petal (default)</option>
+    <option value="lavender">Lavender Mist</option>
+    <option value="midnight" data-beta="1">Midnight (beta)</option>
+  </select>
+  <span class="chip" id="betaChip" style="display:none">Early access</span>
+</div>
+
 </div>
     </header>
 
@@ -123,6 +132,7 @@
 </div>
 <audio id="deleteSfx" src="assets/delete-joke.mp3" preload="auto"></audio>
 <audio id="saveSfx" src="assets/save-sfx.mp3" preload="auto"></audio>
+<audio id="newEntrySfx" src="assets/new-entry-sfx.mp3" preload="auto"></audio>
 <script src="script.js"></script>
   </body>
 </html>
