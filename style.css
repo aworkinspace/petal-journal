@@ -289,3 +289,13 @@ header{
   gap:10px;
 }
 #musicVol{ width:120px; }
+.theme-switcher{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.theme-switcher .input{
+  width:auto;
+  padding:10px 12px;
+}
