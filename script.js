@@ -88,7 +88,6 @@ const els = {
     const t = themes[name] || themes.petal;
     Object.entries(t).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
     localStorage.setItem("petal_theme", name);
-
     if (betaChip) betaChip.style.display = betaThemes.has(name) ? "inline-flex" : "none";
   }
 
@@ -99,40 +98,9 @@ const els = {
       if (betaThemes.has(opt.value)) opt.disabled = true;
     });
 
-    // if user previously saved a beta theme, fall back to petal
     const saved = localStorage.getItem("petal_theme");
     if (betaThemes.has(saved)) localStorage.setItem("petal_theme", "petal");
   }
-
-  select.addEventListener("change", () => applyTheme(select.value));
-
-  const saved = localStorage.getItem("petal_theme") || "petal";
-  select.value = saved;
-  applyTheme(saved);
-})();
-
-  function applyTheme(name) {
-    const t = themes[name] || themes.petal;
-    Object.entries(t).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
-    localStorage.setItem("petal_theme", name);
-
-    const isBeta = name === "midnight";
-    if (betaChip) betaChip.style.display = isBeta ? "inline-flex" : "none";
-  }
-
-  const betaThemes = new Set(["midnight", "strawberry_matcha", "blueberry_yogurt"]);
-const earlyAccess = localStorage.getItem("petal_early_access") === "1";
-
-if (!earlyAccess) {
-  [...select.options].forEach((opt) => {
-    if (betaThemes.has(opt.value)) opt.disabled = true;
-  });
-
-  // if user had a beta theme saved, fall back to petal
-  const saved = localStorage.getItem("petal_theme");
-  if (betaThemes.has(saved)) localStorage.setItem("petal_theme", "petal");
-}
-
 
   select.addEventListener("change", () => applyTheme(select.value));
 
@@ -395,7 +363,6 @@ renderList();
   const btn = document.getElementById("btnAmbient");
   if (!a || !btn) return;
   btn.textContent = "Ambient: On";
-  // Can't autoplay reliably; it will start once user clicks something if blocked.
   a.volume = 0.25;
   a.play().catch(() => {});
 })();
