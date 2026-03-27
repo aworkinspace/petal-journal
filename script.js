@@ -21,6 +21,67 @@ const els = {
   btnPrompt: $("btnPrompt"),
 };
 
+// --- Theme / palette switcher ---
+(() => {
+  const select = document.getElementById("themeSelect");
+  const betaChip = document.getElementById("betaChip");
+  if (!select) return;
+
+  const themes = {
+    petal: {
+      "--pink-500": "#FFA5D6",
+      "--pink-200": "#FFD6EE",
+      "--rose-50": "#FFF0F1",
+      "--mauve-200": "#ECD2E0",
+      "--periwinkle-200": "#CED1F8",
+      "--periwinkle-400": "#A7ABDE",
+      "--text": "#2B2B33",
+      "--text-muted": "#5A5A6A",
+    },
+    lavender: {
+      "--pink-500": "#FFB6E1",
+      "--pink-200": "#F5D9FF",
+      "--rose-50": "#FFF7FB",
+      "--mauve-200": "#E8D7EF",
+      "--periwinkle-200": "#D7DEFF",
+      "--periwinkle-400": "#9AA6FF",
+      "--text": "#2B2B33",
+      "--text-muted": "#5A5A6A",
+    },
+    midnight: {
+      "--pink-500": "#FFA5D6",
+      "--pink-200": "#2A2233",
+      "--rose-50": "#14121A",
+      "--mauve-200": "#3A3247",
+      "--periwinkle-200": "#2E2A45",
+      "--periwinkle-400": "#A7ABDE",
+      "--text": "#F2F0F7",
+      "--text-muted": "#C9C5D6",
+    },
+  };
+
+  function applyTheme(name) {
+    const t = themes[name] || themes.petal;
+    Object.entries(t).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
+    localStorage.setItem("petal_theme", name);
+
+    const isBeta = name === "midnight";
+    if (betaChip) betaChip.style.display = isBeta ? "inline-flex" : "none";
+  }
+
+  const earlyAccess = localStorage.getItem("petal_early_access") === "1";
+  if (!earlyAccess) {
+    const opt = select.querySelector('option[value="midnight"]');
+    if (opt) opt.disabled = true;
+  }
+
+  select.addEventListener("change", () => applyTheme(select.value));
+
+  const saved = localStorage.getItem("petal_theme") || "petal";
+  select.value = saved;
+  applyTheme(saved);
+})();
+
 const STORAGE_KEY = "petal_journal_entries_v1";
 let selectedId = null;
 let activeTag = null;
@@ -60,11 +121,7 @@ function toast(msg) {
 function fmtDate(d) {
   const dt = new Date(d);
   if (Number.isNaN(dt.getTime())) return "";
-  return dt.toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "short",
-    day: "2-digit",
-  });
+  return dt.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
 }
 
 function todayISO() {
