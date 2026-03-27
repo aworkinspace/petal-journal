@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Petal Journal — Login</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .login-wrap{ max-width:520px; margin:40px auto; padding:0 16px; }
+      .login-card{ padding:18px; }
+      .login-card .row{ justify-content:flex-start; gap:12px; flex-wrap:wrap; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <h1>Petal Journal</h1>
+        <small class="muted">early access login</small>
+      </div>
+      <div class="top-actions">
+        <a class="btn" href="index.html">Back</a>
+      </div>
+    </header>
+
+    <div class="login-wrap">
+      <main class="panel panel-pad login-card">
+        <h2 style="margin:0 0 6px;">Unlock Midnight (beta)</h2>
+        <p class="muted" style="margin:0 0 14px;">Enter the access code you were given.</p>
+
+        <div class="section-title">Access code</div>
+        <input class="input" id="code" type="password" placeholder="••••••••" />
+
+        <div class="row" style="margin-top:12px;">
+          <button class="btn btn-primary" id="btnLogin" type="button">Unlock</button>
+          <button class="btn" id="btnLogout" type="button">Remove access</button>
+          <small class="muted" id="msg"></small>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      // Change this to your secret code:
+      const ACCESS_CODE = "MIDNIGHT123";
+
+      const code = document.getElementById("code");
+      const msg = document.getElementById("msg");
+
+      document.getElementById("btnLogin").addEventListener("click", () => {
+        if (code.value === ACCESS_CODE) {
+          localStorage.setItem("petal_early_access", "1");
+          msg.textContent = "Unlocked! Redirecting…";
+          location.href = "index.html";
+        } else {
+          msg.textContent = "Wrong code.";
+        }
+      });
+
+      document.getElementById("btnLogout").addEventListener("click", () => {
+        localStorage.removeItem("petal_early_access");
+        msg.textContent = "Access removed.";
+      });
+    </script>
+  </body>
+</html>
