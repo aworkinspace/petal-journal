@@ -27,6 +27,8 @@ const els = {
   const betaChip = document.getElementById("betaChip");
   if (!select) return;
 
+  const betaThemes = new Set(["midnight", "strawberry_matcha", "blueberry_yogurt"]);
+
   const themes = {
     petal: {
       "--pink-500": "#FFA5D6",
@@ -48,6 +50,8 @@ const els = {
       "--text": "#2B2B33",
       "--text-muted": "#5A5A6A",
     },
+
+    // Early access (beta)
     midnight: {
       "--pink-500": "#FFA5D6",
       "--pink-200": "#2A2233",
@@ -58,7 +62,54 @@ const els = {
       "--text": "#F2F0F7",
       "--text-muted": "#C9C5D6",
     },
+    strawberry_matcha: {
+      "--pink-500": "#FF9FC6",
+      "--pink-200": "#FFD6EA",
+      "--rose-50": "#FFF5F9",
+      "--mauve-200": "#DDF2E2",
+      "--periwinkle-200": "#BFE5C9",
+      "--periwinkle-400": "#7FCF9A",
+      "--text": "#2B2B33",
+      "--text-muted": "#5A5A6A",
+    },
+    blueberry_yogurt: {
+      "--pink-500": "#AEB7FF",
+      "--pink-200": "#DFE2FF",
+      "--rose-50": "#FFF7FB",
+      "--mauve-200": "#F2D6E8",
+      "--periwinkle-200": "#E6C0DB",
+      "--periwinkle-400": "#B58AB7",
+      "--text": "#2B2B33",
+      "--text-muted": "#5A5A6A",
+    },
   };
+
+  function applyTheme(name) {
+    const t = themes[name] || themes.petal;
+    Object.entries(t).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
+    localStorage.setItem("petal_theme", name);
+
+    if (betaChip) betaChip.style.display = betaThemes.has(name) ? "inline-flex" : "none";
+  }
+
+  const earlyAccess = localStorage.getItem("petal_early_access") === "1";
+
+  if (!earlyAccess) {
+    [...select.options].forEach((opt) => {
+      if (betaThemes.has(opt.value)) opt.disabled = true;
+    });
+
+    // if user previously saved a beta theme, fall back to petal
+    const saved = localStorage.getItem("petal_theme");
+    if (betaThemes.has(saved)) localStorage.setItem("petal_theme", "petal");
+  }
+
+  select.addEventListener("change", () => applyTheme(select.value));
+
+  const saved = localStorage.getItem("petal_theme") || "petal";
+  select.value = saved;
+  applyTheme(saved);
+})();
 
   function applyTheme(name) {
     const t = themes[name] || themes.petal;
@@ -69,11 +120,19 @@ const els = {
     if (betaChip) betaChip.style.display = isBeta ? "inline-flex" : "none";
   }
 
-  const earlyAccess = localStorage.getItem("petal_early_access") === "1";
-  if (!earlyAccess) {
-    const opt = select.querySelector('option[value="midnight"]');
-    if (opt) opt.disabled = true;
-  }
+  const betaThemes = new Set(["midnight", "strawberry_matcha", "blueberry_yogurt"]);
+const earlyAccess = localStorage.getItem("petal_early_access") === "1";
+
+if (!earlyAccess) {
+  [...select.options].forEach((opt) => {
+    if (betaThemes.has(opt.value)) opt.disabled = true;
+  });
+
+  // if user had a beta theme saved, fall back to petal
+  const saved = localStorage.getItem("petal_theme");
+  if (betaThemes.has(saved)) localStorage.setItem("petal_theme", "petal");
+}
+
 
   select.addEventListener("change", () => applyTheme(select.value));
 
@@ -156,6 +215,32 @@ function playSfx(id) {
 const playDeleteSfx = () => playSfx("deleteSfx");
 const playSaveSfx = () => playSfx("saveSfx");
 const playNewEntrySfx = () => playSfx("newEntrySfx");
+
+// --- FNAF cosmetics ---
+function toggleAmbient() {
+  const a = document.getElementById("ambientSfx");
+  const btn = document.getElementById("btnAmbient");
+  if (!a || !btn) return;
+
+  if (a.paused) {
+    a.volume = 0.25;
+    a.play().catch(() => {});
+    btn.textContent = "Ambient: On";
+    localStorage.setItem("petal_ambient_on", "1");
+  } else {
+    a.pause();
+    btn.textContent = "Ambient: Off";
+    localStorage.setItem("petal_ambient_on", "0");
+  }
+}
+
+function playJumpscare() {
+  playSfx("jumpscareSfx");
+}
+
+function playToreador() {
+  playSfx("toreadorSfx");
+}
 
 function upsertCurrent() {
   const entries = load();
@@ -292,10 +377,28 @@ els.btnExport.addEventListener("click", exportJSON);
 els.btnPrompt.addEventListener("click", setPrompt);
 els.search.addEventListener("input", renderList);
 
+// Cosmetics buttons (optional; requires matching HTML elements)
+document.getElementById("btnAmbient")?.addEventListener("click", toggleAmbient);
+document.getElementById("btnJumpscare")?.addEventListener("click", playJumpscare);
+document.getElementById("btnToreador")?.addEventListener("click", playToreador);
+
 // Init
 setEditor({ date: todayISO(), mood: "Calm", title: "", content: "" });
 setPrompt();
 renderList();
+
+// Restore ambient state (optional)
+(() => {
+  const wantOn = localStorage.getItem("petal_ambient_on") === "1";
+  if (!wantOn) return;
+  const a = document.getElementById("ambientSfx");
+  const btn = document.getElementById("btnAmbient");
+  if (!a || !btn) return;
+  btn.textContent = "Ambient: On";
+  // Can't autoplay reliably; it will start once user clicks something if blocked.
+  a.volume = 0.25;
+  a.play().catch(() => {});
+})();
 
 // --- Sparkle cursor trail (canvas) ---
 (() => {
