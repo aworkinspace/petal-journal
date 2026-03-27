@@ -83,16 +83,22 @@ function setEditor(entry) {
 }
 
 function syncMoodChip() {
-  const label = els.mood.options[els.mood.selectedIndex].text; // includes your kaomoji
+  const label = els.mood.options[els.mood.selectedIndex].text;
   els.moodChip.textContent = `Mood: ${label}`;
 }
 
-function playDeleteSfx() {
-  const sfx = document.getElementById("deleteSfx");
+// --- SFX helpers ---
+function playSfx(id) {
+  const sfx = document.getElementById(id);
   if (!sfx) return;
+  sfx.pause();
   sfx.currentTime = 0;
-  sfx.play().catch(() => {}); // may be blocked until user interacts once
+  const p = sfx.play();
+  if (p && typeof p.catch === "function") p.catch(() => {});
 }
+const playDeleteSfx = () => playSfx("deleteSfx");
+const playSaveSfx = () => playSfx("saveSfx");
+const playNewEntrySfx = () => playSfx("newEntrySfx");
 
 function upsertCurrent() {
   const entries = load();
@@ -131,14 +137,8 @@ function deleteCurrent() {
   setEditor(null);
   renderList();
 
-  playDeleteSfx(); // <- joke sound
+  playDeleteSfx();
   toast("Deleted");
-}
-function playSaveSfx() {
-  const sfx = document.getElementById("saveSfx");
-  if (!sfx) return;
-  sfx.currentTime = 0;
-  sfx.play().catch(() => {});
 }
 
 function filtered(entries) {
@@ -227,6 +227,7 @@ els.mood.addEventListener("change", syncMoodChip);
 els.btnSave.addEventListener("click", upsertCurrent);
 els.btnDelete.addEventListener("click", deleteCurrent);
 els.btnNew.addEventListener("click", () => {
+  playNewEntrySfx();
   setEditor(null);
   toast("New entry");
 });
@@ -341,9 +342,7 @@ renderList();
     }
 
     ctx.globalAlpha = 1;
-
     if (particles.length > 500) particles.splice(0, particles.length - 500);
-
     requestAnimationFrame(tick);
   }
   tick();
