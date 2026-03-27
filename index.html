@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en">
   <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Petal Journal</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Petal Journal</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
   <body>
     <header>
@@ -13,28 +13,20 @@
         <h1>Petal Journal</h1>
         <small class="muted">soft, private, simple</small>
       </div>
-      <div class="top-actions">
-        <button class="btn" id="btnExport">Export</button>
-        <button class="btn btn-primary" id="btnNew">New entry</button>
-      </div>
-<div class="top-actions">
-  <a class="btn btn-accent"
-     href="https://buy.stripe.com/8x214o0rsdlK3uudyEes000"
-     target="_blank" rel="noopener">
-    Support (monthly)
-  </a>
-<a class="btn" href="login.html">Login</a>
-<div class="theme-switcher">
-  <label class="muted" for="themeSelect">Theme</label>
-  <select class="input" id="themeSelect">
-    <option value="petal">Petal (default)</option>
-    <option value="lavender">Lavender Mist</option>
-    <option value="midnight" data-beta="1">Midnight (beta)</option>
-  </select>
-  <span class="chip" id="betaChip" style="display:none">Early access</span>
-</div>
 
-</div>
+      <div class="top-actions">
+        <a class="btn" href="login.html">Login</a>
+        <a
+          class="btn btn-accent"
+          href="https://buy.stripe.com/8x214o0rsdlK3uudyEes000"
+          target="_blank"
+          rel="noopener"
+        >
+          Support (monthly)
+        </a>
+        <button class="btn" id="btnExport" type="button">Export</button>
+        <button class="btn btn-primary" id="btnNew" type="button">New entry</button>
+      </div>
     </header>
 
     <div class="shell">
@@ -71,13 +63,13 @@
           <div class="right-align">
             <div class="section-title">Mood</div>
             <select class="input" id="mood">
-  <option value="Calm">˚˖𓍢ִ໋❀ Calm</option>
-  <option value="Happy">(˶˃ ᵕ ˂˶) Happy</option>
-  <option value="Grateful">(..◜ᴗ◝..) Grateful</option>
-  <option value="Focused">ᝰ.ᐟ Focused</option>
-  <option value="Stressed">( ꩜ ᯅ ꩜;)⁭ ⁭ Stressed</option>
-  <option value="Sad">૮◞ ‸ ◟ ა Sad</option>
-</select>
+              <option value="Calm">˚˖𓍢ִ໋❀ Calm</option>
+              <option value="Happy">(˶˃ ᵕ ˂˶) Happy</option>
+              <option value="Grateful">(..◜ᴗ◝..) Grateful</option>
+              <option value="Focused">ᝰ.ᐟ Focused</option>
+              <option value="Stressed">( ꩜ ᯅ ꩜;)⁭ ⁭ Stressed</option>
+              <option value="Sad">૮◞ ‸ ◟ ა Sad</option>
+            </select>
           </div>
         </div>
 
@@ -98,8 +90,8 @@
 
         <div class="row mt-14 wrap">
           <div class="chip-row">
-            <button class="btn" id="btnSave">Save</button>
-            <button class="btn" id="btnDelete">Delete</button>
+            <button class="btn" id="btnSave" type="button">Save</button>
+            <button class="btn" id="btnDelete" type="button">Delete</button>
           </div>
           <small class="muted" id="status">Stored in your browser (localStorage).</small>
         </div>
@@ -111,28 +103,63 @@
           <button class="btn btn-accent" id="btnPrompt" type="button">New</button>
         </div>
         <div class="divider"></div>
-        <div class="chip prompt-card" id="promptCard">
-          What’s one small win you had today?
-        </div>
+        <div class="chip prompt-card" id="promptCard">What’s one small win you had today?</div>
 
         <div class="divider"></div>
         <div class="section-title">Quick tips</div>
-        <div class="muted tips">
-          Try: 3 sentences (what happened, how you felt, what you learned).
-        </div>
+        <div class="muted tips">Try: 3 sentences (what happened, how you felt, what you learned).</div>
       </section>
     </div>
 
     <div class="toast" id="toast"></div>
-<canvas id="sparkles" aria-hidden="true"></canvas>
-<div class="music">
-  <button class="btn" id="btnMusic" type="button">Play music</button>
-  <input id="musicVol" type="range" min="0" max="1" step="0.01" value="0.35" aria-label="Music volume">
-  <audio id="bgm" src="assets/FNAF%20lofi.mp3" loop preload="none"></audio>
-</div>
-<audio id="deleteSfx" src="assets/delete-joke.mp3" preload="auto"></audio>
-<audio id="saveSfx" src="assets/save-sfx.mp3" preload="auto"></audio>
-<audio id="newEntrySfx" src="assets/new-entry-sfx.mp3" preload="auto"></audio>
-<script src="script.js"></script>
+
+    <canvas id="sparkles" aria-hidden="true"></canvas>
+
+    <!-- Theme switcher -->
+    <div class="music" style="justify-content:center; flex-wrap:wrap; margin: 0 24px 24px;">
+      <label class="muted" for="themeSelect">Theme</label>
+      <select class="input" id="themeSelect">
+        <option value="petal">Petal (default)</option>
+        <option value="lavender">Lavender Mist</option>
+        <option value="midnight">Midnight (beta)</option>
+<option value="strawberry_matcha">Strawberry Matcha (beta)</option>
+<option value="blueberry_yogurt">Blueberry Yogurt (beta)</option>
+
+      </select>
+      <span class="chip" id="betaChip" style="display:none">Early access</span>
+    </div>
+
+    <!-- Background music -->
+    <div class="music" style="justify-content:center; flex-wrap:wrap; margin: 0 24px 18px;">
+      <button class="btn" id="btnMusic" type="button">Play music</button>
+      <input
+        id="musicVol"
+        type="range"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.35"
+        aria-label="Music volume"
+      />
+      <audio id="bgm" src="assets/FNAF%20lofi.mp3" loop preload="none"></audio>
+    </div>
+
+    <!-- SFX -->
+    <audio id="deleteSfx" src="assets/delete-joke.mp3" preload="auto"></audio>
+    <audio id="saveSfx" src="assets/save-sfx.mp3" preload="auto"></audio>
+    <audio id="newEntrySfx" src="assets/new-entry-sfx.mp3" preload="auto"></audio>
+
+    <!-- Optional FNAF cosmetics (only if you added the files + want the buttons) -->
+    <audio id="ambientSfx" src="assets/ambient.mp3" loop preload="none"></audio>
+    <audio id="jumpscareSfx" src="assets/jumpscare.mp3" preload="auto"></audio>
+    <audio id="toreadorSfx" src="assets/toreador-march.mp3" preload="auto"></audio>
+
+    <div class="music" style="justify-content:center; flex-wrap:wrap; margin: 0 24px 28px;">
+      <button class="btn" id="btnAmbient" type="button">Ambient: Off</button>
+      <button class="btn" id="btnJumpscare" type="button">Jumpscare</button>
+      <button class="btn" id="btnToreador" type="button">Toreador</button>
+    </div>
+
+    <script src="script.js"></script>
   </body>
 </html>
