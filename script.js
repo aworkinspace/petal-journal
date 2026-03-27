@@ -91,7 +91,7 @@ const els = {
     if (betaChip) betaChip.style.display = betaThemes.has(name) ? "inline-flex" : "none";
   }
 
-  const earlyAccess = localStorage.getItem("petal") === "1";
+  const earlyAccess = localStorage.getItem("petal_early_access") === "1";
 
   if (!earlyAccess) {
     [...select.options].forEach((opt) => {
