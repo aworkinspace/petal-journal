@@ -299,3 +299,8 @@ header{
   width:auto;
   padding:10px 12px;
 }
+.vt323-regular {
+  font-family: "VT323", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
