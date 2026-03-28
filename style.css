@@ -364,3 +364,48 @@ header{
   border-color: rgba(255,255,255,.14);
   color: rgba(255,255,255,.92);
 }
+/* --- Lock animation --- */
+.lock-wrap{
+  max-width:520px;
+  margin:32px auto;
+  padding:0 16px;
+}
+
+.lock-card{
+  position:relative;
+  overflow:hidden;
+}
+
+.lock-icon{
+  width:64px;
+  height:64px;
+  border-radius:18px;
+  display:grid;
+  place-items:center;
+  background: color-mix(in srgb, var(--surface-2) 75%, white 25%);
+  border:1px solid var(--border);
+  margin:0 0 12px;
+  transform-origin: 50% 60%;
+}
+
+.lock-card.is-shake .lock-icon{
+  animation: lockShake .35s ease-in-out;
+}
+
+@keyframes lockShake{
+  0%,100%{ transform: rotate(0deg); }
+  25%{ transform: rotate(-8deg); }
+  50%{ transform: rotate(8deg); }
+  75%{ transform: rotate(-6deg); }
+}
+
+.lock-card.is-unlocking{
+  animation: unlockFade .45s ease forwards;
+}
+
+@keyframes unlockFade{
+  to{ transform: translateY(6px); opacity:0; filter: blur(2px); }
+}
+
+/* optional: nicer input/button row spacing */
+.lock-actions{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
