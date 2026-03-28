@@ -85,19 +85,18 @@
         </div>
 
         <div class="mt-12">
-          <div class="section-title">Entry</div>
-          <div class="sticker-bar" id="stickerBar">
-  <div class="sticker-bar" id="stickerBar">
-  <button class="chip" type="button" data-sticker="assets/sparkles.gif">Sparkle</button>
-  <button class="chip" type="button" data-sticker="assets/hearts.gif">Hearts</button>
-  <button class="chip" type="button" data-sticker="assets/stars.gif">Stars</button>
-</div>
+  <div class="section-title">Entry</div>
 
-</div>
+  <div class="sticker-bar" id="stickerBar">
+    <button class="chip" type="button" data-sticker="assets/sparkles.gif">Sparkle</button>
+    <button class="chip" type="button" data-sticker="assets/hearts.gif">Hearts</button>
+    <button class="chip" type="button" data-sticker="assets/stars.gif">Stars</button>
+<button class="chip" type="button" id="btnAddImage">Add image (beta)</button>
+<input id="imgPicker" type="file" accept="image/*" hidden />
+  </div>
 
 <div class="textarea rte" id="content" contenteditable="true" data-placeholder="Start writing…"></div>
-
-        </div>
+</div>
 
         <div class="mt-12 chip-row">
           <span class="chip mood" id="moodChip">Mood: Calm</span>
@@ -185,6 +184,6 @@
       <button class="btn" id="btnToreador" type="button">Toreador</button>
     </div>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-    <script src="script.js"></script>
+    <script src="script.js?v=1"></script>
   </body>
 </html>
