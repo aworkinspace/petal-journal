@@ -317,3 +317,50 @@ header{
   display:inline-block;
   vertical-align:middle;
 }
+/* skins */
+.notebook.skin-ruled{
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 26px,
+      color-mix(in srgb, var(--periwinkle-200) 55%, transparent) 27px
+    ),
+    linear-gradient(to bottom, #ffffff, color-mix(in srgb, var(--rose-50) 55%, white));
+}
+
+.notebook.skin-grid{
+  background:
+    linear-gradient(color-mix(in srgb, var(--periwinkle-200) 45%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--periwinkle-200) 45%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, #ffffff, color-mix(in srgb, var(--rose-50) 55%, white));
+  background-size: 28px 28px, 28px 28px, auto;
+}
+
+.notebook.skin-dots{
+  background:
+    radial-gradient(color-mix(in srgb, var(--periwinkle-200) 55%, transparent) 1.2px, transparent 1.3px),
+    linear-gradient(to bottom, #ffffff, color-mix(in srgb, var(--rose-50) 55%, white));
+  background-size: 18px 18px, auto;
+}
+
+.notebook.skin-dark{
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 26px,
+      rgba(255,255,255,.08) 27px
+    ),
+    linear-gradient(to bottom, #14121A, #1C1824);
+}
+
+.notebook.skin-dark .section-title,
+.notebook.skin-dark .muted{ color: rgba(255,255,255,.72); }
+
+.notebook.skin-dark .input,
+.notebook.skin-dark .textarea{
+  background: rgba(255,255,255,.06);
+  border-color: rgba(255,255,255,.14);
+  color: rgba(255,255,255,.92);
+}
