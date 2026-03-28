@@ -6,13 +6,6 @@
   --periwinkle-200:#CED1F8;
   --periwinkle-400:#A7ABDE;
 
---sparkle-1: var(--pink-500);
---sparkle-2: var(--pink-200);
---sparkle-3: var(--mauve-200);
---sparkle-4: var(--periwinkle-200);
---sparkle-5: var(--periwinkle-400);
-
-
   --bg: var(--rose-50);
   --surface: var(--rose-50);
   --surface-2: var(--pink-200);
@@ -27,6 +20,13 @@
 
   --radius:16px;
   --shadow: 0 10px 30px rgba(30,20,40,.12);
+
+  /* Sparkles follow the active theme */
+  --sparkle-1: var(--pink-500);
+  --sparkle-2: var(--pink-200);
+  --sparkle-3: var(--mauve-200);
+  --sparkle-4: var(--periwinkle-200);
+  --sparkle-5: var(--periwinkle-400);
 }
 
 *{ box-sizing:border-box; }
@@ -211,6 +211,7 @@ header{
   header{ padding:18px 16px 6px; }
   .shell{ grid-template-columns: 1fr; padding:10px 16px 22px; }
 }
+
 #sparkles{
   position: fixed;
   inset: 0;
@@ -223,28 +224,22 @@ header{
 @media (prefers-reduced-motion: reduce){
   #sparkles{ display:none; }
 }
+
 /* --- Notebook look for the main writing panel --- */
 .notebook{
   position: relative;
   overflow: hidden;
-
-  /* a slightly paper-y base */
   background:
-    /* ruled lines */
     repeating-linear-gradient(
       to bottom,
       transparent 0px,
       transparent 26px,
       color-mix(in srgb, var(--periwinkle-200) 55%, transparent) 27px
     ),
-    /* subtle paper tint */
     linear-gradient(to bottom, #ffffff, color-mix(in srgb, var(--rose-50) 55%, white));
-
-  /* room for the spiral + margin line */
   padding-left: 56px;
 }
 
-/* left margin line */
 .notebook::before{
   content:"";
   position:absolute;
@@ -255,15 +250,12 @@ header{
   opacity:.8;
 }
 
-/* spiral binding */
 .notebook::after{
   content:"";
   position:absolute;
   top:14px; bottom:14px;
   left:12px;
   width:28px;
-
-  /* a column of “rings” */
   background:
     radial-gradient(circle at 14px 10px,
       transparent 0 6px,
@@ -272,40 +264,41 @@ header{
     );
   background-size: 28px 28px;
   background-repeat: repeat-y;
-
-  /* soft cutout behind rings */
   filter: drop-shadow(0 2px 2px rgba(30,20,40,.15));
   opacity:.55;
 }
 
-/* make inputs blend with paper */
 .notebook .input,
 .notebook .textarea{
   background: rgba(255,255,255,.72);
   border-color: color-mix(in srgb, var(--border) 85%, white);
 }
 
-/* optional: make the textarea feel more “on the page” */
 .notebook .textarea{
-  background:
-    linear-gradient(to bottom, rgba(255,255,255,.75), rgba(255,255,255,.75));
+  background: linear-gradient(to bottom, rgba(255,255,255,.75), rgba(255,255,255,.75));
 }
+
 .music{
   display:flex;
   align-items:center;
   gap:10px;
 }
+
 #musicVol{ width:120px; }
+
 .theme-switcher{
   display:flex;
   align-items:center;
   gap:10px;
   flex-wrap:wrap;
 }
+
 .theme-switcher .input{
   width:auto;
   padding:10px 12px;
 }
+
+/* (optional) you don't need this class unless you're using it in HTML */
 .vt323-regular {
   font-family: "VT323", monospace;
   font-weight: 400;
