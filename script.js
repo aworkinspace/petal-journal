@@ -212,7 +212,7 @@ function playSfx(id) {
 const playDeleteSfx = () => playSfx("deleteSfx");
 const playSaveSfx = () => playSfx("saveSfx");
 const playNewEntrySfx = () => playSfx("newEntrySfx");
-
+const playExportSfx = () => playSfx("exportSfx");
 // --- Sticker toolbar (GIFs) ---
 function insertSticker(url) {
   if (!els.content) return;
@@ -411,7 +411,10 @@ els.btnNew?.addEventListener("click", () => {
   setEditor(null);
   toast("New entry");
 });
-els.btnExport?.addEventListener("click", exportJSON);
+els.btnExport?.addEventListener("click", () => {
+  playExportSfx();
+  exportJSON();
+});
 els.btnPrompt?.addEventListener("click", setPrompt);
 els.search?.addEventListener("input", renderList);
 
