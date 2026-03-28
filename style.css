@@ -304,3 +304,16 @@ header{
   font-weight: 400;
   font-style: normal;
 }
+.sticker-bar{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+
+.rte{ min-height:260px; line-height:1.5; }
+.rte:empty::before{
+  content: attr(data-placeholder);
+  color: color-mix(in srgb, var(--text-muted) 80%, transparent);
+}
+.rte img.sticker{
+  max-height: 140px;
+  border-radius: 12px;
+  display:inline-block;
+  vertical-align:middle;
+}
