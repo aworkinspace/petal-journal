@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Petal Journal — Locked</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <h1>Petal Journal</h1>
+        <small class="muted">secret diary lock</small>
+      </div>
+      <div class="top-actions">
+        <a class="btn" href="index.html">Back</a>
+      </div>
+    </header>
+
+    <main class="panel panel-pad" style="max-width:520px; margin:32px auto;">
+      <div class="lock-wrap">
+  <main class="panel panel-pad lock-card" id="lockCard">
+    <div class="lock-icon" aria-hidden="true">🔒</div>
+
+    <h2 style="margin:0 0 8px;">Locked</h2>
+    <p class="muted" style="margin:0 0 14px;">Enter your passcode to continue.</p>
+
+    <div class="section-title">Passcode</div>
+    <input class="input" id="code" type="password" autocomplete="current-password" />
+
+    <div class="lock-actions" style="margin-top:12px;">
+      <button class="btn btn-primary" id="btnUnlock" type="button">Unlock</button>
+      <small class="muted" id="msg"></small>
+    </div>
+
+    <div class="divider"></div>
+
+    <details>
+      <summary class="muted" style="cursor:pointer;">Forgot passcode?</summary>
+      <p class="muted">
+        This lock is stored on this device. If you clear site data/localStorage, the lock will reset
+        (and your entries stored locally may be removed too).
+      </p>
+    </details>
+  </main>
+</div>
+    </main>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const msg = $("msg");
+
+      // If not locked, go back
+      if (localStorage.getItem("petal_locked") !== "1") location.href = "index.html";
+
+      $("btnUnlock").addEventListener("click", () => {
+        const entered = $("code").value;
+        const pass = localStorage.getItem("petal_passcode") || "";
+        if (!pass) {
+          msg.textContent = "No passcode set.";
+          return;
+        }
+        if (entered === pass) {
+          localStorage.setItem("petal_locked", "0");
+          location.href = "index.html";
+        } else {
+          msg.textContent = "Wrong passcode.";
+        }
+      });
+const card = document.getElementById("lockCard");
+
+document.getElementById("btnUnlock").addEventListener("click", () => {
+  const entered = document.getElementById("code").value;
+  const pass = localStorage.getItem("petal_passcode") || "";
+
+  if (!pass) {
+    msg.textContent = "No passcode set.";
+    return;
+  }
+
+  if (entered === pass) {
+    msg.textContent = "Unlocked!";
+    card.classList.add("is-unlocking");
+    localStorage.setItem("petal_locked", "0");
+    setTimeout(() => (location.href = "index.html"), 420);
+  } else {
+    msg.textContent = "Wrong passcode.";
+    card.classList.remove("is-shake");
+    void card.offsetWidth;           // restart animation
+    card.classList.add("is-shake");
+  }
+});
+
+    </script>
+  </body>
+</html>
