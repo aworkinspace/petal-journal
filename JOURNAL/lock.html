@@ -51,7 +51,7 @@
       const msg = $("msg");
 
       // If not locked, go back
-      if (localStorage.getItem("petal_locked") !== "1") location.href = "index.html";
+      if (localStorage.getItem("petal_locked") !== "0") location.href = "index.html";
 
       $("btnUnlock").addEventListener("click", () => {
         const entered = $("code").value;
