@@ -213,6 +213,7 @@ const playDeleteSfx = () => playSfx("deleteSfx");
 const playSaveSfx = () => playSfx("saveSfx");
 const playNewEntrySfx = () => playSfx("newEntrySfx");
 const playExportSfx = () => playSfx("exportSfx");
+
 // --- Sticker toolbar (GIFs) ---
 function insertSticker(url) {
   if (!els.content) return;
@@ -231,7 +232,6 @@ function insertSticker(url) {
 
   const range = sel.getRangeAt(0);
 
-  // If caret isn't inside the editor, append at end
   if (!els.content.contains(range.commonAncestorContainer)) {
     els.content.appendChild(img);
     return;
@@ -240,7 +240,6 @@ function insertSticker(url) {
   range.deleteContents();
   range.insertNode(img);
 
-  // move caret after image
   range.setStartAfter(img);
   range.setEndAfter(img);
   sel.removeAllRanges();
@@ -386,7 +385,7 @@ function exportPDF() {
 
   const doc = new jsPDF({ unit: "pt", format: "letter" });
   const margin = 54;
-  const maxWidth = 612 - margin * 2; // letter width in pt
+  const maxWidth = 612 - margin * 2;
   let y = 64;
 
   doc.setFont("times", "bold");
@@ -441,9 +440,8 @@ els.btnNew?.addEventListener("click", () => {
   toast("New entry");
 });
 els.btnExport?.addEventListener("click", () => {
-  playSfx("exportSfx"); // remove this line if you didn't add exportSfx
+  playExportSfx();
   exportPDF();
-});
 });
 els.btnPrompt?.addEventListener("click", setPrompt);
 els.search?.addEventListener("input", renderList);
@@ -614,7 +612,3 @@ renderList();
       else audio.pause();
       setBtn();
     } catch {
-      btn.textContent = "Music unavailable";
-    }
-  });
-})();
