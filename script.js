@@ -6,7 +6,7 @@ const els = {
   date: $("date"),
   mood: $("mood"),
   title: $("title"),
-  content: $("content"), // NOTE: now a contenteditable div
+  content: $("content"), // contenteditable div
   moodChip: $("moodChip"),
   entryList: $("entryList"),
   count: $("count"),
@@ -109,6 +109,27 @@ const els = {
   applyTheme(saved);
 })();
 
+// --- Notebook skins ---
+(() => {
+  const notebook = document.getElementById("notebook");
+  const select = document.getElementById("skinSelect");
+  if (!notebook || !select) return;
+
+  const skins = ["ruled", "grid", "dots", "dark"];
+
+  function applySkin(name) {
+    skins.forEach((s) => notebook.classList.remove(`skin-${s}`));
+    notebook.classList.add(`skin-${name}`);
+    localStorage.setItem("petal_skin", name);
+  }
+
+  select.addEventListener("change", () => applySkin(select.value));
+
+  const saved = localStorage.getItem("petal_skin") || "ruled";
+  select.value = saved;
+  applySkin(saved);
+})();
+
 const STORAGE_KEY = "petal_journal_entries_v1";
 let selectedId = null;
 let activeTag = null;
@@ -139,6 +160,7 @@ function saveAll(entries) {
 }
 
 function toast(msg) {
+  if (!els.toast) return;
   els.toast.textContent = msg;
   els.toast.style.display = "block";
   clearTimeout(toast._t);
@@ -165,15 +187,16 @@ function htmlToText(html) {
 
 function setEditor(entry) {
   selectedId = entry?.id ?? null;
-  els.date.value = entry?.date ?? todayISO();
-  els.mood.value = entry?.mood ?? "Calm";
-  els.title.value = entry?.title ?? "";
-  els.content.innerHTML = entry?.content ?? ""; // contenteditable
+  if (els.date) els.date.value = entry?.date ?? todayISO();
+  if (els.mood) els.mood.value = entry?.mood ?? "Calm";
+  if (els.title) els.title.value = entry?.title ?? "";
+  if (els.content) els.content.innerHTML = entry?.content ?? "";
   syncMoodChip();
 }
 
 function syncMoodChip() {
-  const label = els.mood.options[els.mood.selectedIndex].text;
+  if (!els.mood || !els.moodChip) return;
+  const label = els.mood.options[els.mood.selectedIndex]?.text ?? els.mood.value;
   els.moodChip.textContent = `Mood: ${label}`;
 }
 
@@ -247,11 +270,9 @@ function toggleAmbient() {
     localStorage.setItem("petal_ambient_on", "0");
   }
 }
-
 function playJumpscare() {
   playSfx("jumpscareSfx");
 }
-
 function playToreador() {
   playSfx("toreadorSfx");
 }
@@ -260,10 +281,10 @@ function upsertCurrent() {
   const entries = load();
   const data = {
     id: selectedId || uid(),
-    date: els.date.value || todayISO(),
-    mood: els.mood.value,
-    title: els.title.value.trim() || "Untitled",
-    content: els.content.innerHTML, // save HTML
+    date: els.date?.value || todayISO(),
+    mood: els.mood?.value || "Calm",
+    title: els.title?.value?.trim() || "Untitled",
+    content: els.content?.innerHTML || "",
     tags: activeTag ? [activeTag] : [],
     updatedAt: new Date().toISOString(),
     createdAt: null,
@@ -298,36 +319,13 @@ function deleteCurrent() {
 }
 
 function filtered(entries) {
-  const q = els.search.value.trim().toLowerCase();
+  const q = (els.search?.value || "").trim().toLowerCase();
   return entries.filter((e) => {
     const plain = htmlToText(e.content);
     const hay = `${e.title}\n${plain}\n${(e.tags || []).join(" ")}`.toLowerCase();
     const okQ = !q || hay.includes(q);
     const okTag = !activeTag || (e.tags || []).includes(activeTag);
     return okQ && okTag;
-  });
-}
-
-function renderList() {
-  const entries = load().sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""));
-  const list = filtered(entries);
-  els.count.textContent = `${list.length} shown`;
-
-  els.entryList.innerHTML = "";
-  list.forEach((e) => {
-    const card = document.createElement("div");
-    card.className = "entry-card";
-    card.tabIndex = 0;
-    card.innerHTML = `
-      <h4>${escapeHtml(e.title || "Untitled")}</h4>
-      <p>${escapeHtml(fmtDate(e.date))} • ${escapeHtml(e.mood || "Calm")}</p>
-      <p>${escapeHtml(snippet(e.content || ""))}</p>
-    `;
-    card.addEventListener("click", () => setEditor(e));
-    card.addEventListener("keydown", (ev) => {
-      if (ev.key === "Enter") setEditor(e);
-    });
-    els.entryList.appendChild(card);
   });
 }
 
@@ -345,9 +343,34 @@ function escapeHtml(s) {
     .replaceAll("'", "&#039;");
 }
 
+function renderList() {
+  const entries = load().sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""));
+  const list = filtered(entries);
+  if (els.count) els.count.textContent = `${list.length} shown`;
+
+  if (!els.entryList) return;
+  els.entryList.innerHTML = "";
+
+  list.forEach((e) => {
+    const card = document.createElement("div");
+    card.className = "entry-card";
+    card.tabIndex = 0;
+    card.innerHTML = `
+      <h4>${escapeHtml(e.title || "Untitled")}</h4>
+      <p>${escapeHtml(fmtDate(e.date))} • ${escapeHtml(e.mood || "Calm")}</p>
+      <p>${escapeHtml(snippet(e.content || ""))}</p>
+    `;
+    card.addEventListener("click", () => setEditor(e));
+    card.addEventListener("keydown", (ev) => {
+      if (ev.key === "Enter") setEditor(e);
+    });
+    els.entryList.appendChild(card);
+  });
+}
+
 function setPrompt() {
   const p = prompts[Math.floor(Math.random() * prompts.length)];
-  els.promptCard.textContent = p;
+  if (els.promptCard) els.promptCard.textContent = p;
 }
 
 function exportJSON() {
@@ -362,7 +385,7 @@ function exportJSON() {
 }
 
 // Tag filtering
-els.tagRow.addEventListener("click", (ev) => {
+els.tagRow?.addEventListener("click", (ev) => {
   const btn = ev.target.closest("[data-tag]");
   if (!btn) return;
 
@@ -380,19 +403,19 @@ els.tagRow.addEventListener("click", (ev) => {
 });
 
 // Events
-els.mood.addEventListener("change", syncMoodChip);
-els.btnSave.addEventListener("click", upsertCurrent);
-els.btnDelete.addEventListener("click", deleteCurrent);
-els.btnNew.addEventListener("click", () => {
+els.mood?.addEventListener("change", syncMoodChip);
+els.btnSave?.addEventListener("click", upsertCurrent);
+els.btnDelete?.addEventListener("click", deleteCurrent);
+els.btnNew?.addEventListener("click", () => {
   playNewEntrySfx();
   setEditor(null);
   toast("New entry");
 });
-els.btnExport.addEventListener("click", exportJSON);
-els.btnPrompt.addEventListener("click", setPrompt);
-els.search.addEventListener("input", renderList);
+els.btnExport?.addEventListener("click", exportJSON);
+els.btnPrompt?.addEventListener("click", setPrompt);
+els.search?.addEventListener("input", renderList);
 
-// Cosmetics buttons (optional; requires matching HTML elements)
+// Cosmetics buttons
 document.getElementById("btnAmbient")?.addEventListener("click", toggleAmbient);
 document.getElementById("btnJumpscare")?.addEventListener("click", playJumpscare);
 document.getElementById("btnToreador")?.addEventListener("click", playToreador);
