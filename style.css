@@ -6,6 +6,13 @@
   --periwinkle-200:#CED1F8;
   --periwinkle-400:#A7ABDE;
 
+--sparkle-1: var(--pink-500);
+--sparkle-2: var(--pink-200);
+--sparkle-3: var(--mauve-200);
+--sparkle-4: var(--periwinkle-200);
+--sparkle-5: var(--periwinkle-400);
+
+
   --bg: var(--rose-50);
   --surface: var(--rose-50);
   --surface-2: var(--pink-200);
