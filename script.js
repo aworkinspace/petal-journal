@@ -373,15 +373,44 @@ function setPrompt() {
   if (els.promptCard) els.promptCard.textContent = p;
 }
 
-function exportJSON() {
-  const data = load();
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `petal-journal-export-${todayISO()}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
+function exportPDF() {
+  const entry = {
+    date: els.date?.value || todayISO(),
+    mood: els.mood?.options?.[els.mood.selectedIndex]?.text || (els.mood?.value || ""),
+    title: els.title?.value?.trim() || "Untitled",
+    contentText: htmlToText(els.content?.innerHTML || ""),
+  };
+
+  const { jsPDF } = window.jspdf || {};
+  if (!jsPDF) return toast("PDF export unavailable");
+
+  const doc = new jsPDF({ unit: "pt", format: "letter" });
+  const margin = 54;
+  const maxWidth = 612 - margin * 2; // letter width in pt
+  let y = 64;
+
+  doc.setFont("times", "bold");
+  doc.setFontSize(18);
+  doc.text(entry.title, margin, y);
+  y += 22;
+
+  doc.setFont("times", "normal");
+  doc.setFontSize(11);
+  doc.setTextColor(90);
+  doc.text(`${entry.date}  •  ${entry.mood}`, margin, y);
+  doc.setTextColor(0);
+  y += 18;
+
+  doc.setDrawColor(200);
+  doc.line(margin, y, 612 - margin, y);
+  y += 18;
+
+  doc.setFontSize(12);
+  const lines = doc.splitTextToSize(entry.contentText || "—", maxWidth);
+  doc.text(lines, margin, y);
+
+  const safeName = (entry.title || "entry").replace(/[^\w\- ]+/g, "").trim().slice(0, 50) || "entry";
+  doc.save(`petal-journal-${safeName}.pdf`);
 }
 
 // Tag filtering
@@ -412,8 +441,9 @@ els.btnNew?.addEventListener("click", () => {
   toast("New entry");
 });
 els.btnExport?.addEventListener("click", () => {
-  playExportSfx();
-  exportJSON();
+  playSfx("exportSfx"); // remove this line if you didn't add exportSfx
+  exportPDF();
+});
 });
 els.btnPrompt?.addEventListener("click", setPrompt);
 els.search?.addEventListener("input", renderList);
