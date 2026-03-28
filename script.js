@@ -612,3 +612,7 @@ renderList();
       else audio.pause();
       setBtn();
     } catch {
+      btn.textContent = "Music unavailable";
+    }
+  });
+})();
