@@ -6,7 +6,7 @@ const els = {
   date: $("date"),
   mood: $("mood"),
   title: $("title"),
-  content: $("content"),
+  content: $("content"), // NOTE: now a contenteditable div
   moodChip: $("moodChip"),
   entryList: $("entryList"),
   count: $("count"),
@@ -157,12 +157,18 @@ function todayISO() {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
+function htmlToText(html) {
+  const tmp = document.createElement("div");
+  tmp.innerHTML = html || "";
+  return (tmp.textContent || "").replace(/\s+/g, " ").trim();
+}
+
 function setEditor(entry) {
   selectedId = entry?.id ?? null;
   els.date.value = entry?.date ?? todayISO();
   els.mood.value = entry?.mood ?? "Calm";
   els.title.value = entry?.title ?? "";
-  els.content.value = entry?.content ?? "";
+  els.content.innerHTML = entry?.content ?? ""; // contenteditable
   syncMoodChip();
 }
 
@@ -183,6 +189,46 @@ function playSfx(id) {
 const playDeleteSfx = () => playSfx("deleteSfx");
 const playSaveSfx = () => playSfx("saveSfx");
 const playNewEntrySfx = () => playSfx("newEntrySfx");
+
+// --- Sticker toolbar (GIFs) ---
+function insertSticker(url) {
+  if (!els.content) return;
+  els.content.focus();
+
+  const img = document.createElement("img");
+  img.src = url;
+  img.alt = "sticker";
+  img.className = "sticker";
+
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0) {
+    els.content.appendChild(img);
+    return;
+  }
+
+  const range = sel.getRangeAt(0);
+
+  // If caret isn't inside the editor, append at end
+  if (!els.content.contains(range.commonAncestorContainer)) {
+    els.content.appendChild(img);
+    return;
+  }
+
+  range.deleteContents();
+  range.insertNode(img);
+
+  // move caret after image
+  range.setStartAfter(img);
+  range.setEndAfter(img);
+  sel.removeAllRanges();
+  sel.addRange(range);
+}
+
+document.getElementById("stickerBar")?.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-sticker]");
+  if (!btn) return;
+  insertSticker(btn.getAttribute("data-sticker"));
+});
 
 // --- FNAF cosmetics ---
 function toggleAmbient() {
@@ -217,7 +263,7 @@ function upsertCurrent() {
     date: els.date.value || todayISO(),
     mood: els.mood.value,
     title: els.title.value.trim() || "Untitled",
-    content: els.content.value,
+    content: els.content.innerHTML, // save HTML
     tags: activeTag ? [activeTag] : [],
     updatedAt: new Date().toISOString(),
     createdAt: null,
@@ -254,7 +300,8 @@ function deleteCurrent() {
 function filtered(entries) {
   const q = els.search.value.trim().toLowerCase();
   return entries.filter((e) => {
-    const hay = `${e.title}\n${e.content}\n${(e.tags || []).join(" ")}`.toLowerCase();
+    const plain = htmlToText(e.content);
+    const hay = `${e.title}\n${plain}\n${(e.tags || []).join(" ")}`.toLowerCase();
     const okQ = !q || hay.includes(q);
     const okTag = !activeTag || (e.tags || []).includes(activeTag);
     return okQ && okTag;
@@ -284,8 +331,8 @@ function renderList() {
   });
 }
 
-function snippet(text) {
-  const t = text.replace(/\s+/g, " ").trim();
+function snippet(html) {
+  const t = htmlToText(html);
   return t.length > 80 ? t.slice(0, 80) + "…" : t || "—";
 }
 
@@ -452,7 +499,7 @@ renderList();
 
   function tick() {
     ctx.clearRect(0, 0, innerWidth, innerHeight);
-    colors = sparkleColors(); // follow theme changes
+    colors = sparkleColors();
 
     for (let i = particles.length - 1; i >= 0; i--) {
       const p = particles[i];
