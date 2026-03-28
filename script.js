@@ -375,7 +375,12 @@ renderList();
   if (!canvas) return;
   const ctx = canvas.getContext("2d");
 
-  const colors = ["#FFA5D6", "#FFD6EE", "#ECD2E0", "#CED1F8", "#A7ABDE"];
+  function sparkleColors(){
+  const s = getComputedStyle(document.documentElement);
+  return [1,2,3,4,5].map(i => s.getPropertyValue(`--sparkle-${i}`).trim()).filter(Boolean);
+}
+let colors = sparkleColors();
+
   const particles = [];
   let last = { x: 0, y: 0, t: 0 };
 
@@ -444,6 +449,7 @@ renderList();
 
   function tick() {
     ctx.clearRect(0, 0, innerWidth, innerHeight);
+colors = sparkleColors();
 
     for (let i = particles.length - 1; i >= 0; i--) {
       const p = particles[i];
