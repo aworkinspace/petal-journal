@@ -1,14 +1,17 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-    <title>Petal Journal</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
+
+  <title>Petal Journal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
 
   <body>
     <header>
@@ -83,7 +86,14 @@
 
         <div class="mt-12">
           <div class="section-title">Entry</div>
-          <textarea class="textarea" id="content" placeholder="Start writing…"></textarea>
+          <div class="sticker-bar" id="stickerBar">
+  <button class="chip" type="button" data-sticker="https://media.giphy.com/media/l0HlNQ03J5JxX6lva/giphy.gif">Sparkle</button>
+  <button class="chip" type="button" data-sticker="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif">Heart</button>
+  <button class="chip" type="button" data-sticker="https://media.giphy.com/media/l4FGpP4lxGGgK5CBW/giphy.gif">Star</button>
+</div>
+
+<div class="textarea rte" id="content" contenteditable="true" data-placeholder="Start writing…"></div>
+
         </div>
 
         <div class="mt-12 chip-row">
