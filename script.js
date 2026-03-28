@@ -774,3 +774,15 @@ renderList();
     }
   });
 })();
+document.getElementById("btnSetPasscode")?.addEventListener("click", () => {
+  const code = prompt("Set a passcode (remember it):");
+  if (!code) return;
+  localStorage.setItem("petal_passcode", code);
+  toast("Passcode set");
+});
+
+document.getElementById("btnLock")?.addEventListener("click", () => {
+  if (!localStorage.getItem("petal_passcode")) return toast("Set a passcode first");
+  localStorage.setItem("petal_locked", "1");
+  location.href = "lock.html";
+});
