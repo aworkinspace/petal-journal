@@ -3,7 +3,8 @@
   <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+<button class="btn" id="btnLock" type="button">Lock</button>
+<button class="btn" id="btnSetPasscode" type="button">Set passcode</button>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
@@ -184,6 +185,9 @@
       <button class="btn" id="btnToreador" type="button">Toreador</button>
     </div>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script>
+  if (localStorage.getItem("petal_locked") === "1") location.href = "lock.html";
+</script>
     <script src="script.js?v=1"></script>
   </body>
 </html>
