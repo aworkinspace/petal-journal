@@ -60,7 +60,7 @@
         <div class="entry-list" id="entryList"></div>
       </aside>
 
-      <main class="panel panel-pad notebook">
+      <main id="notebook" class="panel panel-pad notebook">
         <div class="row">
           <div class="grow">
             <div class="section-title">Date</div>
@@ -130,7 +130,15 @@
     <div class="toast" id="toast"></div>
 
     <canvas id="sparkles" aria-hidden="true"></canvas>
-
+<div class="music" style="justify-content:center; flex-wrap:wrap; margin: 0 24px 24px;">
+  <label class="muted" for="skinSelect">Notebook skin</label>
+  <select class="input" id="skinSelect">
+    <option value="ruled">Ruled</option>
+    <option value="grid">Grid</option>
+    <option value="dots">Dotted</option>
+    <option value="dark">Dark page</option>
+  </select>
+</div>
     <!-- Theme switcher -->
     <div class="music" style="justify-content:center; flex-wrap:wrap; margin: 0 24px 24px;">
       <label class="muted" for="themeSelect">Theme</label>
