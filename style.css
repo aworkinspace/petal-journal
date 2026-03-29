@@ -506,3 +506,45 @@ header{
   color: var(--text);
 }
 
+/* Global dark-theme button styling (e.g., Midnight theme) */
+@media (prefers-color-scheme: dark){
+  /* no-op; just keeps this block separate */
+}
+
+/* When theme text is light, use darker buttons everywhere */
+:root{
+  --btn-bg: #ffffff;
+  --btn-border: var(--border);
+  --btn-text: var(--text);
+}
+
+body{
+  color: var(--text);
+}
+
+/* Override defaults for dark themes by checking if --text is light-ish */
+:root[style*="--text: #F2F0F7"],
+:root[style*="--text:#F2F0F7"]{
+  --btn-bg: rgba(255,255,255,.08);
+  --btn-border: rgba(255,255,255,.18);
+  --btn-text: rgba(255,255,255,.92);
+}
+
+/* apply vars */
+.btn{
+  background: var(--btn-bg);
+  border-color: var(--btn-border);
+  color: var(--btn-text);
+}
+
+/* keep special buttons readable */
+.btn-primary{
+  background: var(--primary);
+  border-color: color-mix(in srgb, var(--primary) 70%, black 10%);
+  color:#151525;
+}
+.btn-accent{
+  background: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 70%, black 10%);
+  color:#2B0F22;
+}
