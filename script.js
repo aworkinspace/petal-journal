@@ -4,8 +4,7 @@
 // and getAuth, getFirestore, getStorage are exposed globally on `window`.
 // This import is for Firebase functions used directly in this script.js file.
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-
-
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 // --- Minimal local journaling app (localStorage) ---
 const $ = (id) => document.getElementById(id);
 
@@ -96,14 +95,26 @@ const els = {
   // Update UI and early access flag based on auth state
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      // User is signed in
-      localStorage.setItem("petal_early_access", "1");
-      if (els.authButton) els.authButton.style.display = "none"; // Hide Login button
-      if (els.profileButton) {
-        els.profileButton.style.display = "inline-flex"; // Show Profile button
-        els.profileButton.textContent = user.displayName ? `${user.displayName}'s Profile` : `Profile`;
-        els.profileButton.href = "profile.html"; // Link to new profile page
-      }
+  // User is signed in
+  localStorage.setItem("petal_early_access", "1");
+  if (els.authButton) els.authButton.style.display = "none";
+  if (els.profileButton) {
+    els.profileButton.style.display = "inline-flex";
+    els.profileButton.textContent = user.displayName ? `${user.displayName}'s Profile` : `Profile`;
+    els.profileButton.href = "profile.html";
+  }
+  if (els.btnSignOut) els.btnSignOut.style.display = "inline-flex";
+
+  if (els.btnLock) els.btnLock.style.display = "none";
+  if (els.btnSetPasscode) els.btnSetPasscode.style.display = "none";
+
+  toast(`Logged in as ${user.email}`);
+
+  // NEW: check for birthday confetti
+  checkBirthdayAndCelebrate(user);
+} else {
+  ...
+}
       if (els.btnSignOut) els.btnSignOut.style.display = "inline-flex"; // Show Logout button
 
       // Temporarily hide local lock/passcode features for authenticated users
