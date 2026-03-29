@@ -1,7 +1,184 @@
-// script.js (loaded with type="module")
+// script.js (type="module")
 
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+
+/* ----------------------------- Theme + Skin ----------------------------- */
+
+const THEMES = {
+  petal: {
+    "--bg": "var(--rose-50)",
+    "--surface": "var(--rose-50)",
+    "--surface-2": "var(--pink-200)",
+    "--border": "var(--mauve-200)",
+    "--primary": "var(--periwinkle-400)",
+    "--primary-soft": "var(--periwinkle-200)",
+    "--accent": "var(--pink-500)",
+    "--text": "#2B2B33",
+    "--text-muted": "#5A5A6A",
+  },
+  lavender: {
+    "--bg": "#F6F2FF",
+    "--surface": "#F6F2FF",
+    "--surface-2": "#EDE4FF",
+    "--border": "#D8CBF2",
+    "--primary": "#A7ABDE",
+    "--primary-soft": "#CED1F8",
+    "--accent": "#D7A6FF",
+    "--text": "#2B2B33",
+    "--text-muted": "#5A5A6A",
+  },
+  sky_sorbet: {
+    "--bg": "#F2FBFF",
+    "--surface": "#F2FBFF",
+    "--surface-2": "#DFF3FF",
+    "--border": "#C7E4F5",
+    "--primary": "#7DB6FF",
+    "--primary-soft": "#CFE4FF",
+    "--accent": "#FFA5D6",
+    "--text": "#2B2B33",
+    "--text-muted": "#5A5A6A",
+  },
+  peach_milk: {
+    "--bg": "#FFF6F0",
+    "--surface": "#FFF6F0",
+    "--surface-2": "#FFE3D2",
+    "--border": "#F2CDBB",
+    "--primary": "#A7ABDE",
+    "--primary-soft": "#CED1F8",
+    "--accent": "#FFB38A",
+    "--text": "#2B2B33",
+    "--text-muted": "#5A5A6A",
+  },
+  lemon_cream: {
+    "--bg": "#FFFCEB",
+    "--surface": "#FFFCEB",
+    "--surface-2": "#FFF2B8",
+    "--border": "#E9DFA2",
+    "--primary": "#9AB6FF",
+    "--primary-soft": "#D6E3FF",
+    "--accent": "#FFC857",
+    "--text": "#2B2B33",
+    "--text-muted": "#5A5A6A",
+  },
+  midnight: {
+    "--bg": "#0F0D14",
+    "--surface": "#14121A",
+    "--surface-2": "#1C1824",
+    "--border": "rgba(255,255,255,.14)",
+    "--primary": "#8EA2FF",
+    "--primary-soft": "rgba(142,162,255,.35)",
+    "--accent": "#FFA5D6",
+    "--text": "#F2F0F7",
+    "--text-muted": "rgba(242,240,247,.75)",
+  },
+  strawberry_matcha: {
+    "--bg": "#F7FFF6",
+    "--surface": "#F7FFF6",
+    "--surface-2": "#E8F7E6",
+    "--border": "#CFE6CC",
+    "--primary": "#7FBF9B",
+    "--primary-soft": "#CFEBDD",
+    "--accent": "#FF8FB8",
+    "--text": "#2B2B33",
+    "--text-muted": "#5A5A6A",
+  },
+  blueberry_yogurt: {
+    "--bg": "#F4F6FF",
+    "--surface": "#F4F6FF",
+    "--surface-2": "#E2E7FF",
+    "--border": "#CAD3FF",
+    "--primary": "#7F8CFF",
+    "--primary-soft": "#C9D0FF",
+    "--accent": "#FFA5D6",
+    "--text": "#2B2B33",
+    "--text-muted": "#5A5A6A",
+  },
+};
+
+function applyTheme(themeName) {
+  const theme = THEMES[themeName] || THEMES.petal;
+  const root = document.documentElement;
+  for (const [k, v] of Object.entries(theme)) root.style.setProperty(k, v);
+  localStorage.setItem("petal_theme", themeName);
+}
+
+function applySkin(skinName) {
+  const notebook = document.getElementById("notebook");
+  if (!notebook) return;
+
+  notebook.classList.remove("skin-ruled", "skin-grid", "skin-dots", "skin-dark");
+  notebook.classList.add(`skin-${skinName}`);
+  localStorage.setItem("petal_skin", skinName);
+}
+
+/* ------------------------------ Stickers ------------------------------ */
+
+function insertSticker(src) {
+  const content = document.getElementById("content");
+  if (!content) return;
+
+  const img = document.createElement("img");
+  img.src = src;
+  img.alt = "sticker";
+  img.className = "sticker"; // matches your CSS: .rte img.sticker
+
+  const sel = window.getSelection();
+  if (sel && sel.rangeCount && content.contains(sel.anchorNode)) {
+    const range = sel.getRangeAt(0);
+    range.insertNode(img);
+    range.setStartAfter(img);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+  } else {
+    content.appendChild(img);
+  }
+}
+
+/* ------------------------------- Toast ------------------------------- */
+
+function toast(msg) {
+  const t = document.getElementById("toast");
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toast._id);
+  toast._id = setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+/* ------------------- Wire UI once DOM is ready ------------------- */
+
+document.addEventListener("DOMContentLoaded", () => {
+  // restore selections
+  const themeSelect = document.getElementById("themeSelect");
+  const skinSelect = document.getElementById("skinSelect");
+
+  const savedTheme = localStorage.getItem("petal_theme") || "petal";
+  const savedSkin = localStorage.getItem("petal_skin") || "ruled";
+
+  applyTheme(savedTheme);
+  applySkin(savedSkin);
+
+  if (themeSelect) {
+    themeSelect.value = savedTheme;
+    themeSelect.addEventListener("change", (e) => applyTheme(e.target.value));
+  }
+
+  if (skinSelect) {
+    skinSelect.value = savedSkin;
+    skinSelect.addEventListener("change", (e) => applySkin(e.target.value));
+  }
+
+  // stickers (event delegation)
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-sticker]");
+    if (!btn) return;
+    insertSticker(btn.dataset.sticker);
+  });
+});
+
+/* ------------------------ Firebase Auth + Access ------------------------ */
 
 (() => {
   const auth = window.firebaseAuth; // from index.html
@@ -21,23 +198,15 @@ import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase
     themeSelect: document.getElementById("themeSelect"),
     btnAddImage: document.getElementById("btnAddImage"),
     stickerBar: document.getElementById("stickerBar"),
+    betaChip: document.getElementById("betaChip"),
   };
 
   const betaThemes = new Set(["midnight", "strawberry_matcha", "blueberry_yogurt"]);
 
-  function toast(msg) {
-    const t = document.getElementById("toast");
-    if (!t) return;
-    t.textContent = msg;
-    t.classList.add("show");
-    clearTimeout(toast._id);
-    toast._id = setTimeout(() => t.classList.remove("show"), 2200);
-  }
-
   function initFeatureAccess() {
     const earlyAccess = localStorage.getItem("petal_early_access") === "1";
 
-    // Themes
+    // disable/enable beta themes in dropdown
     if (els.themeSelect) {
       [...els.themeSelect.options].forEach((opt) => {
         if (betaThemes.has(opt.value)) opt.disabled = !earlyAccess;
@@ -45,16 +214,17 @@ import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase
 
       const currentTheme = localStorage.getItem("petal_theme");
       if (!earlyAccess && betaThemes.has(currentTheme)) {
+        applyTheme("petal");
         els.themeSelect.value = "petal";
-        els.themeSelect.dispatchEvent(new Event("change"));
       }
     }
 
-    // Add image (beta)
-    const btnAddImage = els.btnAddImage;
+    if (els.betaChip) els.betaChip.style.display = earlyAccess ? "inline-flex" : "none";
+
+    // Add image (beta) visibility + picker presence
     const imgPicker = document.getElementById("imgPicker");
 
-    if (btnAddImage) btnAddImage.style.display = earlyAccess ? "inline-flex" : "none";
+    if (els.btnAddImage) els.btnAddImage.style.display = earlyAccess ? "inline-flex" : "none";
 
     if (!earlyAccess) {
       imgPicker?.remove();
@@ -65,7 +235,7 @@ import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase
       const newPicker = document.createElement("input");
       newPicker.id = "imgPicker";
       newPicker.type = "file";
-      newPicker.accept = "image/*";
+      newPicker.accept = "image";
       newPicker.hidden = true;
       els.stickerBar.appendChild(newPicker);
     }
@@ -91,7 +261,15 @@ import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase
       const flagKey = `petal_birthday_confetti_${user.uid}_${year}`;
       if (localStorage.getItem(flagKey) === "1") return;
 
-      fireBirthdayConfetti();
+      if (window.confetti) {
+        const end = Date.now() + 3000;
+        (function frame() {
+          window.confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 } });
+          window.confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 } });
+          if (Date.now() < end) requestAnimationFrame(frame);
+        })();
+      }
+
       localStorage.setItem(flagKey, "1");
       toast("Happy birthday!");
     } catch (e) {
@@ -99,22 +277,11 @@ import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase
     }
   }
 
-  function fireBirthdayConfetti() {
-    if (!window.confetti) return;
-
-    const end = Date.now() + 3000;
-    (function frame() {
-      window.confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 } });
-      window.confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 } });
-      if (Date.now() < end) requestAnimationFrame(frame);
-    })();
-  }
-
   onAuthStateChanged(auth, (user) => {
     if (user) {
       localStorage.setItem("petal_early_access", "1");
 
-      els.authButton && (els.authButton.style.display = "none");
+      if (els.authButton) els.authButton.style.display = "none";
 
       if (els.profileButton) {
         els.profileButton.style.display = "inline-flex";
@@ -122,9 +289,9 @@ import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase
         els.profileButton.href = "profile.html";
       }
 
-      els.btnSignOut && (els.btnSignOut.style.display = "inline-flex");
-      els.btnLock && (els.btnLock.style.display = "none");
-      els.btnSetPasscode && (els.btnSetPasscode.style.display = "none");
+      if (els.btnSignOut) els.btnSignOut.style.display = "inline-flex";
+      if (els.btnLock) els.btnLock.style.display = "none";
+      if (els.btnSetPasscode) els.btnSetPasscode.style.display = "none";
 
       toast(`Logged in as ${user.email}`);
       checkBirthdayAndCelebrate(user);
@@ -137,10 +304,10 @@ import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase
         els.authButton.href = "login.html";
       }
 
-      els.profileButton && (els.profileButton.style.display = "none");
-      els.btnSignOut && (els.btnSignOut.style.display = "none");
-      els.btnLock && (els.btnLock.style.display = "inline-flex");
-      els.btnSetPasscode && (els.btnSetPasscode.style.display = "inline-flex");
+      if (els.profileButton) els.profileButton.style.display = "none";
+      if (els.btnSignOut) els.btnSignOut.style.display = "none";
+      if (els.btnLock) els.btnLock.style.display = "inline-flex";
+      if (els.btnSetPasscode) els.btnSetPasscode.style.display = "inline-flex";
 
       toast("Logged out.");
     }
