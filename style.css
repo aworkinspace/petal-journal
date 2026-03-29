@@ -548,3 +548,23 @@ body{
   border-color: color-mix(in srgb, var(--accent) 70%, black 10%);
   color:#2B0F22;
 }
+.sticker-menu{ position:relative; }
+.sticker-menu > summary{ list-style:none; cursor:pointer; }
+.sticker-menu > summary::-webkit-details-marker{ display:none; }
+
+.sticker-panel{
+  position:absolute;
+  left:0;
+  top: calc(100% + 10px);
+  padding:10px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  min-width: 240px;
+
+  background: white;
+  border:1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  z-index: 1000;
+}
