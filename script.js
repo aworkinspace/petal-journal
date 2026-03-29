@@ -61,6 +61,7 @@ const THEMES = {
     "--text": "#2B2B33",
     "--text-muted": "#5A5A6A",
   },
+// Darker pastel themes (add inside THEMES = { ... })
 dusky_rose: {
   "--bg": "#141016",
   "--surface": "#19131C",
@@ -290,7 +291,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const newPicker = document.createElement("input");
       newPicker.id = "imgPicker";
       newPicker.type = "file";
-      newPicker.accept = "image";
+      newPicker.accept = "image/*";
       newPicker.hidden = true;
       els.stickerBar.appendChild(newPicker);
     }
