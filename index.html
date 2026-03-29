@@ -223,7 +223,7 @@
     <audio id="newEntrySfx" src="assets/new-entry-sfx.mp3" preload="auto"></audio>
     <audio id="exportSfx" src="assets/export-sfx.mp3" preload="auto"></audio>
 
-    <!-- Optional FNAF cosmetics -->
+        <!-- Optional FNAF cosmetics -->
     <audio id="ambientSfx" src="assets/ambient.mp3" loop preload="none"></audio>
     <audio id="jumpscareSfx" src="assets/jumpscare.mp3" preload="auto"></audio>
     <audio id="toreadorSfx" src="assets/toreador-march.mp3" preload="auto"></audio>
@@ -233,14 +233,17 @@
       <button class="btn" id="btnJumpscare" type="button">Jumpscare</button>
       <button class="btn" id="btnToreador" type="button">Toreador</button>
     </div>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-<script src="script.js?v=3" type="module"></script>
+
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
+    <!-- Lock redirect -->
     <script>
       if (localStorage.getItem("petal_locked") === "1") location.href = "lock.html";
     </script>
 
-    <script src="script.js?v=2" type="module"></script>
+    <!-- App script (only once) -->
+    <script src="script.js?v=3" type="module"></script>
   </body>
 </html>
