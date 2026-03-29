@@ -174,6 +174,15 @@ const prompts = [
   "What are you grateful for right now?",
   "If today had a theme song, what would it be?",
   "What do you want to remember about today?",
+  "What’s something you’re proud of from today (even if it’s small)?",
+  "What’s a “good enough” version of tomorrow?",
+  "What are 3 things you can see/hear/feel right now? (grounding)",
+  "Who or what felt safe today?",
+  "What’s a moment you want to replay because it felt good?",
+  "What would “future you” thank you for doing today?",
+  "What’s one problem you can’t solve tonight—and what’s one tiny step for tomorrow?",
+  "If today was a chapter title, what would it be?",
+  "What drained you today? What recharged you?",
 ];
 
 function uid() {
