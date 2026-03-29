@@ -4,14 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <title>Petal Journal</title>
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+      rel="stylesheet"
+    />
 
-    <title>Petal Journal</title>
+    <!-- Styles -->
     <link rel="stylesheet" href="style.css" />
 
-    <!-- Firebase SDKs -->
+    <!-- Firebase SDKs (exposed for script.js) -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
       import { getAuth } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
@@ -25,7 +31,7 @@
         projectId: "petal-journal-app",
         storageBucket: "petal-journal-app.appspot.com",
         messagingSenderId: "162872929125",
-        appId: "1:162872929125:web:89587cde0bfdd26fc94f8c"
+        appId: "1:162872929125:web:89587cde0bfdd26fc94f8c",
       };
 
       const app = initializeApp(firebaseConfig);
@@ -33,7 +39,13 @@
       window.firebaseDb = getFirestore(app);
       window.firebaseStorage = getStorage(app);
     </script>
-    <!-- End Firebase SDKs -->
+
+    <!-- Lock redirect -->
+    <script>
+      if (localStorage.getItem("petal_locked") === "1") {
+        location.href = "lock.html";
+      }
+    </script>
   </head>
 
   <body>
@@ -46,17 +58,19 @@
 
       <div class="top-actions">
         <details class="menu">
-          <summary class="btn" type="button">Menu</summary>
+          <summary class="btn" role="button" aria-label="Open menu">Menu</summary>
 
           <div class="menu-panel">
-            <!-- Auth-controlled buttons -->
+            <!-- Auth-controlled -->
             <a class="btn" id="authButton" href="login.html">Login</a>
-            <a class="btn" id="profileButton" href="profile.html" style="display:none;">Profile</a>
-            <button class="btn" id="btnSignOut" type="button" style="display:none;">Logout</button>
+            <a class="btn" id="profileButton" href="profile.html" style="display: none"
+              >Profile</a
+            >
+            <button class="btn" id="btnSignOut" type="button" style="display: none">
+              Logout
+            </button>
 
             <div class="menu-divider"></div>
-
-            <a class="btn" href="login.html">Login / SignUp</a>
 
             <a
               class="btn btn-accent"
@@ -111,6 +125,7 @@
             <div class="section-title">Date</div>
             <input class="input" id="date" />
           </div>
+
           <div class="right-align">
             <div class="section-title">Mood</div>
             <select class="input" id="mood">
@@ -134,24 +149,50 @@
 
           <div class="sticker-bar" id="stickerBar">
             <details class="sticker-menu">
-              <summary class="chip" type="button">Stickers</summary>
+              <summary class="chip" role="button" aria-label="Open stickers">
+                Stickers
+              </summary>
 
               <div class="sticker-panel">
-                <button class="chip" type="button" data-sticker="assets/sparkles.gif">Sparkle</button>
-                <button class="chip" type="button" data-sticker="assets/hearts.gif">Hearts</button>
-                <button class="chip" type="button" data-sticker="assets/stars.gif">Stars</button>
-                <button class="chip" type="button" data-sticker="assets/heartjar.gif">Heart Jar</button>
-                <button class="chip" type="button" data-sticker="assets/swirlheart.gif">Swirling Heart</button>
-                <button class="chip" type="button" data-sticker="assets/lollipop.gif">Lollipop</button>
-                <button class="chip" type="button" data-sticker="assets/catpaw.gif">Cat Paw</button>
-                <button class="chip" type="button" data-sticker="assets/bubbydancing.gif">Dancing Bunny</button>
-                <button class="chip" type="button" id="btnAddImage">Add image (beta)</button>
+                <button class="chip" type="button" data-sticker="assets/sparkles.gif">
+                  Sparkle
+                </button>
+                <button class="chip" type="button" data-sticker="assets/hearts.gif">
+                  Hearts
+                </button>
+                <button class="chip" type="button" data-sticker="assets/stars.gif">
+                  Stars
+                </button>
+                <button class="chip" type="button" data-sticker="assets/heartjar.gif">
+                  Heart Jar
+                </button>
+                <button class="chip" type="button" data-sticker="assets/swirlheart.gif">
+                  Swirling Heart
+                </button>
+                <button class="chip" type="button" data-sticker="assets/lollipop.gif">
+                  Lollipop
+                </button>
+                <button class="chip" type="button" data-sticker="assets/catpaw.gif">
+                  Cat Paw
+                </button>
+                <button class="chip" type="button" data-sticker="assets/bubbydancing.gif">
+                  Dancing Bunny
+                </button>
+
+                <button class="chip" type="button" id="btnAddImage">
+                  Add image (beta)
+                </button>
                 <input id="imgPicker" type="file" accept="image/*" hidden />
               </div>
             </details>
           </div>
 
-          <div class="textarea rte" id="content" contenteditable="true" data-placeholder="Start writing…"></div>
+          <div
+            class="textarea rte"
+            id="content"
+            contenteditable="true"
+            data-placeholder="Start writing…"
+          ></div>
         </div>
 
         <div class="mt-12 chip-row">
@@ -173,20 +214,24 @@
           <h3 class="prompt-title">Prompt</h3>
           <button class="btn btn-accent" id="btnPrompt" type="button">New</button>
         </div>
+
         <div class="divider"></div>
-        <div class="chip prompt-card" id="promptCard">What’s one small win you had today?</div>
+        <div class="chip prompt-card" id="promptCard">
+          What’s one small win you had today?
+        </div>
 
         <div class="divider"></div>
         <div class="section-title">Quick tips</div>
-        <div class="muted tips">Try: 3 sentences (what happened, how you felt, what you learned).</div>
+        <div class="muted tips">
+          Try: 3 sentences (what happened, how you felt, what you learned).
+        </div>
       </section>
     </div>
 
     <div class="toast" id="toast"></div>
-
     <canvas id="sparkles" aria-hidden="true"></canvas>
 
-    <!-- Skins + Themes (compact controls row) -->
+    <!-- Skins + Themes -->
     <div class="controls-row">
       <span class="label">Skin</span>
       <select class="input" id="skinSelect">
@@ -207,13 +252,22 @@
         <option value="strawberry_matcha">Strawberry Matcha (beta)</option>
         <option value="blueberry_yogurt">Blueberry Yogurt (beta)</option>
       </select>
-      <span class="chip" id="betaChip" style="display:none">Early access</span>
+
+      <span class="chip" id="betaChip" style="display: none">Early access</span>
     </div>
 
     <!-- Background music -->
-    <div class="music" style="justify-content:center; flex-wrap:wrap; margin: 0 24px 18px;">
+    <div class="music" style="justify-content: center; flex-wrap: wrap; margin: 0 24px 18px">
       <button class="btn" id="btnMusic" type="button">Play Music</button>
-      <input id="musicVol" type="range" min="0" max="1" step="0.01" value="0.35" aria-label="Music volume" />
+      <input
+        id="musicVol"
+        type="range"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.35"
+        aria-label="Music volume"
+      />
       <audio id="bgm" src="assets/lofi.mp3" loop preload="none"></audio>
     </div>
 
@@ -223,12 +277,12 @@
     <audio id="newEntrySfx" src="assets/new-entry-sfx.mp3" preload="auto"></audio>
     <audio id="exportSfx" src="assets/export-sfx.mp3" preload="auto"></audio>
 
-        <!-- Optional FNAF cosmetics -->
+    <!-- Optional FNAF cosmetics -->
     <audio id="ambientSfx" src="assets/ambient.mp3" loop preload="none"></audio>
     <audio id="jumpscareSfx" src="assets/jumpscare.mp3" preload="auto"></audio>
     <audio id="toreadorSfx" src="assets/toreador-march.mp3" preload="auto"></audio>
 
-    <div class="music" style="justify-content:center; flex-wrap:wrap; margin: 0 24px 28px;">
+    <div class="music" style="justify-content: center; flex-wrap: wrap; margin: 0 24px 28px">
       <button class="btn" id="btnAmbient" type="button">Ambient: Off</button>
       <button class="btn" id="btnJumpscare" type="button">Jumpscare</button>
       <button class="btn" id="btnToreador" type="button">Toreador</button>
@@ -238,12 +292,7 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
-    <!-- Lock redirect -->
-    <script>
-      if (localStorage.getItem("petal_locked") === "1") location.href = "lock.html";
-    </script>
-
-    <!-- App script (only once) -->
+    <!-- App -->
     <script src="script.js?v=3" type="module"></script>
   </body>
 </html>
