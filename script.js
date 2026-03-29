@@ -747,3 +747,6 @@ renderList();
 document.querySelector(".menu-panel")?.addEventListener("click", (e) => {
   if (e.target.closest("a,button")) document.querySelector(".menu")?.removeAttribute("open");
 });
+document.querySelector(".sticker-panel")?.addEventListener("click", (e) => {
+  if (e.target.closest("button")) document.querySelector(".sticker-menu")?.removeAttribute("open");
+});
