@@ -27,9 +27,15 @@
   --sparkle-3: var(--mauve-200);
   --sparkle-4: var(--periwinkle-200);
   --sparkle-5: var(--periwinkle-400);
+
+  /* Global button vars (updated by dark theme override) */
+  --btn-bg: #ffffff;
+  --btn-border: var(--border);
+  --btn-text: var(--text);
 }
 
 *{ box-sizing:border-box; }
+
 html{
   height:100%;
   background:
@@ -79,12 +85,13 @@ header{
 
 .panel-pad{ padding:16px; }
 
+/* apply button vars */
 .btn{
-  border:1px solid var(--border);
-  background: white;
+  border:1px solid var(--btn-border);
+  background: var(--btn-bg);
   padding:10px 14px;
   border-radius: 999px;
-  color:var(--text);
+  color:var(--btn-text);
   cursor:pointer;
   font-weight:600;
 }
@@ -92,6 +99,7 @@ header{
 .btn:hover{ filter:brightness(.99); }
 .btn:active{ transform:translateY(1px); }
 
+/* special buttons override color only */
 .btn-primary{
   background: var(--primary);
   border-color: color-mix(in srgb, var(--primary) 70%, black 10%);
@@ -221,11 +229,9 @@ header{
   top: 0;
   width: 100vw;
   height: 100vh;
-
   pointer-events: none;
   z-index: 9999;
   display: block;
-
   transform: translateZ(0);
   backface-visibility: hidden;
 }
@@ -313,6 +319,7 @@ header{
   font-weight: 400;
   font-style: normal;
 }
+
 .sticker-bar{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
 
 .rte{ min-height:260px; line-height:1.5; }
@@ -326,6 +333,7 @@ header{
   display:inline-block;
   vertical-align:middle;
 }
+
 /* skins */
 .notebook.skin-ruled{
   background:
@@ -373,6 +381,7 @@ header{
   border-color: rgba(255,255,255,.14);
   color: rgba(255,255,255,.92);
 }
+
 /* Dark page skin: fix buttons + chips inside the notebook */
 .notebook.skin-dark .btn{
   background: rgba(255,255,255,.08);
@@ -445,11 +454,13 @@ header{
 
 /* optional: nicer input/button row spacing */
 .lock-actions{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
 #clock{
   font-family: "VT323", monospace;
   font-size: 22px;
   letter-spacing: .5px;
 }
+
 .menu{ position:relative; }
 .menu > summary{ list-style:none; }
 .menu > summary::-webkit-details-marker{ display:none; }
@@ -463,8 +474,7 @@ header{
   display:flex;
   flex-direction:column;
   gap:10px;
-
-  background: white;
+  background: color-mix(in srgb, var(--rose-50) 88%, black 12%);
   border:1px solid var(--border);
   border-radius: 16px;
   box-shadow: var(--shadow);
@@ -476,12 +486,8 @@ header{
   background: var(--border);
   margin: 4px 0;
 }
-/* Menu follows theme (works for Midnight because --text becomes light) */
-.menu-panel{
-  background: color-mix(in srgb, var(--rose-50) 88%, black 12%);
-  border-color: color-mix(in srgb, var(--border) 70%, transparent);
-}
 
+/* Menu follows theme */
 .menu-panel .btn{
   background: color-mix(in srgb, var(--surface) 75%, white 25%);
   border-color: var(--border);
@@ -499,6 +505,7 @@ header{
   border-color: color-mix(in srgb, var(--accent) 70%, black 10%);
   color:#2B0F22;
 }
+
 /* Menu button follows theme */
 .menu > summary.btn{
   background: color-mix(in srgb, var(--surface) 75%, white 25%);
@@ -506,23 +513,7 @@ header{
   color: var(--text);
 }
 
-/* Global dark-theme button styling (e.g., Midnight theme) */
-@media (prefers-color-scheme: dark){
-  /* no-op; just keeps this block separate */
-}
-
-/* When theme text is light, use darker buttons everywhere */
-:root{
-  --btn-bg: #ffffff;
-  --btn-border: var(--border);
-  --btn-text: var(--text);
-}
-
-body{
-  color: var(--text);
-}
-
-/* Override defaults for dark themes by checking if --text is light-ish */
+/* When theme text is light (midnight), use darker buttons everywhere */
 :root[style*="--text: #F2F0F7"],
 :root[style*="--text:#F2F0F7"]{
   --btn-bg: rgba(255,255,255,.08);
@@ -530,24 +521,7 @@ body{
   --btn-text: rgba(255,255,255,.92);
 }
 
-/* apply vars */
-.btn{
-  background: var(--btn-bg);
-  border-color: var(--btn-border);
-  color: var(--btn-text);
-}
-
-/* keep special buttons readable */
-.btn-primary{
-  background: var(--primary);
-  border-color: color-mix(in srgb, var(--primary) 70%, black 10%);
-  color:#151525;
-}
-.btn-accent{
-  background: var(--accent);
-  border-color: color-mix(in srgb, var(--accent) 70%, black 10%);
-  color:#2B0F22;
-}
+/* Sticker dropdown */
 .sticker-menu{ position:relative; }
 .sticker-menu > summary{ list-style:none; cursor:pointer; }
 .sticker-menu > summary::-webkit-details-marker{ display:none; }
@@ -559,8 +533,25 @@ body{
   color: var(--text);
 }
 
-/* If you want it darker in Midnight specifically */
-:root[data-theme="midnight"] .sticker-panel{
-  background: rgba(20,18,26,.92);
-  border-color: rgba(255,255,255,.18);
+/* Compact controls under the notebook */
+.controls-row{
+  max-width: 1200px;
+  margin: 3px auto 10px;
+  padding: 0 24px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px 16px;
+  align-items:center;
+  justify-content:flex-start;
+}
+
+.controls-row .label{
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.controls-row .input{
+  font-size: 13px;
+  padding: 6px 10px;
+  height:auto;
 }
