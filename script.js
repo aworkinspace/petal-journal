@@ -251,7 +251,8 @@ document.getElementById("stickerBar")?.addEventListener("click", (e) => {
   if (!btn) return;
   insertSticker(btn.getAttribute("data-sticker"));
 });
-// Early access: add image from desktop (hidden unless early access)
+
+// --- Early access: add image from desktop (HIDDEN unless early access) ---
 (() => {
   const btn = document.getElementById("btnAddImage");
   const picker = document.getElementById("imgPicker");
@@ -317,92 +318,6 @@ document.getElementById("stickerBar")?.addEventListener("click", (e) => {
       img.className = "sticker";
       img.style.maxWidth = "100%";
       img.style.height = "auto";
-      insertNodeAtCaret(img);
-    } catch {
-      toast("Could not add image");
-    }
-  });
-})();
-function canUseEarlyAccess() {
-  return localStorage.getItem("petal_early_access") === "1";
-}
-
-function insertNodeAtCaret(node) {
-  els.content?.focus();
-  const sel = window.getSelection();
-  if (!sel || sel.rangeCount === 0 || !els.content) {
-    els.content?.appendChild(node);
-    return;
-  }
-  const range = sel.getRangeAt(0);
-  if (!els.content.contains(range.commonAncestorContainer)) {
-    els.content.appendChild(node);
-    return;
-  }
-  range.deleteContents();
-  range.insertNode(node);
-  range.setStartAfter(node);
-  range.setEndAfter(node);
-  sel.removeAllRanges();
-  sel.addRange(range);
-}
-
-async function fileToCompressedDataURL(file, maxW = 900, quality = 0.82) {
-  const img = new Image();
-  const url = URL.createObjectURL(file);
-  await new Promise((res, rej) => {
-    img.onload = res;
-    img.onerror = rej;
-    img.src = url;
-  });
-
-  const scale = Math.min(1, maxW / img.width);
-  const w = Math.round(img.width * scale);
-  const h = Math.round(img.height * scale);
-
-  const canvas = document.createElement("canvas");
-  canvas.width = w;
-  canvas.height = h;
-  const ctx = canvas.getContext("2d");
-  ctx.drawImage(img, 0, 0, w, h);
-
-  URL.revokeObjectURL(url);
-
-  // use jpeg to keep size down (you can change to image/png if you need transparency)
-  return canvas.toDataURL("image/jpeg", quality);
-}
-
-// Early access: add image from desktop
-(() => {
-  const btn = document.getElementById("btnAddImage");
-  const picker = document.getElementById("imgPicker");
-  if (!btn || !picker) return;
-
-  if (!canUseEarlyAccess()) {
-    btn.disabled = true;
-    btn.title = "Login required for early access";
-  }
-
-  btn.addEventListener("click", () => {
-    if (!canUseEarlyAccess()) return;
-    picker.click();
-  });
-
-  picker.addEventListener("change", async () => {
-    const file = picker.files?.[0];
-    picker.value = "";
-    if (!file) return;
-
-    try {
-      const dataUrl = await fileToCompressedDataURL(file);
-
-      const img = document.createElement("img");
-      img.src = dataUrl;
-      img.alt = "user image";
-      img.className = "sticker";
-      img.style.maxWidth = "100%";
-      img.style.height = "auto";
-
       insertNodeAtCaret(img);
     } catch {
       toast("Could not add image");
@@ -774,15 +689,16 @@ renderList();
     }
   });
 })();
-document.getElementById("btnSetPasscode")?.addEventListener("click", () => {
-  const code = prompt("Set a passcode (remember it):");
-  if (!code) return;
-  localStorage.setItem("petal_passcode", code);
-  toast("Passcode set");
-});
+// --- Clock ---
+(() => {
+  const el = document.getElementById("clock");
+  if (!el) return;
 
-document.getElementById("btnLock")?.addEventListener("click", () => {
-  if (!localStorage.getItem("petal_passcode")) return toast("Set a passcode first");
-  localStorage.setItem("petal_locked", "1");
-  location.href = "lock.html";
-});
+  function tick(){
+    const now = new Date();
+    el.textContent = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
+
+  tick();
+  setInterval(tick, 1000);
+})();
