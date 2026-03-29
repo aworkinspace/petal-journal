@@ -61,6 +61,61 @@ const THEMES = {
     "--text": "#2B2B33",
     "--text-muted": "#5A5A6A",
   },
+dusky_rose: {
+  "--bg": "#141016",
+  "--surface": "#19131C",
+  "--surface-2": "#241A26",
+  "--border": "rgba(255,255,255,.14)",
+  "--primary": "#B7A6FF",          // soft violet
+  "--primary-soft": "rgba(183,166,255,.35)",
+  "--accent": "#FF8FBC",           // rose
+  "--text": "#F2F0F7",
+  "--text-muted": "rgba(242,240,247,.75)",
+},
+mauve_night: {
+  "--bg": "#100F14",
+  "--surface": "#15131A",
+  "--surface-2": "#201B25",
+  "--border": "rgba(255,255,255,.14)",
+  "--primary": "#9FB6FF",          // periwinkle
+  "--primary-soft": "rgba(159,182,255,.35)",
+  "--accent": "#D7A6FF",           // lavender
+  "--text": "#F2F0F7",
+  "--text-muted": "rgba(242,240,247,.75)",
+},
+deep_sage: {
+  "--bg": "#0F1412",
+  "--surface": "#141A17",
+  "--surface-2": "#1C2621",
+  "--border": "rgba(255,255,255,.14)",
+  "--primary": "#93D1B3",          // sage/mint
+  "--primary-soft": "rgba(147,209,179,.35)",
+  "--accent": "#FF9BB7",           // warm pink
+  "--text": "#F2F0F7",
+  "--text-muted": "rgba(242,240,247,.75)",
+},
+blueberry_dusk: {
+  "--bg": "#0D101A",
+  "--surface": "#12172A",
+  "--surface-2": "#1A2140",
+  "--border": "rgba(255,255,255,.14)",
+  "--primary": "#8EA2FF",          // blue-violet
+  "--primary-soft": "rgba(142,162,255,.35)",
+  "--accent": "#8FE3FF",           // pastel cyan
+  "--text": "#F2F0F7",
+  "--text-muted": "rgba(242,240,247,.75)",
+},
+cocoa_lilac: {
+  "--bg": "#141014",
+  "--surface": "#1A141B",
+  "--surface-2": "#261C28",
+  "--border": "rgba(255,255,255,.14)",
+  "--primary": "#E2B3FF",          // lilac
+  "--primary-soft": "rgba(226,179,255,.35)",
+  "--accent": "#FFB38A",           // peach
+  "--text": "#F2F0F7",
+  "--text-muted": "rgba(242,240,247,.75)",
+},
   midnight: {
     "--bg": "#0F0D14",
     "--surface": "#14121A",
