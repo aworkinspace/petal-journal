@@ -409,3 +409,8 @@ header{
 
 /* optional: nicer input/button row spacing */
 .lock-actions{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+#clock{
+  font-family: "VT323", monospace;
+  font-size: 22px;
+  letter-spacing: .5px;
+}
