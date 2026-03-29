@@ -70,7 +70,7 @@
       <input id="musicVol" type="range" min="0" max="1" step="0.01" value="0.35" aria-label="Music volume" />
       <audio id="bgm" src="assets/lofi.mp3" loop preload="auto"></audio>
     </div>
-
+<audio id="clearSfx" src="assets/clear-sfx.mp3" preload="auto"></audio>
     <!-- Apply saved theme from index.html -->
     <script>
       (function () {
@@ -301,12 +301,20 @@
       }
 
       clearBtn.addEventListener("click", () => {
-        const rect = canvas.getBoundingClientRect();
-        ctx.globalCompositeOperation = "source-over";
-        ctx.globalAlpha = 1;
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, rect.width, rect.height);
-      });
+  const rect = canvas.getBoundingClientRect();
+  ctx.globalCompositeOperation = "source-over";
+  ctx.globalAlpha = 1; // Ensure alpha is reset for clear
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, rect.width, rect.height);
+
+  // Play the sound effect
+  const sfx = document.getElementById("clearSfx");
+  if (sfx) {
+    sfx.pause();
+    sfx.currentTime = 0;
+    sfx.play().catch(() => {});
+  }
+});
 
       saveBtn.addEventListener("click", () => {
         const a = document.createElement("a");
