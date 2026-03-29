@@ -1,5 +1,7 @@
 <!doctype html>
 <html lang="en">
+  <!doctype html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,7 +12,42 @@
 
     <title>Petal Journal</title>
     <link rel="stylesheet" href="style.css" />
+
+    <!-- Firebase SDKs - ADD THESE -->
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+      import { getAuth } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+      import { getStorage } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
+
+      // Your web app's Firebase configuration - PASTE HERE FROM CONSOLE
+      const firebaseConfig = {
+  apiKey: "AIzaSyBqpOzgqcRebD_yCtjW7HqIyy9rdTcCVvc",
+  authDomain: "petal-journal-app.firebaseapp.com",
+  databaseURL: "https://petal-journal-app-default-rtdb.firebaseio.com",
+  projectId: "petal-journal-app",
+  storageBucket: "petal-journal-app.firebasestorage.app",
+  messagingSenderId: "162872929125",
+  appId: "1:162872929125:web:89587cde0bfdd26fc94f8c"
+};
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+
+      // Export Firebase services for use in other scripts (e.g., script.js)
+      window.firebaseAuth = getAuth(app);
+      window.firebaseDb = getFirestore(app);
+      window.firebaseStorage = getStorage(app);
+    </script>
+    <!-- End Firebase SDKs -->
+
   </head>
+  <body>
+    <!-- ... rest of your body ... -->
+  </body>
+</html>
+
 
   <body>
     <header>
@@ -21,29 +58,39 @@
       </div>
 
       <div class="top-actions">
-        <details class="menu">
-          <summary class="btn" type="button">Menu</summary>
+  <div class="muted" id="clock" aria-label="Current time"></div> <!-- Moved clock here for better alignment -->
 
-          <div class="menu-panel">
-            <a class="btn" href="login.html">Login</a>
+  <details class="menu">
+    <summary class="btn" type="button">Menu</summary>
 
-            <a class="btn btn-accent"
-              href="https://buy.stripe.com/8x214o0rsdlK3uudyEes000"
-              target="_blank"
-              rel="noopener"
-            >Support (monthly)
-            </a>
-<a class="btn" href="whiteboard.html">Whiteboard</a>
-            <button class="btn" id="btnSetPasscode" type="button">Set passcode</button>
-            <button class="btn" id="btnLock" type="button">Lock</button>
+    <div class="menu-panel">
+      <!-- These will be dynamically updated by Firebase Auth state -->
+      <a class="btn" id="authButton" href="login.html">Login</a>
+      <a class="btn" id="profileButton" href="profile.html" style="display:none;">Profile</a>
+      <button class="btn" id="btnSignOut" type="button" style="display:none;">Logout</button>
 
-            <div class="menu-divider"></div>
+      <div class="menu-divider"></div>
 
-            <button class="btn" id="btnExport" type="button">Export</button>
-            <button class="btn btn-primary" id="btnNew" type="button">New entry</button>
-          </div>
-        </details>
-      </div>
+      <a class="btn" href="login.html">Login / SignUp</a> <!-- Direct link to auth page for convenience -->
+
+      <a class="btn btn-accent"
+         href="https://buy.stripe.com/8x214o0rsdlK3uudyEes000"
+         target="_blank" rel="noopener">
+        Support (monthly)
+      </a>
+
+      <button class="btn" id="btnSetPasscode" type="button">Set passcode</button>
+      <button class="btn" id="btnLock" type="button">Lock</button>
+      <a class="btn" href="whiteboard.html">Whiteboard</a> <!-- Link to whiteboard -->
+
+      <div class="menu-divider"></div>
+
+      <button class="btn" id="btnExport" type="button">Export</button>
+      <button class="btn btn-primary" id="btnNew" type="button">New entry</button>
+    </div>
+  </details>
+</div>
+
     </header>
 
     <div class="shell">
