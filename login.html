@@ -1,68 +1,175 @@
 <!doctype html>
 <html lang="en">
   <head>
-   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
-
-  <title>Petal Journal</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
+    <title>Petal Journal — Account</title>
+    <link rel="stylesheet" href="style.css" />
     <style>
-      .login-wrap{ max-width:520px; margin:40px auto; padding:0 16px; }
-      .login-card{ padding:18px; }
-      .login-card .row{ justify-content:flex-start; gap:12px; flex-wrap:wrap; }
+      .login-wrap {
+        max-width: 520px;
+        margin: 40px auto;
+        padding: 0 16px;
+      }
+      .login-card {
+        padding: 18px;
+      }
+      .login-card .row {
+        justify-content: flex-start;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
     </style>
+
+    <!-- Firebase SDKs - IMPORTANT: Make sure this matches index.html Firebase setup -->
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+      import { getAuth } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+      // Firestore and Storage aren't strictly needed on the login page, but keeping consistent
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+      import { getStorage } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
+
+      // Your web app's Firebase configuration - PASTE HERE FROM CONSOLE
+      const firebaseConfig = {
+  apiKey: "AIzaSyBqpOzgqcRebD_yCtjW7HqIyy9rdTcCVvc",
+  authDomain: "petal-journal-app.firebaseapp.com",
+  databaseURL: "https://petal-journal-app-default-rtdb.firebaseio.com",
+  projectId: "petal-journal-app",
+  storageBucket: "petal-journal-app.firebasestorage.app",
+  messagingSenderId: "162872929125",
+  appId: "1:162872929125:web:89587cde0bfdd26fc94f8c"
+};
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+
+      // Export Firebase services globally for use in this script
+      window.firebaseAuth = getAuth(app);
+      window.firebaseDb = getFirestore(app);
+      window.firebaseStorage = getStorage(app);
+    </script>
+    <!-- End Firebase SDKs -->
   </head>
   <body>
     <header>
       <div class="brand">
         <h1>Petal Journal</h1>
-        <small class="muted">early access login</small>
+        <small class="muted">account access</small>
       </div>
       <div class="top-actions">
-        <a class="btn" href="index.html">Back</a>
+        <a class="btn" href="index.html">Back to Journal</a>
       </div>
     </header>
 
     <div class="login-wrap">
       <main class="panel panel-pad login-card">
-        <h2 style="margin:0 0 6px;">Unlock Midnight (beta)</h2>
-        <p class="muted" style="margin:0 0 14px;">Enter the access code you were given.</p>
+        <h2 style="margin: 0 0 8px">Login / Sign Up</h2>
+        <p class="muted" style="margin: 0 0 14px">
+          Access early features by creating an account.
+        </p>
 
-        <div class="section-title">Access code</div>
-        <input class="input" id="code" type="password" placeholder="••••••••" />
+        <div class="section-title">Email</div>
+        <input class="input" id="email" type="email" autocomplete="username" placeholder="email@example.com" />
 
-        <div class="row" style="margin-top:12px;">
-          <button class="btn btn-primary" id="btnLogin" type="button">Unlock</button>
-          <button class="btn" id="btnLogout" type="button">Remove access</button>
-          <small class="muted" id="msg"></small>
+        <div class="section-title" style="margin-top: 12px">Password</div>
+        <input class="input" id="password" type="password" autocomplete="current-password" placeholder="••••••••" />
+
+        <div class="row" style="margin-top: 18px; justify-content: space-between">
+          <div class="chip-row">
+            <button class="btn btn-primary" id="btnLogin" type="button">Login</button>
+            <button class="btn" id="btnSignUp" type="button">Sign Up</button>
+          </div>
+          <small class="muted" id="authMsg"></small>
         </div>
+
+        <div class="divider"></div>
+
+        <button class="btn btn-primary" id="btnResetPassword" type="button">Forgot Password?</button>
       </main>
     </div>
 
-    <script>
-      // Change this to your secret code:
-      const ACCESS_CODE = "petal";
+    <script type="module">
+      import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
-      const code = document.getElementById("code");
-      const msg = document.getElementById("msg");
+      const auth = window.firebaseAuth; // Get auth instance from global scope
 
-      document.getElementById("btnLogin").addEventListener("click", () => {
-        if (code.value === ACCESS_CODE) {
+      const $ = (id) => document.getElementById(id);
+      const emailEl = $("email");
+      const passwordEl = $("password");
+      const authMsgEl = $("authMsg");
+      const btnLogin = $("btnLogin");
+      const btnSignUp = $("btnSignUp");
+      const btnResetPassword = $("btnResetPassword");
+
+      // Check if user is already logged in
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          authMsgEl.textContent = `Logged in as ${user.email}. Redirecting...`;
+          // Set early access flag (Firebase user implies early access)
           localStorage.setItem("petal_early_access", "1");
-          msg.textContent = "Unlocked! Redirecting…";
-          location.href = "index.html";
+          setTimeout(() => (location.href = "index.html"), 1500);
         } else {
-          msg.textContent = "Wrong code.";
+          // If not logged in, ensure early access flag is off
+          localStorage.removeItem("petal_early_access");
         }
       });
 
-      document.getElementById("btnLogout").addEventListener("click", () => {
-        localStorage.removeItem("petal_early_access");
-        msg.textContent = "Access removed.";
+      btnLogin.addEventListener("click", async () => {
+        const email = emailEl.value;
+        const password = passwordEl.value;
+        if (!email || !password) {
+          authMsgEl.textContent = "Please enter email and password.";
+          return;
+        }
+        authMsgEl.textContent = "Logging in...";
+        try {
+          await signInWithEmailAndPassword(auth, email, password);
+          authMsgEl.textContent = "Login successful! Redirecting...";
+          localStorage.setItem("petal_early_access", "1");
+          setTimeout(() => (location.href = "index.html"), 1500);
+        } catch (error) {
+          console.error("Login failed:", error.code, error.message);
+          authMsgEl.textContent = `Login failed: ${error.message}`;
+        }
+      });
+
+      btnSignUp.addEventListener("click", async () => {
+        const email = emailEl.value;
+        const password = passwordEl.value;
+        if (!email || !password) {
+          authMsgEl.textContent = "Please enter email and password.";
+          return;
+        }
+        authMsgEl.textContent = "Signing up...";
+        try {
+          await createUserWithEmailAndPassword(auth, email, password);
+          authMsgEl.textContent = "Sign up successful! Redirecting...";
+          localStorage.setItem("petal_early_access", "1");
+          setTimeout(() => (location.href = "index.html"), 1500);
+        } catch (error) {
+          console.error("Sign up failed:", error.code, error.message);
+          authMsgEl.textContent = `Sign up failed: ${error.message}`;
+        }
+      });
+
+      btnResetPassword.addEventListener("click", async () => {
+        const email = emailEl.value;
+        if (!email) {
+          authMsgEl.textContent = "Please enter your email to reset password.";
+          return;
+        }
+        authMsgEl.textContent = "Sending reset email...";
+        try {
+          await sendPasswordResetEmail(auth, email);
+          authMsgEl.textContent = "Password reset email sent (check spam folder!).";
+        } catch (error) {
+          console.error("Password reset failed:", error.code, error.message);
+          authMsgEl.textContent = `Password reset failed: ${error.message}`;
+        }
       });
     </script>
   </body>
