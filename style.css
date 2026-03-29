@@ -414,3 +414,29 @@ header{
   font-size: 22px;
   letter-spacing: .5px;
 }
+.menu{ position:relative; }
+.menu > summary{ list-style:none; }
+.menu > summary::-webkit-details-marker{ display:none; }
+
+.menu-panel{
+  position:absolute;
+  right:0;
+  top: calc(100% + 10px);
+  min-width: 220px;
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+
+  background: white;
+  border:1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  z-index: 1000;
+}
+
+.menu-divider{
+  height:1px;
+  background: var(--border);
+  margin: 4px 0;
+}
