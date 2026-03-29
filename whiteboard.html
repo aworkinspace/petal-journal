@@ -54,148 +54,142 @@
         <canvas id="wb"></canvas>
       </div>
     </div>
-
-    <script>
-      const canvas = document.getElementById("wb");
-      const ctx = canvas.getContext("2d");
-
-      const colorEl = document.getElementById("color");
-      const sizeEl = document.getElementById("size");
-      const penBtn = document.getElementById("pen");
-      const eraserBtn = document.getElementById("eraser");
-      const clearBtn = document.getElementById("clear");
-      const saveBtn = document.getElementById("save");
-
-      let drawing = false;
-      let last = null;
-      let mode = "pen";
-
-      function resize() {
-        const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-        const rect = canvas.getBoundingClientRect();
-
-        // Save current drawing
-        const prev = canvas.toDataURL("image/png");
-
-        canvas.width = Math.floor(rect.width * dpr);
-        canvas.height = Math.floor(rect.height * dpr);
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-        // white background
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, rect.width, rect.height);
-
-        // restore previous drawing
-        const img = new Image();
-        img.onload = () => ctx.drawImage(img, 0, 0, rect.width, rect.height);
-        img.src = prev;
-      }
-
-      function pos(e) {
-        const rect = canvas.getBoundingClientRect();
-        const p = e.touches ? e.touches[0] : e;
-        return { x: p.clientX - rect.left, y: p.clientY - rect.top };
-      }
-
-      function stroke(a, b) {
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
-        ctx.lineWidth = Number(sizeEl.value);
-
-        if (mode === "eraser") {
-          ctx.globalCompositeOperation = "destination-out";
-          ctx.strokeStyle = "rgba(0,0,0,1)";
-        } else {
-          ctx.globalCompositeOperation = "source-over";
-          ctx.strokeStyle = colorEl.value;
-        }
-
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.stroke();
-      }
-
-      function down(e) {
-        drawing = true;
-        last = pos(e);
-      }
-      function move(e) {
-        if (!drawing) return;
-        e.preventDefault();
-        const p = pos(e);
-        stroke(last, p);
-        last = p;
-      }
-      function up() {
-        drawing = false;
-        last = null;
-      }
-
-      penBtn.addEventListener("click", () => (mode = "pen"));
-      eraserBtn.addEventListener("click", () => (mode = "eraser"));
-
-      clearBtn.addEventListener("click", () => {
-        const rect = canvas.getBoundingClientRect();
-        ctx.globalCompositeOperation = "source-over";
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, rect.width, rect.height);
-      });
-
-      saveBtn.addEventListener("click", () => {
-        const a = document.createElement("a");
-        a.download = "whiteboard.png";
-        a.href = canvas.toDataURL("image/png");
-        a.click();
-      });
-
-      canvas.addEventListener("mousedown", down);
-      canvas.addEventListener("mousemove", move);
-      window.addEventListener("mouseup", up);
-
-      canvas.addEventListener("touchstart", down, { passive: true });
-      canvas.addEventListener("touchmove", move, { passive: false });
-      window.addEventListener("touchend", up);
-
-      // layout + initial size
-      canvas.style.width = "100%";
-      canvas.style.height = "70vh";
-      resize();
-      window.addEventListener("resize", resize);
-// --- Background music controls ---
-(() => {
-  const audio = document.getElementById("bgm");
-  const btn = document.getElementById("btnMusic");
-  const vol = document.getElementById("musicVol");
-  if (!audio || !btn || !vol) return;
-
-  const savedVol = localStorage.getItem("petal_music_vol");
-  if (savedVol !== null) vol.value = savedVol;
-  audio.volume = Number(vol.value);
-
-  function setBtn(){ btn.textContent = audio.paused ? "Play music" : "Pause music"; }
-  setBtn();
-
-  vol.addEventListener("input", () => {
-    audio.volume = Number(vol.value);
-    localStorage.setItem("petal_music_vol", String(vol.value));
-  });
-
-  btn.addEventListener("click", async () => {
-    try {
-      if (audio.paused) await audio.play();
-      else audio.pause();
-      setBtn();
-    } catch {
-      btn.textContent = "Music unavailable";
-    }
-  });
-})();
-    </script>
 <div class="music" style="justify-content:center; flex-wrap:wrap; margin: 0 24px 18px;">
   <button class="btn" id="btnMusic" type="button">Play Music</button>
   <input id="musicVol" type="range" min="0" max="1" step="0.01" value="0.35" aria-label="Music volume" />
-  <audio id="bgm" src="assets/lofi.mp3" loop preload="none"></audio>
+  <audio id="bgm" src="assets/lofi.mp3" loop preload="auto"></audio>
 </div>
+
+<script>
+  const canvas = document.getElementById("wb");
+  const ctx = canvas.getContext("2d");
+
+  const colorEl = document.getElementById("color");
+  const sizeEl = document.getElementById("size");
+  const penBtn = document.getElementById("pen");
+  const eraserBtn = document.getElementById("eraser");
+  const clearBtn = document.getElementById("clear");
+  const saveBtn = document.getElementById("save");
+
+  let drawing = false;
+  let last = null;
+  let mode = "pen";
+
+  function resize() {
+    const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+    const rect = canvas.getBoundingClientRect();
+    const prev = canvas.toDataURL("image/png");
+
+    canvas.width = Math.floor(rect.width * dpr);
+    canvas.height = Math.floor(rect.height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, rect.width, rect.height);
+
+    const img = new Image();
+    img.onload = () => ctx.drawImage(img, 0, 0, rect.width, rect.height);
+    img.src = prev;
+  }
+
+  function pos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const p = e.touches ? e.touches[0] : e;
+    return { x: p.clientX - rect.left, y: p.clientY - rect.top };
+  }
+
+  function stroke(a, b) {
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.lineWidth = Number(sizeEl.value);
+
+    if (mode === "eraser") {
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.strokeStyle = "rgba(0,0,0,1)";
+    } else {
+      ctx.globalCompositeOperation = "source-over";
+      ctx.strokeStyle = colorEl.value;
+    }
+
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(b.x, b.y);
+    ctx.stroke();
+  }
+
+  function down(e) { drawing = true; last = pos(e); }
+  function move(e) {
+    if (!drawing) return;
+    e.preventDefault();
+    const p = pos(e);
+    stroke(last, p);
+    last = p;
+  }
+  function up() { drawing = false; last = null; }
+
+  penBtn.addEventListener("click", () => (mode = "pen"));
+  eraserBtn.addEventListener("click", () => (mode = "eraser"));
+
+  clearBtn.addEventListener("click", () => {
+    const rect = canvas.getBoundingClientRect();
+    ctx.globalCompositeOperation = "source-over";
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, rect.width, rect.height);
+  });
+
+  saveBtn.addEventListener("click", () => {
+    const a = document.createElement("a");
+    a.download = "whiteboard.png";
+    a.href = canvas.toDataURL("image/png");
+    a.click();
+  });
+
+  canvas.addEventListener("mousedown", down);
+  canvas.addEventListener("mousemove", move);
+  window.addEventListener("mouseup", up);
+
+  canvas.addEventListener("touchstart", down, { passive: true });
+  canvas.addEventListener("touchmove", move, { passive: false });
+  window.addEventListener("touchend", up);
+
+  canvas.style.width = "100%";
+  canvas.style.height = "70vh";
+  resize();
+  window.addEventListener("resize", resize);
+
+  // --- Background music controls ---
+  (() => {
+    const audio = document.getElementById("bgm");
+    const btn = document.getElementById("btnMusic");
+    const vol = document.getElementById("musicVol");
+    if (!audio || !btn || !vol) return;
+
+    const savedVol = localStorage.getItem("petal_music_vol");
+    if (savedVol !== null) vol.value = savedVol;
+    audio.volume = Number(vol.value);
+
+    function setBtn() {
+      btn.textContent = audio.paused ? "Play music" : "Pause music";
+    }
+    setBtn();
+
+    vol.addEventListener("input", () => {
+      audio.volume = Number(vol.value);
+      localStorage.setItem("petal_music_vol", String(vol.value));
+    });
+
+    btn.addEventListener("click", async () => {
+      try {
+        audio.muted = false;
+        if (audio.paused) await audio.play();
+        else audio.pause();
+        setBtn();
+      } catch (e) {
+        console.warn(e);
+        btn.textContent = "Tap again";
+      }
+    });
+  })();
+</script>
   </body>
 </html>
