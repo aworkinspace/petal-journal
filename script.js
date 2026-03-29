@@ -702,3 +702,6 @@ renderList();
   tick();
   setInterval(tick, 1000);
 })();
+document.querySelector(".menu-panel")?.addEventListener("click", (e) => {
+  if (e.target.closest("a,button")) document.querySelector(".menu")?.removeAttribute("open");
+});
