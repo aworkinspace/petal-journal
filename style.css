@@ -373,6 +373,33 @@ header{
   border-color: rgba(255,255,255,.14);
   color: rgba(255,255,255,.92);
 }
+/* Dark page skin: fix buttons + chips inside the notebook */
+.notebook.skin-dark .btn{
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.18);
+  color: rgba(255,255,255,.92);
+}
+
+.notebook.skin-dark .btn:hover{ filter: brightness(1.08); }
+
+.notebook.skin-dark .btn-primary{
+  background: color-mix(in srgb, var(--primary) 55%, #14121A);
+  border-color: color-mix(in srgb, var(--primary) 65%, #000);
+  color: rgba(255,255,255,.92);
+}
+
+.notebook.skin-dark .btn-accent{
+  background: color-mix(in srgb, var(--accent) 55%, #14121A);
+  border-color: color-mix(in srgb, var(--accent) 65%, #000);
+  color: rgba(255,255,255,.92);
+}
+
+.notebook.skin-dark .chip{
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.18);
+  color: rgba(255,255,255,.92);
+}
+
 /* --- Lock animation --- */
 .lock-wrap{
   max-width:520px;
@@ -449,3 +476,33 @@ header{
   background: var(--border);
   margin: 4px 0;
 }
+/* Menu follows theme (works for Midnight because --text becomes light) */
+.menu-panel{
+  background: color-mix(in srgb, var(--rose-50) 88%, black 12%);
+  border-color: color-mix(in srgb, var(--border) 70%, transparent);
+}
+
+.menu-panel .btn{
+  background: color-mix(in srgb, var(--surface) 75%, white 25%);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.menu-panel .btn-primary{
+  background: var(--primary);
+  border-color: color-mix(in srgb, var(--primary) 70%, black 10%);
+  color:#151525;
+}
+
+.menu-panel .btn-accent{
+  background: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 70%, black 10%);
+  color:#2B0F22;
+}
+/* Menu button follows theme */
+.menu > summary.btn{
+  background: color-mix(in srgb, var(--surface) 75%, white 25%);
+  border-color: var(--border);
+  color: var(--text);
+}
+
