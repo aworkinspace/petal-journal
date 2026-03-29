@@ -555,3 +555,4 @@ header{
   padding: 6px 10px;
   height:auto;
 }
+.toast.show{ display:block; }
