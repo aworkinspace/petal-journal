@@ -73,48 +73,47 @@ const els = {
       "--text-muted": "#5A5A6A",
     },
     blueberry_yogurt: {
-  "--pink-500": "#AEB7FF",
-  "--pink-200": "#DFE2FF",
-  "--rose-50": "#FFF7FB",
-  "--mauve-200": "#F2D6E8",
-  "--periwinkle-200": "#E6C0DB",
-  "--periwinkle-400": "#B58AB7",
-  "--text": "#2B2B33",
-  "--text-muted": "#5A5A6A",
-},
+      "--pink-500": "#AEB7FF",
+      "--pink-200": "#DFE2FF",
+      "--rose-50": "#FFF7FB",
+      "--mauve-200": "#F2D6E8",
+      "--periwinkle-200": "#E6C0DB",
+      "--periwinkle-400": "#B58AB7",
+      "--text": "#2B2B33",
+      "--text-muted": "#5A5A6A",
+    },
 
-// non-beta pastel themes
-sky_sorbet: {
-  "--pink-500": "#FFB8D8",
-  "--pink-200": "#FFE0F0",
-  "--rose-50": "#FFF7FB",
-  "--mauve-200": "#D7E6FF",
-  "--periwinkle-200": "#B7D1FF",
-  "--periwinkle-400": "#7FA6FF",
-  "--text": "#2B2B33",
-  "--text-muted": "#5A5A6A",
-},
-peach_milk: {
-  "--pink-500": "#FFB08A",
-  "--pink-200": "#FFE1D3",
-  "--rose-50": "#FFF7F0",
-  "--mauve-200": "#F2D3DA",
-  "--periwinkle-200": "#E8C2CF",
-  "--periwinkle-400": "#C99BB2",
-  "--text": "#2B2B33",
-  "--text-muted": "#5A5A6A",
-},
-lemon_cream: {
-  "--pink-500": "#FFE48A",
-  "--pink-200": "#FFF3C8",
-  "--rose-50": "#FFFCF0",
-  "--mauve-200": "#E7D9FF",
-  "--periwinkle-200": "#D3C1FF",
-  "--periwinkle-400": "#A997FF",
-  "--text": "#2B2B33",
-  "--text-muted": "#5A5A6A",
-},
-
+    // non-beta pastel themes
+    sky_sorbet: {
+      "--pink-500": "#FFB8D8",
+      "--pink-200": "#FFE0F0",
+      "--rose-50": "#FFF7FB",
+      "--mauve-200": "#D7E6FF",
+      "--periwinkle-200": "#B7D1FF",
+      "--periwinkle-400": "#7FA6FF",
+      "--text": "#2B2B33",
+      "--text-muted": "#5A5A6A",
+    },
+    peach_milk: {
+      "--pink-500": "#FFB08A",
+      "--pink-200": "#FFE1D3",
+      "--rose-50": "#FFF7F0",
+      "--mauve-200": "#F2D3DA",
+      "--periwinkle-200": "#E8C2CF",
+      "--periwinkle-400": "#C99BB2",
+      "--text": "#2B2B33",
+      "--text-muted": "#5A5A6A",
+    },
+    lemon_cream: {
+      "--pink-500": "#FFE48A",
+      "--pink-200": "#FFF3C8",
+      "--rose-50": "#FFFCF0",
+      "--mauve-200": "#E7D9FF",
+      "--periwinkle-200": "#D3C1FF",
+      "--periwinkle-400": "#A997FF",
+      "--text": "#2B2B33",
+      "--text-muted": "#5A5A6A",
+    },
   };
 
   function applyTheme(name) {
@@ -324,30 +323,14 @@ document.getElementById("stickerBar")?.addEventListener("click", (e) => {
   }
 
   async function fileToCompressedDataURL(file, maxW = 900, quality = 0.82) {
-  const img = new Image();
-  const url = URL.createObjectURL(file);
-  await new Promise((res, rej) => {
-    img.onload = res;
-    img.onerror = rej;
-    img.src = url;
-  });
+    const img = new Image();
+    const url = URL.createObjectURL(file);
 
-  const scale = Math.min(1, maxW / img.width);
-  const w = Math.round(img.width * scale);
-  const h = Math.round(img.height * scale);
-
-  const canvas = document.createElement("canvas");
-  canvas.width = w;
-  canvas.height = h;
-  canvas.getContext("2d").drawImage(img, 0, 0, w, h);
-
-  URL.revokeObjectURL(url);
-
-  const isPng = (file.type === "image/png") || file.name.toLowerCase().endsWith(".png");
-  return isPng
-    ? canvas.toDataURL("image/png")                 // keeps transparency
-    : canvas.toDataURL("image/jpeg", quality);      // smaller for photos
-}
+    await new Promise((res, rej) => {
+      img.onload = res;
+      img.onerror = rej;
+      img.src = url;
+    });
 
     const scale = Math.min(1, maxW / img.width);
     const w = Math.round(img.width * scale);
@@ -359,7 +342,9 @@ document.getElementById("stickerBar")?.addEventListener("click", (e) => {
     canvas.getContext("2d").drawImage(img, 0, 0, w, h);
 
     URL.revokeObjectURL(url);
-    return canvas.toDataURL("image/jpeg", quality);
+
+    const isPng = file.type === "image/png" || file.name.toLowerCase().endsWith(".png");
+    return isPng ? canvas.toDataURL("image/png") : canvas.toDataURL("image/jpeg", quality);
   }
 
   btn.addEventListener("click", () => picker.click());
@@ -653,13 +638,11 @@ renderList();
     "pointermove",
     (e) => {
       const now = performance.now();
-      const x = e.clientX,
-        y = e.clientY;
+      const x = e.clientX, y = e.clientY;
 
       if (now - last.t < 12) return;
 
-      const dx = x - last.x,
-        dy = y - last.y;
+      const dx = x - last.x, dy = y - last.y;
       const dist = Math.hypot(dx, dy);
       const count = Math.max(2, Math.min(10, Math.floor(dist / 6)));
 
@@ -684,7 +667,8 @@ renderList();
   }
 
   function tick() {
-    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    // use canvas size to avoid seams
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     colors = sparkleColors();
 
     for (let i = particles.length - 1; i >= 0; i--) {
@@ -748,12 +732,13 @@ renderList();
     }
   });
 })();
+
 // --- Clock ---
 (() => {
   const el = document.getElementById("clock");
   if (!el) return;
 
-  function tick(){
+  function tick() {
     const now = new Date();
     el.textContent = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   }
@@ -761,6 +746,8 @@ renderList();
   tick();
   setInterval(tick, 1000);
 })();
+
+// Auto-close dropdown menus after clicking an item
 document.querySelector(".menu-panel")?.addEventListener("click", (e) => {
   if (e.target.closest("a,button")) document.querySelector(".menu")?.removeAttribute("open");
 });
