@@ -100,15 +100,20 @@
         <div class="mt-12">
           <div class="section-title">Entry</div>
 
-          <div class="sticker-bar" id="stickerBar">
-            <button class="chip" type="button" data-sticker="assets/sparkles.gif">Sparkle</button>
-            <button class="chip" type="button" data-sticker="assets/hearts.gif">Hearts</button>
-            <button class="chip" type="button" data-sticker="assets/stars.gif">Stars</button>
+          <<div class="sticker-bar" id="stickerBar">
+  <details class="sticker-menu">
+    <summary class="chip" type="button">Stickers</summary>
 
-            <button class="chip" type="button" id="btnAddImage">Add image (beta)</button>
-            <input id="imgPicker" type="file" accept="image/*" hidden />
-          </div>
+    <div class="sticker-panel">
+      <button class="chip" type="button" data-sticker="assets/sparkles.gif">Sparkle</button>
+      <button class="chip" type="button" data-sticker="assets/hearts.gif">Hearts</button>
+      <button class="chip" type="button" data-sticker="assets/stars.gif">Stars</button>
 
+      <button class="chip" type="button" id="btnAddImage">Add image (beta)</button>
+      <input id="imgPicker" type="file" accept="image/*" hidden />
+    </div>
+  </details>
+</div>
           <div class="textarea rte" id="content" contenteditable="true" data-placeholder="Start writing…"></div>
         </div>
 
