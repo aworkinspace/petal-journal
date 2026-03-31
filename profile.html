@@ -225,9 +225,10 @@
           showMsg(birthdayUpdateMsgEl, "Birthday updated!");
           showMsg(generalMsgEl, "Profile saved successfully!");
         } catch (error) {
-          console.error("Error updating profile:", error);
-          showMsg(generalMsgEl, `Failed to save profile: ${error.message}`, true);
-        }
+  console.error("Error updating profile:", error);
+  console.log("SAVE ERROR CODE:", error.code);
+  showMsg(generalMsgEl, `Failed to save profile: ${error.message}`, true);
+}
       });
 
       // Delete account
