@@ -9,55 +9,34 @@
     <title>Petal Journal — Profile</title>
     <link rel="stylesheet" href="style.css" />
     <style>
-      .profile-wrap {
-        max-width: 720px;
-        margin: 40px auto;
-        padding: 0 16px;
-      }
-      .profile-card {
-        padding: 18px;
-      }
-      .profile-field {
-        margin-top: 16px;
-      }
-      .profile-pic-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 24px;
-      }
+      .profile-wrap { max-width: 720px; margin: 40px auto; padding: 0 16px; }
+      .profile-card { padding: 18px; }
+      .profile-field { margin-top: 16px; }
+      .profile-pic-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 24px; }
       .profile-pic {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 2px solid var(--primary);
+        width: 120px; height: 120px; border-radius: 50%;
+        object-fit: cover; border: 2px solid var(--primary);
         box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary-soft) 70%, transparent);
       }
-      .profile-pic-upload {
-        margin-top: 12px;
-        display: flex;
-        gap: 8px;
-        align-items: center;
-      }
+      .profile-pic-upload { margin-top: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center; }
     </style>
 
-    <!-- Firebase SDKs - IMPORTANT: Make sure this matches index.html Firebase setup -->
+    <!-- Firebase SDKs (match index.html config exactly) -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
       import { getAuth } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-      import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-      import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+      import { getStorage } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
 
       const firebaseConfig = {
-  apiKey: "AIzaSyBqpOzgqcRebD_yCtjW7HqIyy9rdTcCVvc",
-  authDomain: "petal-journal-app.firebaseapp.com",
-  databaseURL: "https://petal-journal-app-default-rtdb.firebaseio.com",
-  projectId: "petal-journal-app",
-  storageBucket: "petal-journal-app.appspot.com",
-  messagingSenderId: "162872929125",
-  appId: "1:162872929125:web:89587cde0bfdd26fc94f8c"
-};
+        apiKey: "AIzaSyBqpOzgqcRebD_yCtjW7HqIyy9rdTcCVvc",
+        authDomain: "petal-journal-app.firebaseapp.com",
+        databaseURL: "https://petal-journal-app-default-rtdb.firebaseio.com",
+        projectId: "petal-journal-app",
+        storageBucket: "petal-journal-app.appspot.com",
+        messagingSenderId: "162872929125",
+        appId: "1:162872929125:web:89587cde0bfdd26fc94f8c",
+      };
 
       const app = initializeApp(firebaseConfig);
       window.firebaseAuth = getAuth(app);
@@ -65,6 +44,7 @@
       window.firebaseStorage = getStorage(app);
     </script>
   </head>
+
   <body>
     <header>
       <div class="brand">
@@ -81,7 +61,12 @@
         <h2 style="margin: 0 0 24px">Your Profile</h2>
 
         <div class="profile-pic-container">
-          <img id="profilePic" class="profile-pic" src="https://via.placeholder.com/120/FFD6EE/A7ABDE?text=No+Pic" alt="Profile Picture" />
+          <img
+            id="profilePic"
+            class="profile-pic"
+            src="https://via.placeholder.com/120/FFD6EE/A7ABDE?text=No+Pic"
+            alt="Profile Picture"
+          />
           <div class="profile-pic-upload">
             <input type="file" id="picUpload" accept="image/*" hidden />
             <button class="btn" id="btnUploadPic" type="button">Upload New Picture</button>
@@ -97,13 +82,13 @@
         <div class="profile-field">
           <div class="section-title">Display Name</div>
           <input class="input" id="displayName" type="text" placeholder="Your Display Name" />
-          <small class="muted" id="nameUpdateMsg" style="margin-top: 8px; display: block;"></small>
+          <small class="muted" id="nameUpdateMsg" style="margin-top: 8px; display:block;"></small>
         </div>
 
         <div class="profile-field">
-          <div class="section-title">Birthday (YYYY-MM-DD)</div>
+          <div class="section-title">Birthday</div>
           <input class="input" id="userBirthday" type="date" />
-          <small class="muted" id="birthdayUpdateMsg" style="margin-top: 8px; display: block;"></small>
+          <small class="muted" id="birthdayUpdateMsg" style="margin-top: 8px; display:block;"></small>
         </div>
 
         <div class="row" style="margin-top: 24px">
@@ -122,12 +107,15 @@
 
     <script type="module">
       import { onAuthStateChanged, updateProfile, deleteUser } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-      import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+      import { doc, getDoc, setDoc, enableNetwork } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
       import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
 
       const auth = window.firebaseAuth;
       const db = window.firebaseDb;
       const storage = window.firebaseStorage;
+
+      // Try to ensure Firestore network is enabled (won't hurt if already enabled)
+      enableNetwork(db).catch(() => {});
 
       const $ = (id) => document.getElementById(id);
       const profilePicEl = $("profilePic");
@@ -143,33 +131,40 @@
       const btnUpdateProfile = $("btnUpdateProfile");
       const btnDeleteAccount = $("btnDeleteAccount");
 
-      let currentUser = null; // Store the current Firebase user object
+      let currentUser = null;
 
-      // --- Helper to display messages ---
       function showMsg(el, msg, isError = false) {
+        if (!el) return;
         el.textContent = msg;
-        el.style.color = isError ? 'var(--accent)' : 'var(--text-muted)';
+        el.style.color = isError ? "var(--accent)" : "var(--text-muted)";
       }
 
-      // --- Load Profile Data ---
       async function loadProfile(user) {
-        userEmailEl.textContent = user.email;
+        userEmailEl.textContent = user.email || "";
         displayNameEl.value = user.displayName || "";
         profilePicEl.src = user.photoURL || "https://via.placeholder.com/120/FFD6EE/A7ABDE?text=No+Pic";
 
-        // Load additional data from Firestore
-        const userDocRef = doc(db, "users", user.uid);
-        const userDoc = await getDoc(userDocRef);
-        if (userDoc.exists()) {
-          const data = userDoc.data();
-          userBirthdayEl.value = data.birthday || "";
+        try {
+          const userDoc = await getDoc(doc(db, "users", user.uid));
+          if (userDoc.exists()) {
+            const data = userDoc.data();
+            userBirthdayEl.value = data.birthday || "";
+          }
+        } catch (error) {
+          console.error("loadProfile Firestore error:", error);
+          showMsg(
+            generalMsgEl,
+            "Can’t reach the server right now (offline / blocked). Try disabling adblock/VPN and refresh.",
+            true
+          );
         }
       }
 
-      // --- Upload Profile Picture ---
-      btnUploadPic.addEventListener("click", () => picUploadEl.click());
-      picUploadEl.addEventListener("change", async (e) => {
-        const file = e.target.files[0];
+      // Upload picture
+      btnUploadPic?.addEventListener("click", () => picUploadEl?.click());
+
+      picUploadEl?.addEventListener("change", async (e) => {
+        const file = e.target.files?.[0];
         if (!file) return;
 
         if (!currentUser) {
@@ -178,49 +173,56 @@
         }
 
         showMsg(picUploadMsgEl, "Uploading picture...", false);
+
         try {
-          // Create a storage reference
-          const storageRef = ref(storage, `profile_pictures/${currentUser.uid}/profile.jpg`); // Overwrite previous
+          const storageRef = ref(storage, `profile_pictures/${currentUser.uid}/profile.jpg`);
           await uploadBytes(storageRef, file);
           const photoURL = await getDownloadURL(storageRef);
 
-          // Update Firebase Auth profile
           await updateProfile(currentUser, { photoURL });
           profilePicEl.src = photoURL;
+
           showMsg(picUploadMsgEl, "Profile picture updated!");
         } catch (error) {
           console.error("Error uploading picture:", error);
           showMsg(picUploadMsgEl, `Failed to upload: ${error.message}`, true);
         } finally {
-          picUploadEl.value = ""; // Clear file input
+          picUploadEl.value = "";
         }
       });
 
-      // --- Update Profile (Display Name & Birthday) ---
-      btnUpdateProfile.addEventListener("click", async () => {
+      // Save profile
+      btnUpdateProfile?.addEventListener("click", async () => {
         if (!currentUser) {
           showMsg(generalMsgEl, "You must be logged in to update your profile.", true);
           return;
         }
 
-        generalMsgEl.textContent = "Saving profile...";
+        showMsg(generalMsgEl, "Saving profile...", false);
+
         try {
-          // Update display name in Firebase Auth
-          if (displayNameEl.value !== (currentUser.displayName || "")) {
-            await updateProfile(currentUser, { displayName: displayNameEl.value });
-            showMsg(nameUpdateMsgEl, "Display name updated!", false);
+          // display name
+          const nextName = displayNameEl.value.trim();
+          if (nextName !== (currentUser.displayName || "")) {
+            await updateProfile(currentUser, { displayName: nextName });
+            showMsg(nameUpdateMsgEl, "Display name updated!");
           } else {
-            nameUpdateMsgEl.textContent = "";
+            showMsg(nameUpdateMsgEl, "");
           }
 
-          // Update birthday in Firestore
-          const userDocRef = doc(db, "users", currentUser.uid);
-          await setDoc(userDocRef, {
-            birthday: userBirthdayEl.value,
-            // You can add more profile fields here if needed
-          }, { merge: true }); // Merge to avoid overwriting other fields
+          // birthday (Firestore)
+          if (!navigator.onLine) {
+            showMsg(generalMsgEl, "You appear offline. Connect to the internet and try again.", true);
+            return;
+          }
 
-          showMsg(birthdayUpdateMsgEl, "Birthday updated!", false);
+          await setDoc(
+            doc(db, "users", currentUser.uid),
+            { birthday: userBirthdayEl.value || "" },
+            { merge: true }
+          );
+
+          showMsg(birthdayUpdateMsgEl, "Birthday updated!");
           showMsg(generalMsgEl, "Profile saved successfully!");
         } catch (error) {
           console.error("Error updating profile:", error);
@@ -228,32 +230,25 @@
         }
       });
 
-      // --- Delete Account ---
-      btnDeleteAccount.addEventListener("click", async () => {
+      // Delete account
+      btnDeleteAccount?.addEventListener("click", async () => {
         if (!currentUser) {
           showMsg(generalMsgEl, "You must be logged in to delete your account.", true);
           return;
         }
 
-        if (!confirm("Are you sure you want to delete your account? This action is irreversible.")) {
-          return;
-        }
+        if (!confirm("Are you sure you want to delete your account? This action is irreversible.")) return;
 
         showMsg(generalMsgEl, "Deleting account...", false);
-        try {
-          // Important: Re-authenticate user before deleting for security:
-          // In a real app, you'd prompt them to re-enter password, then:
-          // const credential = EmailAuthProvider.credential(currentUser.email, passwordPrompted);
-          // await reauthenticateWithCredential(currentUser, credential);
 
+        try {
           await deleteUser(currentUser);
           showMsg(generalMsgEl, "Account deleted. Redirecting...", false);
-          localStorage.removeItem("petal_early_access"); // Clean up local flag
-          setTimeout(() => (location.href = "login.html"), 1500); // Redirect after delete
+          localStorage.removeItem("petal_early_access");
+          setTimeout(() => (location.href = "login.html"), 1500);
         } catch (error) {
           console.error("Error deleting account:", error);
-          // Handle re-authentication errors specifically
-          if (error.code === 'auth/requires-recent-login') {
+          if (error.code === "auth/requires-recent-login") {
             showMsg(generalMsgEl, "Please log in again recently to delete your account for security.", true);
           } else {
             showMsg(generalMsgEl, `Failed to delete account: ${error.message}`, true);
@@ -261,14 +256,11 @@
         }
       });
 
-
-      // --- Authentication State Listener ---
       onAuthStateChanged(auth, (user) => {
         if (user) {
           currentUser = user;
           loadProfile(user);
         } else {
-          // User is not logged in, redirect to login page
           alert("You must be logged in to view your profile.");
           location.href = "login.html";
         }
