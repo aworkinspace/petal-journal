@@ -335,7 +335,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       localStorage.setItem(flagKey, "1");
       toast("Happy birthday!");
-    } catch {
+    } catch (e) {
       // silently ignore
     }
   }
@@ -390,3 +390,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initFeatureAccess();
 })();
+document.addEventListener("click", (e) => {
+  const el = e.target.closest("button,a,summary,select,input");
+  if (el) console.log("CLICK:", el.id || el.className || el.tagName, el);
+});
