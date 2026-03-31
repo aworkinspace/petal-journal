@@ -61,12 +61,7 @@
         <h2 style="margin: 0 0 24px">Your Profile</h2>
 
         <div class="profile-pic-container">
-          <img
-            id="profilePic"
-            class="profile-pic"
-            src="https://via.placeholder.com/120/FFD6EE/A7ABDE?text=No+Pic"
-            alt="Profile Picture"
-          />
+          <img id="profilePic" class="profile-pic" src="assets/default-profile.png" alt="Profile Picture" />
           <div class="profile-pic-upload">
             <input type="file" id="picUpload" accept="image/*" hidden />
             <button class="btn" id="btnUploadPic" type="button">Upload New Picture</button>
@@ -142,8 +137,7 @@
       async function loadProfile(user) {
         userEmailEl.textContent = user.email || "";
         displayNameEl.value = user.displayName || "";
-        profilePicEl.src = user.photoURL || "https://via.placeholder.com/120/FFD6EE/A7ABDE?text=No+Pic";
-
+        profilePicEl.src = user.photoURL || "assets/default-profile.png";
         try {
           const userDoc = await getDoc(doc(db, "users", user.uid));
           if (userDoc.exists()) {
