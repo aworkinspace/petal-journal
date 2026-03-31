@@ -560,3 +560,60 @@ header{
 canvas {
   pointer-events: none !important;
 }
+:root{
+  --pink-500:#FFA5D6;
+  --pink-200:#FFD6EE;
+  --rose-50:#FFF0F1;
+  --mauve-200:#ECD2E0;
+  --periwinkle-200:#CED1F8;
+  --periwinkle-400:#A7ABDE;
+
+  --bg: var(--rose-50);
+  --surface: var(--rose-50);
+  --surface-2: var(--pink-200);
+  --border: var(--mauve-200);
+
+  --primary: var(--periwinkle-400);
+  --primary-soft: var(--periwinkle-200);
+  --accent: var(--pink-500);
+
+  --text:#2B2B33;
+  --text-muted:#5A5A6A;
+
+  --radius:16px;
+  --shadow: 0 10px 30px rgba(30,20,40,.12);
+
+  /* Sparkles follow the active theme */
+  --sparkle-1: var(--pink-500);
+  --sparkle-2: var(--pink-200);
+  --sparkle-3: var(--mauve-200);
+  --sparkle-4: var(--periwinkle-200);
+  --sparkle-5: var(--periwinkle-400);
+
+  /* Global button vars (updated by dark theme override) */
+  --btn-bg: #ffffff;
+  --btn-border: var(--border);
+  --btn-text: var(--text);
+
+  /* NEW: theme-controlled top background blobs */
+  --bg-spot-1: var(--periwinkle-200);
+  --bg-spot-2: var(--pink-200);
+}
+
+*{ box-sizing:border-box; }
+
+html{
+  height:100%;
+  background:
+    radial-gradient(1200px 600px at 10% 0%, var(--bg-spot-1), transparent 60%),
+    radial-gradient(900px 500px at 90% 10%, var(--bg-spot-2), transparent 60%),
+    var(--bg);
+}
+
+/* ...keep the rest of your CSS exactly the same... */
+
+.toast.show{ display:block; }
+#sparkles,
+canvas {
+  pointer-events: none !important;
+}
