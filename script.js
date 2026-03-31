@@ -51,25 +51,25 @@ const THEMES = {
     "--text-muted": "#5A5A6A",
   },
   lemon_cream: {
-    "--bg": "#FFFCEB",
-    "--surface": "#FFFCEB",
-    "--surface-2": "#FFF2B8",
-    "--border": "#E9DFA2",
-    "--primary": "#9AB6FF",
-    "--primary-soft": "#D6E3FF",
-    "--accent": "#FFC857",
-    "--text": "#2B2B33",
-    "--text-muted": "#5A5A6A",
-  },
-// Darker pastel themes (add inside THEMES = { ... })
+  "--bg": "#FFFCEB",
+  "--surface": "#FFFCEB",
+  "--surface-2": "#FFF2B8",
+  "--border": "#E9DFA2",
+  "--primary": "#9AB6FF",
+  "--primary-soft": "#D6E3FF",
+  "--accent": "#FFC857",
+  "--text": "#2B2B33",
+  "--text-muted": "#5A5A6A",
+}, // <-- KEEP THIS COMMA
+
 dusky_rose: {
   "--bg": "#141016",
   "--surface": "#19131C",
   "--surface-2": "#241A26",
   "--border": "rgba(255,255,255,.14)",
-  "--primary": "#B7A6FF",          // soft violet
+  "--primary": "#B7A6FF",
   "--primary-soft": "rgba(183,166,255,.35)",
-  "--accent": "#FF8FBC",           // rose
+  "--accent": "#FF8FBC",
   "--text": "#F2F0F7",
   "--text-muted": "rgba(242,240,247,.75)",
 },
