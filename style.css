@@ -32,6 +32,10 @@
   --btn-bg: #ffffff;
   --btn-border: var(--border);
   --btn-text: var(--text);
+
+  /* NEW: theme-controlled top background blobs */
+  --bg-spot-1: var(--periwinkle-200);
+  --bg-spot-2: var(--pink-200);
 }
 
 *{ box-sizing:border-box; }
@@ -39,8 +43,8 @@
 html{
   height:100%;
   background:
-    radial-gradient(1200px 600px at 10% 0%, var(--periwinkle-200), transparent 60%),
-    radial-gradient(900px 500px at 90% 10%, var(--pink-200), transparent 60%),
+    radial-gradient(1200px 600px at 10% 0%, var(--bg-spot-1), transparent 60%),
+    radial-gradient(900px 500px at 90% 10%, var(--bg-spot-2), transparent 60%),
     var(--bg);
 }
 
@@ -555,7 +559,9 @@ header{
   padding: 6px 10px;
   height:auto;
 }
+
 .toast.show{ display:block; }
+
 #sparkles,
 canvas {
   pointer-events: none !important;
