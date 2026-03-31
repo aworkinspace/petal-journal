@@ -156,8 +156,7 @@ const THEMES = {
 
 function applyTheme(themeName) {
   const theme = THEMES[themeName] || THEMES.petal;
-  const root = document.documentElement;
-  for (const [k, v] of Object.entries(theme)) root.style.setProperty(k, v);
+  for (const [k, v] of Object.entries(theme)) document.documentElement.style.setProperty(k, v);
   localStorage.setItem("petal_theme", themeName);
 }
 
@@ -261,7 +260,6 @@ document.addEventListener("DOMContentLoaded", () => {
     "midnight",
     "strawberry_matcha",
     "blueberry_yogurt",
-    // gate the new dark pastels too (optional)
     "dusky_rose",
     "mauve_night",
     "deep_sage",
@@ -306,7 +304,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function checkBirthdayAndCelebrate(user) {
-    if (!navigator.onLine) return; // avoid offline spam
+    if (!navigator.onLine) return;
     try {
       const snap = await getDoc(doc(db, "users", user.uid));
       if (!snap.exists()) return;
@@ -337,9 +335,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       localStorage.setItem(flagKey, "1");
       toast("Happy birthday!");
-    } catch (e) {
-      // swallow common Firestore failures so the rest of the app keeps working
-      console.warn("Birthday check skipped:", e?.code || e?.message || e);
+    } catch {
+      // silently ignore
     }
   }
 
