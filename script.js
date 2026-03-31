@@ -27,6 +27,8 @@ const THEMES = {
     "--accent": "#D7A6FF",
     "--text": "#2B2B33",
     "--text-muted": "#5A5A6A",
+"--bg-spot-1": "transparent",
+"--bg-spot-2": "transparent",
   },
   sky_sorbet: {
     "--bg": "#F2FBFF",
@@ -38,6 +40,8 @@ const THEMES = {
     "--accent": "#FFA5D6",
     "--text": "#2B2B33",
     "--text-muted": "#5A5A6A",
+"--bg-spot-1": "transparent",
+"--bg-spot-2": "transparent",
   },
   peach_milk: {
     "--bg": "#FFF6F0",
@@ -49,6 +53,8 @@ const THEMES = {
     "--accent": "#FFB38A",
     "--text": "#2B2B33",
     "--text-muted": "#5A5A6A",
+"--bg-spot-1": "transparent",
+"--bg-spot-2": "transparent",
   },
   lemon_cream: {
     "--bg": "#FFFCEB",
@@ -73,6 +79,8 @@ const THEMES = {
     "--accent": "#FF8FBC",
     "--text": "#F2F0F7",
     "--text-muted": "rgba(242,240,247,.75)",
+"--bg-spot-1": "transparent",
+"--bg-spot-2": "transparent",
   },
   mauve_night: {
     "--bg": "#100F14",
@@ -84,6 +92,8 @@ const THEMES = {
     "--accent": "#D7A6FF",
     "--text": "#F2F0F7",
     "--text-muted": "rgba(242,240,247,.75)",
+"--bg-spot-1": "transparent",
+"--bg-spot-2": "transparent",
   },
   deep_sage: {
     "--bg": "#0F1412",
@@ -95,6 +105,8 @@ const THEMES = {
     "--accent": "#FF9BB7",
     "--text": "#F2F0F7",
     "--text-muted": "rgba(242,240,247,.75)",
+"--bg-spot-1": "transparent",
+"--bg-spot-2": "transparent",
   },
   blueberry_dusk: {
     "--bg": "#0D101A",
@@ -106,6 +118,8 @@ const THEMES = {
     "--accent": "#8FE3FF",
     "--text": "#F2F0F7",
     "--text-muted": "rgba(242,240,247,.75)",
+"--bg-spot-1": "transparent",
+"--bg-spot-2": "transparent",
   },
   cocoa_lilac: {
     "--bg": "#141014",
@@ -117,6 +131,8 @@ const THEMES = {
     "--accent": "#FFB38A",
     "--text": "#F2F0F7",
     "--text-muted": "rgba(242,240,247,.75)",
+"--bg-spot-1": "transparent",
+"--bg-spot-2": "transparent",
   },
 
   midnight: {
@@ -129,6 +145,8 @@ const THEMES = {
     "--accent": "#FFA5D6",
     "--text": "#F2F0F7",
     "--text-muted": "rgba(242,240,247,.75)",
+"--bg-spot-1": "transparent",
+"--bg-spot-2": "transparent",
   },
   strawberry_matcha: {
     "--bg": "#F7FFF6",
@@ -140,6 +158,8 @@ const THEMES = {
     "--accent": "#FF8FB8",
     "--text": "#2B2B33",
     "--text-muted": "#5A5A6A",
+"--bg-spot-1": "transparent",
+"--bg-spot-2": "transparent",
   },
   blueberry_yogurt: {
     "--bg": "#F4F6FF",
@@ -151,6 +171,8 @@ const THEMES = {
     "--accent": "#FFA5D6",
     "--text": "#2B2B33",
     "--text-muted": "#5A5A6A",
+"--bg-spot-1": "transparent",
+"--bg-spot-2": "transparent",
   },
 };
 
