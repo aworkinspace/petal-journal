@@ -51,72 +51,74 @@ const THEMES = {
     "--text-muted": "#5A5A6A",
   },
   lemon_cream: {
-  "--bg": "#FFFCEB",
-  "--surface": "#FFFCEB",
-  "--surface-2": "#FFF2B8",
-  "--border": "#E9DFA2",
-  "--primary": "#9AB6FF",
-  "--primary-soft": "#D6E3FF",
-  "--accent": "#FFC857",
-  "--text": "#2B2B33",
-  "--text-muted": "#5A5A6A",
-}, // <-- KEEP THIS COMMA
+    "--bg": "#FFFCEB",
+    "--surface": "#FFFCEB",
+    "--surface-2": "#FFF2B8",
+    "--border": "#E9DFA2",
+    "--primary": "#9AB6FF",
+    "--primary-soft": "#D6E3FF",
+    "--accent": "#FFC857",
+    "--text": "#2B2B33",
+    "--text-muted": "#5A5A6A",
+  },
 
-dusky_rose: {
-  "--bg": "#141016",
-  "--surface": "#19131C",
-  "--surface-2": "#241A26",
-  "--border": "rgba(255,255,255,.14)",
-  "--primary": "#B7A6FF",
-  "--primary-soft": "rgba(183,166,255,.35)",
-  "--accent": "#FF8FBC",
-  "--text": "#F2F0F7",
-  "--text-muted": "rgba(242,240,247,.75)",
-},
-mauve_night: {
-  "--bg": "#100F14",
-  "--surface": "#15131A",
-  "--surface-2": "#201B25",
-  "--border": "rgba(255,255,255,.14)",
-  "--primary": "#9FB6FF",          // periwinkle
-  "--primary-soft": "rgba(159,182,255,.35)",
-  "--accent": "#D7A6FF",           // lavender
-  "--text": "#F2F0F7",
-  "--text-muted": "rgba(242,240,247,.75)",
-},
-deep_sage: {
-  "--bg": "#0F1412",
-  "--surface": "#141A17",
-  "--surface-2": "#1C2621",
-  "--border": "rgba(255,255,255,.14)",
-  "--primary": "#93D1B3",          // sage/mint
-  "--primary-soft": "rgba(147,209,179,.35)",
-  "--accent": "#FF9BB7",           // warm pink
-  "--text": "#F2F0F7",
-  "--text-muted": "rgba(242,240,247,.75)",
-},
-blueberry_dusk: {
-  "--bg": "#0D101A",
-  "--surface": "#12172A",
-  "--surface-2": "#1A2140",
-  "--border": "rgba(255,255,255,.14)",
-  "--primary": "#8EA2FF",          // blue-violet
-  "--primary-soft": "rgba(142,162,255,.35)",
-  "--accent": "#8FE3FF",           // pastel cyan
-  "--text": "#F2F0F7",
-  "--text-muted": "rgba(242,240,247,.75)",
-},
-cocoa_lilac: {
-  "--bg": "#141014",
-  "--surface": "#1A141B",
-  "--surface-2": "#261C28",
-  "--border": "rgba(255,255,255,.14)",
-  "--primary": "#E2B3FF",          // lilac
-  "--primary-soft": "rgba(226,179,255,.35)",
-  "--accent": "#FFB38A",           // peach
-  "--text": "#F2F0F7",
-  "--text-muted": "rgba(242,240,247,.75)",
-},
+  // darker pastels
+  dusky_rose: {
+    "--bg": "#141016",
+    "--surface": "#19131C",
+    "--surface-2": "#241A26",
+    "--border": "rgba(255,255,255,.14)",
+    "--primary": "#B7A6FF",
+    "--primary-soft": "rgba(183,166,255,.35)",
+    "--accent": "#FF8FBC",
+    "--text": "#F2F0F7",
+    "--text-muted": "rgba(242,240,247,.75)",
+  },
+  mauve_night: {
+    "--bg": "#100F14",
+    "--surface": "#15131A",
+    "--surface-2": "#201B25",
+    "--border": "rgba(255,255,255,.14)",
+    "--primary": "#9FB6FF",
+    "--primary-soft": "rgba(159,182,255,.35)",
+    "--accent": "#D7A6FF",
+    "--text": "#F2F0F7",
+    "--text-muted": "rgba(242,240,247,.75)",
+  },
+  deep_sage: {
+    "--bg": "#0F1412",
+    "--surface": "#141A17",
+    "--surface-2": "#1C2621",
+    "--border": "rgba(255,255,255,.14)",
+    "--primary": "#93D1B3",
+    "--primary-soft": "rgba(147,209,179,.35)",
+    "--accent": "#FF9BB7",
+    "--text": "#F2F0F7",
+    "--text-muted": "rgba(242,240,247,.75)",
+  },
+  blueberry_dusk: {
+    "--bg": "#0D101A",
+    "--surface": "#12172A",
+    "--surface-2": "#1A2140",
+    "--border": "rgba(255,255,255,.14)",
+    "--primary": "#8EA2FF",
+    "--primary-soft": "rgba(142,162,255,.35)",
+    "--accent": "#8FE3FF",
+    "--text": "#F2F0F7",
+    "--text-muted": "rgba(242,240,247,.75)",
+  },
+  cocoa_lilac: {
+    "--bg": "#141014",
+    "--surface": "#1A141B",
+    "--surface-2": "#261C28",
+    "--border": "rgba(255,255,255,.14)",
+    "--primary": "#E2B3FF",
+    "--primary-soft": "rgba(226,179,255,.35)",
+    "--accent": "#FFB38A",
+    "--text": "#F2F0F7",
+    "--text-muted": "rgba(242,240,247,.75)",
+  },
+
   midnight: {
     "--bg": "#0F0D14",
     "--surface": "#14121A",
@@ -177,7 +179,7 @@ function insertSticker(src) {
   const img = document.createElement("img");
   img.src = src;
   img.alt = "sticker";
-  img.className = "sticker"; // matches your CSS: .rte img.sticker
+  img.className = "sticker";
 
   const sel = window.getSelection();
   if (sel && sel.rangeCount && content.contains(sel.anchorNode)) {
@@ -206,7 +208,6 @@ function toast(msg) {
 /* ------------------- Wire UI once DOM is ready ------------------- */
 
 document.addEventListener("DOMContentLoaded", () => {
-  // restore selections
   const themeSelect = document.getElementById("themeSelect");
   const skinSelect = document.getElementById("skinSelect");
 
@@ -226,7 +227,6 @@ document.addEventListener("DOMContentLoaded", () => {
     skinSelect.addEventListener("change", (e) => applySkin(e.target.value));
   }
 
-  // stickers (event delegation)
   document.addEventListener("click", (e) => {
     const btn = e.target.closest("button[data-sticker]");
     if (!btn) return;
@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
 /* ------------------------ Firebase Auth + Access ------------------------ */
 
 (() => {
-  const auth = window.firebaseAuth; // from index.html
+  const auth = window.firebaseAuth;
   const db = window.firebaseDb;
 
   if (!auth || !db) {
@@ -257,12 +257,21 @@ document.addEventListener("DOMContentLoaded", () => {
     betaChip: document.getElementById("betaChip"),
   };
 
-  const betaThemes = new Set(["midnight", "strawberry_matcha", "blueberry_yogurt"]);
+  const betaThemes = new Set([
+    "midnight",
+    "strawberry_matcha",
+    "blueberry_yogurt",
+    // gate the new dark pastels too (optional)
+    "dusky_rose",
+    "mauve_night",
+    "deep_sage",
+    "blueberry_dusk",
+    "cocoa_lilac",
+  ]);
 
   function initFeatureAccess() {
     const earlyAccess = localStorage.getItem("petal_early_access") === "1";
 
-    // disable/enable beta themes in dropdown
     if (els.themeSelect) {
       [...els.themeSelect.options].forEach((opt) => {
         if (betaThemes.has(opt.value)) opt.disabled = !earlyAccess;
@@ -277,7 +286,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (els.betaChip) els.betaChip.style.display = earlyAccess ? "inline-flex" : "none";
 
-    // Add image (beta) visibility + picker presence
     const imgPicker = document.getElementById("imgPicker");
 
     if (els.btnAddImage) els.btnAddImage.style.display = earlyAccess ? "inline-flex" : "none";
@@ -298,11 +306,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function checkBirthdayAndCelebrate(user) {
+    if (!navigator.onLine) return; // avoid offline spam
     try {
       const snap = await getDoc(doc(db, "users", user.uid));
       if (!snap.exists()) return;
 
-      const { birthday } = snap.data(); // "YYYY-MM-DD"
+      const { birthday } = snap.data();
       if (!birthday) return;
 
       const [, monthStr, dayStr] = birthday.split("-");
@@ -329,7 +338,8 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem(flagKey, "1");
       toast("Happy birthday!");
     } catch (e) {
-      console.error("Birthday check failed:", e);
+      // swallow common Firestore failures so the rest of the app keeps working
+      console.warn("Birthday check skipped:", e?.code || e?.message || e);
     }
   }
 
@@ -337,7 +347,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (user) {
       localStorage.setItem("petal_early_access", "1");
 
-      if (els.authButton) els.authButton.style.display = "none";
+      els.authButton && (els.authButton.style.display = "none");
 
       if (els.profileButton) {
         els.profileButton.style.display = "inline-flex";
@@ -345,9 +355,9 @@ document.addEventListener("DOMContentLoaded", () => {
         els.profileButton.href = "profile.html";
       }
 
-      if (els.btnSignOut) els.btnSignOut.style.display = "inline-flex";
-      if (els.btnLock) els.btnLock.style.display = "none";
-      if (els.btnSetPasscode) els.btnSetPasscode.style.display = "none";
+      els.btnSignOut && (els.btnSignOut.style.display = "inline-flex");
+      els.btnLock && (els.btnLock.style.display = "none");
+      els.btnSetPasscode && (els.btnSetPasscode.style.display = "none");
 
       toast(`Logged in as ${user.email}`);
       checkBirthdayAndCelebrate(user);
@@ -360,10 +370,10 @@ document.addEventListener("DOMContentLoaded", () => {
         els.authButton.href = "login.html";
       }
 
-      if (els.profileButton) els.profileButton.style.display = "none";
-      if (els.btnSignOut) els.btnSignOut.style.display = "none";
-      if (els.btnLock) els.btnLock.style.display = "inline-flex";
-      if (els.btnSetPasscode) els.btnSetPasscode.style.display = "inline-flex";
+      els.profileButton && (els.profileButton.style.display = "none");
+      els.btnSignOut && (els.btnSignOut.style.display = "none");
+      els.btnLock && (els.btnLock.style.display = "inline-flex");
+      els.btnSetPasscode && (els.btnSetPasscode.style.display = "inline-flex");
 
       toast("Logged out.");
     }
