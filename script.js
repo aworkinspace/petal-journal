@@ -581,6 +581,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const list = filteredEntries();
     els.entryList.innerHTML = "";
 tagsInput: document.getElementById("tagsInput"),
+  function parseTags(str) {
+  return (str || "")
+    .split(",")
+    .map(t => t.trim().toLowerCase())
+    .filter(Boolean)
+    .slice(0, 12);
+}
     for (const e of list) {
       const card = document.createElement("div");
       card.className = "entry-card";
@@ -619,6 +626,7 @@ tagsInput: document.getElementById("tagsInput"),
     const data = getEditorData();
     const now = Date.now();
     const tags = []; // optional: add later
+tags: parseTags(els.tagsInput?.value),
 
     if (!data.title && !stripHtml(data.content)) {
       if (els.status) els.status.textContent = "Nothing to save yet.";
