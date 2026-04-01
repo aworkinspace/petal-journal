@@ -27,8 +27,6 @@ const THEMES = {
     "--accent": "#D7A6FF",
     "--text": "#2B2B33",
     "--text-muted": "#5A5A6A",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
   },
   sky_sorbet: {
     "--bg": "#F2FBFF",
@@ -40,8 +38,6 @@ const THEMES = {
     "--accent": "#FFA5D6",
     "--text": "#2B2B33",
     "--text-muted": "#5A5A6A",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
   },
   peach_milk: {
     "--bg": "#FFF6F0",
@@ -53,8 +49,6 @@ const THEMES = {
     "--accent": "#FFB38A",
     "--text": "#2B2B33",
     "--text-muted": "#5A5A6A",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
   },
   lemon_cream: {
     "--bg": "#FFFCEB",
@@ -79,8 +73,8 @@ const THEMES = {
     "--accent": "#FF8FBC",
     "--text": "#F2F0F7",
     "--text-muted": "rgba(242,240,247,.75)",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
+    "--bg-spot-1": "transparent",
+    "--bg-spot-2": "transparent",
   },
   mauve_night: {
     "--bg": "#100F14",
@@ -92,8 +86,8 @@ const THEMES = {
     "--accent": "#D7A6FF",
     "--text": "#F2F0F7",
     "--text-muted": "rgba(242,240,247,.75)",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
+    "--bg-spot-1": "transparent",
+    "--bg-spot-2": "transparent",
   },
   deep_sage: {
     "--bg": "#0F1412",
@@ -105,8 +99,8 @@ const THEMES = {
     "--accent": "#FF9BB7",
     "--text": "#F2F0F7",
     "--text-muted": "rgba(242,240,247,.75)",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
+    "--bg-spot-1": "transparent",
+    "--bg-spot-2": "transparent",
   },
   blueberry_dusk: {
     "--bg": "#0D101A",
@@ -118,8 +112,8 @@ const THEMES = {
     "--accent": "#8FE3FF",
     "--text": "#F2F0F7",
     "--text-muted": "rgba(242,240,247,.75)",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
+    "--bg-spot-1": "transparent",
+    "--bg-spot-2": "transparent",
   },
   cocoa_lilac: {
     "--bg": "#141014",
@@ -131,10 +125,9 @@ const THEMES = {
     "--accent": "#FFB38A",
     "--text": "#F2F0F7",
     "--text-muted": "rgba(242,240,247,.75)",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
+    "--bg-spot-1": "transparent",
+    "--bg-spot-2": "transparent",
   },
-
   midnight: {
     "--bg": "#0F0D14",
     "--surface": "#14121A",
@@ -145,9 +138,10 @@ const THEMES = {
     "--accent": "#FFA5D6",
     "--text": "#F2F0F7",
     "--text-muted": "rgba(242,240,247,.75)",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
+    "--bg-spot-1": "transparent",
+    "--bg-spot-2": "transparent",
   },
+
   strawberry_matcha: {
     "--bg": "#F7FFF6",
     "--surface": "#F7FFF6",
@@ -158,8 +152,6 @@ const THEMES = {
     "--accent": "#FF8FB8",
     "--text": "#2B2B33",
     "--text-muted": "#5A5A6A",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
   },
   blueberry_yogurt: {
     "--bg": "#F4F6FF",
@@ -171,12 +163,16 @@ const THEMES = {
     "--accent": "#FFA5D6",
     "--text": "#2B2B33",
     "--text-muted": "#5A5A6A",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
   },
 };
 
 function applyTheme(themeName) {
+  // "custom" is applied from Firestore vars; don't overwrite it here.
+  if (themeName === "custom") {
+    localStorage.setItem("petal_theme", "custom");
+    return;
+  }
+
   const theme = THEMES[themeName] || THEMES.petal;
   for (const [k, v] of Object.entries(theme)) document.documentElement.style.setProperty(k, v);
   localStorage.setItem("petal_theme", themeName);
@@ -287,6 +283,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "deep_sage",
     "blueberry_dusk",
     "cocoa_lilac",
+    "custom", // custom uploaded theme (beta)
   ]);
 
   function initFeatureAccess() {
@@ -325,6 +322,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  async function applyCustomThemeIfAny(user) {
+    try {
+      const snap = await getDoc(doc(db, "users", user.uid, "settings", "theme"));
+      if (!snap.exists()) return;
+
+      const t = snap.data();
+      if (!t?.enabled || !t?.vars || typeof t.vars !== "object") return;
+
+      for (const [k, v] of Object.entries(t.vars)) {
+        if (typeof k === "string" && k.startsWith("--") && typeof v === "string") {
+          document.documentElement.style.setProperty(k, v);
+        }
+      }
+
+      localStorage.setItem("petal_theme", "custom");
+      if (els.themeSelect && [...els.themeSelect.options].some((o) => o.value === "custom")) {
+        els.themeSelect.value = "custom";
+      }
+    } catch {
+      // ignore Firestore offline/blocked/etc.
+    }
+  }
+
   async function checkBirthdayAndCelebrate(user) {
     if (!navigator.onLine) return;
     try {
@@ -357,12 +377,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       localStorage.setItem(flagKey, "1");
       toast("Happy birthday!");
-    } catch (e) {
+    } catch {
       // silently ignore
     }
   }
 
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
       localStorage.setItem("petal_early_access", "1");
 
@@ -379,9 +399,17 @@ document.addEventListener("DOMContentLoaded", () => {
       els.btnSetPasscode && (els.btnSetPasscode.style.display = "none");
 
       toast(`Logged in as ${user.email}`);
+
+      await applyCustomThemeIfAny(user);
       checkBirthdayAndCelebrate(user);
     } else {
       localStorage.removeItem("petal_early_access");
+
+      // If they were on custom theme, fall back when logged out
+      if (localStorage.getItem("petal_theme") === "custom") {
+        applyTheme("petal");
+        if (els.themeSelect) els.themeSelect.value = "petal";
+      }
 
       if (els.authButton) {
         els.authButton.style.display = "inline-flex";
@@ -412,16 +440,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initFeatureAccess();
 })();
-document.addEventListener("click", (e) => {
-  const el = e.target.closest("button,a,summary,select,input");
-  if (el) console.log("CLICK:", el.id || el.className || el.tagName, el);
-});
+
 /* ------------------------ Journal: entries + SFX ------------------------ */
 (() => {
   const $ = (id) => document.getElementById(id);
 
   const els = {
-    // editor
     date: $("date"),
     mood: $("mood"),
     title: $("title"),
@@ -429,22 +453,18 @@ document.addEventListener("click", (e) => {
     moodChip: $("moodChip"),
     status: $("status"),
 
-    // list/search/tags
     entryList: $("entryList"),
     count: $("count"),
     search: $("search"),
     tagRow: $("tagRow"),
 
-    // buttons
     btnSave: $("btnSave"),
     btnDelete: $("btnDelete"),
     btnNew: $("btnNew"),
     btnExport: $("btnExport"),
 
-    // clock
     clock: $("clock"),
 
-    // sfx
     saveSfx: $("saveSfx"),
     deleteSfx: $("deleteSfx"),
     newEntrySfx: $("newEntrySfx"),
@@ -465,7 +485,6 @@ document.addEventListener("click", (e) => {
   }
 
   function nowDateValue() {
-    // yyyy-mm-dd (works well in inputs)
     const d = new Date();
     const yyyy = d.getFullYear();
     const mm = String(d.getMonth() + 1).padStart(2, "0");
@@ -517,6 +536,12 @@ document.addEventListener("click", (e) => {
     return `${Date.now()}_${Math.random().toString(16).slice(2)}`;
   }
 
+  function stripHtml(html) {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    return div.textContent || div.innerText || "";
+  }
+
   function filteredEntries() {
     const q = (els.search?.value || "").trim().toLowerCase();
     return entries
@@ -529,13 +554,7 @@ document.addEventListener("click", (e) => {
       .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
   }
 
-  function stripHtml(html) {
-    const div = document.createElement("div");
-    div.innerHTML = html;
-    return div.textContent || div.innerText || "";
-  }
-
-  function renderList() {
+    function renderList() {
     if (!els.entryList) return;
 
     const list = filteredEntries();
@@ -578,8 +597,7 @@ document.addEventListener("click", (e) => {
   function saveEntry() {
     const data = getEditorData();
     const now = Date.now();
-
-    const tags = []; // optional: you can add tag UI later
+    const tags = []; // optional: add later
 
     if (!data.title && !stripHtml(data.content)) {
       if (els.status) els.status.textContent = "Nothing to save yet.";
@@ -626,7 +644,6 @@ document.addEventListener("click", (e) => {
       const tag = btn.dataset.tag;
       activeTag = activeTag === tag ? null : tag;
 
-      // simple visual state
       [...els.tagRow.querySelectorAll("button[data-tag]")].forEach((b) => {
         b.classList.toggle("active", b.dataset.tag === activeTag);
       });
@@ -636,50 +653,40 @@ document.addEventListener("click", (e) => {
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    // clock
     if (els.clock) {
       els.clock.textContent = formatClock();
       setInterval(() => (els.clock.textContent = formatClock()), 1000 * 20);
     }
 
-    // date default
     if (els.date && !els.date.value) els.date.value = nowDateValue();
 
-    // mood chip
     updateMoodChip();
     els.mood?.addEventListener("change", updateMoodChip);
 
-    // load/render entries
     loadEntries();
     renderList();
 
-    // wire buttons
     els.btnSave?.addEventListener("click", saveEntry);
     els.btnDelete?.addEventListener("click", deleteEntry);
     els.btnNew?.addEventListener("click", newEntry);
 
-    // export: just sfx for now (you can add actual PDF export later)
     els.btnExport?.addEventListener("click", () => play(els.exportSfx));
 
-    // search
     els.search?.addEventListener("input", renderList);
-
-    // tags
     initTags();
 
-    // start with a new entry if nothing selected
     if (!entries.length) newEntry();
   });
 })();
+
 /* ------------------------ Music + FNAF audio buttons ------------------------ */
 (() => {
   const $ = (id) => document.getElementById(id);
 
   function safePlay(audio) {
     if (!audio) return;
-    audio.play().catch((e) => console.warn("Audio play blocked until user gesture:", e?.message || e));
+    audio.play().catch(() => {});
   }
-
   function safePause(audio) {
     if (!audio) return;
     audio.pause();
@@ -699,14 +706,11 @@ document.addEventListener("click", (e) => {
     const btnToreador = $("btnToreador");
     const toreadorSfx = $("toreadorSfx");
 
-    // defaults
     if (bgm && musicVol) bgm.volume = Number(musicVol.value ?? 0.35);
-    if (ambientSfx) ambientSfx.volume = 0.35;
+    if (ambientSfx && musicVol) ambientSfx.volume = Number(musicVol.value ?? 0.35);
 
-    // Music toggle
     btnMusic?.addEventListener("click", () => {
       if (!bgm) return;
-
       if (bgm.paused) {
         safePlay(bgm);
         btnMusic.textContent = "Pause Music";
@@ -716,17 +720,14 @@ document.addEventListener("click", (e) => {
       }
     });
 
-    // Volume
     musicVol?.addEventListener("input", () => {
       const v = Number(musicVol.value);
       if (bgm) bgm.volume = v;
       if (ambientSfx) ambientSfx.volume = v;
     });
 
-    // Ambient toggle
     btnAmbient?.addEventListener("click", () => {
       if (!ambientSfx) return;
-
       if (ambientSfx.paused) {
         safePlay(ambientSfx);
         btnAmbient.textContent = "Ambient: On";
@@ -736,14 +737,12 @@ document.addEventListener("click", (e) => {
       }
     });
 
-    // Jumpscare (one-shot)
     btnJumpscare?.addEventListener("click", () => {
       if (!jumpscareSfx) return;
       jumpscareSfx.currentTime = 0;
       safePlay(jumpscareSfx);
     });
 
-    // Toreador (one-shot)
     btnToreador?.addEventListener("click", () => {
       if (!toreadorSfx) return;
       toreadorSfx.currentTime = 0;
