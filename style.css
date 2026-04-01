@@ -562,7 +562,6 @@ header{
 
 .toast.show{ display:block; }
 
-#sparkles,
-canvas {
+#sparkles{
   pointer-events: none !important;
 }
