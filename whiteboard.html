@@ -69,6 +69,7 @@
             <option value="marker">Marker</option>
             <option value="highlighter">Highlighter</option>
             <option value="spray">Spray</option>
+            <option value="watercolor">Watercolor</option>
           </select>
         </div>
 
@@ -291,6 +292,41 @@
             ctx.fillStyle = colorEl.value;
             ctx.fill();
           }
+          ctx.globalAlpha = 1;
+          return;
+        }
+        if (penStyle === "watercolor") {
+          // soft layered dabs + slight jitter = watercolor feel
+          ctx.globalCompositeOperation = "source-over";
+          ctx.lineCap = "round";
+          ctx.lineJoin = "round";
+
+          const base = size * 1.8;
+          const steps = 6;
+
+          for (let i = 0; i < steps; i++) {
+            const t = (i + 1) / steps;
+            const x = a.x + (b.x - a.x) * t;
+            const y = a.y + (b.y - a.y) * t;
+
+            const jx = (Math.random() - 0.5) * size * 0.6;
+            const jy = (Math.random() - 0.5) * size * 0.6;
+
+            ctx.globalAlpha = 0.08 + Math.random() * 0.06; // very translucent
+            ctx.fillStyle = colorEl.value;
+
+            // main wash
+            ctx.beginPath();
+            ctx.arc(x + jx, y + jy, base * (0.55 + Math.random() * 0.35), 0, Math.PI * 2);
+            ctx.fill();
+
+            // darker core
+            ctx.globalAlpha = 0.05 + Math.random() * 0.05;
+            ctx.beginPath();
+            ctx.arc(x + jx * 0.5, y + jy * 0.5, base * 0.35, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
           ctx.globalAlpha = 1;
           return;
         }
