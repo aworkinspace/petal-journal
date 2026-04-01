@@ -109,7 +109,6 @@
       const db = window.firebaseDb;
       const storage = window.firebaseStorage;
 
-      // Try to ensure Firestore network is enabled (won't hurt if already enabled)
       enableNetwork(db).catch(() => {});
 
       const $ = (id) => document.getElementById(id);
@@ -126,6 +125,7 @@
       const btnUpdateProfile = $("btnUpdateProfile");
       const btnDeleteAccount = $("btnDeleteAccount");
 
+      const DEFAULT_PIC = "assets/default-profile.png";
       let currentUser = null;
 
       function showMsg(el, msg, isError = false) {
@@ -134,10 +134,18 @@
         el.style.color = isError ? "var(--accent)" : "var(--text-muted)";
       }
 
+      function cacheBust(url) {
+        if (!url) return url;
+        const u = new URL(url, location.href);
+        u.searchParams.set("v", String(Date.now()));
+        return u.toString();
+      }
+
       async function loadProfile(user) {
         userEmailEl.textContent = user.email || "";
         displayNameEl.value = user.displayName || "";
-        profilePicEl.src = user.photoURL || "assets/default-profile.png";
+        profilePicEl.src = user.photoURL ? cacheBust(user.photoURL) : DEFAULT_PIC;
+
         try {
           const userDoc = await getDoc(doc(db, "users", user.uid));
           if (userDoc.exists()) {
@@ -166,16 +174,32 @@
           return;
         }
 
+        if (!file.type.startsWith("image/")) {
+          showMsg(picUploadMsgEl, "Please choose an image file.", true);
+          picUploadEl.value = "";
+          return;
+        }
+
+        if (file.size > 3 * 1024 * 1024) {
+          showMsg(picUploadMsgEl, "Image too large (max 3MB).", true);
+          picUploadEl.value = "";
+          return;
+        }
+
         showMsg(picUploadMsgEl, "Uploading picture...", false);
 
         try {
-          const storageRef = ref(storage, `profile_pictures/${currentUser.uid}/profile.jpg`);
+          // unique filename avoids cached/stale downloads
+          const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+          const path = `profile_pictures/${currentUser.uid}/profile_${Date.now()}.${ext}`;
+
+          const storageRef = ref(storage, path);
           await uploadBytes(storageRef, file);
+
           const photoURL = await getDownloadURL(storageRef);
-
           await updateProfile(currentUser, { photoURL });
-          profilePicEl.src = photoURL;
 
+          profilePicEl.src = cacheBust(photoURL);
           showMsg(picUploadMsgEl, "Profile picture updated!");
         } catch (error) {
           console.error("Error uploading picture:", error);
@@ -195,7 +219,6 @@
         showMsg(generalMsgEl, "Saving profile...", false);
 
         try {
-          // display name
           const nextName = displayNameEl.value.trim();
           if (nextName !== (currentUser.displayName || "")) {
             await updateProfile(currentUser, { displayName: nextName });
@@ -204,25 +227,20 @@
             showMsg(nameUpdateMsgEl, "");
           }
 
-          // birthday (Firestore)
           if (!navigator.onLine) {
             showMsg(generalMsgEl, "You appear offline. Connect to the internet and try again.", true);
             return;
           }
 
-          await setDoc(
-            doc(db, "users", currentUser.uid),
-            { birthday: userBirthdayEl.value || "" },
-            { merge: true }
-          );
+          await setDoc(doc(db, "users", currentUser.uid), { birthday: userBirthdayEl.value || "" }, { merge: true });
 
           showMsg(birthdayUpdateMsgEl, "Birthday updated!");
           showMsg(generalMsgEl, "Profile saved successfully!");
         } catch (error) {
-  console.error("Error updating profile:", error);
-  console.log("SAVE ERROR CODE:", error.code);
-  showMsg(generalMsgEl, `Failed to save profile: ${error.message}`, true);
-}
+          console.error("Error updating profile:", error);
+          console.log("SAVE ERROR CODE:", error.code);
+          showMsg(generalMsgEl, `Failed to save profile: ${error.message}`, true);
+        }
       });
 
       // Delete account
