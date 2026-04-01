@@ -8,6 +8,28 @@
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
     <title>Petal Journal — Profile</title>
     <link rel="stylesheet" href="style.css" />
+<script>
+  (function () {
+    const THEMES = {
+      petal: {"--bg":"var(--rose-50)","--surface":"var(--rose-50)","--surface-2":"var(--pink-200)","--border":"var(--mauve-200)","--primary":"var(--periwinkle-400)","--primary-soft":"var(--periwinkle-200)","--accent":"var(--pink-500)","--text":"#2B2B33","--text-muted":"#5A5A6A"},
+      lavender: {"--bg":"#F6F2FF","--surface":"#F6F2FF","--surface-2":"#EDE4FF","--border":"#D8CBF2","--primary":"#A7ABDE","--primary-soft":"#CED1F8","--accent":"#D7A6FF","--text":"#2B2B33","--text-muted":"#5A5A6A"},
+      sky_sorbet: {"--bg":"#F2FBFF","--surface":"#F2FBFF","--surface-2":"#DFF3FF","--border":"#C7E4F5","--primary":"#7DB6FF","--primary-soft":"#CFE4FF","--accent":"#FFA5D6","--text":"#2B2B33","--text-muted":"#5A5A6A"},
+      peach_milk: {"--bg":"#FFF6F0","--surface":"#FFF6F0","--surface-2":"#FFE3D2","--border":"#F2CDBB","--primary":"#A7ABDE","--primary-soft":"#CED1F8","--accent":"#FFB38A","--text":"#2B2B33","--text-muted":"#5A5A6A"},
+      lemon_cream: {"--bg":"#FFFCEB","--surface":"#FFFCEB","--surface-2":"#FFF2B8","--border":"#E9DFA2","--primary":"#9AB6FF","--primary-soft":"#D6E3FF","--accent":"#FFC857","--text":"#2B2B33","--text-muted":"#5A5A6A"},
+      dusky_rose: {"--bg":"#141016","--surface":"#19131C","--surface-2":"#241A26","--border":"rgba(255,255,255,.14)","--primary":"#B7A6FF","--primary-soft":"rgba(183,166,255,.35)","--accent":"#FF8FBC","--text":"#F2F0F7","--text-muted":"rgba(242,240,247,.75)","--bg-spot-1":"transparent","--bg-spot-2":"transparent"},
+      mauve_night: {"--bg":"#100F14","--surface":"#15131A","--surface-2":"#201B25","--border":"rgba(255,255,255,.14)","--primary":"#9FB6FF","--primary-soft":"rgba(159,182,255,.35)","--accent":"#D7A6FF","--text":"#F2F0F7","--text-muted":"rgba(242,240,247,.75)","--bg-spot-1":"transparent","--bg-spot-2":"transparent"},
+      deep_sage: {"--bg":"#0F1412","--surface":"#141A17","--surface-2":"#1C2621","--border":"rgba(255,255,255,.14)","--primary":"#93D1B3","--primary-soft":"rgba(147,209,179,.35)","--accent":"#FF9BB7","--text":"#F2F0F7","--text-muted":"rgba(242,240,247,.75)","--bg-spot-1":"transparent","--bg-spot-2":"transparent"},
+      blueberry_dusk: {"--bg":"#0D101A","--surface":"#12172A","--surface-2":"#1A2140","--border":"rgba(255,255,255,.14)","--primary":"#8EA2FF","--primary-soft":"rgba(142,162,255,.35)","--accent":"#8FE3FF","--text":"#F2F0F7","--text-muted":"rgba(242,240,247,.75)","--bg-spot-1":"transparent","--bg-spot-2":"transparent"},
+      cocoa_lilac: {"--bg":"#141014","--surface":"#1A141B","--surface-2":"#261C28","--border":"rgba(255,255,255,.14)","--primary":"#E2B3FF","--primary-soft":"rgba(226,179,255,.35)","--accent":"#FFB38A","--text":"#F2F0F7","--text-muted":"rgba(242,240,247,.75)","--bg-spot-1":"transparent","--bg-spot-2":"transparent"},
+      midnight: {"--bg":"#0F0D14","--surface":"#14121A","--surface-2":"#1C1824","--border":"rgba(255,255,255,.14)","--primary":"#8EA2FF","--primary-soft":"rgba(142,162,255,.35)","--accent":"#FFA5D6","--text":"#F2F0F7","--text-muted":"rgba(242,240,247,.75)","--bg-spot-1":"transparent","--bg-spot-2":"transparent"}
+    };
+
+    const themeName = localStorage.getItem("petal_theme") || "petal";
+    const theme = THEMES[themeName] || THEMES.petal;
+    const root = document.documentElement;
+    for (const k in theme) root.style.setProperty(k, theme[k]);
+  })();
+</script>
     <style>
       .profile-wrap { max-width: 720px; margin: 40px auto; padding: 0 16px; }
       .profile-card { padding: 18px; }
