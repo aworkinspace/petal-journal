@@ -700,7 +700,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 })();
 
-/* ------------------------ Music + FNAF audio buttons ------------------------ */
+/* ------------------------ Music + FNAF audio buttons (+ Next track) ------------------------ */
 (() => {
   const $ = (id) => document.getElementById(id);
 
@@ -715,6 +715,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.addEventListener("DOMContentLoaded", () => {
     const btnMusic = $("btnMusic");
+    const btnNextTrack = $("btnNextTrack"); // add this button in HTML
     const musicVol = $("musicVol");
     const bgm = $("bgm");
 
@@ -727,28 +728,75 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnToreador = $("btnToreador");
     const toreadorSfx = $("toreadorSfx");
 
-    if (bgm && musicVol) bgm.volume = Number(musicVol.value ?? 0.35);
-    if (ambientSfx && musicVol) ambientSfx.volume = Number(musicVol.value ?? 0.35);
+    if (!bgm || !btnMusic || !musicVol) return;
 
-    btnMusic?.addEventListener("click", () => {
-      if (!bgm) return;
-      if (bgm.paused) {
-        safePlay(bgm);
-        btnMusic.textContent = "Pause Music";
-      } else {
-        safePause(bgm);
-        btnMusic.textContent = "Play Music";
+    // Playlist (add files to /assets or change paths)
+    const tracks = [
+  "assets/lofi.mp3",
+  "assets/elevator.mp3",
+  "assets/monty.mp3",
+];
+
+    let trackIndex = Number(localStorage.getItem("petal_track_index") || "0");
+    if (!Number.isFinite(trackIndex) || trackIndex < 0) trackIndex = 0;
+    trackIndex %= tracks.length;
+
+    // Restore volume
+    const savedVol = localStorage.getItem("petal_music_vol");
+    if (savedVol !== null) musicVol.value = savedVol;
+
+    function setVolume(v) {
+      const vol = Number(v);
+      if (Number.isFinite(vol)) {
+        bgm.volume = vol;
+        if (ambientSfx) ambientSfx.volume = vol;
       }
+    }
+    setVolume(musicVol.value ?? 0.35);
+
+    function setBtn() {
+      btnMusic.textContent = bgm.paused ? "Play Music" : "Pause Music";
+    }
+
+    function setTrack(nextIndex, autoplay = false) {
+      trackIndex = ((nextIndex % tracks.length) + tracks.length) % tracks.length;
+      localStorage.setItem("petal_track_index", String(trackIndex));
+
+      const wasPlaying = !bgm.paused;
+      bgm.src = tracks[trackIndex];
+      bgm.loop = false; // allow "Next" / ended to advance
+      bgm.load();
+
+      if (autoplay || wasPlaying) safePlay(bgm);
+      setBtn();
+    }
+
+    // Initial track load
+    setTrack(trackIndex, false);
+
+    // Play/pause
+    btnMusic.addEventListener("click", () => {
+      if (bgm.paused) safePlay(bgm);
+      else safePause(bgm);
+      setBtn();
     });
 
-    musicVol?.addEventListener("input", () => {
-      const v = Number(musicVol.value);
-      if (bgm) bgm.volume = v;
-      if (ambientSfx) ambientSfx.volume = v;
+    // Next track
+    btnNextTrack?.addEventListener("click", () => setTrack(trackIndex + 1, true));
+
+    // Auto-advance
+    bgm.addEventListener("ended", () => setTrack(trackIndex + 1, true));
+
+    // Volume
+    musicVol.addEventListener("input", () => {
+      setVolume(musicVol.value);
+      localStorage.setItem("petal_music_vol", String(musicVol.value));
     });
 
+    // Ambient toggle
     btnAmbient?.addEventListener("click", () => {
       if (!ambientSfx) return;
+
       if (ambientSfx.paused) {
         safePlay(ambientSfx);
         btnAmbient.textContent = "Ambient: On";
@@ -758,12 +806,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
+    // Jumpscare (one-shot)
     btnJumpscare?.addEventListener("click", () => {
       if (!jumpscareSfx) return;
       jumpscareSfx.currentTime = 0;
       safePlay(jumpscareSfx);
     });
 
+    // Toreador (one-shot)
     btnToreador?.addEventListener("click", () => {
       if (!toreadorSfx) return;
       toreadorSfx.currentTime = 0;
