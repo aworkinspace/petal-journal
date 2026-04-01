@@ -187,7 +187,7 @@ function applySkin(skinName) {
   localStorage.setItem("petal_skin", skinName);
 }
 
-/* ------------------------------ Stickers ------------------------------ */
+/* ------------------------------ Stickers / Images ------------------------------ */
 
 function insertSticker(src) {
   const content = document.getElementById("content");
@@ -244,10 +244,31 @@ document.addEventListener("DOMContentLoaded", () => {
     skinSelect.addEventListener("change", (e) => applySkin(e.target.value));
   }
 
+  // Stickers
   document.addEventListener("click", (e) => {
     const btn = e.target.closest("button[data-sticker]");
     if (!btn) return;
     insertSticker(btn.dataset.sticker);
+  });
+
+  // Add image (beta) -> insert local image into editor
+  const btnAddImage = document.getElementById("btnAddImage");
+  const imgPicker = document.getElementById("imgPicker");
+
+  btnAddImage?.addEventListener("click", () => imgPicker?.click());
+
+  imgPicker?.addEventListener("change", (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) return;
+    if (file.size > 4 * 1024 * 1024) return; // 4MB
+
+    const url = URL.createObjectURL(file);
+    insertSticker(url);
+    setTimeout(() => URL.revokeObjectURL(url), 60_000);
+
+    e.target.value = "";
   });
 });
 
@@ -283,7 +304,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "deep_sage",
     "blueberry_dusk",
     "cocoa_lilac",
-    "custom", // custom uploaded theme (beta)
+    "custom",
   ]);
 
   function initFeatureAccess() {
@@ -303,6 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (els.betaChip) els.betaChip.style.display = earlyAccess ? "inline-flex" : "none";
 
+    // Add image (beta) visibility + picker presence
     const imgPicker = document.getElementById("imgPicker");
 
     if (els.btnAddImage) els.btnAddImage.style.display = earlyAccess ? "inline-flex" : "none";
@@ -405,7 +427,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       localStorage.removeItem("petal_early_access");
 
-      // If they were on custom theme, fall back when logged out
       if (localStorage.getItem("petal_theme") === "custom") {
         applyTheme("petal");
         if (els.themeSelect) els.themeSelect.value = "petal";
