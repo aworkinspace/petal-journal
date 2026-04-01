@@ -580,7 +580,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const list = filteredEntries();
     els.entryList.innerHTML = "";
-
+tagsInput: document.getElementById("tagsInput"),
     for (const e of list) {
       const card = document.createElement("div");
       card.className = "entry-card";
