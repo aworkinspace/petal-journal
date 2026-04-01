@@ -33,7 +33,7 @@
     <style>
       .wb-wrap{ max-width:1200px; margin:0 auto; padding:12px 24px 28px; }
       .wb-tools{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; padding:12px; }
-      #wb{ width:100%; height:70vh; display:block; border-radius:16px; }
+      #wb{ width:100%; height:70vh; display:block; border-radius:16px; background: #fff; }
       .wb-row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
       input[type="range"]{ width:140px; }
 #wb{
@@ -147,18 +147,18 @@
 
         // eraser
         if (mode === "eraser") {
-          ctx.globalCompositeOperation = "destination-out";
-          ctx.globalAlpha = 1;
-          ctx.lineCap = "round";
-          ctx.lineJoin = "round";
-          ctx.lineWidth = size;
-          ctx.strokeStyle = "rgba(0,0,0,1)";
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.stroke();
-          return;
-        }
+  ctx.globalCompositeOperation = "source-over";
+  ctx.globalAlpha = 1;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.lineWidth = size;
+  ctx.strokeStyle = "#ffffff";
+  ctx.beginPath();
+  ctx.moveTo(a.x, a.y);
+  ctx.lineTo(b.x, b.y);
+  ctx.stroke();
+  return;
+}
 
         // pen modes
         ctx.globalCompositeOperation = "source-over";
