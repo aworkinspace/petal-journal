@@ -8,234 +8,42 @@
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
     <title>Petal Journal — Profile</title>
     <link rel="stylesheet" href="style.css" />
+
+    <!-- Apply saved theme early (supports custom via localStorage cache) -->
     <script>
-  (function () {
-    const THEMES = {
-      petal: {"--bg":"var(--rose-50)","--surface":"var(--rose-50)","--surface-2":"var(--pink-200)","--border":"var(--mauve-200)","--primary":"var(--periwinkle-400)","--primary-soft":"var(--periwinkle-200)","--accent":"var(--pink-500)","--text":"#2B2B33","--text-muted":"#5A5A6A"},
-      lavender: {"--bg":"#F6F2FF","--surface":"#F6F2FF","--surface-2":"#EDE4FF","--border":"#D8CBF2","--primary":"#A7ABDE","--primary-soft":"#CED1F8","--accent":"#D7A6FF","--text":"#2B2B33","--text-muted":"#5A5A6A"},
-      sky_sorbet: {"--bg":"#F2FBFF","--surface":"#F2FBFF","--surface-2":"#DFF3FF","--border":"#C7E4F5","--primary":"#7DB6FF","--primary-soft":"#CFE4FF","--accent":"#FFA5D6","--text":"#2B2B33","--text-muted":"#5A5A6A"},
-      peach_milk: {"--bg":"#FFF6F0","--surface":"#FFF6F0","--surface-2":"#FFE3D2","--border":"#F2CDBB","--primary":"#A7ABDE","--primary-soft":"#CED1F8","--accent":"#FFB38A","--text":"#2B2B33","--text-muted":"#5A5A6A"},
-      lemon_cream: {"--bg":"#FFFCEB","--surface":"#FFFCEB","--surface-2":"#FFF2B8","--border":"#E9DFA2","--primary":"#9AB6FF","--primary-soft":"#D6E3FF","--accent":"#FFC857","--text":"#2B2B33","--text-muted":"#5A5A6A"},
-      dusky_rose: {"--bg":"#141016","--surface":"#19131C","--surface-2":"#241A26","--border":"rgba(255,255,255,.14)","--primary":"#B7A6FF","--primary-soft":"rgba(183,166,255,.35)","--accent":"#FF8FBC","--text":"#F2F0F7","--text-muted":"rgba(242,240,247,.75)","--bg-spot-1":"transparent","--bg-spot-2":"transparent"},
-      mauve_night: {"--bg":"#100F14","--surface":"#15131A","--surface-2":"#201B25","--border":"rgba(255,255,255,.14)","--primary":"#9FB6FF","--primary-soft":"rgba(159,182,255,.35)","--accent":"#D7A6FF","--text":"#F2F0F7","--text-muted":"rgba(242,240,247,.75)","--bg-spot-1":"transparent","--bg-spot-2":"transparent"},
-      deep_sage: {"--bg":"#0F1412","--surface":"#141A17","--surface-2":"#1C2621","--border":"rgba(255,255,255,.14)","--primary":"#93D1B3","--primary-soft":"rgba(147,209,179,.35)","--accent":"#FF9BB7","--text":"#F2F0F7","--text-muted":"rgba(242,240,247,.75)","--bg-spot-1":"transparent","--bg-spot-2":"transparent"},
-      blueberry_dusk: {"--bg":"#0D101A","--surface":"#12172A","--surface-2":"#1A2140","--border":"rgba(255,255,255,.14)","--primary":"#8EA2FF","--primary-soft":"rgba(142,162,255,.35)","--accent":"#8FE3FF","--text":"#F2F0F7","--text-muted":"rgba(242,240,247,.75)","--bg-spot-1":"transparent","--bg-spot-2":"transparent"},
-      cocoa_lilac: {"--bg":"#141014","--surface":"#1A141B","--surface-2":"#261C28","--border":"rgba(255,255,255,.14)","--primary":"#E2B3FF","--primary-soft":"rgba(226,179,255,.35)","--accent":"#FFB38A","--text":"#F2F0F7","--text-muted":"rgba(242,240,247,.75)","--bg-spot-1":"transparent","--bg-spot-2":"transparent"},
-      midnight: {"--bg":"#0F0D14","--surface":"#14121A","--surface-2":"#1C1824","--border":"rgba(255,255,255,.14)","--primary":"#8EA2FF","--primary-soft":"rgba(142,162,255,.35)","--accent":"#FFA5D6","--text":"#F2F0F7","--text-muted":"rgba(242,240,247,.75)","--bg-spot-1":"transparent","--bg-spot-2":"transparent"}
-    };
+      (function () {
+        const THEMES = {
+          petal: {"--bg":"var(--rose-50)","--surface":"var(--rose-50)","--surface-2":"var(--pink-200)","--border":"var(--mauve-200)","--primary":"var(--periwinkle-400)","--primary-soft":"var(--periwinkle-200)","--accent":"var(--pink-500)","--text":"#2B2B33","--text-muted":"#5A5A6A"},
+          lavender: {"--bg":"#F6F2FF","--surface":"#F6F2FF","--surface-2":"#EDE4FF","--border":"#D8CBF2","--primary":"#A7ABDE","--primary-soft":"#CED1F8","--accent":"#D7A6FF","--text":"#2B2B33","--text-muted":"#5A5A6A"},
+          sky_sorbet: {"--bg":"#F2FBFF","--surface":"#F2FBFF","--surface-2":"#DFF3FF","--border":"#C7E4F5","--primary":"#7DB6FF","--primary-soft":"#CFE4F5","--accent":"#FFA5D6","--text":"#2B2B33","--text-muted":"#5A5A6A"},
+          peach_milk: {"--bg":"#FFF6F0","--surface":"#FFF6F0","--surface-2":"#FFE3D2","--border":"#F2CDBB","--primary":"#A7ABDE","--primary-soft":"#CED1F8","--accent":"#FFB38A","--text":"#2B2B33","--text-muted":"#5A5A6A"},
+          lemon_cream: {"--bg":"#FFFCEB","--surface":"#FFFCEB","--surface-2":"#FFF2B8","--border":"#E9DFA2","--primary":"#9AB6FF","--primary-soft":"#D6E3FF","--accent":"#FFC857","--text":"#2B2B33","--text-muted":"#5A5A6A"},
+          dusky_rose: {"--bg":"#141016","--surface":"#19131C","--surface-2":"#241A26","--border":"rgba(255,255,255,.14)","--primary":"#B7A6FF","--primary-soft":"rgba(183,166,255,.35)","--accent":"#FF8FBC","--text":"#F2F0F7","--text-muted":"rgba(242,240,247,.75)","--bg-spot-1":"transparent","--bg-spot-2":"transparent"},
+          mauve_night: {"--bg":"#100F14","--surface":"#15131A","--surface-2":"#201B25","--border":"rgba(255,255,255,.14)","--primary":"#9FB6FF","--primary-soft":"rgba(159,182,255,.35)","--accent":"#D7A6FF","--text":"#F2F0F7","--text-muted":"rgba(242,240,247,.75)","--bg-spot-1":"transparent","--bg-spot-2":"transparent"},
+          deep_sage: {"--bg":"#0F1412","--surface":"#141A17","--surface-2":"#1C2621","--border":"rgba(255,255,255,.14)","--primary":"#93D1B3","--primary-soft":"rgba(147,209,179,.35)","--accent":"#FF9BB7","--text":"#F2F0F7","--text-muted":"rgba(242,240,247,.75)","--bg-spot-1":"transparent","--bg-spot-2":"transparent"},
+          blueberry_dusk: {"--bg":"#0D101A","--surface":"#12172A","--surface-2":"#1A2140","--border":"rgba(255,255,255,.14)","--primary":"#8EA2FF","--primary-soft":"rgba(142,162,255,.35)","--accent":"#8FE3FF","--text":"#F2F0F7","--text-muted":"rgba(242,240,247,.75)","--bg-spot-1":"transparent","--bg-spot-2":"transparent"},
+          cocoa_lilac: {"--bg":"#141014","--surface":"#1A141B","--surface-2":"#261C28","--border":"rgba(255,255,255,.14)","--primary":"#E2B3FF","--primary-soft":"rgba(226,179,255,.35)","--accent":"#FFB38A","--text":"#F2F0F7","--text-muted":"rgba(242,240,247,.75)","--bg-spot-1":"transparent","--bg-spot-2":"transparent"},
+          midnight: {"--bg":"#0F0D14","--surface":"#14121A","--surface-2":"#1C1824","--border":"rgba(255,255,255,.14)","--primary":"#8EA2FF","--primary-soft":"rgba(142,162,255,.35)","--accent":"#FFA5D6","--text":"#F2F0F7","--text-muted":"rgba(242,240,247,.75)","--bg-spot-1":"transparent","--bg-spot-2":"transparent"}
+        };
 
-    const name = localStorage.getItem("petal_theme") || "petal";
+        const name = localStorage.getItem("petal_theme") || "petal";
 
-    if (name === "custom") {
-      try {
-        const raw = localStorage.getItem("petal_custom_theme_vars");
-        if (raw) {
-          const vars = JSON.parse(raw);
-          for (const k in vars) document.documentElement.style.setProperty(k, vars[k]);
+        if (name === "custom") {
+          try {
+            const raw = localStorage.getItem("petal_custom_theme_vars");
+            if (raw) {
+              const vars = JSON.parse(raw);
+              for (const k in vars) document.documentElement.style.setProperty(k, vars[k]);
+            }
+          } catch {}
+          return;
         }
-      } catch {}
-      return;
-    }
 
-    const t = THEMES[name] || THEMES.petal;
-    for (const k in t) document.documentElement.style.setProperty(k, t[k]);
-  })();
-</script>
+        const t = THEMES[name] || THEMES.petal;
+        for (const k in t) document.documentElement.style.setProperty(k, t[k]);
+      })();
+    </script>
 
-  </head>
-<script>
-  (function () {
-    const THEMES = {
-  petal: {
-    "--bg": "var(--rose-50)",
-    "--surface": "var(--rose-50)",
-    "--surface-2": "var(--pink-200)",
-    "--border": "var(--mauve-200)",
-    "--primary": "var(--periwinkle-400)",
-    "--primary-soft": "var(--periwinkle-200)",
-    "--accent": "var(--pink-500)",
-    "--text": "#2B2B33",
-    "--text-muted": "#5A5A6A",
-  },
-  lavender: {
-    "--bg": "#F6F2FF",
-    "--surface": "#F6F2FF",
-    "--surface-2": "#EDE4FF",
-    "--border": "#D8CBF2",
-    "--primary": "#A7ABDE",
-    "--primary-soft": "#CED1F8",
-    "--accent": "#D7A6FF",
-    "--text": "#2B2B33",
-    "--text-muted": "#5A5A6A",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
-  },
-  sky_sorbet: {
-    "--bg": "#F2FBFF",
-    "--surface": "#F2FBFF",
-    "--surface-2": "#DFF3FF",
-    "--border": "#C7E4F5",
-    "--primary": "#7DB6FF",
-    "--primary-soft": "#CFE4FF",
-    "--accent": "#FFA5D6",
-    "--text": "#2B2B33",
-    "--text-muted": "#5A5A6A",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
-  },
-  peach_milk: {
-    "--bg": "#FFF6F0",
-    "--surface": "#FFF6F0",
-    "--surface-2": "#FFE3D2",
-    "--border": "#F2CDBB",
-    "--primary": "#A7ABDE",
-    "--primary-soft": "#CED1F8",
-    "--accent": "#FFB38A",
-    "--text": "#2B2B33",
-    "--text-muted": "#5A5A6A",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
-  },
-  lemon_cream: {
-    "--bg": "#FFFCEB",
-    "--surface": "#FFFCEB",
-    "--surface-2": "#FFF2B8",
-    "--border": "#E9DFA2",
-    "--primary": "#9AB6FF",
-    "--primary-soft": "#D6E3FF",
-    "--accent": "#FFC857",
-    "--text": "#2B2B33",
-    "--text-muted": "#5A5A6A",
-  },
-
-  // darker pastels
-  dusky_rose: {
-    "--bg": "#141016",
-    "--surface": "#19131C",
-    "--surface-2": "#241A26",
-    "--border": "rgba(255,255,255,.14)",
-    "--primary": "#B7A6FF",
-    "--primary-soft": "rgba(183,166,255,.35)",
-    "--accent": "#FF8FBC",
-    "--text": "#F2F0F7",
-    "--text-muted": "rgba(242,240,247,.75)",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
-  },
-  mauve_night: {
-    "--bg": "#100F14",
-    "--surface": "#15131A",
-    "--surface-2": "#201B25",
-    "--border": "rgba(255,255,255,.14)",
-    "--primary": "#9FB6FF",
-    "--primary-soft": "rgba(159,182,255,.35)",
-    "--accent": "#D7A6FF",
-    "--text": "#F2F0F7",
-    "--text-muted": "rgba(242,240,247,.75)",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
-  },
-  deep_sage: {
-    "--bg": "#0F1412",
-    "--surface": "#141A17",
-    "--surface-2": "#1C2621",
-    "--border": "rgba(255,255,255,.14)",
-    "--primary": "#93D1B3",
-    "--primary-soft": "rgba(147,209,179,.35)",
-    "--accent": "#FF9BB7",
-    "--text": "#F2F0F7",
-    "--text-muted": "rgba(242,240,247,.75)",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
-  },
-  blueberry_dusk: {
-    "--bg": "#0D101A",
-    "--surface": "#12172A",
-    "--surface-2": "#1A2140",
-    "--border": "rgba(255,255,255,.14)",
-    "--primary": "#8EA2FF",
-    "--primary-soft": "rgba(142,162,255,.35)",
-    "--accent": "#8FE3FF",
-    "--text": "#F2F0F7",
-    "--text-muted": "rgba(242,240,247,.75)",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
-  },
-  cocoa_lilac: {
-    "--bg": "#141014",
-    "--surface": "#1A141B",
-    "--surface-2": "#261C28",
-    "--border": "rgba(255,255,255,.14)",
-    "--primary": "#E2B3FF",
-    "--primary-soft": "rgba(226,179,255,.35)",
-    "--accent": "#FFB38A",
-    "--text": "#F2F0F7",
-    "--text-muted": "rgba(242,240,247,.75)",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
-  },
-
-  midnight: {
-    "--bg": "#0F0D14",
-    "--surface": "#14121A",
-    "--surface-2": "#1C1824",
-    "--border": "rgba(255,255,255,.14)",
-    "--primary": "#8EA2FF",
-    "--primary-soft": "rgba(142,162,255,.35)",
-    "--accent": "#FFA5D6",
-    "--text": "#F2F0F7",
-    "--text-muted": "rgba(242,240,247,.75)",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
-  },
-  strawberry_matcha: {
-    "--bg": "#F7FFF6",
-    "--surface": "#F7FFF6",
-    "--surface-2": "#E8F7E6",
-    "--border": "#CFE6CC",
-    "--primary": "#7FBF9B",
-    "--primary-soft": "#CFEBDD",
-    "--accent": "#FF8FB8",
-    "--text": "#2B2B33",
-    "--text-muted": "#5A5A6A",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
-  },
-  blueberry_yogurt: {
-    "--bg": "#F4F6FF",
-    "--surface": "#F4F6FF",
-    "--surface-2": "#E2E7FF",
-    "--border": "#CAD3FF",
-    "--primary": "#7F8CFF",
-    "--primary-soft": "#C9D0FF",
-    "--accent": "#FFA5D6",
-    "--text": "#2B2B33",
-    "--text-muted": "#5A5A6A",
-"--bg-spot-1": "transparent",
-"--bg-spot-2": "transparent",
-  },
-{
-  "name": "Custom",
-  "vars": {
-    "--bg": "#0f0d14",
-    "--surface": "#14121a",
-    "--surface-2": "#1c1824",
-    "--border": "rgba(255,255,255,.14)",
-    "--primary": "#8ea2ff",
-    "--primary-soft": "rgba(142,162,255,.35)",
-    "--accent": "#ffa5d6",
-    "--text": "#f2f0f7",
-    "--text-muted": "rgba(242,240,247,.75)",
-    "--bg-spot-1": "transparent",
-    "--bg-spot-2": "transparent"
-  }
-},
-    const themeName = localStorage.getItem("petal_theme") || "petal";
-    const theme = THEMES[themeName] || THEMES.petal;
-    const root = document.documentElement;
-    for (const k in theme) root.style.setProperty(k, theme[k]);
-  })();
-</script>
     <style>
       .profile-wrap { max-width: 720px; margin: 40px auto; padding: 0 16px; }
       .profile-card { padding: 18px; }
@@ -247,9 +55,10 @@
         box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary-soft) 70%, transparent);
       }
       .profile-pic-upload { margin-top: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center; }
+      #themeUpload { width: 100%; }
     </style>
 
-    <!-- Firebase SDKs (match index.html config exactly) -->
+    <!-- Firebase init (exposes window.firebaseAuth/firebaseDb/firebaseStorage) -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
       import { getAuth } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
@@ -313,12 +122,13 @@
           <input class="input" id="userBirthday" type="date" />
           <small class="muted" id="birthdayUpdateMsg" style="margin-top: 8px; display:block;"></small>
         </div>
-<div class="profile-field">
-  <div class="section-title">Custom Theme (beta, JSON)</div>
-  <input id="themeUpload" type="file" accept="application/json" />
-  <button class="btn" id="btnClearTheme" type="button">Remove custom theme</button>
-  <small class="muted" id="themeMsg" style="display:block; margin-top:8px;"></small>
-</div>
+
+        <div class="profile-field">
+          <div class="section-title">Custom Theme (beta, JSON)</div>
+          <input id="themeUpload" type="file" accept="application/json" />
+          <button class="btn" id="btnClearTheme" type="button" style="margin-top:10px;">Remove custom theme</button>
+          <small class="muted" id="themeMsg" style="display:block; margin-top:8px;"></small>
+        </div>
 
         <div class="row" style="margin-top: 24px">
           <button class="btn btn-primary" id="btnUpdateProfile" type="button">Save Profile</button>
@@ -334,9 +144,10 @@
       </main>
     </div>
 
+    <!-- Profile logic (single module; no duplicate imports) -->
     <script type="module">
       import { onAuthStateChanged, updateProfile, deleteUser } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-      import { doc, getDoc, setDoc, enableNetwork } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+      import { doc, getDoc, setDoc, deleteDoc, enableNetwork } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
       import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
 
       const auth = window.firebaseAuth;
@@ -346,18 +157,26 @@
       enableNetwork(db).catch(() => {});
 
       const $ = (id) => document.getElementById(id);
+
       const profilePicEl = $("profilePic");
       const userEmailEl = $("userEmail");
       const displayNameEl = $("displayName");
       const userBirthdayEl = $("userBirthday");
+
       const btnUploadPic = $("btnUploadPic");
       const picUploadEl = $("picUpload");
       const picUploadMsgEl = $("picUploadMsg");
+
       const nameUpdateMsgEl = $("nameUpdateMsg");
       const birthdayUpdateMsgEl = $("birthdayUpdateMsg");
       const generalMsgEl = $("generalMsg");
+
       const btnUpdateProfile = $("btnUpdateProfile");
       const btnDeleteAccount = $("btnDeleteAccount");
+
+      const themeUploadEl = $("themeUpload");
+      const btnClearTheme = $("btnClearTheme");
+      const themeMsgEl = $("themeMsg");
 
       const DEFAULT_PIC = "assets/default-profile.png";
       let currentUser = null;
@@ -388,11 +207,7 @@
           }
         } catch (error) {
           console.error("loadProfile Firestore error:", error);
-          showMsg(
-            generalMsgEl,
-            "Can’t reach the server right now (offline / blocked). Try disabling adblock/VPN and refresh.",
-            true
-          );
+          showMsg(generalMsgEl, "Can’t reach the server right now (offline / blocked).", true);
         }
       }
 
@@ -423,7 +238,6 @@
         showMsg(picUploadMsgEl, "Uploading picture...", false);
 
         try {
-          // unique filename avoids cached/stale downloads
           const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
           const path = `profile_pictures/${currentUser.uid}/profile_${Date.now()}.${ext}`;
 
@@ -443,7 +257,7 @@
         }
       });
 
-      // Save profile
+      // Save profile (name + birthday)
       btnUpdateProfile?.addEventListener("click", async () => {
         if (!currentUser) {
           showMsg(generalMsgEl, "You must be logged in to update your profile.", true);
@@ -461,20 +275,66 @@
             showMsg(nameUpdateMsgEl, "");
           }
 
-          if (!navigator.onLine) {
-            showMsg(generalMsgEl, "You appear offline. Connect to the internet and try again.", true);
-            return;
-          }
-
           await setDoc(doc(db, "users", currentUser.uid), { birthday: userBirthdayEl.value || "" }, { merge: true });
 
           showMsg(birthdayUpdateMsgEl, "Birthday updated!");
           showMsg(generalMsgEl, "Profile saved successfully!");
         } catch (error) {
           console.error("Error updating profile:", error);
-          console.log("SAVE ERROR CODE:", error.code);
           showMsg(generalMsgEl, `Failed to save profile: ${error.message}`, true);
         }
+      });
+
+      // Custom theme upload (JSON)
+      function isValidVarName(k) {
+        return typeof k === "string" && k.startsWith("--") && k.length <= 64;
+      }
+      function isValidVarVal(v) {
+        return typeof v === "string" && v.length <= 200;
+      }
+
+      themeUploadEl?.addEventListener("change", async (e) => {
+        const file = e.target.files?.[0];
+        if (!file || !currentUser) return;
+
+        try {
+          const text = await file.text();
+          const json = JSON.parse(text);
+
+          const name = String(json?.name || "Custom Theme").slice(0, 40);
+          const vars = json?.vars && typeof json.vars === "object" ? json.vars : null;
+          if (!vars) throw new Error("Invalid file: missing vars object.");
+
+          const cleaned = {};
+          for (const [k, v] of Object.entries(vars)) {
+            if (!isValidVarName(k) || !isValidVarVal(v)) continue;
+            cleaned[k] = v;
+          }
+          if (Object.keys(cleaned).length === 0) throw new Error("No valid CSS variables found.");
+
+          await setDoc(
+            doc(db, "users", currentUser.uid, "settings", "theme"),
+            { enabled: true, name, vars: cleaned, updatedAt: Date.now() },
+            { merge: true }
+          );
+
+          // cache so other pages can apply instantly
+          localStorage.setItem("petal_custom_theme_vars", JSON.stringify(cleaned));
+          localStorage.setItem("petal_theme", "custom");
+
+          showMsg(themeMsgEl, `Saved: ${name}`);
+        } catch (err) {
+          showMsg(themeMsgEl, `Theme upload failed: ${err?.message || err}`, true);
+        } finally {
+          e.target.value = "";
+        }
+      });
+
+      btnClearTheme?.addEventListener("click", async () => {
+        if (!currentUser) return;
+        await deleteDoc(doc(db, "users", currentUser.uid, "settings", "theme"));
+        localStorage.removeItem("petal_custom_theme_vars");
+        showMsg(themeMsgEl, "Custom theme removed.");
       });
 
       // Delete account
@@ -496,7 +356,7 @@
         } catch (error) {
           console.error("Error deleting account:", error);
           if (error.code === "auth/requires-recent-login") {
-            showMsg(generalMsgEl, "Please log in again recently to delete your account for security.", true);
+            showMsg(generalMsgEl, "Please log in again recently to delete your account.", true);
           } else {
             showMsg(generalMsgEl, `Failed to delete account: ${error.message}`, true);
           }
@@ -512,54 +372,6 @@
           location.href = "login.html";
         }
       });
-import { doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-const themeUploadEl = document.getElementById("themeUpload");
-const btnClearTheme = document.getElementById("btnClearTheme");
-const themeMsgEl = document.getElementById("themeMsg");
-
-function isValidVarName(k){ return typeof k === "string" && k.startsWith("--") && k.length <= 64; }
-function isValidVarVal(v){ return typeof v === "string" && v.length <= 200; }
-
-themeUploadEl?.addEventListener("change", async (e) => {
-  const file = e.target.files?.[0];
-  if (!file || !currentUser) return;
-
-  try {
-    const text = await file.text();
-    const json = JSON.parse(text);
-
-    const name = String(json?.name || "Custom Theme").slice(0, 40);
-    const vars = json?.vars && typeof json.vars === "object" ? json.vars : null;
-    if (!vars) throw new Error("Invalid file: missing vars object.");
-
-    // sanitize
-    const cleaned = {};
-    for (const [k, v] of Object.entries(vars)) {
-      if (!isValidVarName(k) || !isValidVarVal(v)) continue;
-      cleaned[k] = v;
-    }
-    if (Object.keys(cleaned).length === 0) throw new Error("No valid CSS variables found.");
-
-    await setDoc(doc(db, "users", currentUser.uid, "settings", "theme"), {
-      enabled: true,
-      name,
-      vars: cleaned,
-      updatedAt: Date.now(),
-    }, { merge: true });
-
-    themeMsgEl.textContent = `Saved: ${name}`;
-  } catch (err) {
-    themeMsgEl.textContent = `Theme upload failed: ${err.message || err}`;
-  } finally {
-    e.target.value = "";
-  }
-});
-
-btnClearTheme?.addEventListener("click", async () => {
-  if (!currentUser) return;
-  await deleteDoc(doc(db, "users", currentUser.uid, "settings", "theme"));
-  themeMsgEl.textContent = "Custom theme removed.";
-});
     </script>
   </body>
 </html>
