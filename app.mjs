@@ -509,14 +509,14 @@ imgPicker?.addEventListener("change", async (e) => {
   });
 
   els.btnSignOut?.addEventListener("click", async () => {
-    try {
-      await signOut(auth);
-      toast("Successfully logged out!");
-    } catch (error) {
-      console.error("Logout failed:", error);
-      toast(`Logout failed: ${error?.message ?? "Unknown error"}`);
-    })();
-  });
+  try {
+    await signOut(auth);
+    toast("Successfully logged out!");
+  } catch (error) {
+    console.error("Logout failed:", error);
+    toast(`Logout failed: ${error?.message ?? "Unknown error"}`);
+  }
+});
 
   initFeatureAccess();
 })();
