@@ -2,6 +2,7 @@
 
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
 
 /* ----------------------------- Theme + Skin ----------------------------- */
 
@@ -274,25 +275,71 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Add image (beta)
-  const btnAddImage = document.getElementById("btnAddImage");
-  const imgPicker = document.getElementById("imgPicker");
+  import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
 
-  btnAddImage?.addEventListener("click", () => imgPicker?.click());
+// inside DOMContentLoaded:
+const btnAddImage = document.getElementById("btnAddImage");
+const imgPicker = document.getElementById("imgPicker");
+const storage = window.firebaseStorage;
+const auth = window.firebaseAuth;
 
-  imgPicker?.addEventListener("change", (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (!file.type.startsWith("image/")) return;
-    if (file.size > 4 * 1024 * 1024) return;
-
-    const url = URL.createObjectURL(file);
-    insertSticker(url);
-    setTimeout(() => URL.revokeObjectURL(url), 60_000);
-    e.target.value = "";
-  });
+btnAddImage?.addEventListener("click", () => {
+  const user = auth?.currentUser;
+  if (!user) {
+    toast("Login to add images.");
+    return;
+  }
+  imgPicker?.click();
 });
 
+imgPicker?.addEventListener("change", async (e) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  const user = auth?.currentUser;
+  if (!user) {
+    toast("Login to add images.");
+    e.target.value = "";
+    return;
+  }
+
+  if (!storage) {
+    toast("Storage not ready.");
+    e.target.value = "";
+    return;
+  }
+
+  if (!file.type.startsWith("image/")) {
+    toast("Please choose an image file.");
+    e.target.value = "";
+    return;
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    toast("Image too large (max 5MB).");
+    e.target.value = "";
+    return;
+  }
+
+  try {
+    toast("Uploading image…");
+
+    const safeName = (file.name || "image").replace(/[^\w.-]+/g, "_").slice(0, 80);
+    const path = `entry_images/${user.uid}/${Date.now()}_${safeName}`;
+    const storageRef = ref(storage, path);
+
+    await uploadBytes(storageRef, file, { contentType: file.type });
+    const url = await getDownloadURL(storageRef);
+
+    insertSticker(url);
+    toast("Image added!");
+  } catch (err) {
+    console.error("Image upload failed:", err);
+    toast(`Upload failed: ${err?.message ?? "Unknown error"}`);
+  } finally {
+    e.target.value = "";
+  }
+});
 /* ------------------------ Firebase Auth + Access ------------------------ */
 
 (() => {
