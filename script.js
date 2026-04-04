@@ -862,3 +862,52 @@ document.addEventListener("DOMContentLoaded", () => {
 
   btn.addEventListener("click", pick);
 })();
+/* ----------------------------- Spotify ----------------------------- */
+function toSpotifyEmbed(url) {
+  if (!url) return null;
+
+  // accept: https://open.spotify.com/playlist/{id}?... or spotify:playlist:{id}
+  let id = null;
+
+  const m1 = url.match(/open\.spotify\.com\/playlist\/([a-zA-Z0-9]+)/);
+  if (m1) id = m1[1];
+
+  const m2 = url.match(/spotify:playlist:([a-zA-Z0-9]+)/);
+  if (m2) id = m2[1];
+
+  if (!id) return null;
+  return `https://open.spotify.com/embed/playlist/${id}`;
+}
+
+function renderSpotify(embedUrl) {
+  const host = document.getElementById("spotifyEmbed");
+  if (!host) return;
+
+  if (!embedUrl) {
+    host.innerHTML = "";
+    return;
+  }
+
+  host.innerHTML = `
+    <iframe
+      style="border-radius:16px; width:100%; max-width:520px; height:152px; border:0;"
+      src="${embedUrl}"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy">
+    </iframe>
+  `;
+}
+
+// set + persist
+document.getElementById("btnSetSpotify")?.addEventListener("click", () => {
+  const raw = document.getElementById("spotifyUrl")?.value?.trim();
+  const embed = toSpotifyEmbed(raw);
+  if (!embed) return alert("That doesn’t look like a Spotify playlist link.");
+  localStorage.setItem("petal_spotify_embed", embed);
+  renderSpotify(embed);
+});
+
+// restore on load
+document.addEventListener("DOMContentLoaded", () => {
+  renderSpotify(localStorage.getItem("petal_spotify_embed"));
+});
