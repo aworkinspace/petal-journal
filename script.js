@@ -499,6 +499,7 @@ document.addEventListener("DOMContentLoaded", () => {
   "assets/lofi.mp3",
   "assets/elevator.mp3",
   "assets/monty.mp3",
+  "assets/intro.mp3"
 ];
 
     let trackIndex = Number(localStorage.getItem("petal_track_index") || "0");
