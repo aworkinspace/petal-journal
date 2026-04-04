@@ -274,24 +274,68 @@ document.addEventListener("DOMContentLoaded", () => {
     insertSticker(btn.dataset.sticker);
   });
 
-  // Add image (beta)
-  const btnAddImage = document.getElementById("btnAddImage");
-  const imgPicker = document.getElementById("imgPicker");
+  // Add image (beta) -> upload to Firebase Storage (logged-in only)
+const btnAddImage = document.getElementById("btnAddImage");
+const imgPicker = document.getElementById("imgPicker");
 
-  btnAddImage?.addEventListener("click", () => imgPicker?.click());
+btnAddImage?.addEventListener("click", () => {
+  const auth = window.firebaseAuth;
+  if (!auth?.currentUser) {
+    toast("Login to add images.");
+    return;
+  }
+  imgPicker?.click();
+});
 
-  imgPicker?.addEventListener("change", (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+imgPicker?.addEventListener("change", async (e) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
 
-    if (!file.type.startsWith("image/")) return;
-    if (file.size > 4 * 1024 * 1024) return;
+  const auth = window.firebaseAuth;
+  const storage = window.firebaseStorage;
+  const user = auth?.currentUser;
 
-    const url = URL.createObjectURL(file);
-    insertSticker(url);
-    setTimeout(() => URL.revokeObjectURL(url), 60_000);
+  if (!user) {
+    toast("Login to add images.");
     e.target.value = "";
-  });
+    return;
+  }
+
+  if (!storage) {
+    toast("Storage not ready.");
+    e.target.value = "";
+    return;
+  }
+
+  if (!file.type.startsWith("image/")) {
+    toast("Please choose an image file.");
+    e.target.value = "";
+    return;
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    toast("Image too large (max 5MB).");
+    e.target.value = "";
+    return;
+  }
+
+  try {
+    toast("Uploading image…");
+
+    const safeName = (file.name || "image").replace(/[^\w.-]+/g, "_").slice(0, 80);
+    const storageRef = ref(storage, `entry_images/${user.uid}/${Date.now()}_${safeName}`);
+
+    await uploadBytes(storageRef, file, { contentType: file.type });
+    const url = await getDownloadURL(storageRef);
+
+    insertSticker(url);
+    toast("Image added!");
+  } catch (err) {
+    console.error("Image upload failed:", err);
+    toast(`Upload failed: ${err?.message ?? "Unknown error"}`);
+  } finally {
+    e.target.value = "";
+  }
 });
 
 /* ------------------------ Firebase Auth + Access ------------------------ */
