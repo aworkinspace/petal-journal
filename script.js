@@ -462,7 +462,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initFeatureAccess();
 })();
 
-/* ------------------------ Journal: entries + SFX (with tags) ------------------------ */
+/* ------------------------ Journal: entries + SFX (with tags + dynamic chips) ------------------------ */
 (() => {
   const $ = (id) => document.getElementById(id);
 
@@ -493,6 +493,7 @@ document.addEventListener("DOMContentLoaded", () => {
     exportSfx: $("exportSfx"),
   };
 
+  const DEFAULT_TAGS = ["gratitude", "work", "health", "family"];
   const STORAGE_KEY = "petal_entries_v1";
   let entries = [];
   let activeId = null;
@@ -586,13 +587,30 @@ document.addEventListener("DOMContentLoaded", () => {
       .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
   }
 
+  function allTagsFromEntries() {
+    const set = new Set(DEFAULT_TAGS);
+    for (const e of entries) for (const t of e.tags || []) set.add(String(t).toLowerCase());
+    return [...set].sort();
+  }
+
+  function renderTagChips() {
+    if (!els.tagRow) return;
+    const tags = allTagsFromEntries();
+    els.tagRow.innerHTML = tags
+      .map(
+        (t) =>
+          `<button class="chip tag ${activeTag === t ? "active" : ""}" data-tag="${t}" type="button">${t}</button>`
+      )
+      .join("");
+  }
+
   function renderList() {
     if (!els.entryList) return;
 
     const list = filteredEntries();
     els.entryList.innerHTML = "";
 
-    for (const e of list) {
+        for (const e of list) {
       const card = document.createElement("div");
       card.className = "entry-card";
       card.dataset.id = e.id;
@@ -646,6 +664,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     saveEntries();
+    renderTagChips();
     renderList();
     if (els.status) els.status.textContent = "Saved.";
     play(els.saveSfx);
@@ -659,6 +678,7 @@ document.addEventListener("DOMContentLoaded", () => {
     entries = entries.filter((e) => e.id !== activeId);
     activeId = null;
     saveEntries();
+    renderTagChips();
     renderList();
     newEntry();
     play(els.deleteSfx);
@@ -673,10 +693,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const tag = (btn.dataset.tag || "").toLowerCase();
       activeTag = activeTag === tag ? null : tag;
 
-      [...els.tagRow.querySelectorAll("button[data-tag]")].forEach((b) => {
-        b.classList.toggle("active", (b.dataset.tag || "").toLowerCase() === activeTag);
-      });
-
+      renderTagChips();
       renderList();
     });
   }
@@ -693,6 +710,7 @@ document.addEventListener("DOMContentLoaded", () => {
     els.mood?.addEventListener("change", updateMoodChip);
 
     loadEntries();
+    renderTagChips();
     renderList();
 
     els.btnSave?.addEventListener("click", saveEntry);
@@ -707,7 +725,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!entries.length) newEntry();
   });
 })();
-
 /* ------------------------ Music + FNAF audio buttons (+ Next track) ------------------------ */
 (() => {
   const $ = (id) => document.getElementById(id);
