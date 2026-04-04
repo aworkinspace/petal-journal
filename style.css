@@ -365,7 +365,52 @@ header{
   background-size: 18px 18px, auto;
 }
 
-.notebook.skin-dark{
+/* --- Dark skins --- */
+.notebook.skin-dark-ruled,
+.notebook.skin-dark-grid,
+.notebook.skin-dark-dots{
+  color: rgba(255,255,255,.92);
+}
+
+.notebook.skin-dark-ruled .section-title,
+.notebook.skin-dark-grid .section-title,
+.notebook.skin-dark-dots .section-title,
+.notebook.skin-dark-ruled .muted,
+.notebook.skin-dark-grid .muted,
+.notebook.skin-dark-dots .muted{
+  color: rgba(255,255,255,.72);
+}
+
+.notebook.skin-dark-ruled .input,
+.notebook.skin-dark-grid .input,
+.notebook.skin-dark-dots .input,
+.notebook.skin-dark-ruled .textarea,
+.notebook.skin-dark-grid .textarea,
+.notebook.skin-dark-dots .textarea{
+  background: rgba(255,255,255,.06);
+  border-color: rgba(255,255,255,.14);
+  color: rgba(255,255,255,.92);
+}
+
+/* Dark skins: buttons + chips inside notebook */
+.notebook.skin-dark-ruled .btn,
+.notebook.skin-dark-grid .btn,
+.notebook.skin-dark-dots .btn{
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.18);
+  color: rgba(255,255,255,.92);
+}
+
+.notebook.skin-dark-ruled .chip,
+.notebook.skin-dark-grid .chip,
+.notebook.skin-dark-dots .chip{
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.18);
+  color: rgba(255,255,255,.92);
+}
+
+/* Dark ruled */
+.notebook.skin-dark-ruled{
   background:
     repeating-linear-gradient(
       to bottom,
@@ -374,6 +419,23 @@ header{
       rgba(255,255,255,.08) 27px
     ),
     linear-gradient(to bottom, #14121A, #1C1824);
+}
+
+/* Dark grid */
+.notebook.skin-dark-grid{
+  background:
+    linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px),
+    linear-gradient(to bottom, #14121A, #1C1824);
+  background-size: 28px 28px, 28px 28px, auto;
+}
+
+/* Dark dotted */
+.notebook.skin-dark-dots{
+  background:
+    radial-gradient(rgba(255,255,255,.12) 1.2px, transparent 1.3px),
+    linear-gradient(to bottom, #14121A, #1C1824);
+  background-size: 18px 18px, auto;
 }
 
 .notebook.skin-dark .section-title,
