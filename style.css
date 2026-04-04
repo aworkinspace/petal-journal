@@ -490,6 +490,10 @@ header{
   background: var(--border);
   margin: 4px 0;
 }
+header { overflow: visible; }
+.top-actions { overflow: visible; }
+.menu { overflow: visible; }
+.menu-panel { overflow: visible; }
 
 /* Menu follows theme */
 .menu-panel .btn{
