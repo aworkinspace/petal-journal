@@ -182,8 +182,16 @@ function applySkin(skinName) {
   const notebook = document.getElementById("notebook");
   if (!notebook) return;
 
-  notebook.classList.remove("skin-ruled", "skin-grid", "skin-dots", "skin-dark");
-  notebook.classList.add(`skin-${skinName}`);
+  notebook.classList.remove(
+    "skin-ruled",
+    "skin-grid",
+    "skin-dots",
+    "skin-dark-ruled",
+    "skin-dark-grid",
+    "skin-dark-dots"
+  );
+
+  notebook.classList.add(`skin-${skinName.replace("_", "-")}`);
   localStorage.setItem("petal_skin", skinName);
 }
 
