@@ -450,7 +450,6 @@ header{
 header { overflow: visible; }
 .top-actions { overflow: visible; }
 .menu { overflow: visible; }
-.menu-panel { overflow: visible; }
 
 /* Menu follows theme */
 .menu-panel .btn{
