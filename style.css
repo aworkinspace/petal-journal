@@ -529,3 +529,7 @@ header { overflow: visible; }
 #sparkles{
   pointer-events: none !important;
 }
+.chip.tag.active{
+  background: color-mix(in srgb, var(--accent) 35%, white 65%);
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
+}
