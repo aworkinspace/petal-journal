@@ -462,7 +462,251 @@ document.addEventListener("DOMContentLoaded", () => {
   initFeatureAccess();
 })();
 
+/* ------------------------ Journal: entries + SFX (with tags) ------------------------ */
+(() => {
+  const $ = (id) => document.getElementById(id);
 
+  const els = {
+    date: $("date"),
+    mood: $("mood"),
+    title: $("title"),
+    tagsInput: $("tagsInput"),
+    content: $("content"),
+    moodChip: $("moodChip"),
+    status: $("status"),
+
+    entryList: $("entryList"),
+    count: $("count"),
+    search: $("search"),
+    tagRow: $("tagRow"),
+
+    btnSave: $("btnSave"),
+    btnDelete: $("btnDelete"),
+    btnNew: $("btnNew"),
+    btnExport: $("btnExport"),
+
+    clock: $("clock"),
+
+    saveSfx: $("saveSfx"),
+    deleteSfx: $("deleteSfx"),
+    newEntrySfx: $("newEntrySfx"),
+    exportSfx: $("exportSfx"),
+  };
+
+  const STORAGE_KEY = "petal_entries_v1";
+  let entries = [];
+  let activeId = null;
+  let activeTag = null;
+
+  function play(audioEl) {
+    if (!audioEl) return;
+    try {
+      audioEl.currentTime = 0;
+      audioEl.play().catch(() => {});
+    } catch {}
+  }
+
+  function nowDateValue() {
+    const d = new Date();
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  function formatClock() {
+    const d = new Date();
+    return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
+
+  function stripHtml(html) {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    return div.textContent || div.innerText || "";
+  }
+
+  function parseTags(str) {
+    return (str || "")
+      .split(",")
+      .map((t) => t.trim().toLowerCase())
+      .filter(Boolean)
+      .slice(0, 12);
+  }
+
+  function loadEntries() {
+    try {
+      entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      if (!Array.isArray(entries)) entries = [];
+    } catch {
+      entries = [];
+    }
+  }
+
+  function saveEntries() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+  }
+
+  function updateMoodChip() {
+    if (!els.moodChip || !els.mood) return;
+    els.moodChip.textContent = `Mood: ${els.mood.value || "Calm"}`;
+  }
+
+  function getEditorData() {
+    return {
+      date: els.date?.value || nowDateValue(),
+      mood: els.mood?.value || "Calm",
+      title: (els.title?.value || "").trim(),
+      tags: parseTags(els.tagsInput?.value),
+      content: els.content?.innerHTML || "",
+    };
+  }
+
+  function setEditorData(e) {
+    if (els.date) els.date.value = e?.date || nowDateValue();
+    if (els.mood) els.mood.value = e?.mood || "Calm";
+    if (els.title) els.title.value = e?.title || "";
+    if (els.tagsInput) els.tagsInput.value = (e?.tags || []).join(", ");
+    if (els.content) els.content.innerHTML = e?.content || "";
+    updateMoodChip();
+  }
+
+  function makeId() {
+    return `${Date.now()}_${Math.random().toString(16).slice(2)}`;
+  }
+
+  function filteredEntries() {
+    const q = (els.search?.value || "").trim().toLowerCase();
+    return entries
+      .filter((e) => (activeTag ? (e.tags || []).includes(activeTag) : true))
+      .filter((e) => {
+        if (!q) return true;
+        const hay = `${e.title || ""} ${stripHtml(e.content || "")} ${(e.tags || []).join(" ")}`.toLowerCase();
+        return hay.includes(q);
+      })
+      .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+  }
+
+  function renderList() {
+    if (!els.entryList) return;
+
+    const list = filteredEntries();
+    els.entryList.innerHTML = "";
+
+    for (const e of list) {
+      const card = document.createElement("div");
+      card.className = "entry-card";
+      card.dataset.id = e.id;
+
+      const h = document.createElement("h4");
+      h.textContent = e.title?.trim() ? e.title : "(untitled)";
+
+      const p = document.createElement("p");
+      const preview = stripHtml(e.content || "").trim().slice(0, 80);
+      const tagText = (e.tags || []).length ? ` • #${(e.tags || []).join(" #")}` : "";
+      p.textContent = `${e.date || ""} • ${(e.mood || "").trim()}${tagText}${preview ? " • " + preview : ""}`;
+
+      card.appendChild(h);
+      card.appendChild(p);
+
+      card.addEventListener("click", () => {
+        activeId = e.id;
+        setEditorData(e);
+        if (els.status) els.status.textContent = "Loaded entry.";
+      });
+
+      els.entryList.appendChild(card);
+    }
+
+    if (els.count) els.count.textContent = `${list.length}`;
+  }
+
+  function newEntry() {
+    activeId = null;
+    setEditorData({ date: nowDateValue(), mood: "Calm", title: "", tags: [], content: "" });
+    if (els.status) els.status.textContent = "New entry.";
+    play(els.newEntrySfx);
+  }
+
+  function saveEntry() {
+    const data = getEditorData();
+    const now = Date.now();
+
+    if (!data.title && !stripHtml(data.content)) {
+      if (els.status) els.status.textContent = "Nothing to save yet.";
+      return;
+    }
+
+    if (!activeId) {
+      activeId = makeId();
+      entries.push({ id: activeId, createdAt: now, updatedAt: now, ...data });
+    } else {
+      const idx = entries.findIndex((e) => e.id === activeId);
+      if (idx === -1) entries.push({ id: activeId, createdAt: now, updatedAt: now, ...data });
+      else entries[idx] = { ...entries[idx], ...data, updatedAt: now };
+    }
+
+    saveEntries();
+    renderList();
+    if (els.status) els.status.textContent = "Saved.";
+    play(els.saveSfx);
+  }
+
+  function deleteEntry() {
+    if (!activeId) {
+      if (els.status) els.status.textContent = "No entry selected.";
+      return;
+    }
+    entries = entries.filter((e) => e.id !== activeId);
+    activeId = null;
+    saveEntries();
+    renderList();
+    newEntry();
+    play(els.deleteSfx);
+  }
+
+  function initTagChips() {
+    if (!els.tagRow) return;
+    els.tagRow.addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-tag]");
+      if (!btn) return;
+
+      const tag = (btn.dataset.tag || "").toLowerCase();
+      activeTag = activeTag === tag ? null : tag;
+
+      [...els.tagRow.querySelectorAll("button[data-tag]")].forEach((b) => {
+        b.classList.toggle("active", (b.dataset.tag || "").toLowerCase() === activeTag);
+      });
+
+      renderList();
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    if (els.clock) {
+      els.clock.textContent = formatClock();
+      setInterval(() => (els.clock.textContent = formatClock()), 1000 * 20);
+    }
+
+    if (els.date && !els.date.value) els.date.value = nowDateValue();
+
+    updateMoodChip();
+    els.mood?.addEventListener("change", updateMoodChip);
+
+    loadEntries();
+    renderList();
+
+    els.btnSave?.addEventListener("click", saveEntry);
+    els.btnDelete?.addEventListener("click", deleteEntry);
+    els.btnNew?.addEventListener("click", newEntry);
+
+    els.btnExport?.addEventListener("click", () => play(els.exportSfx));
+
+    els.search?.addEventListener("input", renderList);
+    initTagChips();
+
+    if (!entries.length) newEntry();
+  });
+})();
 
 /* ------------------------ Music + FNAF audio buttons (+ Next track) ------------------------ */
 (() => {
