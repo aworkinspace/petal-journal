@@ -69,13 +69,6 @@
             <button class="btn" id="btnSignOut" type="button" style="display: none">
               Logout
             </button>
-
-            <div class="menu-divider"></div>
-<div class="menu-block spotify">
-  <input class="input" id="spotifyUrl" placeholder="Paste Spotify playlist link…" />
-  <button class="btn" id="btnSetSpotify" type="button">Set playlist</button>
-  <div id="spotifyEmbed"></div>
-</div>
 <div class="menu-divider"></div>
             <a
               class="btn btn-accent"
@@ -236,8 +229,12 @@
 
     <div class="toast" id="toast"></div>
     <canvas id="sparkles" aria-hidden="true"></canvas>
-
-    <!-- Skins + Themes -->
+<div class="menu-divider"></div>
+<div class="menu-block spotify">
+  <input class="input" id="spotifyUrl" placeholder="Paste Spotify playlist link…" />
+  <button class="btn" id="btnSetSpotify" type="button">Set playlist</button>
+  <div id="spotifyEmbed"></div>
+</div>    <!-- Skins + Themes -->
     <div class="controls-row">
       <span class="label">Skin</span>
       <select class="input" id="skinSelect">
