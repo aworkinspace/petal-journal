@@ -533,3 +533,47 @@ header { overflow: visible; }
   background: color-mix(in srgb, var(--accent) 35%, white 65%);
   border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
 }
+/* --- Menu dropdown: robust sizing/positioning --- */
+.menu { position: relative; overflow: visible; }
+header, .top-actions { overflow: visible; }
+
+.menu-panel{
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+
+  width: 320px;
+  max-width: calc(100vw - 24px);
+
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  background: var(--surface);              /* solid, not see-through */
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+
+  z-index: 99999;
+  max-height: min(70vh, 520px);
+  overflow: auto;
+}
+
+/* Make inputs/buttons fill the panel nicely */
+.menu-panel .input,
+.menu-panel .btn{
+  width: 100%;
+}
+
+/* Mobile: pin the menu to the viewport so it can’t be clipped */
+@media (max-width: 720px){
+  .menu-panel{
+    position: fixed;
+    right: 12px;
+    left: 12px;
+    top: 72px; /* below header */
+    width: auto;
+    max-width: none;
+  }
+}
