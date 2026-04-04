@@ -515,7 +515,7 @@ imgPicker?.addEventListener("change", async (e) => {
     } catch (error) {
       console.error("Logout failed:", error);
       toast(`Logout failed: ${error?.message ?? "Unknown error"}`);
-    }
+    })();
   });
 
   initFeatureAccess();
