@@ -576,3 +576,31 @@ header, .top-actions { overflow: visible; }
     max-width: none;
   }
 }
+/* --- Menu: reset custom content blocks inside the dropdown --- */
+.menu-panel > *{
+  background: transparent;
+  border-radius: 0;
+}
+
+.menu-panel .menu-block{
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+}
+
+/* Spotify controls in menu */
+.menu-panel #spotifyEmbed,
+.menu-panel #spotifyUrl{
+  width: 100%;
+}
+
+.menu-panel input,
+.menu-panel button{
+  border-radius: 999px;
+}
+
+/* If you wrapped Spotify in something with a pink bg, kill it */
+.menu-panel .spotify,
+.menu-panel .spotify *{
+  background: transparent;
+}
