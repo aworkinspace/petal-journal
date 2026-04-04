@@ -604,3 +604,29 @@ header, .top-actions { overflow: visible; }
 .menu-panel .spotify *{
   background: transparent;
 }
+/* --- Fix Spotify block background inside menu --- */
+.menu-panel .spotify{
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.menu-panel .spotify *{
+  box-shadow: none;
+}
+
+/* If the input/button are inside an extra wrapper div, neutralize it */
+.menu-panel .spotify > div{
+  background: transparent !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+
+/* Keep controls full-width and consistent */
+.menu-panel .spotify .input,
+.menu-panel .spotify .btn{
+  width: 100%;
+}
