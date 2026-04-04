@@ -166,15 +166,29 @@ const THEMES = {
   },
 };
 
+function applyVars(vars) {
+  if (!vars || typeof vars !== "object") return;
+  for (const [k, v] of Object.entries(vars)) {
+    if (typeof k === "string" && k.startsWith("--") && typeof v === "string") {
+      document.documentElement.style.setProperty(k, v);
+    }
+  }
+}
+
 function applyTheme(themeName) {
-  // "custom" is applied from Firestore vars; don't overwrite it here.
   if (themeName === "custom") {
+    const raw = localStorage.getItem("petal_custom_theme_vars");
+    if (raw) {
+      try {
+        applyVars(JSON.parse(raw));
+      } catch {}
+    }
     localStorage.setItem("petal_theme", "custom");
     return;
   }
 
   const theme = THEMES[themeName] || THEMES.petal;
-  for (const [k, v] of Object.entries(theme)) document.documentElement.style.setProperty(k, v);
+  applyVars(theme);
   localStorage.setItem("petal_theme", themeName);
 }
 
@@ -191,7 +205,7 @@ function applySkin(skinName) {
     "skin-dark-dots"
   );
 
-  notebook.classList.add(`skin-${skinName.replace("_", "-")}`);
+  notebook.classList.add(`skin-${String(skinName).replace("_", "-")}`);
   localStorage.setItem("petal_skin", skinName);
 }
 
@@ -259,7 +273,7 @@ document.addEventListener("DOMContentLoaded", () => {
     insertSticker(btn.dataset.sticker);
   });
 
-  // Add image (beta) -> insert local image into editor
+  // Add image (beta)
   const btnAddImage = document.getElementById("btnAddImage");
   const imgPicker = document.getElementById("imgPicker");
 
@@ -270,12 +284,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!file) return;
 
     if (!file.type.startsWith("image/")) return;
-    if (file.size > 4 * 1024 * 1024) return; // 4MB
+    if (file.size > 4 * 1024 * 1024) return;
 
     const url = URL.createObjectURL(file);
     insertSticker(url);
     setTimeout(() => URL.revokeObjectURL(url), 60_000);
-
     e.target.value = "";
   });
 });
@@ -332,9 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (els.betaChip) els.betaChip.style.display = earlyAccess ? "inline-flex" : "none";
 
-    // Add image (beta) visibility + picker presence
     const imgPicker = document.getElementById("imgPicker");
-
     if (els.btnAddImage) els.btnAddImage.style.display = earlyAccess ? "inline-flex" : "none";
 
     if (!earlyAccess) {
@@ -360,18 +371,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const t = snap.data();
       if (!t?.enabled || !t?.vars || typeof t.vars !== "object") return;
 
-      for (const [k, v] of Object.entries(t.vars)) {
-        if (typeof k === "string" && k.startsWith("--") && typeof v === "string") {
-          document.documentElement.style.setProperty(k, v);
-        }
-      }
-
+      localStorage.setItem("petal_custom_theme_vars", JSON.stringify(t.vars));
+      applyVars(t.vars);
       localStorage.setItem("petal_theme", "custom");
+
       if (els.themeSelect && [...els.themeSelect.options].some((o) => o.value === "custom")) {
         els.themeSelect.value = "custom";
       }
     } catch {
-      // ignore Firestore offline/blocked/etc.
+      // ignore offline/blocked/etc.
     }
   }
 
@@ -407,9 +415,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       localStorage.setItem(flagKey, "1");
       toast("Happy birthday!");
-    } catch {
-      // silently ignore
-    }
+    } catch {}
   }
 
   onAuthStateChanged(auth, async (user) => {
@@ -583,7 +589,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return `${Date.now()}_${Math.random().toString(16).slice(2)}`;
   }
 
-  function filteredEntries() {
+   function filteredEntries() {
     const q = (els.search?.value || "").trim().toLowerCase();
     return entries
       .filter((e) => (activeTag ? (e.tags || []).includes(activeTag) : true))
@@ -618,7 +624,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const list = filteredEntries();
     els.entryList.innerHTML = "";
 
-        for (const e of list) {
+    for (const e of list) {
       const card = document.createElement("div");
       card.className = "entry-card";
       card.dataset.id = e.id;
@@ -733,6 +739,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!entries.length) newEntry();
   });
 })();
+
 /* ------------------------ Music + FNAF audio buttons (+ Next track) ------------------------ */
 (() => {
   const $ = (id) => document.getElementById(id);
@@ -748,7 +755,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.addEventListener("DOMContentLoaded", () => {
     const btnMusic = $("btnMusic");
-    const btnNextTrack = $("btnNextTrack"); // add this button in HTML
+    const btnNextTrack = $("btnNextTrack");
     const musicVol = $("musicVol");
     const bgm = $("bgm");
 
@@ -763,28 +770,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!bgm || !btnMusic || !musicVol) return;
 
-    // Playlist (add files to /assets or change paths)
-    const tracks = [
-  "assets/lofi.mp3",
-  "assets/elevator.mp3",
-  "assets/monty.mp3",
-  "assets/intro.mp3"
-];
+    const tracks = ["assets/lofi.mp3", "assets/elevator.mp3", "assets/monty.mp3", "assets/intro.mp3"];
 
     let trackIndex = Number(localStorage.getItem("petal_track_index") || "0");
     if (!Number.isFinite(trackIndex) || trackIndex < 0) trackIndex = 0;
     trackIndex %= tracks.length;
 
-    // Restore volume
     const savedVol = localStorage.getItem("petal_music_vol");
     if (savedVol !== null) musicVol.value = savedVol;
 
     function setVolume(v) {
       const vol = Number(v);
-      if (Number.isFinite(vol)) {
-        bgm.volume = vol;
-        if (ambientSfx) ambientSfx.volume = vol;
-      }
+      if (!Number.isFinite(vol)) return;
+      bgm.volume = vol;
+      if (ambientSfx) ambientSfx.volume = vol;
     }
     setVolume(musicVol.value ?? 0.35);
 
@@ -798,39 +797,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const wasPlaying = !bgm.paused;
       bgm.src = tracks[trackIndex];
-      bgm.loop = false; // allow "Next" / ended to advance
+      bgm.loop = false;
       bgm.load();
 
       if (autoplay || wasPlaying) safePlay(bgm);
       setBtn();
     }
 
-    // Initial track load
     setTrack(trackIndex, false);
 
-    // Play/pause
     btnMusic.addEventListener("click", () => {
       if (bgm.paused) safePlay(bgm);
       else safePause(bgm);
       setBtn();
     });
 
-    // Next track
     btnNextTrack?.addEventListener("click", () => setTrack(trackIndex + 1, true));
-
-    // Auto-advance
     bgm.addEventListener("ended", () => setTrack(trackIndex + 1, true));
 
-    // Volume
     musicVol.addEventListener("input", () => {
       setVolume(musicVol.value);
       localStorage.setItem("petal_music_vol", String(musicVol.value));
     });
 
-    // Ambient toggle
     btnAmbient?.addEventListener("click", () => {
       if (!ambientSfx) return;
-
       if (ambientSfx.paused) {
         safePlay(ambientSfx);
         btnAmbient.textContent = "Ambient: On";
@@ -840,14 +831,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Jumpscare (one-shot)
     btnJumpscare?.addEventListener("click", () => {
       if (!jumpscareSfx) return;
       jumpscareSfx.currentTime = 0;
       safePlay(jumpscareSfx);
     });
 
-    // Toreador (one-shot)
     btnToreador?.addEventListener("click", () => {
       if (!toreadorSfx) return;
       toreadorSfx.currentTime = 0;
@@ -855,6 +844,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 })();
+
 /* ------------------------ Prompts ------------------------ */
 (() => {
   const prompts = [
@@ -887,56 +877,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   btn.addEventListener("click", pick);
 })();
-/* ----------------------------- Spotify ----------------------------- */
-function toSpotifyEmbed(url) {
-  if (!url) return null;
 
-  // accept: https://open.spotify.com/playlist/{id}?... or spotify:playlist:{id}
-  let id = null;
-
-  const m1 = url.match(/open\.spotify\.com\/playlist\/([a-zA-Z0-9]+)/);
-  if (m1) id = m1[1];
-
-  const m2 = url.match(/spotify:playlist:([a-zA-Z0-9]+)/);
-  if (m2) id = m2[1];
-
-  if (!id) return null;
-  return `https://open.spotify.com/embed/playlist/${id}`;
-}
-
-function renderSpotify(embedUrl) {
-  const host = document.getElementById("spotifyEmbed");
-  if (!host) return;
-
-  if (!embedUrl) {
-    host.innerHTML = "";
-    return;
-  }
-
-  host.innerHTML = `
-    <iframe
-      style="border-radius:16px; width:100%; max-width:520px; height:152px; border:0;"
-      src="${embedUrl}"
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-      loading="lazy">
-    </iframe>
-  `;
-}
-
-// set + persist
-document.getElementById("btnSetSpotify")?.addEventListener("click", () => {
-  const raw = document.getElementById("spotifyUrl")?.value?.trim();
-  const embed = toSpotifyEmbed(raw);
-  if (!embed) return alert("That doesn’t look like a Spotify playlist link.");
-  localStorage.setItem("petal_spotify_embed", embed);
-  renderSpotify(embed);
-});
-
-// restore on load
-document.addEventListener("DOMContentLoaded", () => {
-  renderSpotify(localStorage.getItem("petal_spotify_embed"));
-});
-/* ------------------------ Spotify embed ------------------------ */
+/* ------------------------ Spotify embed (single) ------------------------ */
 (() => {
   const urlEl = document.getElementById("spotifyUrl");
   const btnSet = document.getElementById("btnSetSpotify");
@@ -956,7 +898,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function render(embedUrl) {
     host.innerHTML = "";
     if (!embedUrl) return;
-
     host.innerHTML = `
       <iframe
         style="border-radius:16px; width:100%; height:152px; border:0;"
@@ -966,7 +907,6 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // restore
   document.addEventListener("DOMContentLoaded", () => {
     const saved = localStorage.getItem("petal_spotify_embed");
     if (saved) {
@@ -991,7 +931,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   btnClear.addEventListener("click", () => {
     localStorage.removeItem("petal_spotify_url");
-    localStorage.removeItem("petal_spotify_embed");
+    localStorage.removeItem("petal_spotify_embesd");
     urlEl.value = "";
     if (msg) msg.textContent = "";
     render(null);
