@@ -911,3 +911,64 @@ document.getElementById("btnSetSpotify")?.addEventListener("click", () => {
 document.addEventListener("DOMContentLoaded", () => {
   renderSpotify(localStorage.getItem("petal_spotify_embed"));
 });
+/* ------------------------ Spotify embed ------------------------ */
+(() => {
+  const urlEl = document.getElementById("spotifyUrl");
+  const btnSet = document.getElementById("btnSetSpotify");
+  const btnClear = document.getElementById("btnClearSpotify");
+  const host = document.getElementById("spotifyEmbed");
+  const msg = document.getElementById("spotifyMsg");
+  if (!urlEl || !btnSet || !btnClear || !host) return;
+
+  function toEmbed(url) {
+    if (!url) return null;
+    const m1 = url.match(/open\.spotify\.com\/playlist\/([a-zA-Z0-9]+)/);
+    const m2 = url.match(/spotify:playlist:([a-zA-Z0-9]+)/);
+    const id = m1?.[1] || m2?.[1];
+    return id ? `https://open.spotify.com/embed/playlist/${id}` : null;
+  }
+
+  function render(embedUrl) {
+    host.innerHTML = "";
+    if (!embedUrl) return;
+
+    host.innerHTML = `
+      <iframe
+        style="border-radius:16px; width:100%; height:152px; border:0;"
+        src="${embedUrl}"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"></iframe>
+    `;
+  }
+
+  // restore
+  document.addEventListener("DOMContentLoaded", () => {
+    const saved = localStorage.getItem("petal_spotify_embed");
+    if (saved) {
+      render(saved);
+      urlEl.value = localStorage.getItem("petal_spotify_url") || "";
+    }
+  });
+
+  btnSet.addEventListener("click", () => {
+    const raw = urlEl.value.trim();
+    const embed = toEmbed(raw);
+    if (!embed) {
+      if (msg) msg.textContent = "That doesn’t look like a Spotify playlist link.";
+      render(null);
+      return;
+    }
+    if (msg) msg.textContent = "";
+    localStorage.setItem("petal_spotify_url", raw);
+    localStorage.setItem("petal_spotify_embed", embed);
+    render(embed);
+  });
+
+  btnClear.addEventListener("click", () => {
+    localStorage.removeItem("petal_spotify_url");
+    localStorage.removeItem("petal_spotify_embed");
+    urlEl.value = "";
+    if (msg) msg.textContent = "";
+    render(null);
+  });
+})();
