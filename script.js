@@ -830,3 +830,35 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 })();
+/* ------------------------ Prompts ------------------------ */
+(() => {
+  const prompts = [
+    "What’s one small win you had today?",
+    "What’s taking up the most space in your mind right now?",
+    "What’s one thing you can let go of today?",
+    "Write 3 things you’re grateful for (tiny counts).",
+    "What did you learn today?",
+    "What do you need more of this week?",
+    "Describe your day in 5 words.",
+    "What would you tell a friend in your situation?",
+    "What’s one kind thing you did for yourself today?",
+    "What’s one next step (the smallest possible)?",
+  ];
+
+  const btn = document.getElementById("btnPrompt");
+  const card = document.getElementById("promptCard");
+  if (!btn || !card) return;
+
+  function pick() {
+    const next = prompts[Math.floor(Math.random() * prompts.length)];
+    card.textContent = next;
+    localStorage.setItem("petal_prompt", next);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const saved = localStorage.getItem("petal_prompt");
+    if (saved) card.textContent = saved;
+  });
+
+  btn.addEventListener("click", pick);
+})();
