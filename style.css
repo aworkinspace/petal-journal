@@ -630,3 +630,8 @@ header, .top-actions { overflow: visible; }
 .menu-panel .spotify .btn{
   width: 100%;
 }
+/* Kill any colored wrapper inside the menu panel */
+.menu-panel div{
+  background: transparent !important;
+  box-shadow: none !important;
+}
