@@ -513,7 +513,10 @@ header { overflow: visible; }
   border-color: color-mix(in srgb, var(--accent) 70%, black 10%);
   color:#2B0F22;
 }
-
+.menu-panel{
+  max-height: min(70vh, 520px);
+  overflow: auto;
+}
 /* Menu button follows theme */
 .menu > summary.btn{
   background: color-mix(in srgb, var(--surface) 75%, white 25%);
