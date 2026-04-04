@@ -520,7 +520,6 @@ imgPicker?.addEventListener("change", async (e) => {
 
   initFeatureAccess();
 })();
-})();
 
 /* ------------------------ Journal: entries + SFX (with tags + dynamic chips) ------------------------ */
 (() => {
