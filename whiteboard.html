@@ -33,7 +33,6 @@
     <style>
       .wb-wrap{ max-width:1200px; margin:0 auto; padding:12px 24px 28px; }
       .wb-tools{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; padding:12px; }
-      #wb{ width:100%; height:70vh; display:block; border-radius:16px; background: #fff; }
       .wb-row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
       input[type="range"]{ width:140px; }
 #wb{
@@ -108,16 +107,13 @@
 
         <small class="muted">Tip: use mouse or touch.</small>
       </div>
-<div class="panel" style="padding:12px; margin-top:14px;">
   <div class="wb-stage">
-    <canvas id="wb"></canvas>
     <canvas id="wbRef"></canvas>
   </div>
 </div>
       <div class="panel" style="padding:12px; margin-top:14px;">
         <canvas id="wb"></canvas>
       </div>
-    </div>
 
     <div class="music" style="justify-content:center; flex-wrap:wrap; margin: 0 24px 18px;">
       <button class="btn" id="btnMusic" type="button">Play Music</button>
@@ -422,7 +418,6 @@ function up() {
   let refImg = null;
   let refX = 20, refY = 20;
   let refScale = 1;
-  let draggingRef = false;
   let dragOffX = 0, dragOffY = 0;
 
   function redraw() {
