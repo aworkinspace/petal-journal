@@ -55,8 +55,7 @@
 #wbRef{ pointer-events: none; } /* ref shouldn’t block drawing */
 #wb { z-index: 2; }
 #wbRef { z-index: 1; }
-header, .wb-tools, .music { position: relative; z-index: 50; }
-.wb-stage { position: relative; z-index: 1; overflow: hidden; }
+
     </style>
   </head>
 
@@ -71,54 +70,52 @@ header, .wb-tools, .music { position: relative; z-index: 50; }
       </div>
     </header>
 
-    <div class="wb-wrap">
-      <div class="panel wb-tools">
-<div class="wb-row">
-  <button class="btn" id="btnRef" type="button">Add reference</button>
-  <button class="btn" id="btnRefClear" type="button">Clear ref</button>
-  <span class="muted">Scale</span>
-  <input id="refScale" type="range" min="0.2" max="2" step="0.05" value="1" />
-  <input id="refPicker" type="file" accept="image/*" hidden />
+   <div class="wb-wrap">
+  <div class="panel wb-tools">
+    <div class="wb-row">
+      <button class="btn" id="btnRef" type="button">Add reference</button>
+      <button class="btn" id="btnRefClear" type="button">Clear ref</button>
+      <span class="muted">Scale</span>
+      <input id="refScale" type="range" min="0.2" max="2" step="0.05" value="1" />
+      <input id="refPicker" type="file" accept="image/*" hidden />
+    </div>
+
+    <div class="wb-row">
+      <span class="muted">Color</span>
+      <input id="color" type="color" value="#A7ABDE" />
+    </div>
+
+    <div class="wb-row">
+      <span class="muted">Size</span>
+      <input id="size" type="range" min="1" max="30" value="6" />
+    </div>
+
+    <div class="wb-row">
+      <span class="muted">Pen</span>
+      <select id="penStyle" class="input">
+        <option value="smooth">Smooth</option>
+        <option value="marker">Marker</option>
+        <option value="highlighter">Highlighter</option>
+        <option value="spray">Spray</option>
+        <option value="watercolor">Watercolor</option>
+      </select>
+    </div>
+
+    <div class="wb-row">
+      <button class="btn" id="eraser" type="button">Eraser</button>
+      <button class="btn" id="pen" type="button">Pen</button>
+      <button class="btn" id="clear" type="button">Clear</button>
+      <button class="btn btn-primary" id="save" type="button">Download PNG</button>
+    </div>
+
+    <small class="muted">Tip: use mouse or touch.</small>
+  </div>
+
+  <div class="wb-stage panel" style="padding:12px; margin-top:14px;">
+    <canvas id="wb"></canvas>
+    <canvas id="wbRef"></canvas>
+  </div>
 </div>
-        <div class="wb-row">
-          <span class="muted">Color</span>
-          <input id="color" type="color" value="#A7ABDE" />
-        </div>
-
-        <div class="wb-row">
-          <span class="muted">Size</span>
-          <input id="size" type="range" min="1" max="30" value="6" />
-        </div>
-
-        <div class="wb-row">
-          <span class="muted">Pen</span>
-          <select id="penStyle" class="input">
-            <option value="smooth">Smooth</option>
-            <option value="marker">Marker</option>
-            <option value="highlighter">Highlighter</option>
-            <option value="spray">Spray</option>
-            <option value="watercolor">Watercolor</option>
-          </select>
-        </div>
-</div>
-        <div class="wb-row">
-          <button class="btn" id="eraser" type="button">Eraser</button>
-          <button class="btn" id="pen" type="button">Pen</button>
-          <button class="btn" id="clear" type="button">Clear</button>
-          <button class="btn" id="clear" type="button" onclick="alert('clicked')">Clear</button>
-          <button class="btn btn-primary" id="save" type="button">Download PNG</button>
-        </div>
-
-        <small class="muted">Tip: use mouse or touch.</small>
-      </div>
-  <div class="wb-stage panel" style="padding:12px;">
-  <canvas id="wb"></canvas>
-  <canvas id="wbRef"></canvas>
-</div>
-      <div class="panel" style="padding:12px; margin-top:14px;">
-        <canvas id="wb"></canvas>
-      </div>
-
     <div class="music" style="justify-content:center; flex-wrap:wrap; margin: 0 24px 18px;">
       <button class="btn" id="btnMusic" type="button">Play Music</button>
       <button class="btn" id="btnNextTrack" type="button">Next</button>
@@ -468,9 +465,10 @@ function up() {
     redraw();
   });
 
-  btnRefClear?.addEventListener("click", () => {
-    refImg = null;
-  });
+ btnRefClear?.addEventListener("click", () => {
+  refImg = null;
+  redraw();
+});
 
   // Drag ref: hold Shift and drag on canvas
   canvas.addEventListener("mousedown", (e) => {
