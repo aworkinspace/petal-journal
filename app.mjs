@@ -975,11 +975,10 @@ imgPicker?.addEventListener("change", async (e) => {
   });
 
   btnClear.addEventListener("click", () => {
-    localStorage.removeItem("petal_spotify_url");
-    localStorage.removeItem("petal_spotify_embesd");
-    urlEl.value = "";
-    if (msg) msg.textContent = "";
-    render(null);
-  });
-  })();
-
+  localStorage.removeItem("petal_spotify_url");
+  localStorage.removeItem("petal_spotify_embed");
+  urlEl.value = "";
+  if (msg) msg.textContent = "";
+  render(null);
+});
+})(); // closes the Spotify IIFE
