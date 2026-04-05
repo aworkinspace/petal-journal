@@ -594,13 +594,26 @@ imgPicker?.addEventListener("change", async (e) => {
   }
 
   function loadEntries() {
-    try {
-      entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-      if (!Array.isArray(entries)) entries = [];
-    } catch {
-      entries = [];
+  try {
+    entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    if (!Array.isArray(entries)) entries = [];
+  } catch {
+    entries = [];
+  }
+}
+
+function cleanupBlobImages() {
+  let changed = false;
+
+  for (const e of entries) {
+    if (typeof e.content === "string" && e.content.includes('src="blob:')) {
+      e.content = e.content.replace(/<img[^>]+src="blob:[^"]+"[^>]*>/g, "");
+      changed = true;
     }
   }
+
+  if (changed) saveEntries();
+}
 
   function saveEntries() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
@@ -775,8 +788,10 @@ imgPicker?.addEventListener("change", async (e) => {
     els.mood?.addEventListener("change", updateMoodChip);
 
     loadEntries();
+    cleanupBlobImages();
     renderTagChips();
     renderList();
+    
 
     els.btnSave?.addEventListener("click", saveEntry);
     els.btnDelete?.addEventListener("click", deleteEntry);
