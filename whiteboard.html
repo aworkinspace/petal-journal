@@ -39,6 +39,14 @@
 #wb{
   pointer-events: auto !important;
 }
+      .wb-stage{ position:relative; width:100%; height:70vh; }
+#wb, #wbRef{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  border-radius:16px;
+}
+#wbRef{ pointer-events:none; } /* ref shouldn’t block drawing */
+
     </style>
   </head>
 
@@ -92,7 +100,12 @@
 
         <small class="muted">Tip: use mouse or touch.</small>
       </div>
-
+<div class="panel" style="padding:12px; margin-top:14px;">
+  <div class="wb-stage">
+    <canvas id="wb"></canvas>
+    <canvas id="wbRef"></canvas>
+  </div>
+</div>
       <div class="panel" style="padding:12px; margin-top:14px;">
         <canvas id="wb"></canvas>
       </div>
