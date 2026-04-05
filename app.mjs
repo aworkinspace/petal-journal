@@ -980,6 +980,5 @@ imgPicker?.addEventListener("change", async (e) => {
     urlEl.value = "";
     if (msg) msg.textContent = "";
     render(null);
-  });
 })();
-})();
+
