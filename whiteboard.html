@@ -39,13 +39,21 @@
 #wb{
   pointer-events: auto !important;
 }
-      .wb-stage{ position:relative; width:100%; height:70vh; }
-#wb, #wbRef{
-  position:absolute; inset:0;
-  width:100%; height:100%;
-  border-radius:16px;
+      .wb-stage{
+  position: relative;
+  width: 100%;
+  height: 70vh;              /* this is the height */
 }
-#wbRef{ pointer-events:none; } /* ref shouldn’t block drawing */
+
+#wb, #wbRef{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  display: block;
+}
+#wbRef{ pointer-events: none; } /* ref shouldn’t block drawing */
 
     </style>
   </head>
@@ -145,12 +153,13 @@ const refCtx = refCanvas.getContext("2d");
 
       function resize() {
   const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-  const rect = canvas.getBoundingClientRect();
+  const stage = document.querySelector(".wb-stage");
+  const rect = stage.getBoundingClientRect();
+
   const prev = canvas.toDataURL("image/png");
 
   canvas.width = Math.floor(rect.width * dpr);
   canvas.height = Math.floor(rect.height * dpr);
-
   refCanvas.width = Math.floor(rect.width * dpr);
   refCanvas.height = Math.floor(rect.height * dpr);
 
@@ -165,7 +174,6 @@ const refCtx = refCanvas.getContext("2d");
   img.onload = () => ctx.drawImage(img, 0, 0, rect.width, rect.height);
   img.src = prev;
 
-  // clear ref overlay on resize (you’ll redraw it if ref exists)
   refCtx.clearRect(0, 0, rect.width, rect.height);
 }
 
@@ -337,9 +345,6 @@ function up() {
       canvas.addEventListener("touchstart", down, { passive: true });
       canvas.addEventListener("touchmove", move, { passive: false });
       window.addEventListener("touchend", up);
-
-      canvas.style.width = "100%";
-      canvas.style.height = "70vh";
       resize();
       window.addEventListener("resize", resize);
 
