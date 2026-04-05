@@ -172,7 +172,6 @@ const refCtx = refCanvas.getContext("2d");
   img.src = prev;
 
   refCtx.clearRect(0, 0, rect.width, rect.height);
-redraw?.();
 }
 
       function pos(e) {
@@ -437,27 +436,31 @@ function up() {
   btnRef?.addEventListener("click", () => refPicker?.click());
 
   refPicker?.addEventListener("change", (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const file = e.target.files?.[0];
+  if (!file) return;
 
-    const url = URL.createObjectURL(file);
-    const img = new Image();
-    img.onload = () => {
-  refImg = img;
+  const url = URL.createObjectURL(file);
+  const img = new Image();
 
-  const stageW = refCanvas.width / (window.devicePixelRatio || 1);
-  const maxW = stageW * 0.6;
+  img.onload = () => {
+    refImg = img;
 
-  refScale = Math.min(1, maxW / img.width);
-  refScaleEl.value = String(refScale);
+    const stageW = refCanvas.width / (window.devicePixelRatio || 1);
+    const maxW = stageW * 0.6;
 
-  refX = 20;
-  refY = 20;
+    refScale = Math.min(1, maxW / img.width);
+    if (refScaleEl) refScaleEl.value = String(refScale);
 
-  redraw();
-  URL.revokeObjectURL(url);
-  e.target.value = "";
-};
+    refX = 20;
+    refY = 20;
+
+    redraw();
+    URL.revokeObjectURL(url);
+    e.target.value = "";
+  };
+
+  img.src = url; // <-- REQUIRED
+});
 
 
   refScaleEl?.addEventListener("input", () => {
