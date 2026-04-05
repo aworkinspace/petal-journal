@@ -172,6 +172,7 @@ const refCtx = refCanvas.getContext("2d");
   img.src = prev;
 
   refCtx.clearRect(0, 0, rect.width, rect.height);
+redraw?.();
 }
 
       function pos(e) {
@@ -422,14 +423,15 @@ function up() {
   let dragOffX = 0, dragOffY = 0;
 
   function redraw() {
-  const rect = canvas.getBoundingClientRect();
-  refCtx.clearRect(0, 0, rect.width, rect.height);
+  // because we setTransform(dpr,0,0,dpr,0,0), draw in CSS pixels:
+  const w = refCanvas.width / (window.devicePixelRatio || 1);
+  const h = refCanvas.height / (window.devicePixelRatio || 1);
+
+  refCtx.clearRect(0, 0, w, h);
   if (!refImg) return;
 
   refCtx.globalAlpha = 0.55;
-  const w = refImg.width * refScale;
-  const h = refImg.height * refScale;
-  refCtx.drawImage(refImg, refX, refY, w, h);
+  refCtx.drawImage(refImg, refX, refY, refImg.width * refScale, refImg.height * refScale);
   refCtx.globalAlpha = 1;
 }
   btnRef?.addEventListener("click", () => refPicker?.click());
@@ -441,23 +443,22 @@ function up() {
     const url = URL.createObjectURL(file);
     const img = new Image();
     img.onload = () => {
-      refImg = img;
+  refImg = img;
 
-      // auto-fit to canvas width a bit
-      const rect = canvas.getBoundingClientRect();
-      const maxW = rect.width * 0.6;
-      refScale = Math.min(1, maxW / img.width);
-      if (refScaleEl) refScaleEl.value = String(refScale);
+  const stageW = refCanvas.width / (window.devicePixelRatio || 1);
+  const maxW = stageW * 0.6;
 
-      refX = 20;
-      refY = 20;
-      redraw();
+  refScale = Math.min(1, maxW / img.width);
+  refScaleEl.value = String(refScale);
 
-      URL.revokeObjectURL(url);
-      e.target.value = "";
-    };
-    img.src = url;
-  });
+  refX = 20;
+  refY = 20;
+
+  redraw();
+  URL.revokeObjectURL(url);
+  e.target.value = "";
+};
+
 
   refScaleEl?.addEventListener("input", () => {
     if (!refImg) return;
