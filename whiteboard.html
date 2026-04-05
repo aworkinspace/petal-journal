@@ -119,6 +119,8 @@
     </div>
 <audio id="clearSfx" src="assets/clear-sfx.mp3" preload="auto"></audio>
           <script>
+const refCanvas = document.getElementById("wbRef");
+const refCtx = refCanvas.getContext("2d");
       const canvas = document.getElementById("wb");
       const ctx = canvas.getContext("2d");
 
@@ -142,22 +144,30 @@
       eraserBtn.addEventListener("click", () => (mode = "eraser"));
 
       function resize() {
-        const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-        const rect = canvas.getBoundingClientRect();
-        const prev = canvas.toDataURL("image/png");
+  const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  const rect = canvas.getBoundingClientRect();
+  const prev = canvas.toDataURL("image/png");
 
-        canvas.width = Math.floor(rect.width * dpr);
-        canvas.height = Math.floor(rect.height * dpr);
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  canvas.width = Math.floor(rect.width * dpr);
+  canvas.height = Math.floor(rect.height * dpr);
 
-        ctx.globalCompositeOperation = "source-over";
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, rect.width, rect.height);
+  refCanvas.width = Math.floor(rect.width * dpr);
+  refCanvas.height = Math.floor(rect.height * dpr);
 
-        const img = new Image();
-        img.onload = () => ctx.drawImage(img, 0, 0, rect.width, rect.height);
-        img.src = prev;
-      }
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  refCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  ctx.globalCompositeOperation = "source-over";
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, rect.width, rect.height);
+
+  const img = new Image();
+  img.onload = () => ctx.drawImage(img, 0, 0, rect.width, rect.height);
+  img.src = prev;
+
+  // clear ref overlay on resize (you’ll redraw it if ref exists)
+  refCtx.clearRect(0, 0, rect.width, rect.height);
+}
 
       function pos(e) {
         const rect = canvas.getBoundingClientRect();
@@ -411,17 +421,16 @@ function up() {
   let dragOffX = 0, dragOffY = 0;
 
   function redraw() {
-    // no full redraw of strokes (your board is raster); we just draw ref onto current pixels.
-    // So: reference should be placed BEFORE drawing, or you can re-add it anytime.
-    if (!refImg) return;
-    ctx.globalCompositeOperation = "source-over";
-    ctx.globalAlpha = 0.55; // translucent reference
-    const w = refImg.width * refScale;
-    const h = refImg.height * refScale;
-    ctx.drawImage(refImg, refX, refY, w, h);
-    ctx.globalAlpha = 1;
-  }
+  const rect = canvas.getBoundingClientRect();
+  refCtx.clearRect(0, 0, rect.width, rect.height);
+  if (!refImg) return;
 
+  refCtx.globalAlpha = 0.55;
+  const w = refImg.width * refScale;
+  const h = refImg.height * refScale;
+  refCtx.drawImage(refImg, refX, refY, w, h);
+  refCtx.globalAlpha = 1;
+}
   btnRef?.addEventListener("click", () => refPicker?.click());
 
   refPicker?.addEventListener("change", (e) => {
