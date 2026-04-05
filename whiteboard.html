@@ -55,6 +55,13 @@
 
     <div class="wb-wrap">
       <div class="panel wb-tools">
+<div class="wb-row">
+  <button class="btn" id="btnRef" type="button">Add reference</button>
+  <button class="btn" id="btnRefClear" type="button">Clear ref</button>
+  <span class="muted">Scale</span>
+  <input id="refScale" type="range" min="0.2" max="2" step="0.05" value="1" />
+  <input id="refPicker" type="file" accept="image/*" hidden />
+</div>
         <div class="wb-row">
           <span class="muted">Color</span>
           <input id="color" type="color" value="#A7ABDE" />
@@ -318,7 +325,6 @@
   "assets/lofi.mp3",
   "assets/elevator.mp3",
   "assets/monty.mp3",
-  "assets/intro.mp3"
 ];
 
   let i = Number(localStorage.getItem("petal_track_index") || "0");
@@ -370,6 +376,92 @@
   audio.addEventListener("ended", () => setTrack(i + 1, true));
 
   setBtn();
+})();
+// --- Reference image overlay (move + scale) ---
+(() => {
+  const btnRef = document.getElementById("btnRef");
+  const btnRefClear = document.getElementById("btnRefClear");
+  const refPicker = document.getElementById("refPicker");
+  const refScaleEl = document.getElementById("refScale");
+
+  let refImg = null;
+  let refX = 20, refY = 20;
+  let refScale = 1;
+  let draggingRef = false;
+  let dragOffX = 0, dragOffY = 0;
+
+  function redraw() {
+    // no full redraw of strokes (your board is raster); we just draw ref onto current pixels.
+    // So: reference should be placed BEFORE drawing, or you can re-add it anytime.
+    if (!refImg) return;
+    ctx.globalCompositeOperation = "source-over";
+    ctx.globalAlpha = 0.55; // translucent reference
+    const w = refImg.width * refScale;
+    const h = refImg.height * refScale;
+    ctx.drawImage(refImg, refX, refY, w, h);
+    ctx.globalAlpha = 1;
+  }
+
+  btnRef?.addEventListener("click", () => refPicker?.click());
+
+  refPicker?.addEventListener("change", (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      refImg = img;
+
+      // auto-fit to canvas width a bit
+      const rect = canvas.getBoundingClientRect();
+      const maxW = rect.width * 0.6;
+      refScale = Math.min(1, maxW / img.width);
+      if (refScaleEl) refScaleEl.value = String(refScale);
+
+      refX = 20;
+      refY = 20;
+      redraw();
+
+      URL.revokeObjectURL(url);
+      e.target.value = "";
+    };
+    img.src = url;
+  });
+
+  refScaleEl?.addEventListener("input", () => {
+    if (!refImg) return;
+    refScale = Number(refScaleEl.value);
+    redraw();
+  });
+
+  btnRefClear?.addEventListener("click", () => {
+    refImg = null;
+  });
+
+  // Drag ref: hold Shift and drag on canvas
+  canvas.addEventListener("mousedown", (e) => {
+    if (!refImg || !e.shiftKey) return;
+    const p = pos(e);
+    const w = refImg.width * refScale;
+    const h = refImg.height * refScale;
+    if (p.x >= refX && p.x <= refX + w && p.y >= refY && p.y <= refY + h) {
+      draggingRef = true;
+      dragOffX = p.x - refX;
+      dragOffY = p.y - refY;
+    }
+  });
+
+  canvas.addEventListener("mousemove", (e) => {
+    if (!draggingRef) return;
+    e.preventDefault();
+    const p = pos(e);
+    refX = p.x - dragOffX;
+    refY = p.y - dragOffY;
+    redraw();
+  });
+
+  window.addEventListener("mouseup", () => (draggingRef = false));
 })();
     </script>
   </body>
