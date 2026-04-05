@@ -121,6 +121,8 @@
       let last = null;
       let mode = "pen";
       let penStyle = "smooth";
+      let draggingRef = false; // shared flag
+
 
       penStyleEl?.addEventListener("change", () => (penStyle = penStyleEl.value));
       penBtn.addEventListener("click", () => (mode = "pen"));
@@ -262,20 +264,25 @@
       }
 
       function down(e) {
-        drawing = true;
-        last = pos(e);
-      }
-      function move(e) {
-        if (!drawing) return;
-        e.preventDefault();
-        const p = pos(e);
-        stroke(last, p);
-        last = p;
-      }
-      function up() {
-        drawing = false;
-        last = null;
-      }
+  if (draggingRef) return;
+  drawing = true;
+  last = pos(e);
+}
+
+function move(e) {
+  if (draggingRef) return;
+  if (!drawing) return;
+  e.preventDefault();
+  const p = pos(e);
+  stroke(last, p);
+  last = p;
+}
+
+function up() {
+  drawing = false;
+  last = null;
+  draggingRef = false;
+}
 
       clearBtn.addEventListener("click", () => {
   const rect = canvas.getBoundingClientRect();
@@ -441,16 +448,17 @@
 
   // Drag ref: hold Shift and drag on canvas
   canvas.addEventListener("mousedown", (e) => {
-    if (!refImg || !e.shiftKey) return;
-    const p = pos(e);
-    const w = refImg.width * refScale;
-    const h = refImg.height * refScale;
-    if (p.x >= refX && p.x <= refX + w && p.y >= refY && p.y <= refY + h) {
-      draggingRef = true;
-      dragOffX = p.x - refX;
-      dragOffY = p.y - refY;
-    }
-  });
+  if (!refImg || !e.shiftKey) return;
+  const p = pos(e);
+  const w = refImg.width * refScale;
+  const h = refImg.height * refScale;
+
+  if (p.x >= refX && p.x <= refX + w && p.y >= refY && p.y <= refY + h) {
+    draggingRef = true;
+    dragOffX = p.x - refX;
+    dragOffY = p.y - refY;
+  }
+});
 
   canvas.addEventListener("mousemove", (e) => {
     if (!draggingRef) return;
