@@ -53,6 +53,8 @@
   display: block;
 }
 #wbRef{ pointer-events: none; } /* ref shouldn’t block drawing */
+#wb { z-index: 2; }
+#wbRef { z-index: 1; }
 
     </style>
   </head>
@@ -107,9 +109,9 @@
 
         <small class="muted">Tip: use mouse or touch.</small>
       </div>
-  <div class="wb-stage">
-    <canvas id="wbRef"></canvas>
-  </div>
+  <div class="wb-stage panel" style="padding:12px;">
+  <canvas id="wb"></canvas>
+  <canvas id="wbRef"></canvas>
 </div>
       <div class="panel" style="padding:12px; margin-top:14px;">
         <canvas id="wb"></canvas>
