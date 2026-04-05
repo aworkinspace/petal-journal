@@ -622,13 +622,19 @@ imgPicker?.addEventListener("change", async (e) => {
   }
 
   function setEditorData(e) {
-    if (els.date) els.date.value = e?.date || nowDateValue();
-    if (els.mood) els.mood.value = e?.mood || "Calm";
-    if (els.title) els.title.value = e?.title || "";
-    if (els.tagsInput) els.tagsInput.value = (e?.tags || []).join(", ");
-    if (els.content) els.content.innerHTML = e?.content || "";
-    updateMoodChip();
+  if (els.date) els.date.value = e?.date || nowDateValue();
+  if (els.mood) els.mood.value = e?.mood || "Calm";
+  if (els.title) els.title.value = e?.title || "";
+  if (els.tagsInput) els.tagsInput.value = (e?.tags || []).join(", ");
+  if (els.content) els.content.innerHTML = e?.content || "";
+
+  // remove dead blob images from older entries
+  if (els.content) {
+    els.content.querySelectorAll('img.sticker[src^="blob:"]').forEach((img) => img.remove());
   }
+
+  updateMoodChip();
+}
 
   function makeId() {
     return `${Date.now()}_${Math.random().toString(16).slice(2)}`;
