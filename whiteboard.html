@@ -38,10 +38,23 @@
 #wb{
   pointer-events: auto !important;
 }
- .wb-stage{ position:relative; width:100%; height:70vh; }
-#wb, #wbRef{ position:absolute; inset:0; width:100%; height:100%; border-radius:16px; display:block; }
-#wb { z-index: 1; }
-#wbRef { z-index: 2; pointer-events:none; }
+      .wb-stage{
+  position: relative;
+  width: 100%;
+  height: 70vh;              /* this is the height */
+}
+
+#wb, #wbRef{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  display: block;
+}
+#wbRef{ pointer-events: none; } /* ref shouldn’t block drawing */
+#wb { z-index: 2; }
+#wbRef { z-index: 1; }
 
     </style>
   </head>
