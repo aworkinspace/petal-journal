@@ -923,8 +923,8 @@ imgPicker?.addEventListener("change", async (e) => {
   btn.addEventListener("click", pick);
 })();
 
-/* ------------------------ Spotify embed (single) ------------------------ */
-(() => {
+/* ------------------------ Spotify embed ------------------------ */
+;(() => {
   const urlEl = document.getElementById("spotifyUrl");
   const btnSet = document.getElementById("btnSetSpotify");
   const btnClear = document.getElementById("btnClearSpotify");
@@ -975,10 +975,10 @@ imgPicker?.addEventListener("change", async (e) => {
   });
 
   btnClear.addEventListener("click", () => {
-  localStorage.removeItem("petal_spotify_url");
-  localStorage.removeItem("petal_spotify_embed");
-  urlEl.value = "";
-  if (msg) msg.textContent = "";
-  render(null);
-});
-})(); // closes the Spotify IIFE
+    localStorage.removeItem("petal_spotify_url");
+    localStorage.removeItem("petal_spotify_embed");
+    urlEl.value = "";
+    if (msg) msg.textContent = "";
+    render(null);
+  });
+})();
