@@ -337,7 +337,7 @@ imgPicker?.addEventListener("change", async (e) => {
     e.target.value = "";
   }
 });
-
+});
 /* ------------------------ Firebase Auth + Access ------------------------ */
 
 (() => {
