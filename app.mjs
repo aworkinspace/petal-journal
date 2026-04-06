@@ -323,10 +323,10 @@ imgPicker?.addEventListener("change", async (e) => {
     toast("Uploading image…");
 
     const safeName = (file.name || "image").replace(/[^\w.-]+/g, "_").slice(0, 80);
-    const storageRef = ref(storage, `entry_images/${user.uid}/${Date.now()}_${safeName}`);
+    const fileRef = storageRef(storage, `entry_images/${user.uid}/${Date.now()}_${safeName}`);
 
-    await uploadBytes(storageRef, file, { contentType: file.type });
-    const url = await getDownloadURL(storageRef);
+await uploadBytes(fileRef, file, { contentType: file.type });
+const url = await getDownloadURL(fileRef);
 
     insertSticker(url);
     toast("Image added!");
