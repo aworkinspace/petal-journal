@@ -179,6 +179,7 @@ header{
   overflow-y: auto;
   padding-right: 6px;
   -webkit-overflow-scrolling: touch;
+  background: transparent;
 }
 
 .entry-card{
