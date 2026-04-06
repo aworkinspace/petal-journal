@@ -17,6 +17,8 @@ const THEMES = {
     "--accent": "var(--pink-500)",
     "--text": "#2B2B33",
     "--text-muted": "#5A5A6A",
+    "--bg-spot-1": "rgba(167,171,222,.45)",  // periwinkle tint
+    "--bg-spot-2": "rgba(255,165,214,.35)",  // pink tint
   },
   lavender: {
     "--bg": "#F6F2FF",
@@ -28,6 +30,8 @@ const THEMES = {
     "--accent": "#D7A6FF",
     "--text": "#2B2B33",
     "--text-muted": "#5A5A6A",
+    "--bg-spot-1": "rgba(215,166,255,.32)",
+    "--bg-spot-2": "rgba(167,171,222,.28)",
   },
   sky_sorbet: {
     "--bg": "#F2FBFF",
@@ -39,6 +43,8 @@ const THEMES = {
     "--accent": "#FFA5D6",
     "--text": "#2B2B33",
     "--text-muted": "#5A5A6A",
+    "--bg-spot-1": "rgba(125,182,255,.30)",
+    "--bg-spot-2": "rgba(255,165,214,.24)",
   },
   peach_milk: {
     "--bg": "#FFF6F0",
@@ -50,6 +56,8 @@ const THEMES = {
     "--accent": "#FFB38A",
     "--text": "#2B2B33",
     "--text-muted": "#5A5A6A",
+    "--bg-spot-1": "rgba(255,179,138,.34)",
+    "--bg-spot-2": "rgba(167,171,222,.24)",
   },
   lemon_cream: {
     "--bg": "#FFFCEB",
@@ -61,6 +69,8 @@ const THEMES = {
     "--accent": "#FFC857",
     "--text": "#2B2B33",
     "--text-muted": "#5A5A6A",
+    "--bg-spot-1": "rgba(255,200,87,.32)",
+    "--bg-spot-2": "rgba(154,182,255,.22)",
   },
 
   // darker pastels
