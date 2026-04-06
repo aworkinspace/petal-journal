@@ -64,7 +64,11 @@
       };
 
       const app = initializeApp(firebaseConfig);
-      window.firebaseAuth = getAuth(app);
+
+const auth = getAuth(app);
+setPersistence(auth, browserLocalPersistence).catch(console.error);
+
+window.firebaseAuth = auth;
       window.firebaseDb = getFirestore(app);
       window.firebaseStorage = getStorage(app);
     </script>
