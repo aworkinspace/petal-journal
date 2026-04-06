@@ -729,18 +729,20 @@ header, .top-actions { overflow: visible; }
   border-radius: 16px;
 }
 #spotifyEmbed { width: 100%; }
-.spotify-iframe{
+/* BEFORE: .spotify-embed iframe{ */
+.spotify-iframe{ /* <-- Change this class name */
   width: 100%;
-  height: 352px;          /* mobile-friendly */
+  height: 352px; /* Recommended: make it taller for mobile */
   border: 0;
   border-radius: 16px;
-  display: block;
+  display: block; /* Ensure it's a block element */
 }
 
-/* optional: slightly shorter on very small screens */
+/* Optional: adjust height for very small screens */
 @media (max-width: 420px){
   .spotify-iframe{ height: 300px; }
 }
+
 .menu-block.spotify,
 #spotifyEmbed{
   overflow: visible;
