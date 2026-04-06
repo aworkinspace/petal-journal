@@ -741,3 +741,8 @@ header, .top-actions { overflow: visible; }
 @media (max-width: 420px){
   .spotify-iframe{ height: 300px; }
 }
+.menu-block.spotify,
+#spotifyEmbed{
+  overflow: visible;
+}
+.spotify-iframe{ pointer-events: auto; }
