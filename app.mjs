@@ -982,11 +982,11 @@ function cleanupBlobImages() {
     host.innerHTML = "";
     if (!embedUrl) return;
     host.innerHTML = `
-      <iframe
-        style="border-radius:16px; width:100%; height:152px; border:0;"
-        src="${embedUrl}"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"></iframe>
+  <iframe
+    class="spotify-iframe"
+    src="${embedUrl}"
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+    loading="lazy"></iframe>
     `;
   }
 
