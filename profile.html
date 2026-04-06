@@ -28,17 +28,6 @@
 
         const name = localStorage.getItem("petal_theme") || "petal";
 
-        if (name === "custom") {
-          try {
-            const raw = localStorage.getItem("petal_custom_theme_vars");
-            if (raw) {
-              const vars = JSON.parse(raw);
-              for (const k in vars) document.documentElement.style.setProperty(k, vars[k]);
-            }
-          } catch {}
-          return;
-        }
-
         const t = THEMES[name] || THEMES.petal;
         for (const k in t) document.documentElement.style.setProperty(k, t[k]);
       })();
@@ -55,7 +44,6 @@
         box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary-soft) 70%, transparent);
       }
       .profile-pic-upload { margin-top: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center; }
-      #themeUpload { width: 100%; }
     </style>
 
     <!-- Firebase init (exposes window.firebaseAuth/firebaseDb/firebaseStorage) -->
@@ -123,13 +111,6 @@
           <small class="muted" id="birthdayUpdateMsg" style="margin-top: 8px; display:block;"></small>
         </div>
 
-        <div class="profile-field">
-          <div class="section-title">Custom Theme (beta, JSON)</div>
-          <input id="themeUpload" type="file" accept="application/json" />
-          <button class="btn" id="btnClearTheme" type="button" style="margin-top:10px;">Remove custom theme</button>
-          <small class="muted" id="themeMsg" style="display:block; margin-top:8px;"></small>
-        </div>
-
         <div class="row" style="margin-top: 24px">
           <button class="btn btn-primary" id="btnUpdateProfile" type="button">Save Profile</button>
           <small class="muted" id="generalMsg"></small>
@@ -173,10 +154,6 @@
 
       const btnUpdateProfile = $("btnUpdateProfile");
       const btnDeleteAccount = $("btnDeleteAccount");
-
-      const themeUploadEl = $("themeUpload");
-      const btnClearTheme = $("btnClearTheme");
-      const themeMsgEl = $("themeMsg");
 
       const DEFAULT_PIC = "assets/default-profile.png";
       let currentUser = null;
@@ -283,58 +260,6 @@
           console.error("Error updating profile:", error);
           showMsg(generalMsgEl, `Failed to save profile: ${error.message}`, true);
         }
-      });
-
-      // Custom theme upload (JSON)
-      function isValidVarName(k) {
-        return typeof k === "string" && k.startsWith("--") && k.length <= 64;
-      }
-      function isValidVarVal(v) {
-        return typeof v === "string" && v.length <= 200;
-      }
-
-      themeUploadEl?.addEventListener("change", async (e) => {
-        const file = e.target.files?.[0];
-        if (!file || !currentUser) return;
-
-        try {
-          const text = await file.text();
-          const json = JSON.parse(text);
-
-          const name = String(json?.name || "Custom Theme").slice(0, 40);
-          const vars = json?.vars && typeof json.vars === "object" ? json.vars : null;
-          if (!vars) throw new Error("Invalid file: missing vars object.");
-
-          const cleaned = {};
-          for (const [k, v] of Object.entries(vars)) {
-            if (!isValidVarName(k) || !isValidVarVal(v)) continue;
-            cleaned[k] = v;
-          }
-          if (Object.keys(cleaned).length === 0) throw new Error("No valid CSS variables found.");
-
-          await setDoc(
-            doc(db, "users", currentUser.uid, "settings", "theme"),
-            { enabled: true, name, vars: cleaned, updatedAt: Date.now() },
-            { merge: true }
-          );
-
-          // cache so other pages can apply instantly
-          localStorage.setItem("petal_custom_theme_vars", JSON.stringify(cleaned));
-          localStorage.setItem("petal_theme", "custom");
-
-          showMsg(themeMsgEl, `Saved: ${name}`);
-        } catch (err) {
-          showMsg(themeMsgEl, `Theme upload failed: ${err?.message || err}`, true);
-        } finally {
-          e.target.value = "";
-        }
-      });
-
-      btnClearTheme?.addEventListener("click", async () => {
-        if (!currentUser) return;
-        await deleteDoc(doc(db, "users", currentUser.uid, "settings", "theme"));
-        localStorage.removeItem("petal_custom_theme_vars");
-        showMsg(themeMsgEl, "Custom theme removed.");
       });
 
       // Delete account
