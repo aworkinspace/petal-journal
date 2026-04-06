@@ -179,6 +179,8 @@ header{
   overflow-y: auto;
   padding-right: 6px;
   -webkit-overflow-scrolling: touch;
+}
+.entry-list{
   background: transparent !important;
 }
 .entry-list::-webkit-scrollbar-track{ background: transparent; }
