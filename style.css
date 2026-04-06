@@ -182,7 +182,7 @@ header{
   scrollbar-gutter: stable;      /* optional */
   display: flex;
   flex-direction: column;
-  gap: 12px; /* adjust */
+  gap: 6px; /* adjust */
 }
 
 /* Firefox */
