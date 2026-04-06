@@ -3,10 +3,6 @@
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
-import { getAuth, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-
-window.firebaseAuth = getAuth(app);
-setPersistence(window.firebaseAuth, browserLocalPersistence).catch(console.error);
 
 /* ----------------------------- Theme + Skin ----------------------------- */
 
