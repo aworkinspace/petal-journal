@@ -20,9 +20,12 @@
     <!-- Firebase SDKs (exposed for script.js) -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-      import { getAuth } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-      import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-      import { getStorage } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
+import {
+  getAuth,
+  setPersistence,
+  browserLocalPersistence
+} from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+
 
       const firebaseConfig = {
         apiKey: "AIzaSyBqpOzgqcRebD_yCtjW7HqIyy9rdTcCVvc",
@@ -311,6 +314,7 @@ window.firebaseAuth = auth;
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
     <!-- App -->
-    <script type="module" src="app.mjs?v=2"></script>
+    <script type="module" src="firebase-init.mjs"></script>
+<script type="module" src="app.mjs"></script>
   </body>
 </html>
