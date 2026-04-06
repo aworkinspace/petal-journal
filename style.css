@@ -175,7 +175,7 @@ header{
 .section-title-inline{ margin:0; }
 
 .entry-list{
-  max-height: 55vh;
+  max-height: 25vh;
   overflow-y: auto;
   background: transparent;
   padding-right: 0;              /* remove the “gutter” you added */
