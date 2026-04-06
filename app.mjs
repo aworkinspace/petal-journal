@@ -8,70 +8,74 @@ import { ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gsta
 
 const THEMES = {
   petal: {
-    "--bg": "var(--rose-50)",
-    "--surface": "var(--rose-50)",
-    "--surface-2": "var(--pink-200)",
-    "--border": "var(--mauve-200)",
-    "--primary": "var(--periwinkle-400)",
-    "--primary-soft": "var(--periwinkle-200)",
-    "--accent": "var(--pink-500)",
-    "--text": "#2B2B33",
-    "--text-muted": "#5A5A6A",
-    "--bg-spot-1": "rgba(167,171,222,.45)",  // periwinkle tint
-    "--bg-spot-2": "rgba(255,165,214,.35)",  // pink tint
-  },
-  lavender: {
-    "--bg": "#F6F2FF",
-    "--surface": "#F6F2FF",
-    "--surface-2": "#EDE4FF",
-    "--border": "#D8CBF2",
-    "--primary": "#A7ABDE",
-    "--primary-soft": "#CED1F8",
-    "--accent": "#D7A6FF",
-    "--text": "#2B2B33",
-    "--text-muted": "#5A5A6A",
-    "--bg-spot-1": "rgba(215,166,255,.32)",
-    "--bg-spot-2": "rgba(167,171,222,.28)",
-  },
-  sky_sorbet: {
-    "--bg": "#F2FBFF",
-    "--surface": "#F2FBFF",
-    "--surface-2": "#DFF3FF",
-    "--border": "#C7E4F5",
-    "--primary": "#7DB6FF",
-    "--primary-soft": "#CFE4FF",
-    "--accent": "#FFA5D6",
-    "--text": "#2B2B33",
-    "--text-muted": "#5A5A6A",
-    "--bg-spot-1": "rgba(125,182,255,.30)",
-    "--bg-spot-2": "rgba(255,165,214,.24)",
-  },
-  peach_milk: {
-    "--bg": "#FFF6F0",
-    "--surface": "#FFF6F0",
-    "--surface-2": "#FFE3D2",
-    "--border": "#F2CDBB",
-    "--primary": "#A7ABDE",
-    "--primary-soft": "#CED1F8",
-    "--accent": "#FFB38A",
-    "--text": "#2B2B33",
-    "--text-muted": "#5A5A6A",
-    "--bg-spot-1": "rgba(255,179,138,.34)",
-    "--bg-spot-2": "rgba(167,171,222,.24)",
-  },
-  lemon_cream: {
-    "--bg": "#FFFCEB",
-    "--surface": "#FFFCEB",
-    "--surface-2": "#FFF2B8",
-    "--border": "#E9DFA2",
-    "--primary": "#9AB6FF",
-    "--primary-soft": "#D6E3FF",
-    "--accent": "#FFC857",
-    "--text": "#2B2B33",
-    "--text-muted": "#5A5A6A",
-    "--bg-spot-1": "rgba(255,200,87,.32)",
-    "--bg-spot-2": "rgba(154,182,255,.22)",
-  },
+  "--bg": "var(--rose-50)",
+  "--surface": "var(--rose-50)",
+  "--surface-2": "var(--pink-200)",
+  "--border": "var(--mauve-200)",
+  "--primary": "var(--periwinkle-400)",
+  "--primary-soft": "var(--periwinkle-200)",
+  "--accent": "var(--pink-500)",
+  "--text": "#2B2B33",
+  "--text-muted": "#5A5A6A",
+  "--bg-spot-1": "rgba(167,171,222,.45)",  // periwinkle tint
+  "--bg-spot-2": "rgba(255,165,214,.35)",  // pink tint
+},
+
+lavender: {
+  "--bg": "#F6F2FF",
+  "--surface": "#F6F2FF",
+  "--surface-2": "#EDE4FF",
+  "--border": "#D8CBF2",
+  "--primary": "#A7ABDE",
+  "--primary-soft": "#CED1F8",
+  "--accent": "#D7A6FF",
+  "--text": "#2B2B33",
+  "--text-muted": "#5A5A6A",
+  "--bg-spot-1": "rgba(215,166,255,.32)",
+  "--bg-spot-2": "rgba(167,171,222,.28)",
+},
+
+sky_sorbet: {
+  "--bg": "#F2FBFF",
+  "--surface": "#F2FBFF",
+  "--surface-2": "#DFF3FF",
+  "--border": "#C7E4F5",
+  "--primary": "#7DB6FF",
+  "--primary-soft": "#CFE4FF",
+  "--accent": "#FFA5D6",
+  "--text": "#2B2B33",
+  "--text-muted": "#5A5A6A",
+  "--bg-spot-1": "rgba(125,182,255,.30)",
+  "--bg-spot-2": "rgba(255,165,214,.24)",
+},
+
+peach_milk: {
+  "--bg": "#FFF6F0",
+  "--surface": "#FFF6F0",
+  "--surface-2": "#FFE3D2",
+  "--border": "#F2CDBB",
+  "--primary": "#A7ABDE",
+  "--primary-soft": "#CED1F8",
+  "--accent": "#FFB38A",
+  "--text": "#2B2B33",
+  "--text-muted": "#5A5A6A",
+  "--bg-spot-1": "rgba(255,179,138,.34)",
+  "--bg-spot-2": "rgba(167,171,222,.24)",
+},
+
+lemon_cream: {
+  "--bg": "#FFFCEB",
+  "--surface": "#FFFCEB",
+  "--surface-2": "#FFF2B8",
+  "--border": "#E9DFA2",
+  "--primary": "#9AB6FF",
+  "--primary-soft": "#D6E3FF",
+  "--accent": "#FFC857",
+  "--text": "#2B2B33",
+  "--text-muted": "#5A5A6A",
+  "--bg-spot-1": "rgba(255,200,87,.32)",
+  "--bg-spot-2": "rgba(154,182,255,.22)",
+},
 
   // darker pastels
   dusky_rose: {
@@ -182,6 +186,8 @@ blueberry_yogurt: {
   "--bg-spot-1": "rgba(127,140,255,.30)",  // blueberry
   "--bg-spot-2": "rgba(255,165,214,.20)",  // yogurt-berry swirl
 },
+
+  },
 };
 
 function applyVars(vars) {
@@ -962,7 +968,8 @@ function cleanupBlobImages() {
 })();
 
 /* ------------------------ Spotify embed ------------------------ */
-;(() => {
+;// --- Spotify embed ---
+(() => {
   const urlEl = document.getElementById("spotifyUrl");
   const btnSet = document.getElementById("btnSetSpotify");
   const btnClear = document.getElementById("btnClearSpotify");
@@ -970,46 +977,71 @@ function cleanupBlobImages() {
   const msg = document.getElementById("spotifyMsg");
   if (!urlEl || !btnSet || !btnClear || !host) return;
 
+  // IMPORTANT: Re-declare betaThemes here so it's accessible within this IIFE
+  // This list defines which themes are considered "dark" for Spotify purposes.
+  const betaThemes = new Set([
+    "midnight",
+    "strawberry_matcha", // Assuming this is also a dark mode visually for Spotify
+    "blueberry_yogurt",  // Assuming this is also a dark mode visually for Spotify
+    "dusky_rose",
+    "mauve_night",
+    "deep_sage",
+    "blueberry_dusk",
+    "cocoa_lilac",
+    "custom", // Assuming a 'custom' theme could potentially be dark, you might need to refine this for custom.
+  ]);
+
   function toEmbed(url) {
     if (!url) return null;
     const m1 = url.match(/open\.spotify\.com\/playlist\/([a-zA-Z0-9]+)/);
     const m2 = url.match(/spotify:playlist:([a-zA-Z0-9]+)/);
     const id = m1?.[1] || m2?.[1];
+    // This returns the base embed URL without the theme parameter
     return id ? `https://open.spotify.com/embed/playlist/${id}` : null;
   }
 
-  function render(embedUrl) {
+  function render(baseEmbedUrl) { // Renamed parameter for clarity
     host.innerHTML = "";
-    if (!embedUrl) return;
+    if (!baseEmbedUrl) return;
+
+    // Determine if the current theme is a "dark" theme
+    const currentThemeName = localStorage.getItem("petal_theme") || "petal";
+    const isDarkTheme = betaThemes.has(currentThemeName);
+
+    const spotifyPlayerTheme = isDarkTheme ? "dark" : "light";
+    const finalEmbedSrc = `${baseEmbedUrl}?theme=${spotifyPlayerTheme}`; // Append the theme parameter
+
     host.innerHTML = `
-  <iframe
-    class="spotify-iframe"
-    src="${embedUrl}"
-    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-    loading="lazy"></iframe>
+      <iframe
+        class="spotify-iframe"
+        style="border-radius:16px; width:100%; height:352px; border:0;"
+        src="${finalEmbedSrc}"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"></iframe>
     `;
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    const saved = localStorage.getItem("petal_spotify_embed");
-    if (saved) {
-      render(saved);
+    const savedBaseEmbedUrl = localStorage.getItem("petal_spotify_embed");
+    if (savedBaseEmbedUrl) {
+      // Re-render to ensure correct theme is applied based on current settings
+      render(savedBaseEmbedUrl);
       urlEl.value = localStorage.getItem("petal_spotify_url") || "";
     }
   });
 
   btnSet.addEventListener("click", () => {
     const raw = urlEl.value.trim();
-    const embed = toEmbed(raw);
-    if (!embed) {
+    const baseEmbed = toEmbed(raw);
+    if (!baseEmbed) {
       if (msg) msg.textContent = "That doesn’t look like a Spotify playlist link.";
       render(null);
       return;
     }
     if (msg) msg.textContent = "";
     localStorage.setItem("petal_spotify_url", raw);
-    localStorage.setItem("petal_spotify_embed", embed);
-    render(embed);
+    localStorage.setItem("petal_spotify_embed", baseEmbed); // Store the BASE embed URL
+    render(baseEmbed); // Call render with the base embed URL
   });
 
   btnClear.addEventListener("click", () => {
@@ -1019,4 +1051,17 @@ function cleanupBlobImages() {
     if (msg) msg.textContent = "";
     render(null);
   });
+
+  // Optional: Add an event listener to re-render Spotify when theme changes
+  // This assumes your applyTheme function dispatches a custom event or is globally accessible.
+  // If `applyTheme` is in app.mjs, you can modify it to dispatch a custom event:
+  // e.g., document.dispatchEvent(new CustomEvent('themeChanged'));
+  // Then listen here:
+  document.addEventListener('themeChanged', () => { // Or whatever event name you use
+    const savedBaseEmbedUrl = localStorage.getItem("petal_spotify_embed");
+    if (savedBaseEmbedUrl) {
+      render(savedBaseEmbedUrl);
+    }
+  });
+
 })();
