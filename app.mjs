@@ -74,8 +74,8 @@ const THEMES = {
     "--accent": "#FF8FBC",
     "--text": "#F2F0F7",
     "--text-muted": "rgba(242,240,247,.75)",
-    "--bg-spot-1": "transparent",
-    "--bg-spot-2": "transparent",
+    "--bg-spot-1": "rgba(183,166,255,.22)",
+    "--bg-spot-2": "rgba(255,143,188,.16)",
   },
   mauve_night: {
     "--bg": "#100F14",
@@ -87,8 +87,8 @@ const THEMES = {
     "--accent": "#D7A6FF",
     "--text": "#F2F0F7",
     "--text-muted": "rgba(242,240,247,.75)",
-    "--bg-spot-1": "transparent",
-    "--bg-spot-2": "transparent",
+    "--bg-spot-1": "rgba(159,182,255,.18)",
+  "--bg-spot-2": "rgba(215,166,255,.14)",
   },
   deep_sage: {
     "--bg": "#0F1412",
@@ -102,6 +102,8 @@ const THEMES = {
     "--text-muted": "rgba(242,240,247,.75)",
     "--bg-spot-1": "transparent",
     "--bg-spot-2": "transparent",
+"--bg-spot-1": "rgba(147,209,179,.18)",
+  "--bg-spot-2": "rgba(255,155,183,.12)",
   },
   blueberry_dusk: {
     "--bg": "#0D101A",
@@ -113,8 +115,8 @@ const THEMES = {
     "--accent": "#8FE3FF",
     "--text": "#F2F0F7",
     "--text-muted": "rgba(242,240,247,.75)",
-    "--bg-spot-1": "transparent",
-    "--bg-spot-2": "transparent",
+    "--bg-spot-1": "rgba(142,162,255,.20)",
+    "--bg-spot-2": "rgba(143,227,255,.12)",
   },
   cocoa_lilac: {
     "--bg": "#141014",
@@ -126,8 +128,8 @@ const THEMES = {
     "--accent": "#FFB38A",
     "--text": "#F2F0F7",
     "--text-muted": "rgba(242,240,247,.75)",
-    "--bg-spot-1": "transparent",
-    "--bg-spot-2": "transparent",
+    "--bg-spot-1": "rgba(226,179,255,.18)",
+    "--bg-spot-2": "rgba(255,179,138,.10)",
   },
   midnight: {
     "--bg": "#0F0D14",
@@ -139,8 +141,8 @@ const THEMES = {
     "--accent": "#FFA5D6",
     "--text": "#F2F0F7",
     "--text-muted": "rgba(242,240,247,.75)",
-    "--bg-spot-1": "transparent",
-    "--bg-spot-2": "transparent",
+    "--bg-spot-1": "rgba(142,162,255,.18)",
+    "--bg-spot-2": "rgba(255,165,214,.12)",
   },
 
   strawberry_matcha: {
