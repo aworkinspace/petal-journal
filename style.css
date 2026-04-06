@@ -181,7 +181,7 @@ header{
   -webkit-overflow-scrolling: touch;
   background: transparent !important;
 }
-
+.entry-list::-webkit-scrollbar-track{ background: transparent; }
 .entry-card{
   border:1px solid var(--border);
   background: color-mix(in srgb, white 60%, var(--surface-2) 40%);
