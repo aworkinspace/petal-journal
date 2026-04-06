@@ -243,13 +243,30 @@ header{
 .tips{ font-size:13px; line-height:1.5; }
 
 @media (max-width: 1024px){
-  .shell{ grid-template-columns: 280px 1fr; }
-  .right{ display:none; }
+  .shell{
+    /* On medium screens, keep aside and main side-by-side */
+    grid-template-columns: 280px minmax(0, 1fr);
+    /* And the .right section will automatically wrap to the next row below them */
+  }
+  .right{
+    /* Override the 'display: none' */
+    display: block; /* Or whatever default display it needs to be */
+    /* Make it span the entire width below the other two columns */
+    grid-column: 1 / -1; /* Spans from the first to the last grid line */
+  }
 }
 
 @media (max-width: 720px){
-  header{ padding:18px 16px 6px; }
-  .shell{ grid-template-columns: 1fr; padding:10px 16px 22px; }
+  .shell{
+    /* On small screens, everything stacks in a single column */
+    grid-template-columns: 1fr;
+    padding:10px 16px 22px;
+  }
+  /* .aside, .main, .right will naturally stack here in HTML order */
+  .right{
+    /* Ensure it also respects the padding on smaller screens */
+    padding: 16px; /* Example, adjust as needed if it looks off */
+  }
 }
 
 #sparkles{
