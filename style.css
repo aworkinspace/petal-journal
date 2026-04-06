@@ -175,15 +175,29 @@ header{
 .section-title-inline{ margin:0; }
 
 .entry-list{
-  height: 55vh;   /* tweak to taste */
+  max-height: 55vh;
   overflow-y: auto;
-  padding-right: 6px;
-  -webkit-overflow-scrolling: touch;
+  background: transparent;
+  padding-right: 0;              /* remove the “gutter” you added */
+  scrollbar-gutter: stable;      /* optional */
 }
+
+/* Firefox */
 .entry-list{
-  background: transparent !important;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.25) transparent;
 }
+
+/* Chrome/Safari/Edge */
+.entry-list::-webkit-scrollbar{ width: 10px; }
 .entry-list::-webkit-scrollbar-track{ background: transparent; }
+.entry-list::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,.25);
+  border-radius: 999px;
+  border: 2px solid transparent;  /* keeps it from looking like a solid bar */
+  background-clip: content-box;
+}
+
 .entry-card{
   border:1px solid var(--border);
   background: color-mix(in srgb, white 60%, var(--surface-2) 40%);
