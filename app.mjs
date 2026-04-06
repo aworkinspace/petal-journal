@@ -104,7 +104,7 @@ lemon_cream: {
     "--bg-spot-1": "rgba(159,182,255,.18)",
   "--bg-spot-2": "rgba(215,166,255,.14)",
   },
-  deep_sage: {
+    deep_sage: {
     "--bg": "#0F1412",
     "--surface": "#141A17",
     "--surface-2": "#1C2621",
@@ -114,10 +114,8 @@ lemon_cream: {
     "--accent": "#FF9BB7",
     "--text": "#F2F0F7",
     "--text-muted": "rgba(242,240,247,.75)",
-    "--bg-spot-1": "transparent",
-    "--bg-spot-2": "transparent",
-"--bg-spot-1": "rgba(147,209,179,.18)",
-  "--bg-spot-2": "rgba(255,155,183,.12)",
+    "--bg-spot-1": "rgba(147,209,179,.18)", // Corrected line
+    "--bg-spot-2": "rgba(255,155,183,.12)", // Corrected line
   },
   blueberry_dusk: {
     "--bg": "#0D101A",
@@ -185,10 +183,9 @@ blueberry_yogurt: {
   "--text-muted": "#5A5A6A",
   "--bg-spot-1": "rgba(127,140,255,.30)",  // blueberry
   "--bg-spot-2": "rgba(255,165,214,.20)",  // yogurt-berry swirl
-},
+}, // <-- Correct closing for blueberry_yogurt
+}; // <-- Correct closing for the entire THEMES object.
 
-  },
-};
 
 function applyVars(vars) {
   if (!vars || typeof vars !== "object") return;
@@ -965,102 +962,4 @@ function cleanupBlobImages() {
   });
 
   btn.addEventListener("click", pick);
-})();
-
-;// --- Spotify embed ---
-(() => {
-  const urlEl = document.getElementById("spotifyUrl");
-  const btnSet = document.getElementById("btnSetSpotify");
-  const btnClear = document.getElementById("btnClearSpotify");
-  const host = document.getElementById("spotifyEmbed");
-  const msg = document.getElementById("spotifyMsg");
-  if (!urlEl || !btnSet || !btnClear || !host) return;
-
-  // IMPORTANT: Re-declare betaThemes here so it's accessible within this IIFE
-  // This list defines which themes are considered "dark" for Spotify purposes.
-  const betaThemes = new Set([
-    "midnight",
-    "strawberry_matcha", // Assuming this is also a dark mode visually for Spotify
-    "blueberry_yogurt",  // Assuming this is also a dark mode visually for Spotify
-    "dusky_rose",
-    "mauve_night",
-    "deep_sage",
-    "blueberry_dusk",
-    "cocoa_lilac",
-    "custom", // Assuming a 'custom' theme could potentially be dark, you might need to refine this for custom.
-  ]);
-
-  function toEmbed(url) {
-    if (!url) return null;
-    const m1 = url.match(/open\.spotify\.com\/playlist\/([a-zA-Z0-9]+)/);
-    const m2 = url.match(/spotify:playlist:([a-zA-Z0-9]+)/);
-    const id = m1?.[1] || m2?.[1];
-    // This returns the base embed URL without the theme parameter
-    return id ? `https://open.spotify.com/embed/playlist/${id}` : null;
-  }
-
-  function render(baseEmbedUrl) { // Renamed parameter for clarity
-    host.innerHTML = "";
-    if (!baseEmbedUrl) return;
-
-    // Determine if the current theme is a "dark" theme
-    const currentThemeName = localStorage.getItem("petal_theme") || "petal";
-    const isDarkTheme = betaThemes.has(currentThemeName);
-
-    const spotifyPlayerTheme = isDarkTheme ? "dark" : "light";
-    const finalEmbedSrc = `${baseEmbedUrl}?theme=${spotifyPlayerTheme}`; // Append the theme parameter
-
-    host.innerHTML = `
-      <iframe
-        class="spotify-iframe"
-        style="border-radius:16px; width:100%; height:352px; border:0;"
-        src="${finalEmbedSrc}"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"></iframe>
-    `;
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const savedBaseEmbedUrl = localStorage.getItem("petal_spotify_embed");
-    if (savedBaseEmbedUrl) {
-      // Re-render to ensure correct theme is applied based on current settings
-      render(savedBaseEmbedUrl);
-      urlEl.value = localStorage.getItem("petal_spotify_url") || "";
-    }
-  });
-
-  btnSet.addEventListener("click", () => {
-    const raw = urlEl.value.trim();
-    const baseEmbed = toEmbed(raw);
-    if (!baseEmbed) {
-      if (msg) msg.textContent = "That doesn’t look like a Spotify playlist link.";
-      render(null);
-      return;
-    }
-    if (msg) msg.textContent = "";
-    localStorage.setItem("petal_spotify_url", raw);
-    localStorage.setItem("petal_spotify_embed", baseEmbed); // Store the BASE embed URL
-    render(baseEmbed); // Call render with the base embed URL
-  });
-
-  btnClear.addEventListener("click", () => {
-    localStorage.removeItem("petal_spotify_url");
-    localStorage.removeItem("petal_spotify_embed");
-    urlEl.value = "";
-    if (msg) msg.textContent = "";
-    render(null);
-  });
-
-  // Optional: Add an event listener to re-render Spotify when theme changes
-  // This assumes your applyTheme function dispatches a custom event or is globally accessible.
-  // If `applyTheme` is in app.mjs, you can modify it to dispatch a custom event:
-  // e.g., document.dispatchEvent(new CustomEvent('themeChanged'));
-  // Then listen here:
-  document.addEventListener('themeChanged', () => { // Or whatever event name you use
-    const savedBaseEmbedUrl = localStorage.getItem("petal_spotify_embed");
-    if (savedBaseEmbedUrl) {
-      render(savedBaseEmbedUrl);
-    }
-  });
-
 })();
