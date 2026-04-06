@@ -967,7 +967,6 @@ function cleanupBlobImages() {
   btn.addEventListener("click", pick);
 })();
 
-/* ------------------------ Spotify embed ------------------------ */
 ;// --- Spotify embed ---
 (() => {
   const urlEl = document.getElementById("spotifyUrl");
