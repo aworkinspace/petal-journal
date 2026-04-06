@@ -156,27 +156,32 @@ const THEMES = {
   },
 
   strawberry_matcha: {
-    "--bg": "#F7FFF6",
-    "--surface": "#F7FFF6",
-    "--surface-2": "#E8F7E6",
-    "--border": "#CFE6CC",
-    "--primary": "#7FBF9B",
-    "--primary-soft": "#CFEBDD",
-    "--accent": "#FF8FB8",
-    "--text": "#2B2B33",
-    "--text-muted": "#5A5A6A",
-  },
-  blueberry_yogurt: {
-    "--bg": "#F4F6FF",
-    "--surface": "#F4F6FF",
-    "--surface-2": "#E2E7FF",
-    "--border": "#CAD3FF",
-    "--primary": "#7F8CFF",
-    "--primary-soft": "#C9D0FF",
-    "--accent": "#FFA5D6",
-    "--text": "#2B2B33",
-    "--text-muted": "#5A5A6A",
-  },
+  "--bg": "#F7FFF6",
+  "--surface": "#F7FFF6",
+  "--surface-2": "#E8F7E6",
+  "--border": "#CFE6CC",
+  "--primary": "#7FBF9B",
+  "--primary-soft": "#CFEBDD",
+  "--accent": "#FF8FB8",
+  "--text": "#2B2B33",
+  "--text-muted": "#5A5A6A",
+  "--bg-spot-1": "rgba(127,191,155,.28)",  // matcha
+  "--bg-spot-2": "rgba(255,143,184,.22)",  // strawberry
+},
+
+blueberry_yogurt: {
+  "--bg": "#F4F6FF",
+  "--surface": "#F4F6FF",
+  "--surface-2": "#E2E7FF",
+  "--border": "#CAD3FF",
+  "--primary": "#7F8CFF",
+  "--primary-soft": "#C9D0FF",
+  "--accent": "#FFA5D6",
+  "--text": "#2B2B33",
+  "--text-muted": "#5A5A6A",
+  "--bg-spot-1": "rgba(127,140,255,.30)",  // blueberry
+  "--bg-spot-2": "rgba(255,165,214,.20)",  // yogurt-berry swirl
+},
 };
 
 function applyVars(vars) {
