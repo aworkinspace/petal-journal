@@ -175,7 +175,7 @@ header{
 .section-title-inline{ margin:0; }
 
 .entry-list{
-  max-height: 55vh;   /* tweak to taste */
+  height: 55vh;   /* tweak to taste */
   overflow-y: auto;
   padding-right: 6px;
   -webkit-overflow-scrolling: touch;
