@@ -47,9 +47,10 @@
     </style>
 
     <!-- Firebase init (exposes window.firebaseAuth/firebaseDb/firebaseStorage) -->
+        <!-- Firebase init (exposes window.firebaseAuth/firebaseDb/firebaseStorage) -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-      import { getAuth } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+      import { getAuth, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
       import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
       import { getStorage } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
 
@@ -65,10 +66,11 @@
 
       const app = initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
-setPersistence(auth, browserLocalPersistence).catch(console.error);
+      const auth = getAuth(app);
+      // This ensures the user stays logged in across refreshes
+      setPersistence(auth, browserLocalPersistence).catch(console.error);
 
-window.firebaseAuth = auth;
+      window.firebaseAuth = auth;
       window.firebaseDb = getFirestore(app);
       window.firebaseStorage = getStorage(app);
     </script>
