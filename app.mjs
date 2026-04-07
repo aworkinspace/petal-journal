@@ -952,3 +952,92 @@ function cleanupBlobImages() {
 
   btn.addEventListener("click", pick);
 })();
+// --- Spotify embed ---
+(() => {
+  const urlEl = document.getElementById("spotifyUrl");
+  const btnSet = document.getElementById("btnSetSpotify");
+  const btnClear = document.getElementById("btnClearSpotify");
+  const host = document.getElementById("spotifyEmbed");
+  const msg = document.getElementById("spotifyMsg");
+
+  if (!urlEl || !btnSet || !btnClear || !host) return;
+
+  const betaThemes = new Set([
+    "midnight", "strawberry_matcha", "blueberry_yogurt", "dusky_rose", 
+    "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "custom"
+  ]);
+
+  function toEmbed(url) {
+    if (!url) return null;
+    // Updated Regex to catch links with extra stuff like ?si=...
+    const playlistMatch = url.match(/playlist\/([a-zA-Z0-9]+)/);
+    const albumMatch = url.match(/album\/([a-zA-Z0-9]+)/);
+    const trackMatch = url.match(/track\/([a-zA-Z0-9]+)/);
+    
+    const id = playlistMatch?.[1] || albumMatch?.[1] || trackMatch?.[1];
+    const type = playlistMatch ? 'playlist' : (albumMatch ? 'album' : 'track');
+
+    return id ? `https://open.spotify.com/embed/${type}/${id}` : null;
+  }
+
+  function render(baseEmbedUrl) {
+    host.innerHTML = "";
+    if (!baseEmbedUrl) return;
+
+    const currentThemeName = localStorage.getItem("petal_theme") || "petal";
+    const isDarkTheme = betaThemes.has(currentThemeName);
+    const spotifyPlayerTheme = isDarkTheme ? "dark" : "light";
+    
+    // Add the theme parameter
+    const finalSrc = `${baseEmbedUrl}?theme=${spotifyPlayerTheme}`;
+
+    host.innerHTML = `
+      <iframe
+        class="spotify-iframe"
+        src="${finalSrc}"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"></iframe>
+    `;
+  }
+
+  // Handle Set Button
+  btnSet.addEventListener("click", () => {
+    const raw = urlEl.value.trim();
+    const baseEmbed = toEmbed(raw);
+
+    if (!baseEmbed) {
+      if (msg) msg.textContent = "Invalid Spotify link. Use a Playlist, Album, or Track link.";
+      render(null);
+      return;
+    }
+
+    if (msg) msg.textContent = "";
+    localStorage.setItem("petal_spotify_url", raw);
+    localStorage.setItem("petal_spotify_embed", baseEmbed);
+    render(baseEmbed);
+    toast("Spotify player updated!");
+  });
+
+  // Handle Clear Button
+  btnClear.addEventListener("click", () => {
+    localStorage.removeItem("petal_spotify_url");
+    localStorage.removeItem("petal_spotify_embed");
+    urlEl.value = "";
+    if (msg) msg.textContent = "";
+    render(null);
+    toast("Spotify cleared.");
+  });
+
+  // Initial Load
+  const saved = localStorage.getItem("petal_spotify_embed");
+  if (saved) {
+    render(saved);
+    urlEl.value = localStorage.getItem("petal_spotify_url") || "";
+  }
+
+  // Update theme on the fly
+  document.addEventListener('themeChanged', () => {
+    const savedEmbed = localStorage.getItem("petal_spotify_embed");
+    if (savedEmbed) render(savedEmbed);
+  });
+})();
