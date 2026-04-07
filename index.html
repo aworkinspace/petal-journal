@@ -25,7 +25,7 @@ import {
   setPersistence,
   browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyBqpOzgqcRebD_yCtjW7HqIyy9rdTcCVvc",
@@ -69,30 +69,27 @@ window.firebaseAuth = auth;
           <summary class="btn" role="button" aria-label="Open menu">Menu</summary>
 
           <div class="menu-panel">
-            <!-- Auth-controlled -->
-            <a class="btn" id="authButton" href="login.html">Login</a>
-            <a class="btn" id="profileButton" href="profile.html" style="display: none"
-              >Profile</a
-            >
-            <button class="btn" id="btnSignOut" type="button" style="display: none">
-              Logout
-            </button>
-<div class="menu-divider"></div>
-            <a
-              class="btn btn-accent"
-              href="https://buy.stripe.com/8x214o0rsdlK3uudyEes000"
-              target="_blank"
-              rel="noopener"
-            >
-              Support (monthly)
-            </a>
-            <a class="btn" href="whiteboard.html">Whiteboard</a>
+  <!-- Account Section -->
+  <div class="section-title" style="margin: 5px 0 0 5px;">Account</div>
+  
+  <!-- This will show when logged out -->
+  <a class="btn" id="authButton" href="login.html">Login / Sign Up</a>
+  
+  <!-- This will show when logged in -->
+  <a class="btn btn-primary" id="profileButton" href="profile.html" style="display: none;">My Profile</a>
+  <button class="btn" id="btnSignOut" type="button" style="display: none;">Logout</button>
 
-            <div class="menu-divider"></div>
+  <div class="menu-divider"></div>
+  
+  <!-- Other links -->
+  <a class="btn" href="whiteboard.html">Whiteboard</a>
+  <a class="btn btn-accent" href="https://buy.stripe.com/8x214o0rsdlK3uudyEes000" target="_blank">Support</a>
 
-            <button class="btn" id="btnExport" type="button">Export</button>
-            <button class="btn btn-primary" id="btnNew" type="button">New entry</button>
-          </div>
+  <div class="menu-divider"></div>
+
+  <button class="btn" id="btnExport" type="button">Export Data</button>
+  <button class="btn btn-primary" id="btnNew" type="button">New Entry</button>
+</div>
         </details>
       </div>
     </header>
@@ -187,7 +184,7 @@ window.firebaseAuth = auth;
                 </button>
 
                 <button class="chip" type="button" id="btnAddImage">
-                  Add image
+                  Add image (beta)
                 </button>
                 <input id="imgPicker" type="file" accept="image/*" hidden />
               </div>
@@ -262,14 +259,14 @@ window.firebaseAuth = auth;
         <option value="sky_sorbet">Sky Sorbet</option>
         <option value="peach_milk">Peach Milk</option>
         <option value="lemon_cream">Lemon Cream</option>
-        <option value="strawberry_matcha">Strawberry Matcha</option>
-        <option value="blueberry_yogurt">Blueberry Yogurt</option>
         <option value="dusky_rose">Dusky Rose</option>
         <option value="mauve_night">Mauve Night</option>
         <option value="deep_sage">Deep Sage</option>
         <option value="blueberry_dusk">Blueberry Dusk</option>
         <option value="cocoa_lilac">Cocoa Lilac</option>
-        <option value="midnight">Midnight</option>
+        <option value="midnight">Midnight (beta)</option>
+        <option value="strawberry_matcha">Strawberry Matcha (beta)</option>
+        <option value="blueberry_yogurt">Blueberry Yogurt (beta)</option>
         <option value="custom">Custom (beta)</option>
       </select>
 
