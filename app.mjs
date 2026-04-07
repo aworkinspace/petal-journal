@@ -484,49 +484,38 @@ const url = await getDownloadURL(fileRef);
   }
 
   onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      localStorage.setItem("petal_early_access", "1");
-
-      els.authButton && (els.authButton.style.display = "none");
-
-      if (els.profileButton) {
-        els.profileButton.style.display = "inline-flex";
-        els.profileButton.textContent = user.displayName ? `${user.displayName}'s Profile` : "Profile";
-        els.profileButton.href = "profile.html";
-      }
-
-      els.btnSignOut && (els.btnSignOut.style.display = "inline-flex");
-      els.btnLock && (els.btnLock.style.display = "none");
-      els.btnSetPasscode && (els.btnSetPasscode.style.display = "none");
-
-      toast(`Logged in as ${user.email}`);
-
-      await applyCustomThemeIfAny(user);
-      checkBirthdayAndCelebrate(user);
-    } else {
-      localStorage.removeItem("petal_early_access");
-
-      if (localStorage.getItem("petal_theme") === "custom") {
-        applyTheme("petal");
-        if (els.themeSelect) els.themeSelect.value = "petal";
-      }
-
-      if (els.authButton) {
-        els.authButton.style.display = "inline-flex";
-        els.authButton.textContent = "Login";
-        els.authButton.href = "login.html";
-      }
-
-      els.profileButton && (els.profileButton.style.display = "none");
-      els.btnSignOut && (els.btnSignOut.style.display = "none");
-      els.btnLock && (els.btnLock.style.display = "inline-flex");
-      els.btnSetPasscode && (els.btnSetPasscode.style.display = "inline-flex");
-
-      toast("Logged out.");
+  if (user) {
+    // USER IS LOGGED IN
+    if (els.authButton) els.authButton.style.display = "none";
+    
+    if (els.profileButton) {
+      els.profileButton.style.display = "inline-flex"; // Show Profile button
+      els.profileButton.textContent = user.displayName ? `${user.displayName}'s Profile` : "My Profile";
     }
+    
+    if (els.btnSignOut) els.btnSignOut.style.display = "inline-flex"; // Show Logout button
 
-    initFeatureAccess();
-  });
+    toast(`Welcome back, ${user.email.split('@')[0]}`);
+    await applyCustomThemeIfAny(user);
+    checkBirthdayAndCelebrate(user);
+  } else {
+    // USER IS LOGGED OUT
+    if (els.authButton) {
+      els.authButton.style.display = "inline-flex"; // Show Login button
+      els.authButton.href = "login.html";
+    }
+    
+    if (els.profileButton) els.profileButton.style.display = "none"; // Hide Profile
+    if (els.btnSignOut) els.btnSignOut.style.display = "none"; // Hide Logout
+
+    // Reset theme if they were on a custom one
+    if (localStorage.getItem("petal_theme") === "custom") {
+      applyTheme("petal");
+      if (els.themeSelect) els.themeSelect.value = "petal";
+    }
+  }
+  initFeatureAccess();
+});
 
   els.btnSignOut?.addEventListener("click", async () => {
   try {
