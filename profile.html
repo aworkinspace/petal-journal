@@ -9,7 +9,6 @@
     <title>Petal Journal — Profile</title>
     <link rel="stylesheet" href="style.css" />
 
-    <!-- Apply saved theme early (supports custom via localStorage cache) -->
     <script>
       (function () {
         const THEMES = {
@@ -25,9 +24,7 @@
           cocoa_lilac: {"--bg":"#141014","--surface":"#1A141B","--surface-2":"#261C28","--border":"rgba(255,255,255,.14)","--primary":"#E2B3FF","--primary-soft":"rgba(226,179,255,.35)","--accent":"#FFB38A","--text":"#F2F0F7","--text-muted":"rgba(242,240,247,.75)","--bg-spot-1":"transparent","--bg-spot-2":"transparent"},
           midnight: {"--bg":"#0F0D14","--surface":"#14121A","--surface-2":"#1C1824","--border":"rgba(255,255,255,.14)","--primary":"#8EA2FF","--primary-soft":"rgba(142,162,255,.35)","--accent":"#FFA5D6","--text":"#F2F0F7","--text-muted":"rgba(242,240,247,.75)","--bg-spot-1":"transparent","--bg-spot-2":"transparent"}
         };
-
         const name = localStorage.getItem("petal_theme") || "petal";
-
         const t = THEMES[name] || THEMES.petal;
         for (const k in t) document.documentElement.style.setProperty(k, t[k]);
       })();
@@ -46,8 +43,6 @@
       .profile-pic-upload { margin-top: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center; }
     </style>
 
-    <!-- Firebase init (exposes window.firebaseAuth/firebaseDb/firebaseStorage) -->
-        <!-- Firebase init (exposes window.firebaseAuth/firebaseDb/firebaseStorage) -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
       import { getAuth, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
@@ -65,9 +60,7 @@
       };
 
       const app = initializeApp(firebaseConfig);
-
       const auth = getAuth(app);
-      // This ensures the user stays logged in across refreshes
       setPersistence(auth, browserLocalPersistence).catch(console.error);
 
       window.firebaseAuth = auth;
@@ -90,7 +83,6 @@
     <div class="profile-wrap">
       <main class="panel panel-pad profile-card">
         <h2 style="margin: 0 0 24px">Your Profile</h2>
-
         <div class="profile-pic-container">
           <img id="profilePic" class="profile-pic" src="assets/default-profile.png" alt="Profile Picture" />
           <div class="profile-pic-upload">
@@ -99,31 +91,25 @@
             <small class="muted" id="picUploadMsg"></small>
           </div>
         </div>
-
         <div class="profile-field">
           <div class="section-title">Email</div>
           <p id="userEmail" class="muted" style="margin: 0"></p>
         </div>
-
         <div class="profile-field">
           <div class="section-title">Display Name</div>
           <input class="input" id="displayName" type="text" placeholder="Your Display Name" />
           <small class="muted" id="nameUpdateMsg" style="margin-top: 8px; display:block;"></small>
         </div>
-
         <div class="profile-field">
           <div class="section-title">Birthday</div>
           <input class="input" id="userBirthday" type="date" />
           <small class="muted" id="birthdayUpdateMsg" style="margin-top: 8px; display:block;"></small>
         </div>
-
         <div class="row" style="margin-top: 24px">
           <button class="btn btn-primary" id="btnUpdateProfile" type="button">Save Profile</button>
           <small class="muted" id="generalMsg"></small>
         </div>
-
         <div class="divider" style="margin: 24px 0"></div>
-
         <div class="row">
           <button class="btn btn-accent" id="btnDeleteAccount" type="button">Delete Account</button>
           <small class="muted" id="deleteAccountMsg"></small>
@@ -131,36 +117,37 @@
       </main>
     </div>
 
-    <!-- Profile logic (single module; no duplicate imports) -->
     <script type="module">
       import { onAuthStateChanged, updateProfile, deleteUser } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-      import { doc, getDoc, setDoc, deleteDoc, enableNetwork } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+      import { doc, getDoc, setDoc, deleteDoc, enableNetwork, disableNetwork } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
       import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
 
       const auth = window.firebaseAuth;
       const db = window.firebaseDb;
       const storage = window.firebaseStorage;
 
-      enableNetwork(db).catch(() => {});
+      // Force Reconnect Logic
+      (async () => {
+        try {
+          await disableNetwork(db);
+          await enableNetwork(db);
+          console.log("Firestore reconnected");
+        } catch (e) {}
+      })();
 
       const $ = (id) => document.getElementById(id);
-
       const profilePicEl = $("profilePic");
       const userEmailEl = $("userEmail");
       const displayNameEl = $("displayName");
       const userBirthdayEl = $("userBirthday");
-
       const btnUploadPic = $("btnUploadPic");
       const picUploadEl = $("picUpload");
       const picUploadMsgEl = $("picUploadMsg");
-
       const nameUpdateMsgEl = $("nameUpdateMsg");
       const birthdayUpdateMsgEl = $("birthdayUpdateMsg");
       const generalMsgEl = $("generalMsg");
-
       const btnUpdateProfile = $("btnUpdateProfile");
       const btnDeleteAccount = $("btnDeleteAccount");
-
       const DEFAULT_PIC = "assets/default-profile.png";
       let currentUser = null;
 
@@ -181,7 +168,6 @@
         userEmailEl.textContent = user.email || "";
         displayNameEl.value = user.displayName || "";
         profilePicEl.src = user.photoURL ? cacheBust(user.photoURL) : DEFAULT_PIC;
-
         try {
           const userDoc = await getDoc(doc(db, "users", user.uid));
           if (userDoc.exists()) {
@@ -190,107 +176,41 @@
           }
         } catch (error) {
           console.error("loadProfile Firestore error:", error);
-          showMsg(generalMsgEl, "Can’t reach the server right now (offline / blocked).", true);
+          showMsg(generalMsgEl, "Syncing profile...", false);
         }
       }
 
-      // Upload picture
       btnUploadPic?.addEventListener("click", () => picUploadEl?.click());
-
       picUploadEl?.addEventListener("change", async (e) => {
         const file = e.target.files?.[0];
-        if (!file) return;
-
-        if (!currentUser) {
-          showMsg(picUploadMsgEl, "You must be logged in to upload a picture.", true);
-          return;
-        }
-
-        if (!file.type.startsWith("image/")) {
-          showMsg(picUploadMsgEl, "Please choose an image file.", true);
-          picUploadEl.value = "";
-          return;
-        }
-
-        if (file.size > 3 * 1024 * 1024) {
-          showMsg(picUploadMsgEl, "Image too large (max 3MB).", true);
-          picUploadEl.value = "";
-          return;
-        }
-
-        showMsg(picUploadMsgEl, "Uploading picture...", false);
-
+        if (!file || !currentUser) return;
+        showMsg(picUploadMsgEl, "Uploading...", false);
         try {
           const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
           const path = `profile_pictures/${currentUser.uid}/profile_${Date.now()}.${ext}`;
-
           const storageRef = ref(storage, path);
           await uploadBytes(storageRef, file);
-
           const photoURL = await getDownloadURL(storageRef);
           await updateProfile(currentUser, { photoURL });
-
           profilePicEl.src = cacheBust(photoURL);
-          showMsg(picUploadMsgEl, "Profile picture updated!");
+          showMsg(picUploadMsgEl, "Picture updated!");
         } catch (error) {
-          console.error("Error uploading picture:", error);
-          showMsg(picUploadMsgEl, `Failed to upload: ${error.message}`, true);
-        } finally {
-          picUploadEl.value = "";
+          showMsg(picUploadMsgEl, "Error uploading.", true);
         }
       });
 
-      // Save profile (name + birthday)
       btnUpdateProfile?.addEventListener("click", async () => {
-        if (!currentUser) {
-          showMsg(generalMsgEl, "You must be logged in to update your profile.", true);
-          return;
-        }
-
-        showMsg(generalMsgEl, "Saving profile...", false);
-
+        if (!currentUser) return;
+        showMsg(generalMsgEl, "Saving...", false);
         try {
           const nextName = displayNameEl.value.trim();
           if (nextName !== (currentUser.displayName || "")) {
             await updateProfile(currentUser, { displayName: nextName });
-            showMsg(nameUpdateMsgEl, "Display name updated!");
-          } else {
-            showMsg(nameUpdateMsgEl, "");
           }
-
           await setDoc(doc(db, "users", currentUser.uid), { birthday: userBirthdayEl.value || "" }, { merge: true });
-
-          showMsg(birthdayUpdateMsgEl, "Birthday updated!");
-          showMsg(generalMsgEl, "Profile saved successfully!");
+          showMsg(generalMsgEl, "Profile saved!");
         } catch (error) {
-          console.error("Error updating profile:", error);
-          showMsg(generalMsgEl, `Failed to save profile: ${error.message}`, true);
-        }
-      });
-
-      // Delete account
-      btnDeleteAccount?.addEventListener("click", async () => {
-        if (!currentUser) {
-          showMsg(generalMsgEl, "You must be logged in to delete your account.", true);
-          return;
-        }
-
-        if (!confirm("Are you sure you want to delete your account? This action is irreversible.")) return;
-
-        showMsg(generalMsgEl, "Deleting account...", false);
-
-        try {
-          await deleteUser(currentUser);
-          showMsg(generalMsgEl, "Account deleted. Redirecting...", false);
-          localStorage.removeItem("petal_early_access");
-          setTimeout(() => (location.href = "login.html"), 1500);
-        } catch (error) {
-          console.error("Error deleting account:", error);
-          if (error.code === "auth/requires-recent-login") {
-            showMsg(generalMsgEl, "Please log in again recently to delete your account.", true);
-          } else {
-            showMsg(generalMsgEl, `Failed to delete account: ${error.message}`, true);
-          }
+          showMsg(generalMsgEl, "Error saving.", true);
         }
       });
 
@@ -299,7 +219,6 @@
           currentUser = user;
           loadProfile(user);
         } else {
-          alert("You must be logged in to view your profile.");
           location.href = "login.html";
         }
       });
