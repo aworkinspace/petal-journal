@@ -765,3 +765,9 @@ header, .top-actions { overflow: visible; }
   overflow: visible;
 }
 .spotify-iframe{ pointer-events: auto; }
+.menu-panel a.btn {
+  display: block;
+  text-decoration: none;
+  width: 100%;
+  text-align: center;
+}
