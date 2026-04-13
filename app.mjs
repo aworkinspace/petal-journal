@@ -250,3 +250,108 @@ document.addEventListener("DOMContentLoaded", () => {
     skinSelect.onchange = (e) => applySkin(e.target.value);
   }
 });
+/* ------------------------ Background Music Logic ------------------------ */
+(() => {
+  const $ = (id) => document.getElementById(id);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const btnMusic = $("btnMusic");
+    const btnNextTrack = $("btnNextTrack");
+    const musicVol = $("musicVol");
+    const bgm = $("bgm");
+
+    // Sound effects (FNAF style)
+    const btnAmbient = $("btnAmbient");
+    const ambientSfx = $("ambientSfx");
+    const jumpscareSfx = $("jumpscareSfx");
+    const toreadorSfx = $("toreadorSfx");
+
+    if (!bgm || !btnMusic || !musicVol) return;
+
+    // YOUR TRACK LIST
+    const tracks = [
+      "assets/lofi.mp3", 
+      "assets/elevator.mp3", 
+      "assets/monty.mp3", 
+      "assets/intro.mp3"
+    ];
+
+    let trackIndex = Number(localStorage.getItem("petal_track_index") || "0");
+    if (!Number.isFinite(trackIndex) || trackIndex < 0) trackIndex = 0;
+    trackIndex %= tracks.length;
+
+    // Load saved volume
+    const savedVol = localStorage.getItem("petal_music_vol");
+    if (savedVol !== null) musicVol.value = savedVol;
+    bgm.volume = Number(musicVol.value || 0.35);
+
+    function updateBtnText() {
+      btnMusic.textContent = bgm.paused ? "Play Music" : "Pause Music";
+    }
+
+    function setTrack(index, autoplay = false) {
+      trackIndex = ((index % tracks.length) + tracks.length) % tracks.length;
+      localStorage.setItem("petal_track_index", String(trackIndex));
+
+      const wasPlaying = !bgm.paused;
+      bgm.src = tracks[trackIndex];
+      bgm.load();
+
+      if (autoplay || wasPlaying) {
+        bgm.play().catch(() => {
+          console.log("Autoplay blocked by browser");
+        });
+      }
+      updateBtnText();
+    }
+
+    // Initialize first track
+    setTrack(trackIndex, false);
+
+    // Play/Pause toggle
+    btnMusic.addEventListener("click", () => {
+      if (bgm.paused) bgm.play();
+      else bgm.pause();
+      updateBtnText();
+    });
+
+    // Next track button
+    btnNextTrack?.addEventListener("click", () => setTrack(trackIndex + 1, true));
+
+    // Auto-play next track when finished
+    bgm.addEventListener("ended", () => setTrack(trackIndex + 1, true));
+
+    // Volume slider
+    musicVol.addEventListener("input", () => {
+      bgm.volume = Number(musicVol.value);
+      localStorage.setItem("petal_music_vol", String(musicVol.value));
+    });
+
+    // --- FNAF SFX Logic ---
+    $("btnAmbient")?.addEventListener("click", () => {
+      if (!ambientSfx) return;
+      if (ambientSfx.paused) {
+        ambientSfx.play();
+        $("btnAmbient").textContent = "Ambient: On";
+      } else {
+        ambientSfx.pause();
+        $("btnAmbient").textContent = "Ambient: Off";
+      }
+    });
+
+    $("btnJumpscare")?.addEventListener("click", () => {
+      if (jumpscareSfx) {
+        jumpscareSfx.currentTime = 0;
+        jumpscareSfx.play();
+      }
+    });
+
+    $("btnToreador")?.addEventListener("click", () => {
+      if (toreadorSfx) {
+        toreadorSfx.currentTime = 0;
+        toreadorSfx.play();
+      }
+    });
+  });
+})();
+
