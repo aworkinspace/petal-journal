@@ -112,8 +112,17 @@ function toast(msg) {
   const els = {
     date: $("date"), mood: $("mood"), title: $("title"), tagsInput: $("tagsInput"),
     content: $("content"), entryList: $("entryList"), search: $("search"), tagRow: $("tagRow"),
-    btnSave: $("btnSave"), btnDelete: $("btnDelete"), count: $("count")
+    btnSave: $("btnSave"), btnDelete: $("btnDelete"), count: $("count"),
+    // AUDIO ELEMENTS
+    saveSfx: $("saveSfx"),
+    deleteSfx: $("deleteSfx")
   };
+
+  function playSfx(audio) {
+    if (!audio) return;
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+  }
 
   function loadEntries() {
     try { entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); } catch { entries = []; }
@@ -164,14 +173,22 @@ function toast(msg) {
     if (!activeId) entries.push(data);
     else entries = entries.map(e => e.id === activeId ? data : e);
     saveToStorage(); renderList(); toast("Saved!");
+    
+    // PLAY SAVE SOUND
+    playSfx(els.saveSfx);
   });
 
   els.btnDelete?.addEventListener('click', () => {
     if (!activeId) return;
+    if (!confirm("Are you sure you want to delete this entry?")) return;
+    
     entries = entries.filter(e => e.id !== activeId);
     saveToStorage(); renderList();
     activeId = null; els.title.value = ""; els.content.innerHTML = "";
     toast("Deleted.");
+    
+    // PLAY DELETE SOUND
+    playSfx(els.deleteSfx);
   });
 
   document.addEventListener("DOMContentLoaded", () => {
