@@ -112,10 +112,11 @@ function toast(msg) {
   const els = {
     date: $("date"), mood: $("mood"), title: $("title"), tagsInput: $("tagsInput"),
     content: $("content"), entryList: $("entryList"), search: $("search"), tagRow: $("tagRow"),
-    btnSave: $("btnSave"), btnDelete: $("btnDelete"), count: $("count"),
+    btnSave: $("btnSave"), btnDelete: $("btnDelete"), btnNew: $("btnNew"), count: $("count"),
     // AUDIO ELEMENTS
     saveSfx: $("saveSfx"),
-    deleteSfx: $("deleteSfx")
+    deleteSfx: $("deleteSfx"),
+    newEntrySfx: $("newEntrySfx")
   };
 
   function playSfx(audio) {
@@ -135,7 +136,7 @@ function toast(msg) {
     const q = (els.search?.value || "").toLowerCase();
     const filtered = entries.filter(e => {
       const matchTag = activeTag ? (e.tags || []).includes(activeTag) : true;
-      const matchSearch = (e.title + e.content).toLowerCase().includes(q);
+      const matchSearch = ((e.title || "") + (e.content || "")).toLowerCase().includes(q);
       return matchTag && matchSearch;
     }).sort((a,b) => b.updatedAt - a.updatedAt);
 
@@ -160,6 +161,20 @@ function toast(msg) {
     if (els.count) els.count.textContent = filtered.length;
   }
 
+  // --- NEW ENTRY FUNCTION ---
+  function startNewEntry() {
+    activeId = null;
+    els.date.value = new Date().toISOString().split('T')[0];
+    els.mood.value = "Calm";
+    els.title.value = "";
+    els.tagsInput.value = "";
+    els.content.innerHTML = "";
+    playSfx(els.newEntrySfx);
+    toast("New entry started!");
+  }
+
+  els.btnNew?.addEventListener('click', startNewEntry);
+
   els.btnSave?.addEventListener('click', () => {
     const data = {
       id: activeId || Date.now().toString(),
@@ -173,21 +188,15 @@ function toast(msg) {
     if (!activeId) entries.push(data);
     else entries = entries.map(e => e.id === activeId ? data : e);
     saveToStorage(); renderList(); toast("Saved!");
-    
-    // PLAY SAVE SOUND
     playSfx(els.saveSfx);
   });
 
   els.btnDelete?.addEventListener('click', () => {
     if (!activeId) return;
     if (!confirm("Are you sure you want to delete this entry?")) return;
-    
     entries = entries.filter(e => e.id !== activeId);
     saveToStorage(); renderList();
-    activeId = null; els.title.value = ""; els.content.innerHTML = "";
-    toast("Deleted.");
-    
-    // PLAY DELETE SOUND
+    startNewEntry(); // Reset the screen after deleting
     playSfx(els.deleteSfx);
   });
 
