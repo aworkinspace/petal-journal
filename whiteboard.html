@@ -46,23 +46,42 @@
       input[type="range"]{ width:140px; }
 
       /* Pixel Art Buttons */
+            /* Pixel Art Buttons */
       .btn {
         border-radius: 0; 
-        border: 4px solid var(--text);
-        background: #fff;
+        /* Use variables so colors flip in dark mode */
+        border: 4px solid var(--btn-text, #2B2B33);
+        background: var(--btn-bg, #ffffff);
+        color: var(--btn-text, #2B2B33);
+        
         padding: 8px 14px;
-        color: var(--text);
         cursor: pointer;
         font-weight: 600;
         text-transform: uppercase;
         font-family: "VT323", monospace;
         font-size: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        
+        /* Pixel shadow */
         box-shadow: inset -4px -4px 0px 0px rgba(0,0,0,0.1), 4px 4px 0px 0px rgba(0,0,0,0.2);
         transition: none;
+        text-decoration: none; /* For the 'Back' link */
       }
+
       .btn:hover { transform: translate(-2px, -2px); filter: brightness(1.05); }
       .btn:active { transform: translate(2px, 2px); box-shadow: none; }
-      .btn-primary { background: var(--primary); border-color: #000; color: #000; }
+
+      /* Primary (Download) button stays dark text for readability */
+      .btn-primary { 
+        background: var(--primary); 
+        border-color: #000; 
+        color: #000 !important; 
+      }
+
+      /* Fix the 'Back' button area */
+      .top-actions { margin-bottom: 10px; }
 
       #wb{ pointer-events: auto !important; }
       .wb-stage{
