@@ -380,4 +380,55 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 })();
+/* ------------------------ Prompts Logic ------------------------ */
+(() => {
+  const prompts = [
+    "What’s one small win you had today?",
+    "What’s taking up the most space in your mind right now?",
+    "What’s one thing you can let go of today?",
+    "Write 3 things you’re grateful for (tiny counts).",
+    "What did you learn today?",
+    "What do you need more of this week?",
+    "Describe your day in 5 words.",
+    "What would you tell a friend in your situation?",
+    "What’s one kind thing you did for yourself today?",
+    "What’s one next step (the smallest possible)?",
+  ];
+
+  function initPrompts() {
+    const btn = document.getElementById("btnPrompt");
+    const card = document.getElementById("promptCard");
+
+    if (!btn || !card) return;
+
+    // Load saved prompt from storage
+    const saved = localStorage.getItem("petal_prompt");
+    if (saved) card.textContent = saved;
+
+    // Function to pick a new prompt
+    function pickNewPrompt() {
+      let next;
+      // Prevent picking the same prompt twice in a row
+      do {
+        next = prompts[Math.floor(Math.random() * prompts.length)];
+      } while (next === card.textContent && prompts.length > 1);
+
+      card.textContent = next;
+      localStorage.setItem("petal_prompt", next);
+      
+      // Add a little "pop" effect when it changes
+      card.style.transform = "scale(1.05)";
+      setTimeout(() => card.style.transform = "scale(1)", 100);
+    }
+
+    btn.addEventListener("click", pickNewPrompt);
+  }
+
+  // Run immediately if DOM is ready, otherwise wait
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initPrompts);
+  } else {
+    initPrompts();
+  }
+})();
 
