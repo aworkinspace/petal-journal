@@ -34,6 +34,22 @@ window.firebaseAuth = auth;
       window.firebaseDb = getFirestore(app);
       window.firebaseStorage = getStorage(app);
     </script>
+<script>
+  (function () {
+    const THEMES = {
+      petal: {"--bg":"var(--rose-50)","--surface":"var(--rose-50)","--surface-2":"var(--pink-200)","--border":"var(--mauve-200)","--primary":"var(--periwinkle-400)","--primary-soft":"var(--periwinkle-200)","--accent":"var(--pink-500)","--text":"#2B2B33","--btn-bg":"#ffffff","--btn-text":"#2B2B33"},
+      lavender: {"--bg":"#F6F2FF","--surface":"#F6F2FF","--surface-2":"#EDE4FF","--border":"#D8CBF2","--primary":"#A7ABDE","--primary-soft":"#CED1F8","--accent":"#D7A6FF","--text":"#2B2B33","--btn-bg":"#ffffff","--btn-text":"#2B2B33"},
+      sky_sorbet: {"--bg":"#F2FBFF","--surface":"#F2FBFF","--surface-2":"#DFF3FF","--border":"#C7E4F5","--primary":"#7DB6FF","--primary-soft":"#CFE4F5","--accent":"#FFA5D6","--text":"#2B2B33","--btn-bg":"#ffffff","--btn-text":"#2B2B33"},
+      dusky_rose: {"--bg":"#141016","--surface":"#19131C","--surface-2":"#241A26","--border":"rgba(255,255,255,.14)","--primary":"#B7A6FF","--text":"#F2F0F7","--btn-bg":"#241A26","--btn-text":"#F2F0F7"},
+      mauve_night: {"--bg":"#100F14","--surface":"#15131A","--surface-2":"#201B25","--border":"rgba(255,255,255,.14)","--primary":"#9FB6FF","--text":"#F2F0F7","--btn-bg":"#201B25","--btn-text":"#F2F0F7"},
+      midnight: {"--bg":"#0F0D14","--surface":"#14121A","--surface-2":"#1C1824","--border":"rgba(255,255,255,.14)","--primary":"#8EA2FF","--text":"#F2F0F7","--btn-bg":"#1C1824","--btn-text":"#F2F0F7"}
+    };
+
+    const name = localStorage.getItem("petal_theme") || "petal";
+    const t = THEMES[name] || THEMES.petal;
+    for (const k in t) document.documentElement.style.setProperty(k, t[k]);
+  })();
+</script>
 
     <style>
       .vision-wrap { max-width: 1200px; margin: 0 auto; padding: 20px; }
