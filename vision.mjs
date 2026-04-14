@@ -1,5 +1,8 @@
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { 
+  doc, getDoc, setDoc, 
+  enableNetwork, disableNetwork 
+} from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
 
 const board = document.getElementById("board");
@@ -10,6 +13,21 @@ const btnClear = document.getElementById("btnClearBoard");
 let currentUser = null;
 let activeItem = null;
 let offset = { x: 0, y: 0 };
+
+const db = window.firebaseDb;
+
+// --- FORCE RECONNECT LOGIC ---
+(async () => {
+  try {
+    await disableNetwork(db); // Kick it off
+    await enableNetwork(db);  // Force it back on
+    console.log("Vision Board Firestore reconnected");
+  } catch (e) {
+    console.error("Network reset failed", e);
+  }
+})();
+
+// ... rest of your code (onAuthStateChanged, etc.)
 
 // 1. AUTH CHECK
 onAuthStateChanged(window.firebaseAuth, (user) => {
