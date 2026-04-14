@@ -818,3 +818,11 @@ header, .top-actions { overflow: visible; }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent);
 }
+.btn:active, .chip:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease;
+}
+[data-theme="midnight"] .btn-primary, 
+[data-theme="dusky_rose"] .btn-primary, [data-theme="mauve_night"] .btn-primary, [data-theme="deep_sage"] .btn-primary, [data-theme="blueberry_dusk"] .btn-primary, [data-theme="cocoa_lilac"] .btn-primary {
+  box-shadow: 0 0 15px var(--primary-soft);
+}
