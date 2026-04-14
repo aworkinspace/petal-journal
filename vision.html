@@ -61,10 +61,38 @@
 
 body {
   margin: 0;
-  font-family: "VT323", ui-sans-serif, system-ui, sans-serif;
+  /* Use the pixel font primarily, fallback to sans-serif */
+  font-family: "VT323", monospace; 
   color: var(--text);
-  background: inherit;
+  background: var(--bg);
+  /* This makes the pixel font look crisp */
+  image-rendering: pixelated; 
 }
+
+.btn {
+  border-radius: 0; 
+  border: 4px solid var(--btn-text, #2B2B33);
+  background: var(--btn-bg, #ffffff);
+  color: var(--btn-text, #2B2B33);
+  padding: 8px 14px;
+  cursor: pointer;
+  font-weight: 400; /* VT323 usually only has one weight */
+  text-transform: uppercase;
+  
+  /* CRITICAL: Force the font here too */
+  font-family: "VT323", monospace;
+  font-size: 20px; /* Make it a bit bigger for better readability */
+  
+  box-shadow: inset -4px -4px 0px 0px rgba(0,0,0,0.1), 4px 4px 0px 0px rgba(0,0,0,0.2);
+  transition: none;
+  text-decoration: none;
+}
+
+/* Optional: Fix the headings and small text */
+h1, .muted {
+  font-family: "VT323", monospace;
+}
+
 
       .vision-wrap { max-width: 1200px; margin: 0 auto; padding: 20px; }
       
@@ -112,23 +140,6 @@ body {
   margin-top: 20px;
   background-image: radial-gradient(var(--border) 1px, transparent 1px);
   background-size: 20px 20px;
-}
-
-/* Update Button styles to match Whiteboard/Main page */
-.btn {
-  border-radius: 0; 
-  border: 4px solid var(--btn-text, #2B2B33);
-  background: var(--btn-bg, #ffffff);
-  color: var(--btn-text, #2B2B33);
-  padding: 8px 14px;
-  cursor: pointer;
-  font-weight: 600;
-  text-transform: uppercase;
-  font-family: "VT323", monospace;
-  font-size: 18px;
-  box-shadow: inset -4px -4px 0px 0px rgba(0,0,0,0.1), 4px 4px 0px 0px rgba(0,0,0,0.2);
-  transition: none;
-  text-decoration: none;
 }
 
 .btn:hover { transform: translate(-2px, -2px); filter: brightness(1.05); }
