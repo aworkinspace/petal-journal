@@ -32,30 +32,64 @@
 </script>
     <style>
       .wb-wrap{ max-width:1200px; margin:0 auto; padding:12px 24px 28px; }
+      
+      /* Glassmorphism Panel */
+      .panel {
+        background: color-mix(in srgb, var(--surface) 70%, transparent 30%);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
       .wb-tools{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; padding:12px; }
       .wb-row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
       input[type="range"]{ width:140px; }
-#wb{
-  pointer-events: auto !important;
-}
+
+      /* Pixel Art Buttons */
+      .btn {
+        border-radius: 0; 
+        border: 4px solid var(--text);
+        background: #fff;
+        padding: 8px 14px;
+        color: var(--text);
+        cursor: pointer;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-family: "VT323", monospace;
+        font-size: 18px;
+        box-shadow: inset -4px -4px 0px 0px rgba(0,0,0,0.1), 4px 4px 0px 0px rgba(0,0,0,0.2);
+        transition: none;
+      }
+      .btn:hover { transform: translate(-2px, -2px); filter: brightness(1.05); }
+      .btn:active { transform: translate(2px, 2px); box-shadow: none; }
+      .btn-primary { background: var(--primary); border-color: #000; color: #000; }
+
+      #wb{ pointer-events: auto !important; }
       .wb-stage{
-  position: relative;
-  width: 100%;
-  height: 70vh;              /* this is the height */
-}
+        position: relative;
+        width: 100%;
+        height: 70vh;
+      }
 
-#wb, #wbRef{
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 16px;
-  display: block;
-}
-#wbRef{ pointer-events: none; } /* ref shouldn’t block drawing */
-#wb { z-index: 2; }
-#wbRef { z-index: 1; }
+      #wb, #wbRef{
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 16px;
+        display: block;
+      }
+      #wbRef{ pointer-events: none; } 
+      #wb { z-index: 2; }
+      #wbRef { z-index: 1; }
 
+      /* Pixel Scrollbar */
+      ::-webkit-scrollbar { width: 12px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border: 3px solid var(--bg);
+      }
     </style>
   </head>
 
@@ -92,7 +126,7 @@
 
     <div class="wb-row">
       <span class="muted">Pen</span>
-      <select id="penStyle" class="input">
+      <select id="penStyle" class="input" style="font-family: 'VT323';">
         <option value="smooth">Smooth</option>
         <option value="marker">Marker</option>
         <option value="highlighter">Highlighter</option>
@@ -108,7 +142,7 @@
       <button class="btn btn-primary" id="save" type="button">Download PNG</button>
     </div>
 
-    <small class="muted">Tip: use mouse or touch.</small>
+    <small class="muted">Tip: use mouse or touch. Hold SHIFT to drag reference.</small>
   </div>
 
   <div class="wb-stage panel" style="padding:12px; margin-top:14px;">
@@ -141,7 +175,7 @@ const refCtx = refCanvas.getContext("2d");
       let last = null;
       let mode = "pen";
       let penStyle = "smooth";
-      let draggingRef = false; // shared flag
+      let draggingRef = false; 
 
 
       penStyleEl?.addEventListener("change", () => (penStyle = penStyleEl.value));
@@ -182,26 +216,21 @@ const refCtx = refCanvas.getContext("2d");
 
       function stroke(a, b) {
         const size = Number(sizeEl.value);
-
-        // eraser
         if (mode === "eraser") {
-  ctx.globalCompositeOperation = "source-over";
-  ctx.globalAlpha = 1;
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-  ctx.lineWidth = size;
-  ctx.strokeStyle = "#ffffff";
-  ctx.beginPath();
-  ctx.moveTo(a.x, a.y);
-  ctx.lineTo(b.x, b.y);
-  ctx.stroke();
-  return;
-}
-
-        // pen modes
+          ctx.globalCompositeOperation = "source-over";
+          ctx.globalAlpha = 1;
+          ctx.lineCap = "round";
+          ctx.lineJoin = "round";
+          ctx.lineWidth = size;
+          ctx.strokeStyle = "#ffffff";
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+          return;
+        }
         ctx.globalCompositeOperation = "source-over";
         ctx.strokeStyle = colorEl.value;
-
         if (penStyle === "marker") {
           ctx.globalAlpha = 0.9;
           ctx.lineCap = "round";
@@ -214,73 +243,6 @@ const refCtx = refCanvas.getContext("2d");
           ctx.globalAlpha = 1;
           return;
         }
-
-        if (penStyle === "highlighter") {
-          ctx.globalAlpha = 0.25;
-          ctx.lineCap = "butt";
-          ctx.lineJoin = "round";
-          ctx.lineWidth = size * 2.4;
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.stroke();
-          ctx.globalAlpha = 1;
-          return;
-        }
-
-        if (penStyle === "spray") {
-          ctx.globalAlpha = 0.35;
-          const density = 14;
-          for (let i = 0; i < density; i++) {
-            const ang = Math.random() * Math.PI * 2;
-            const rad = Math.random() * size * 1.6;
-            const x = b.x + Math.cos(ang) * rad;
-            const y = b.y + Math.sin(ang) * rad;
-            ctx.beginPath();
-            ctx.arc(x, y, Math.max(1, size * 0.12), 0, Math.PI * 2);
-            ctx.fillStyle = colorEl.value;
-            ctx.fill();
-          }
-          ctx.globalAlpha = 1;
-          return;
-        }
-        if (penStyle === "watercolor") {
-          // soft layered dabs + slight jitter = watercolor feel
-          ctx.globalCompositeOperation = "source-over";
-          ctx.lineCap = "round";
-          ctx.lineJoin = "round";
-
-          const base = size * 1.8;
-          const steps = 6;
-
-          for (let i = 0; i < steps; i++) {
-            const t = (i + 1) / steps;
-            const x = a.x + (b.x - a.x) * t;
-            const y = a.y + (b.y - a.y) * t;
-
-            const jx = (Math.random() - 0.5) * size * 0.6;
-            const jy = (Math.random() - 0.5) * size * 0.6;
-
-            ctx.globalAlpha = 0.08 + Math.random() * 0.06; // very translucent
-            ctx.fillStyle = colorEl.value;
-
-            // main wash
-            ctx.beginPath();
-            ctx.arc(x + jx, y + jy, base * (0.55 + Math.random() * 0.35), 0, Math.PI * 2);
-            ctx.fill();
-
-            // darker core
-            ctx.globalAlpha = 0.05 + Math.random() * 0.05;
-            ctx.beginPath();
-            ctx.arc(x + jx * 0.5, y + jy * 0.5, base * 0.35, 0, Math.PI * 2);
-            ctx.fill();
-          }
-
-          ctx.globalAlpha = 1;
-          return;
-        }
-
-        // smooth (default)
         ctx.globalAlpha = 1;
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
@@ -291,42 +253,17 @@ const refCtx = refCanvas.getContext("2d");
         ctx.stroke();
       }
 
-      function down(e) {
-  if (draggingRef) return;
-  drawing = true;
-  last = pos(e);
-}
-
-function move(e) {
-  if (draggingRef) return;
-  if (!drawing) return;
-  e.preventDefault();
-  const p = pos(e);
-  stroke(last, p);
-  last = p;
-}
-
-function up() {
-  drawing = false;
-  last = null;
-  draggingRef = false;
-}
+      function down(e) { if (draggingRef) return; drawing = true; last = pos(e); }
+      function move(e) { if (draggingRef || !drawing) return; e.preventDefault(); const p = pos(e); stroke(last, p); last = p; }
+      function up() { drawing = false; last = null; draggingRef = false; }
 
       clearBtn.addEventListener("click", () => {
-  const rect = canvas.getBoundingClientRect();
-  ctx.globalCompositeOperation = "source-over";
-  ctx.globalAlpha = 1; // Ensure alpha is reset for clear
-  ctx.fillStyle = "#ffffff";
-  ctx.fillRect(0, 0, rect.width, rect.height);
-
-  // Play the sound effect
-  const sfx = document.getElementById("clearSfx");
-  if (sfx) {
-    sfx.pause();
-    sfx.currentTime = 0;
-    sfx.play().catch(() => {});
-  }
-});
+        const rect = canvas.getBoundingClientRect();
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, rect.width, rect.height);
+        const sfx = document.getElementById("clearSfx");
+        if (sfx) { sfx.currentTime = 0; sfx.play().catch(() => {}); }
+      });
 
       saveBtn.addEventListener("click", () => {
         const a = document.createElement("a");
@@ -338,168 +275,84 @@ function up() {
       canvas.addEventListener("mousedown", down);
       canvas.addEventListener("mousemove", move);
       window.addEventListener("mouseup", up);
-
       canvas.addEventListener("touchstart", down, { passive: true });
       canvas.addEventListener("touchmove", move, { passive: false });
       window.addEventListener("touchend", up);
       resize();
       window.addEventListener("resize", resize);
 
-      // --- Background music controls ---
+      // --- Music Logic (with intro.mp3) ---
       (() => {
-  const audio = document.getElementById("bgm");
-  const btn = document.getElementById("btnMusic");
-  const btnNext = document.getElementById("btnNextTrack"); // add this button in whiteboard.html
-  const vol = document.getElementById("musicVol");
-  if (!audio || !btn || !vol) return;
+        const audio = document.getElementById("bgm");
+        const btn = document.getElementById("btnMusic");
+        const btnNext = document.getElementById("btnNextTrack");
+        const vol = document.getElementById("musicVol");
+        if (!audio || !btn || !vol) return;
 
-  const tracks = [
-      "assets/lofi.mp3", 
-      "assets/elevator.mp3", 
-      "assets/monty.mp3", 
-      "assets/intro.mp3"
-    ];
+        const tracks = ["assets/lofi.mp3", "assets/elevator.mp3", "assets/monty.mp3", "assets/intro.mp3"];
+        let i = Number(localStorage.getItem("petal_track_index") || "0") % tracks.length;
 
-  let i = Number(localStorage.getItem("petal_track_index") || "0");
-  if (!Number.isFinite(i) || i < 0) i = 0;
-  i %= tracks.length;
+        audio.volume = Number(localStorage.getItem("petal_music_vol") || 0.35);
+        vol.value = audio.volume;
 
-  const savedVol = localStorage.getItem("petal_music_vol");
-  if (savedVol !== null) vol.value = savedVol;
-  audio.volume = Number(vol.value || 0.35);
+        function setTrack(nextIndex, autoplay = false) {
+          i = (nextIndex + tracks.length) % tracks.length;
+          localStorage.setItem("petal_track_index", i);
+          const playing = !audio.paused;
+          audio.src = tracks[i];
+          if (autoplay || playing) audio.play().catch(() => {});
+          btn.textContent = audio.paused ? "Play Music" : "Pause Music";
+        }
 
-  function setBtn() {
-    btn.textContent = audio.paused ? "Play music" : "Pause music";
-  }
+        btn.onclick = () => { if (audio.paused) audio.play(); else audio.pause(); btn.textContent = audio.paused ? "Play Music" : "Pause Music"; };
+        btnNext.onclick = () => setTrack(i + 1, true);
+        audio.onended = () => setTrack(i + 1, true);
+        vol.oninput = () => { audio.volume = vol.value; localStorage.setItem("petal_music_vol", vol.value); };
+        setTrack(i, false);
+      })();
 
-  function setTrack(nextIndex, autoplay = false) {
-    i = ((nextIndex % tracks.length) + tracks.length) % tracks.length;
-    localStorage.setItem("petal_track_index", String(i));
+      // --- Reference Image Logic ---
+      (() => {
+        const btnRef = document.getElementById("btnRef");
+        const btnRefClear = document.getElementById("btnRefClear");
+        const refPicker = document.getElementById("refPicker");
+        const refScaleEl = document.getElementById("refScale");
+        let refImg = null, refX = 20, refY = 20, refScale = 1, dragOffX = 0, dragOffY = 0;
 
-    const wasPlaying = !audio.paused;
-    audio.src = tracks[i];
-    audio.loop = false; // allow next / ended
-    audio.load();
+        function redraw() {
+          const dpr = window.devicePixelRatio || 1;
+          refCtx.clearRect(0, 0, refCanvas.width/dpr, refCanvas.height/dpr);
+          if (!refImg) return;
+          refCtx.globalAlpha = 0.55;
+          refCtx.drawImage(refImg, refX, refY, refImg.width * refScale, refImg.height * refScale);
+          refCtx.globalAlpha = 1;
+        }
 
-    if (autoplay || wasPlaying) audio.play().catch(() => {});
-    setBtn();
-  }
+        btnRef.onclick = () => refPicker.click();
+        refPicker.onchange = (e) => {
+          const file = e.target.files?.[0];
+          if (!file) return;
+          const url = URL.createObjectURL(file);
+          const img = new Image();
+          img.onload = () => {
+            refImg = img;
+            refScale = Math.min(1, (canvas.width/2) / img.width);
+            refScaleEl.value = refScale;
+            redraw();
+          };
+          img.src = url;
+        };
+        refScaleEl.oninput = () => { refScale = Number(refScaleEl.value); redraw(); };
+        btnRefClear.onclick = () => { refImg = null; redraw(); };
 
-  // initial load
-  setTrack(i, false);
-
-  vol.addEventListener("input", () => {
-    audio.volume = Number(vol.value);
-    localStorage.setItem("petal_music_vol", String(vol.value));
-  });
-
-  btn.addEventListener("click", async () => {
-    try {
-      audio.muted = false;
-      if (audio.paused) await audio.play();
-      else audio.pause();
-      setBtn();
-    } catch (e) {
-      console.warn(e);
-      btn.textContent = "Tap again";
-    }
-  });
-
-  btnNext?.addEventListener("click", () => setTrack(i + 1, true));
-  audio.addEventListener("ended", () => setTrack(i + 1, true));
-
-  setBtn();
-})();
-// --- Reference image overlay (move + scale) ---
-(() => {
-  const btnRef = document.getElementById("btnRef");
-  const btnRefClear = document.getElementById("btnRefClear");
-  const refPicker = document.getElementById("refPicker");
-  const refScaleEl = document.getElementById("refScale");
-
-  let refImg = null;
-  let refX = 20, refY = 20;
-  let refScale = 1;
-  let dragOffX = 0, dragOffY = 0;
-
-  function redraw() {
-  // because we setTransform(dpr,0,0,dpr,0,0), draw in CSS pixels:
-  const w = refCanvas.width / (window.devicePixelRatio || 1);
-  const h = refCanvas.height / (window.devicePixelRatio || 1);
-
-  refCtx.clearRect(0, 0, w, h);
-  if (!refImg) return;
-
-  refCtx.globalAlpha = 0.55;
-  refCtx.drawImage(refImg, refX, refY, refImg.width * refScale, refImg.height * refScale);
-  refCtx.globalAlpha = 1;
-}
-  btnRef?.addEventListener("click", () => refPicker?.click());
-
-  refPicker?.addEventListener("change", (e) => {
-  const file = e.target.files?.[0];
-  if (!file) return;
-
-  const url = URL.createObjectURL(file);
-  const img = new Image();
-
-  img.onload = () => {
-    refImg = img;
-
-    const stageW = refCanvas.width / (window.devicePixelRatio || 1);
-    const maxW = stageW * 0.6;
-
-    refScale = Math.min(1, maxW / img.width);
-    if (refScaleEl) refScaleEl.value = String(refScale);
-
-    refX = 20;
-    refY = 20;
-
-    redraw();
-    URL.revokeObjectURL(url);
-    e.target.value = "";
-  };
-
-  img.src = url; // <-- REQUIRED
-});
-
-
-  refScaleEl?.addEventListener("input", () => {
-    if (!refImg) return;
-    refScale = Number(refScaleEl.value);
-    redraw();
-  });
-
- btnRefClear?.addEventListener("click", () => {
-  refImg = null;
-  redraw();
-});
-
-  // Drag ref: hold Shift and drag on canvas
-  canvas.addEventListener("mousedown", (e) => {
-  if (!refImg || !e.shiftKey) return;
-  const p = pos(e);
-  const w = refImg.width * refScale;
-  const h = refImg.height * refScale;
-
-  if (p.x >= refX && p.x <= refX + w && p.y >= refY && p.y <= refY + h) {
-    draggingRef = true;
-    dragOffX = p.x - refX;
-    dragOffY = p.y - refY;
-  }
-});
-
-  canvas.addEventListener("mousemove", (e) => {
-    if (!draggingRef) return;
-    e.preventDefault();
-    const p = pos(e);
-    refX = p.x - dragOffX;
-    refY = p.y - dragOffY;
-    redraw();
-  });
-
-  window.addEventListener("mouseup", () => (draggingRef = false));
-})();
+        canvas.onmousedown = (e) => {
+          if (!refImg || !e.shiftKey) return;
+          const p = pos(e);
+          draggingRef = true;
+          dragOffX = p.x - refX; dragOffY = p.y - refY;
+        };
+        canvas.onmousemove = (e) => { if (draggingRef) { const p = pos(e); refX = p.x - dragOffX; refY = p.y - dragOffY; redraw(); } };
+      })();
     </script>
   </body>
 </html>
