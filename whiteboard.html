@@ -354,10 +354,11 @@ function up() {
   if (!audio || !btn || !vol) return;
 
   const tracks = [
-  "assets/lofi.mp3",
-  "assets/elevator.mp3",
-  "assets/monty.mp3",
-];
+      "assets/lofi.mp3", 
+      "assets/elevator.mp3", 
+      "assets/monty.mp3", 
+      "assets/intro.mp3"
+    ];
 
   let i = Number(localStorage.getItem("petal_track_index") || "0");
   if (!Number.isFinite(i) || i < 0) i = 0;
