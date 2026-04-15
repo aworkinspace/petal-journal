@@ -1,5 +1,8 @@
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-import { collection, addDoc, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { 
+  collection, addDoc, query, where, getDocs, 
+  enableNetwork, disableNetwork 
+} from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
 const contentEl = document.getElementById("capsuleContent");
 const dateEl = document.getElementById("unlockDate");
@@ -7,6 +10,18 @@ const btnSeal = document.getElementById("btnSeal");
 const listEl = document.getElementById("capsuleList");
 
 let currentUser = null;
+const db = window.firebaseDb;
+
+// --- FORCE RECONNECT LOGIC (Fixes the 'Client is Offline' bug) ---
+(async () => {
+  try {
+    await disableNetwork(db);
+    await enableNetwork(db);
+    console.log("Capsule Vault connected");
+  } catch (e) {
+    console.error("Network reset failed", e);
+  }
+})();
 
 // 1. Auth Observer
 onAuthStateChanged(window.firebaseAuth, (user) => {
@@ -14,9 +29,14 @@ onAuthStateChanged(window.firebaseAuth, (user) => {
     currentUser = user;
     loadVault();
   } else {
-    window.location.href = "login.html";
+    // If not logged in, wait a second for auth to initialize
+    setTimeout(() => {
+      if(!window.firebaseAuth.currentUser) window.location.href = "login.html";
+    }, 2000);
   }
 });
+
+// ... keep the rest of your btnSeal.onclick and loadVault functions ...
 
 // 2. Seal (Save) Logic
 btnSeal.onclick = async () => {
