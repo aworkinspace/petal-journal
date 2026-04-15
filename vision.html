@@ -210,6 +210,19 @@ h1, .muted {
         <!-- Images will appear here -->
       </div>
     </div>
+<div class="spotify-widget panel">
+  <details>
+    <summary class="btn">🎵 Music Player</summary>
+    <div class="spotify-content">
+      <input class="input" id="spotifyUrl" placeholder="Paste Spotify link…" />
+      <div class="row" style="margin-top:8px; gap:5px;">
+        <button class="btn" id="btnSetSpotify" style="font-size:14px;">Set</button>
+        <button class="btn" id="btnClearSpotify" style="font-size:14px;">Clear</button>
+      </div>
+      <div id="spotifyEmbed"></div>
+    </div>
+  </details>
+</div>
 
     <!-- App Script -->
     <script type="module" src="vision.mjs"></script>
