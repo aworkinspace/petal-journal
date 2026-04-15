@@ -45,22 +45,43 @@ btnAdd.onclick = () => picker.click();
 
 picker.onchange = async (e) => {
   const file = e.target.files[0];
-  if (!file || !currentUser) return;
+  // 1. Safety checks
+  if (!file) return;
+  if (!currentUser) {
+    alert("You must be logged in to add images.");
+    return;
+  }
 
-  const path = `vision_boards/${currentUser.uid}/${Date.now()}_${file.name}`;
-  const fileRef = storageRef(window.firebaseStorage, path);
+  // 2. SHOW INSTANT LOCAL PREVIEW
+  // This makes the image show up immediately even before the upload starts!
+  const localUrl = URL.createObjectURL(file);
+  const tempId = "temp_" + Date.now();
+  createBoardItem(localUrl, 50, 50, tempId);
+  
+  console.log("Image added to board locally. Starting Firebase upload...");
 
+  // 3. UPLOAD TO FIREBASE IN BACKGROUND
   try {
-    const snapshot = await uploadBytes(fileRef, file);
-    const url = await getDownloadURL(snapshot.ref);
+    const path = `vision_boards/${currentUser.uid}/${Date.now()}_${file.name}`;
+    const fileRef = storageRef(window.firebaseStorage, path);
     
-    // Create the item on the board at a default position
-    createBoardItem(url, 50, 50, Date.now().toString());
-    saveBoard(); // Save the new item to Firestore
+    const snapshot = await uploadBytes(fileRef, file);
+    const finalUrl = await getDownloadURL(snapshot.ref);
+    
+    // Update the temporary local image with the real permanent Firebase URL
+    const newItem = document.querySelector(`[data-id="${tempId}"] img`);
+    if (newItem) newItem.src = finalUrl;
+    
+    saveBoard(); // Save positions to Firestore
+    console.log("Firebase upload complete!");
   } catch (err) {
-    console.error("Upload failed", err);
+    console.error("Firebase upload failed:", err);
+    alert("Upload failed. Check your Firebase Storage rules.");
+    // Remove the failed local preview
+    document.querySelector(`[data-id="${tempId}"]`)?.remove();
   }
 };
+
 
 // 3. CREATE ELEMENT LOGIC
 function createBoardItem(url, x, y, id) {
