@@ -83,7 +83,27 @@
     </div>
 
     <!-- Firebase Init (Copy your exact API keys from index.html here) -->
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-      import { getAuth } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-      import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+  import { getAuth, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBqpOzgqcRebD_yCtjW7HqIyy9rdTcCVvc",
+    authDomain: "petal-journal-app.firebaseapp.com",
+    databaseURL: "https://petal-journal-app-default-rtdb.firebaseio.com",
+    projectId: "petal-journal-app",
+    storageBucket: "petal-journal-app.firebasestorage.app",
+    messagingSenderId: "162872929125",
+    appId: "1:162872929125:web:89587cde0bfdd26fc94f8c",
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  
+  // Keep the session alive
+  setPersistence(auth, browserLocalPersistence).catch(console.error);
+
+  window.firebaseAuth = auth;
+  window.firebaseDb = getFirestore(app);
+</script>
