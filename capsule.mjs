@@ -49,12 +49,13 @@ btnSeal.onclick = async () => {
   }
 
   try {
-    console.log("Starting seal process...");
     btnSeal.disabled = true;
     btnSeal.textContent = "Sealing...";
 
-    // Force a network check right before saving
-    await enableNetwork(window.firebaseDb);
+    // Create a Promise that rejects after 10 seconds
+    const timeout = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error("Database connection timed out. Please try again.")), 10000)
+    );
 
     const docData = {
       userId: currentUser.uid,
@@ -62,6 +63,28 @@ btnSeal.onclick = async () => {
       unlockDate: unlockDate,
       createdAt: new Date().toISOString()
     };
+
+    // Race the database write against our 10-second timer
+    await Promise.race([
+      addDoc(collection(window.firebaseDb, "capsules"), docData),
+      timeout
+    ]);
+
+    console.log("Success!");
+    contentEl.value = "";
+    dateEl.value = "";
+    btnSeal.disabled = false;
+    btnSeal.textContent = "Seal Capsule 🔒";
+    
+    alert("Your letter has been placed in the vault!");
+    loadVault();
+  } catch (e) {
+    console.error("Write failed:", e);
+    alert(e.message);
+    btnSeal.disabled = false;
+    btnSeal.textContent = "Seal Capsule 🔒";
+  }
+};
 
     console.log("Attempting to write to Firestore:", docData);
 
