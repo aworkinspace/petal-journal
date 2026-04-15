@@ -49,15 +49,26 @@ btnSeal.onclick = async () => {
   }
 
   try {
+    console.log("Starting seal process...");
     btnSeal.disabled = true;
     btnSeal.textContent = "Sealing...";
 
-    await addDoc(collection(window.firebaseDb, "capsules"), {
+    // Force a network check right before saving
+    await enableNetwork(window.firebaseDb);
+
+    const docData = {
       userId: currentUser.uid,
       content: content,
-      unlockDate: unlockDate, // Format: YYYY-MM-DD
+      unlockDate: unlockDate,
       createdAt: new Date().toISOString()
-    });
+    };
+
+    console.log("Attempting to write to Firestore:", docData);
+
+    // Using addDoc
+    await addDoc(collection(window.firebaseDb, "capsules"), docData);
+
+    console.log("Firestore write successful!");
 
     contentEl.value = "";
     dateEl.value = "";
@@ -67,10 +78,13 @@ btnSeal.onclick = async () => {
     alert("Your letter has been sealed and placed in the vault!");
     loadVault();
   } catch (e) {
-    console.error(e);
-    alert("Error sealing capsule.");
+    console.error("Firestore Error:", e);
+    alert("Error: " + e.message);
+    btnSeal.disabled = false;
+    btnSeal.textContent = "Seal Capsule 🔒";
   }
 };
+
 
 // 3. Load Vault Logic
 async function loadVault() {
