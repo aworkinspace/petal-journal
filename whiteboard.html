@@ -532,6 +532,54 @@
         };
         canvas.onmousemove = (e) => { if (draggingRef) { const p = pos(e); refX = p.x - dragOffX; refY = p.y - dragOffY; redraw(); } };
       })();
+            // --- Spotify Logic ---
+(() => {
+  const urlEl = document.getElementById("spotifyUrl");
+  const btnSet = document.getElementById("btnSetSpotify");
+  const btnClear = document.getElementById("btnClearSpotify");
+  const host = document.getElementById("spotifyEmbed");
+
+  if (!urlEl || !btnSet || !btnClear || !host) return;
+
+  function toEmbed(url) {
+    if (!url) return null;
+    const match = url.match(/(?:playlist|album|track|show|episode)\/([a-zA-Z0-9]+)/);
+    const id = match?.[1];
+    let type = 'playlist';
+    if (url.includes('track/')) type = 'track';
+    if (url.includes('album/')) type = 'album';
+    if (url.includes('show/')) type = 'show';
+    if (url.includes('episode/')) type = 'episode';
+    return id ? `https://open.spotify.com/embed/${type}/${id}` : null;
+  }
+
+  function render(baseEmbedUrl) {
+    if (!host || !baseEmbedUrl) return;
+    // Simple dark mode check
+    const isDark = ["midnight", "dusky_rose", "mauve_night"].includes(localStorage.getItem("petal_theme"));
+    const theme = isDark ? "dark" : "light";
+    host.innerHTML = `<iframe class="spotify-iframe" src="${baseEmbedUrl}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+  }
+
+  btnSet.onclick = () => {
+    const embed = toEmbed(urlEl.value.trim());
+    if (embed) {
+      localStorage.setItem("petal_spotify_embed", embed);
+      render(embed);
+    }
+  };
+
+  btnClear.onclick = () => {
+    localStorage.removeItem("petal_spotify_embed");
+    host.innerHTML = "";
+    urlEl.value = "";
+  };
+
+  // Initial Load
+  const saved = localStorage.getItem("petal_spotify_embed");
+  if (saved) render(saved);
+})();
+
     </script>
   </body>
 </html>
