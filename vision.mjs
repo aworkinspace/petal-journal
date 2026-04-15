@@ -91,17 +91,35 @@ function createBoardItem(url, x, y, id) {
   container.style.left = x + "px";
   container.style.top = y + "px";
 
+  // 1. The Image
   const img = document.createElement("img");
   img.src = url;
-  img.draggable = false; // Prevent default browser ghost image dragging
+  img.draggable = false;
 
+  // 2. The Delete Button
+  const delBtn = document.createElement("div");
+  delBtn.className = "delete-btn";
+  delBtn.innerHTML = "×";
+  
+  // LOGIC: Delete when clicked
+  delBtn.onclick = (e) => {
+    e.stopPropagation(); // Stop the click from starting a drag
+    if (confirm("Delete this image from your board?")) {
+      container.remove();
+      saveBoard(); // Save the updated board to Firestore
+    }
+  };
+
+  // Assemble
   container.appendChild(img);
+  container.appendChild(delBtn);
   board.appendChild(container);
 
-  // Setup dragging for this specific item
+  // Dragging logic
   container.onmousedown = (e) => startDrag(e, container);
   container.ontouchstart = (e) => startDrag(e, container);
 }
+
 
 // 4. DRAG & DROP ENGINE
 function startDrag(e, item) {
