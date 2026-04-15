@@ -86,7 +86,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
   import { getAuth, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+  import { initializeFirestore, terminate, clearIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBqpOzgqcRebD_yCtjW7HqIyy9rdTcCVvc",
@@ -100,13 +100,17 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  
-  // Keep the session alive
   setPersistence(auth, browserLocalPersistence).catch(console.error);
 
+  // --- CRITICAL FIX: FORCE STABLE CONNECTION ---
+  const db = initializeFirestore(app, {
+    experimentalForceLongPolling: true, // Forces a more stable connection
+  });
+
   window.firebaseAuth = auth;
-  window.firebaseDb = getFirestore(app);
+  window.firebaseDb = db;
 </script>
+
     <!-- Connect the logic -->
     <script type="module" src="capsule.mjs"></script>
   </body>
