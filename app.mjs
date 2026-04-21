@@ -218,14 +218,19 @@ function toast(msg) {
     }, type === "meteors" ? 1500 : 600);
   }
 
-  document.addEventListener("themeChanged", () => {
+    document.addEventListener("themeChanged", () => {
     const themeName = localStorage.getItem("petal_theme");
     if (themeName === "cosmic_starfall") startAnimation("meteors");
     else if (themeName === "autumn_forest") startAnimation("leaves");
     else if (themeName === "spring_blossom") startAnimation("blossoms");
     else if (themeName === "summer_shimmer") startAnimation("sunbeams");
-    else { if (animationInterval) clearInterval(animationInterval); overlay.innerHTML = ""; }
+    else if (themeName === "midnight_snowfall") startAnimation("snow"); // Added this
+    else {
+      if (animationInterval) clearInterval(animationInterval);
+      overlay.innerHTML = "";
+    }
   });
+
 
   // Trigger once on load
   setTimeout(() => document.dispatchEvent(new CustomEvent('themeChanged')), 500);
