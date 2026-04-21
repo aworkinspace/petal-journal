@@ -892,22 +892,25 @@ header, .top-actions { overflow: visible; }
 }
 
 /* METEOR STYLE */
+/* UPDATED METEOR STYLE */
 .meteor {
   position: absolute;
-  width: 2px;
-  height: 2px;
+  width: 4px;             /* Was 2px - doubled the head size */
+  height: 4px;            /* Was 2px */
   background: white;
   border-radius: 50%;
-  box-shadow: 0 0 10px 2px white;
+  /* Increased glow for the bigger size */
+  box-shadow: 0 0 15px 3px rgba(255, 255, 255, 0.8); 
   animation: meteor linear forwards;
 }
-.meteor::after { /* The tail */
+
+.meteor::after { 
   content: "";
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 60px;
-  height: 1px;
+  width: 120px;           /* Was 60px - doubled the tail length */
+  height: 2px;            /* Was 1px - made tail slightly thicker */
   background: linear-gradient(90deg, white, transparent);
 }
 
