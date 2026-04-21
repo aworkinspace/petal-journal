@@ -51,7 +51,32 @@
     "--text": "#4A3728",
     "--text-muted": "#856D5B",
     "animation": "leaves" // Custom flag for JS
+  },
+    spring_blossom: {
+    "--bg": "#FFF5F8",
+    "--surface": "#FEF0F5",
+    "--surface-2": "#FDE2E9",
+    "--border": "#F9C8D9",
+    "--primary": "#FFB7C5",
+    "--primary-soft": "#FFE4E8",
+    "--accent": "#FF69B4",
+    "--text": "#5E3A44",
+    "--text-muted": "#8A6B74",
+    "animation": "blossoms"
+  },
+  summer_shimmer: {
+    "--bg": "#F0FBFF",
+    "--surface": "#E3F7FF",
+    "--surface-2": "#D1F2FF",
+    "--border": "#B6E9FF",
+    "--primary": "#00A8E8",
+    "--primary-soft": "#BCEBFF",
+    "--accent": "#FFD700",
+    "--text": "#1A465C",
+    "--text-muted": "#4B758E",
+    "animation": "sunbeams"
   }
+
         };
         const name = localStorage.getItem("petal_theme") || "petal";
         const t = THEMES[name] || THEMES.petal;
