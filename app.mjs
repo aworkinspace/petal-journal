@@ -499,9 +499,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const particle = document.createElement("div");
       const startX = Math.random() * window.innerWidth;
       
+          animationInterval = setInterval(() => {
+      const particle = document.createElement("div");
+      const startX = Math.random() * window.innerWidth;
+      
       if (type === "meteors") {
         particle.className = "meteor";
-        particle.style.left = (startX + 400) + "px"; // Offset so they fly in
+        particle.style.left = (startX + 400) + "px";
         particle.style.top = "-50px";
         particle.style.animationDuration = (Math.random() * 1 + 0.5) + "s";
       } else if (type === "leaves") {
@@ -510,13 +514,23 @@ document.addEventListener("DOMContentLoaded", () => {
         particle.style.top = "-50px";
         particle.style.animationDuration = (Math.random() * 3 + 4) + "s";
         particle.style.backgroundColor = Math.random() > 0.5 ? "var(--accent)" : "var(--primary)";
+      } else if (type === "blossoms") {
+        particle.className = "blossom";
+        particle.style.left = startX + "px";
+        particle.style.top = "-50px";
+        particle.style.animationDuration = (Math.random() * 4 + 5) + "s"; // Slow drifting
+        particle.style.backgroundColor = Math.random() > 0.5 ? "#FFB7C5" : "#FF69B4";
+      } else if (type === "sunbeams") {
+        particle.className = "sunbeam";
+        particle.style.left = startX + "px";
+        particle.style.top = "-150px";
+        particle.style.animationDuration = (Math.random() * 2 + 3) + "s";
       }
 
       overlay.appendChild(particle);
-      // Remove element after animation ends to keep site fast
-      setTimeout(() => particle.remove(), 6000);
-    }, type === "meteors" ? 1500 : 800); // Meteors are rare, leaves are common
-  }
+      setTimeout(() => particle.remove(), 8000);
+    }, type === "meteors" ? 1500 : 600); // Blossoms and sunbeams spawn fairly often
+
 
   // Hook into your existing theme system
   document.addEventListener("themeChanged", () => {
