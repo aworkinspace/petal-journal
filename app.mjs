@@ -198,6 +198,20 @@ function toast(msg) {
         particle.style.top = "-150px";
         particle.style.animationDuration = (Math.random() * 2 + 3) + "s";
       }
+      } else if (type === "snow") {
+        particle.className = "snowflake";
+        particle.style.left = startX + "px";
+        particle.style.top = "-10px";
+        // Random size for variety
+        const size = Math.random() * 4 + 2 + "px";
+        particle.style.width = size;
+        particle.style.height = size;
+        particle.style.animationDuration = (Math.random() * 3 + 5) + "s"; // Slower fall
+      }
+
+      overlay.appendChild(particle);
+      setTimeout(() => particle.remove(), 8000);
+    }, type === "snow" ? 200 : 600); // Higher frequency for snow
 
       overlay.appendChild(particle);
       setTimeout(() => particle.remove(), 8000);
