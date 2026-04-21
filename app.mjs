@@ -323,3 +323,96 @@ imgPicker?.addEventListener("change", async (e) => {
     setTimeout(() => card.style.transform = "scale(1)", 100);
   });
 })();
+/* ------------------------ Spotify Logic (Robust) ------------------------ */
+(() => {
+  const urlEl = document.getElementById("spotifyUrl");
+  const btnSet = document.getElementById("btnSetSpotify");
+  const btnClear = document.getElementById("btnClearSpotify");
+  const host = document.getElementById("spotifyEmbed");
+  const msg = document.getElementById("spotifyMsg");
+
+  if (!urlEl || !btnSet || !btnClear || !host) return;
+
+  // Themes that should trigger the "Dark" Spotify player
+  const darkThemes = new Set([
+    "midnight", "cosmic_starfall", "dusky_rose", "mauve_night", 
+    "deep_sage", "blueberry_dusk", "cocoa_lilac"
+  ]);
+
+  // Function to clean the URL and extract the ID/Type
+  function toEmbed(url) {
+    if (!url) return null;
+    
+    // This regex catches Playlists, Albums, Tracks, Shows (Podcasts), and Episodes
+    const match = url.match(/(?:playlist|album|track|show|episode)\/([a-zA-Z0-9]+)/);
+    const id = match?.[1];
+    
+    let type = 'playlist'; // Default
+    if (url.includes('track/')) type = 'track';
+    if (url.includes('album/')) type = 'album';
+    if (url.includes('show/')) type = 'show';
+    if (url.includes('episode/')) type = 'episode';
+
+    return id ? `https://open.spotify.com/embed/${type}/${id}` : null;
+  }
+
+  // Function to actually put the player on the screen
+  function render(baseEmbedUrl) {
+    if (!host || !baseEmbedUrl) return;
+
+    // Check current theme to decide if Spotify should be dark or light
+    const currentTheme = localStorage.getItem("petal_theme") || "petal";
+    const spotifyTheme = darkThemes.has(currentTheme) ? "dark" : "light";
+    
+    // Add the theme parameter to the URL
+    const finalSrc = `${baseEmbedUrl}?theme=${spotifyTheme}`;
+
+    host.innerHTML = `
+      <iframe 
+        class="spotify-iframe" 
+        style="width:100%; height:352px; border:0; border-radius:16px; margin-top:10px;" 
+        src="${finalSrc}" 
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+        loading="lazy">
+      </iframe>`;
+  }
+
+  // Button: Set Playlist
+  btnSet.addEventListener("click", () => {
+    const raw = urlEl.value.trim();
+    const embed = toEmbed(raw);
+
+    if (embed) {
+      if (msg) msg.textContent = "";
+      localStorage.setItem("petal_spotify_url", raw);
+      localStorage.setItem("petal_spotify_embed", embed);
+      render(embed);
+      // If you have the toast function defined:
+      if (typeof toast === "function") toast("Spotify player updated!");
+    } else {
+      if (msg) msg.textContent = "Invalid link. Use a Playlist, Album, Track, or Podcast link.";
+    }
+  });
+
+  // Button: Clear
+  btnClear.addEventListener("click", () => {
+    localStorage.removeItem("petal_spotify_url");
+    localStorage.removeItem("petal_spotify_embed");
+    urlEl.value = "";
+    host.innerHTML = "";
+    if (msg) msg.textContent = "";
+  });
+
+  // Initial Load (when page opens)
+  const saved = localStorage.getItem("petal_spotify_embed");
+  if (saved) {
+    render(saved);
+    urlEl.value = localStorage.getItem("petal_spotify_url") || "";
+  }
+
+  // Listen for Theme Changes to update Spotify colors instantly
+  document.addEventListener('themeChanged', () => {
+    const currentEmbed = localStorage.getItem("petal_spotify_embed");
+    if (currentEmbed) render(currentEmbed);
+  });
+})();
