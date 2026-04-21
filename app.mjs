@@ -368,9 +368,10 @@ imgPicker?.addEventListener("change", async (e) => {
 
   // Themes that should trigger the "Dark" Spotify player
   const darkThemes = new Set([
-    "midnight", "cosmic_starfall", "dusky_rose", "mauve_night", 
-    "deep_sage", "blueberry_dusk", "cocoa_lilac"
-  ]);
+  "midnight", "cosmic_starfall", "dusky_rose", "mauve_night", 
+  "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall" // Added here
+]);
+
 
   // Function to clean the URL and extract the ID/Type
   function toEmbed(url) {
