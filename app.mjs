@@ -214,3 +214,112 @@ document.addEventListener("DOMContentLoaded", () => {
   if (tSel) tSel.onchange = (e) => applyTheme(e.target.value);
   if (sSel) sSel.onchange = (e) => applySkin(e.target.value);
 });
+/* ------------------------ Stickers & Image Upload ------------------------ */
+function insertSticker(src) {
+  const content = document.getElementById("content");
+  if (!content) return;
+
+  const img = document.createElement("img");
+  img.src = src;
+  img.alt = "sticker";
+  img.className = "sticker";
+
+  // Try to insert where the cursor is, otherwise just append to the end
+  const sel = window.getSelection();
+  if (sel && sel.rangeCount && content.contains(sel.anchorNode)) {
+    const range = sel.getRangeAt(0);
+    range.insertNode(img);
+    range.setStartAfter(img);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+  } else {
+    content.appendChild(img);
+  }
+}
+
+// Listener for Sticker Buttons
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest("button[data-sticker]");
+  if (btn) insertSticker(btn.dataset.sticker);
+});
+
+// Custom Image Upload (Beta)
+const btnAddImage = document.getElementById("btnAddImage");
+const imgPicker = document.getElementById("imgPicker");
+
+btnAddImage?.addEventListener("click", () => {
+  if (!window.firebaseAuth?.currentUser) {
+    alert("Please log in to upload custom images!");
+    return;
+  }
+  imgPicker?.click();
+});
+
+imgPicker?.addEventListener("change", async (e) => {
+  const file = e.target.files?.[0];
+  if (!file || !window.firebaseAuth?.currentUser || !window.firebaseStorage) return;
+
+  if (file.size > 5 * 1024 * 1024) { 
+    alert("Image too large (max 5MB)."); 
+    return; 
+  }
+
+  try {
+    const toast = document.getElementById("toast");
+    if (toast) { toast.textContent = "Uploading image..."; toast.classList.add("show"); }
+
+    const safeName = (file.name || "image").replace(/[^\w.-]+/g, "_");
+    const path = `entry_images/${window.firebaseAuth.currentUser.uid}/${Date.now()}_${safeName}`;
+    const fileRef = storageRef(window.firebaseStorage, path);
+
+    await uploadBytes(fileRef, file, { contentType: file.type });
+    const url = await getDownloadURL(fileRef);
+
+    insertSticker(url);
+    if (toast) { toast.textContent = "Image added!"; setTimeout(() => toast.classList.remove("show"), 2000); }
+  } catch (err) {
+    console.error("Upload failed:", err);
+    alert("Upload failed. Check your connection.");
+  }
+  e.target.value = ""; // Reset picker
+});
+/* ------------------------ Prompts Logic ------------------------ */
+(() => {
+  const prompts = [
+    "What’s one small win you had today?",
+    "What’s taking up the most space in your mind right now?",
+    "What’s one thing you can let go of today?",
+    "Write 3 things you’re grateful for (tiny counts).",
+    "What did you learn today?",
+    "What do you need more of this week?",
+    "Describe your day in 5 words.",
+    "What would you tell a friend in your situation?",
+    "What’s one kind thing you did for yourself today?",
+    "What’s one next step (the smallest possible)?",
+  ];
+
+  const btn = document.getElementById("btnPrompt");
+  const card = document.getElementById("promptCard");
+
+  if (!btn || !card) return;
+
+  // Load saved prompt
+  const saved = localStorage.getItem("petal_prompt");
+  if (saved) card.textContent = saved;
+
+  btn.addEventListener("click", () => {
+    let next;
+    // Don't pick the same one twice in a row
+    do {
+      next = prompts[Math.floor(Math.random() * prompts.length)];
+    } while (next === card.textContent);
+
+    card.textContent = next;
+    localStorage.setItem("petal_prompt", next);
+    
+    // Tiny animation effect
+    card.style.transform = "scale(1.02)";
+    setTimeout(() => card.style.transform = "scale(1)", 100);
+  });
+})();
