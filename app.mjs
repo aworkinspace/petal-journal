@@ -533,13 +533,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // Hook into your existing theme system
-  document.addEventListener("themeChanged", () => {
+    document.addEventListener("themeChanged", () => {
     const themeName = localStorage.getItem("petal_theme");
-    if (themeName === "cosmic_starfall") {
-      startAnimation("meteors");
-    } else if (themeName === "autumn_forest") {
-      startAnimation("leaves");
-    } else {
+    if (themeName === "cosmic_starfall") startAnimation("meteors");
+    else if (themeName === "autumn_forest") startAnimation("leaves");
+    else if (themeName === "spring_blossom") startAnimation("blossoms");
+    else if (themeName === "summer_shimmer") startAnimation("sunbeams");
+    else {
       if (animationInterval) clearInterval(animationInterval);
       overlay.innerHTML = "";
     }
