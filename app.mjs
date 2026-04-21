@@ -19,7 +19,33 @@ const THEMES = {
   cocoa_lilac: { "--bg": "#141014", "--surface": "#1A141B", "--surface-2": "#261C28", "--border": "rgba(255,255,255,.14)", "--primary": "#E2B3FF", "--primary-soft": "rgba(226,179,255,.35)", "--accent": "#FFB38A", "--text": "#F2F0F7", "--text-muted": "rgba(242,240,247,.75)", "--bg-spot-1": "rgba(226,179,255,.18)", "--bg-spot-2": "rgba(255,179,138,.10)" },
   midnight: { "--bg": "#0F0D14", "--surface": "#14121A", "--surface-2": "#1C1824", "--border": "rgba(255,255,255,.14)", "--primary": "#8EA2FF", "--primary-soft": "rgba(142,162,255,.35)", "--accent": "#FFA5D6", "--text": "#F2F0F7", "--text-muted": "rgba(242,240,247,.75)", "--bg-spot-1": "rgba(142,162,255,.18)", "--bg-spot-2": "rgba(255,165,214,.12)" },
   strawberry_matcha: { "--bg": "#F7FFF6", "--surface": "#F7FFF6", "--surface-2": "#E8F7E6", "--border": "#CFE6CC", "--primary": "#7FBF9B", "--primary-soft": "#CFEBDD", "--accent": "#FF8FB8", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(127,191,155,.28)", "--bg-spot-2": "rgba(255,143,184,.22)" },
-  blueberry_yogurt: { "--bg": "#F4F6FF", "--surface": "#F4F6FF", "--surface-2": "#E2E7FF", "--border": "#CAD3FF", "--primary": "#7F8CFF", "--primary-soft": "#C9D0FF", "--accent": "#FFA5D6", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(127,140,255,.30)", "--bg-spot-2": "rgba(255,165,214,.20)" }
+  blueberry_yogurt: { "--bg": "#F4F6FF", "--surface": "#F4F6FF", "--surface-2": "#E2E7FF", "--border": "#CAD3FF", "--primary": "#7F8CFF", "--primary-soft": "#C9D0FF", "--accent": "#FFA5D6", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(127,140,255,.30)", "--bg-spot-2": "rgba(255,165,214,.20)" },
+    cosmic_starfall: {
+    "--bg": "#0D0B1A",
+    "--surface": "#16142E",
+    "--surface-2": "#231F4D",
+    "--border": "rgba(183,166,255,.14)",
+    "--primary": "#B7A6FF",
+    "--primary-soft": "rgba(183,166,255,.25)",
+    "--accent": "#FFD700",
+    "--text": "#F2F0F7",
+    "--text-muted": "rgba(242,240,247,.75)",
+    "--bg-spot-1": "rgba(130,100,255,0.2)",
+    "--bg-spot-2": "rgba(50,200,255,0.1)",
+    "animation": "meteors" // Custom flag for JS
+  },
+  autumn_forest: {
+    "--bg": "#FFF9F2",
+    "--surface": "#FCF3E8",
+    "--surface-2": "#F5E6D3",
+    "--border": "#DBC7B5",
+    "--primary": "#A67B5B",
+    "--primary-soft": "#E3D5C4",
+    "--accent": "#D95D39",
+    "--text": "#4A3728",
+    "--text-muted": "#856D5B",
+    "animation": "leaves" // Custom flag for JS
+  }
 };
 
 function applyVars(vars) {
