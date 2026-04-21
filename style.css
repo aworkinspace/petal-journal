@@ -882,3 +882,53 @@ header, .top-actions { overflow: visible; }
 [data-theme="dusky_rose"] .btn-primary, [data-theme="mauve_night"] .btn-primary, [data-theme="deep_sage"] .btn-primary, [data-theme="blueberry_dusk"] .btn-primary, [data-theme="cocoa_lilac"] .btn-primary {
   box-shadow: 0 0 15px var(--primary-soft);
 }
+/* Container for moving particles */
+#animation-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5; /* Behind buttons, in front of background */
+  overflow: hidden;
+}
+
+/* METEOR STYLE */
+.meteor {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 10px 2px white;
+  animation: meteor linear forwards;
+}
+.meteor::after { /* The tail */
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, white, transparent);
+}
+
+@keyframes meteor {
+  0% { transform: translate(0, 0) rotate(-45deg); opacity: 1; }
+  100% { transform: translate(-800px, 800px) rotate(-45deg); opacity: 0; }
+}
+
+/* LEAF STYLE */
+.leaf {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background: var(--accent);
+  border-radius: 2px 10px; /* Leaf shape */
+  opacity: 0.8;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-50px) translateX(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.8; }
+  100% { transform: translateY(110vh) translateX(100px) rotate(360deg); opacity: 0; }
+}
