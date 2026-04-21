@@ -457,4 +457,56 @@ document.addEventListener("DOMContentLoaded", () => {
     initPrompts();
   }
 })();
+/* ------------------------ Moving Themes Logic ------------------------ */
+(() => {
+  const overlay = document.createElement("div");
+  overlay.id = "animation-overlay";
+  document.body.prepend(overlay);
+
+  let animationInterval = null;
+
+  function startAnimation(type) {
+    // Clear old animation
+    if (animationInterval) clearInterval(animationInterval);
+    overlay.innerHTML = "";
+
+    animationInterval = setInterval(() => {
+      const particle = document.createElement("div");
+      const startX = Math.random() * window.innerWidth;
+      
+      if (type === "meteors") {
+        particle.className = "meteor";
+        particle.style.left = (startX + 400) + "px"; // Offset so they fly in
+        particle.style.top = "-50px";
+        particle.style.animationDuration = (Math.random() * 1 + 0.5) + "s";
+      } else if (type === "leaves") {
+        particle.className = "leaf";
+        particle.style.left = startX + "px";
+        particle.style.top = "-50px";
+        particle.style.animationDuration = (Math.random() * 3 + 4) + "s";
+        particle.style.backgroundColor = Math.random() > 0.5 ? "var(--accent)" : "var(--primary)";
+      }
+
+      overlay.appendChild(particle);
+      // Remove element after animation ends to keep site fast
+      setTimeout(() => particle.remove(), 6000);
+    }, type === "meteors" ? 1500 : 800); // Meteors are rare, leaves are common
+  }
+
+  // Hook into your existing theme system
+  document.addEventListener("themeChanged", () => {
+    const themeName = localStorage.getItem("petal_theme");
+    if (themeName === "cosmic_starfall") {
+      startAnimation("meteors");
+    } else if (themeName === "autumn_forest") {
+      startAnimation("leaves");
+    } else {
+      if (animationInterval) clearInterval(animationInterval);
+      overlay.innerHTML = "";
+    }
+  });
+  
+  // Initial check
+  window.dispatchEvent(new CustomEvent("themeChanged"));
+})();
 
