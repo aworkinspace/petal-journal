@@ -932,3 +932,34 @@ header, .top-actions { overflow: visible; }
   10% { opacity: 0.8; }
   100% { transform: translateY(110vh) translateX(100px) rotate(360deg); opacity: 0; }
 }
+/* SPRING BLOSSOMS */
+.blossom {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  border-radius: 50% 0 50% 0; /* Petal shape */
+  opacity: 0.6;
+  animation: blossom-fall linear forwards;
+}
+
+@keyframes blossom-fall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.7; }
+  100% { transform: translateY(110vh) translateX(150px) rotate(720deg); opacity: 0; }
+}
+
+/* SUMMER SUNBEAMS */
+.sunbeam {
+  position: absolute;
+  width: 2px;
+  height: 100px;
+  background: linear-gradient(to bottom, transparent, rgba(255, 215, 0, 0.3), transparent);
+  animation: beam-move linear forwards;
+}
+
+@keyframes beam-move {
+  0% { transform: translateY(-100px) rotate(20deg); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateY(110vh) rotate(20deg); opacity: 0; }
+}
