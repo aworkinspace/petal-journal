@@ -15,7 +15,7 @@
       (function () {
         const name = localStorage.getItem("petal_theme") || "petal";
         const THEMES = {
-  petal: { "--bg": "var(--rose-50)", "--surface": "var(--rose-50)", "--surface-2": "var(--pink-200)", "--border": "var(--mauve-200)", "--primary": "var(--periwinkle-400)", "--primary-soft": "var(--periwinkle-200)", "--accent": "var(--pink-500)", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(167,171,222,.45)", "--bg-spot-2": "rgba(255,165,214,.35)" },
+ petal: { "--bg": "var(--rose-50)", "--surface": "var(--rose-50)", "--surface-2": "var(--pink-200)", "--border": "var(--mauve-200)", "--primary": "var(--periwinkle-400)", "--primary-soft": "var(--periwinkle-200)", "--accent": "var(--pink-500)", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(167,171,222,.45)", "--bg-spot-2": "rgba(255,165,214,.35)" },
   lavender: { "--bg": "#F6F2FF", "--surface": "#F6F2FF", "--surface-2": "#EDE4FF", "--border": "#D8CBF2", "--primary": "#A7ABDE", "--primary-soft": "#CED1F8", "--accent": "#D7A6FF", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(215,166,255,.32)", "--bg-spot-2": "rgba(167,171,222,.28)" },
   sky_sorbet: { "--bg": "#F2FBFF", "--surface": "#F2FBFF", "--surface-2": "#DFF3FF", "--border": "#C7E4F5", "--primary": "#7DB6FF", "--primary-soft": "#CFE4FF", "--accent": "#FFA5D6", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(125,182,255,.30)", "--bg-spot-2": "rgba(255,165,214,.24)" },
   peach_milk: { "--bg": "#FFF6F0", "--surface": "#FFF6F0", "--surface-2": "#FFE3D2", "--border": "#F2CDBB", "--primary": "#A7ABDE", "--primary-soft": "#CED1F8", "--accent": "#FFB38A", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(255,179,138,.34)", "--bg-spot-2": "rgba(167,171,222,.24)" },
@@ -53,7 +53,32 @@
     "--text": "#4A3728",
     "--text-muted": "#856D5B",
     "animation": "leaves" // Custom flag for JS
+  },
+    spring_blossom: {
+    "--bg": "#FFF5F8",
+    "--surface": "#FEF0F5",
+    "--surface-2": "#FDE2E9",
+    "--border": "#F9C8D9",
+    "--primary": "#FFB7C5",
+    "--primary-soft": "#FFE4E8",
+    "--accent": "#FF69B4",
+    "--text": "#5E3A44",
+    "--text-muted": "#8A6B74",
+    "animation": "blossoms"
+  },
+  summer_shimmer: {
+    "--bg": "#F0FBFF",
+    "--surface": "#E3F7FF",
+    "--surface-2": "#D1F2FF",
+    "--border": "#B6E9FF",
+    "--primary": "#00A8E8",
+    "--primary-soft": "#BCEBFF",
+    "--accent": "#FFD700",
+    "--text": "#1A465C",
+    "--text-muted": "#4B758E",
+    "animation": "sunbeams"
   }
+
         const t = THEMES[name] || THEMES.petal;
         for (const k in t) document.documentElement.style.setProperty(k, t[k]);
       })();
