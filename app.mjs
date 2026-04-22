@@ -195,7 +195,7 @@ host.innerHTML = `<iframe
     const saved = localStorage.getItem("petal_spotify_embed");
     if (saved) renderSpotify(saved);
   });
-})();
+})(); 
 
 
 /* ------------------- Seasonal Animations ------------------- */
