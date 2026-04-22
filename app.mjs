@@ -116,27 +116,35 @@ function toast(msg) {
     });
   }
 
-  function renderList() {
+    function renderList() {
     const list = $("entryList"); if (!list) return;
     const q = ($("search")?.value || "").toLowerCase();
-    const filtered = entries.filter(e => ((e.title||"") + (e.content||"")).toLowerCase().includes(q)).sort((a,b) => b.updatedAt - a.updatedAt);
-    list.innerHTML = filtered.map(e => `<div class="entry-card" data-id="${e.id}"><h4>${e.title || '(Untitled)'}</h4><p>${e.date} • ${e.mood}</p></div>`).join('');
+    
+    // Updated filtering logic
+    const filtered = entries.filter(e => {
+      const matchTag = activeTag ? (e.tags || []).includes(activeTag) : true;
+      const matchSearch = ((e.title||"") + (e.content||"")).toLowerCase().includes(q);
+      return matchTag && matchSearch;
+    }).sort((a,b) => b.updatedAt - a.updatedAt);
+
+    list.innerHTML = filtered.map(e => `
+      <div class="entry-card" data-id="${e.id}">
+        <h4>${e.title || '(Untitled)'}</h4>
+        <p>${e.date} • ${e.mood}</p>
+      </div>
+    `).join('');
+    
     list.querySelectorAll('.entry-card').forEach(card => {
       card.onclick = () => {
         const e = entries.find(ent => ent.id === card.dataset.id);
-        activeId = e.id; $("date").value = e.date; $("mood").value = e.mood; $("title").value = e.title; $("tagsInput").value = (e.tags || []).join(', '); $("content").innerHTML = e.content;
-          // 1. This scans all your saved entries to find every unique tag you've used
-  function allTagsFromEntries() {
-    const DEFAULT_TAGS = ["gratitude", "work", "health", "family"];
-    const set = new Set(DEFAULT_TAGS);
-    
-    entries.forEach(e => {
-      if (e.tags && Array.isArray(e.tags)) {
-        e.tags.forEach(t => set.add(t.toLowerCase()));
-      }
+        activeId = e.id; $("date").value = e.date; $("mood").value = e.mood; 
+        $("title").value = e.title; $("tagsInput").value = (e.tags || []).join(', '); 
+        $("content").innerHTML = e.content;
+      };
     });
-    return [...set].sort();
+    if ($("count")) $("count").textContent = filtered.length;
   }
+
 
   // 2. This creates the actual "chips" in the sidebar
   function renderTagChips() {
