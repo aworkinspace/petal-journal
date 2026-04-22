@@ -110,9 +110,8 @@
     <!-- Firebase Init -->
     <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-import { getAuth, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-import { getStorage } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js"; // <--- ADD THIS LINE
+  import { getAuth, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+  import { initializeFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBNB-V-biC7y2-dKx_qzYCpplnwU2r5PaI",
@@ -120,15 +119,13 @@ import { getStorage } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-
     projectId: "petal-journal-final",
     storageBucket: "petal-journal-final.firebasestorage.app",
     messagingSenderId: "805852798492",
-    appId: "1:805852798492:web:0e2b1e4fa74850a77a09d9",
-    measurementId: "G-WP4KPK7QD3"
+    appId: "1:805852798492:web:0e2b1e4fa74850a77a09d9"
   };
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  setPersistence(auth, browserLocalPersistence).catch(console.error);
-
-  // This is the most stable way to connect!
+  
+  // Connect to Firestore using the stable "Long Polling" method
   const db = initializeFirestore(app, {
     experimentalForceLongPolling: true,
   });
@@ -136,6 +133,7 @@ import { getStorage } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-
   window.firebaseAuth = auth;
   window.firebaseDb = db;
 </script>
+
 
 
     <!-- Connect the logic -->
