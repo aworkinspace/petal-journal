@@ -135,11 +135,23 @@ function toast(msg) {
   let trackIdx = Number(localStorage.getItem("petal_track_index") || "0") % tracks.length;
 
   document.addEventListener("DOMContentLoaded", () => {
-    const bgm = $("bgm"); if (!bgm) return;
+    const bgm = $("bgm"); 
+    if (!bgm) return;
+    
     bgm.volume = Number(localStorage.getItem("petal_music_vol") || 0.35);
     bgm.src = tracks[trackIdx];
-    $("btnMusic")?.addEventListener("click", () => { if (bgm.paused) bgm.play(); else bgm.pause(); $("btnMusic").textContent = bgm.paused ? "Play Music" : "Pause Music"; });
-    $("btnNextTrack")?.addEventListener("click", () => { trackIdx = (trackIdx + 1) % tracks.length; bgm.src = tracks[trackIdx]; bgm.play(); localStorage.setItem("petal_track_index", trackIdx); });
+
+    $("btnMusic")?.addEventListener("click", () => { 
+      if (bgm.paused) bgm.play(); else bgm.pause(); 
+      $("btnMusic").textContent = bgm.paused ? "Play Music" : "Pause Music"; 
+    });
+
+    $("btnNextTrack")?.addEventListener("click", () => { 
+      trackIdx = (trackIdx + 1) % tracks.length; 
+      bgm.src = tracks[trackIdx]; 
+      bgm.play(); 
+      localStorage.setItem("petal_track_index", trackIdx); 
+    });
   });
 
   const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall"]);
@@ -157,14 +169,11 @@ function toast(msg) {
   }
 
   function renderSpotify(base) {
-    const host = $("spotifyEmbed"); if (!host || !base) return;
+    const host = $("spotifyEmbed"); 
+    if (!host || !base) return;
     const theme = darks.has(localStorage.getItem("petal_theme")) ? "dark" : "light";
-    // Make sure this is in your Spotify render function
-host.innerHTML = `<iframe 
-  src="${finalSrc}" 
-  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-  loading="lazy"></iframe>`;
-
+    host.innerHTML = `<iframe class="spotify-iframe" style="width:100%; height:352px; border:0; border-radius:16px;" src="${base}?theme=${theme}" loading="lazy"></iframe>`;
+  }
 
   document.addEventListener("DOMContentLoaded", () => {
     const saved = localStorage.getItem("petal_spotify_embed");
@@ -181,7 +190,7 @@ host.innerHTML = `<iframe
       }
     });
 
-    // CLEAR BUTTON (ADDED THIS)
+    // CLEAR BUTTON
     $("btnClearSpotify")?.addEventListener("click", () => {
       localStorage.removeItem("petal_spotify_embed");
       localStorage.removeItem("petal_spotify_url");
@@ -195,7 +204,7 @@ host.innerHTML = `<iframe
     const saved = localStorage.getItem("petal_spotify_embed");
     if (saved) renderSpotify(saved);
   });
-})(); 
+})(); // This correctly closes the IIFE
 
 /* ------------------- Seasonal Animations ------------------- */
 (() => {
