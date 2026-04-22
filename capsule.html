@@ -128,9 +128,11 @@
   setPersistence(auth, browserLocalPersistence);
 
   // THE NEW INIT: No cache, standard connection
-  const db = initializeFirestore(app, {
-    localCache: undefined // This disables the offline "clogged" cache
-  });
+  // In capsule.html, update the initFirestore line:
+const db = initializeFirestore(app, {
+  experimentalForceLongPolling: true,
+}, "petal-db"); // Add your new database ID here
+
 
   window.firebaseAuth = auth;
   window.firebaseDb = db;
