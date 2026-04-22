@@ -215,10 +215,13 @@ function toast(msg) {
     const sfx = $("deleteSfx"); if (sfx) sfx.play();
   });
 
-  document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", () => {
     try { entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); } catch { entries = []; }
-    renderList(); $("search")?.addEventListener('input', renderList);
+    renderList();
+    renderTagChips(); // <--- ADD THIS so tags show up when page opens
+    $("search")?.addEventListener('input', renderList);
   });
+
 })();
 
 /* ------------------- Music & Spotify ------------------- */
