@@ -97,6 +97,43 @@ function toast(msg) {
       card.onclick = () => {
         const e = entries.find(ent => ent.id === card.dataset.id);
         activeId = e.id; $("date").value = e.date; $("mood").value = e.mood; $("title").value = e.title; $("tagsInput").value = (e.tags || []).join(', '); $("content").innerHTML = e.content;
+          // 1. This scans all your saved entries to find every unique tag you've used
+  function allTagsFromEntries() {
+    const DEFAULT_TAGS = ["gratitude", "work", "health", "family"];
+    const set = new Set(DEFAULT_TAGS);
+    
+    entries.forEach(e => {
+      if (e.tags && Array.isArray(e.tags)) {
+        e.tags.forEach(t => set.add(t.toLowerCase()));
+      }
+    });
+    return [...set].sort();
+  }
+
+  // 2. This creates the actual "chips" in the sidebar
+  function renderTagChips() {
+    const tagRow = document.getElementById("tagRow");
+    if (!tagRow) return;
+
+    const tags = allTagsFromEntries();
+    tagRow.innerHTML = tags.map(t => `
+      <button class="chip tag ${activeTag === t ? 'active' : ''}" 
+              data-tag="${t}" type="button">
+        ${t}
+      </button>
+    `).join('');
+
+    // Add click listeners to filter by tag
+    tagRow.querySelectorAll('.chip.tag').forEach(btn => {
+      btn.onclick = () => {
+        const tag = btn.dataset.tag;
+        activeTag = activeTag === tag ? null : tag; // Toggle filter
+        renderTagChips();
+        renderList();
+      };
+    });
+  }
+
       };
     });
   }
