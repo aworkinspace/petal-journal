@@ -15,9 +15,11 @@ const db = window.firebaseDb;
 // --- FORCE RECONNECT LOGIC (Fixes the 'Client is Offline' bug) ---
 (async () => {
   try {
-    await disableNetwork(db);
-    await enableNetwork(db);
-    console.log("Capsule Vault connected");
+    if (db) {
+      await disableNetwork(db);
+      await enableNetwork(db);
+      console.log("Capsule Vault connected");
+    }
   } catch (e) {
     console.error("Network reset failed", e);
   }
@@ -29,14 +31,12 @@ onAuthStateChanged(window.firebaseAuth, (user) => {
     currentUser = user;
     loadVault();
   } else {
-    // If not logged in, wait a second for auth to initialize
+    // Give it a moment to check auth status
     setTimeout(() => {
       if(!window.firebaseAuth.currentUser) window.location.href = "login.html";
-    }, 2000);
+    }, 3000);
   }
 });
-
-// ... keep the rest of your btnSeal.onclick and loadVault functions ...
 
 // 2. Seal (Save) Logic
 btnSeal.onclick = async () => {
@@ -48,11 +48,16 @@ btnSeal.onclick = async () => {
     return;
   }
 
+  if (!currentUser) {
+    alert("You must be logged in to seal a capsule.");
+    return;
+  }
+
   try {
     btnSeal.disabled = true;
     btnSeal.textContent = "Sealing...";
 
-    // Create a Promise that rejects after 10 seconds
+    // Create a Promise that rejects after 10 seconds as a timeout
     const timeout = new Promise((_, reject) => 
       setTimeout(() => reject(new Error("Database connection timed out. Please try again.")), 10000)
     );
@@ -60,7 +65,7 @@ btnSeal.onclick = async () => {
     const docData = {
       userId: currentUser.uid,
       content: content,
-      unlockDate: unlockDate,
+      unlockDate: unlockDate, // Format: YYYY-MM-DD
       createdAt: new Date().toISOString()
     };
 
@@ -70,29 +75,7 @@ btnSeal.onclick = async () => {
       timeout
     ]);
 
-    console.log("Success!");
-    contentEl.value = "";
-    dateEl.value = "";
-    btnSeal.disabled = false;
-    btnSeal.textContent = "Seal Capsule 🔒";
-    
-    alert("Your letter has been placed in the vault!");
-    loadVault();
-  } catch (e) {
-    console.error("Write failed:", e);
-    alert(e.message);
-    btnSeal.disabled = false;
-    btnSeal.textContent = "Seal Capsule 🔒";
-  }
-};
-
-    console.log("Attempting to write to Firestore:", docData);
-
-    // Using addDoc
-    await addDoc(collection(window.firebaseDb, "capsules"), docData);
-
     console.log("Firestore write successful!");
-
     contentEl.value = "";
     dateEl.value = "";
     btnSeal.disabled = false;
@@ -101,54 +84,59 @@ btnSeal.onclick = async () => {
     alert("Your letter has been sealed and placed in the vault!");
     loadVault();
   } catch (e) {
-    console.error("Firestore Error:", e);
+    console.error("Seal failed:", e);
     alert("Error: " + e.message);
     btnSeal.disabled = false;
     btnSeal.textContent = "Seal Capsule 🔒";
   }
 };
 
-
 // 3. Load Vault Logic
 async function loadVault() {
+  if (!listEl) return;
   listEl.innerHTML = "<p class='muted'>Opening the vault...</p>";
   
-  const q = query(
-    collection(window.firebaseDb, "capsules"),
-    where("userId", "==", currentUser.uid)
-  );
+  try {
+    const q = query(
+      collection(window.firebaseDb, "capsules"),
+      where("userId", "==", currentUser.uid)
+    );
 
-  const querySnapshot = await getDocs(q);
-  listEl.innerHTML = "";
+    const querySnapshot = await getDocs(q);
+    listEl.innerHTML = "";
 
-  if (querySnapshot.empty) {
-    listEl.innerHTML = "<p class='muted'>Your vault is empty.</p>";
-    return;
-  }
-
-  const now = new Date().toISOString().split('T')[0]; // Current date YYYY-MM-DD
-
-  querySnapshot.forEach((doc) => {
-    const data = doc.data();
-    const isLocked = data.unlockDate > now;
-    
-    const card = document.createElement("div");
-    card.className = `capsule-card ${isLocked ? 'locked' : 'unlocked'}`;
-    
-    if (isLocked) {
-      card.innerHTML = `
-        <strong>🔒 Locked until ${data.unlockDate}</strong>
-        <p class="muted" style="margin-top:10px;">This letter is from your past self. You'll have to wait a bit longer to see what it says!</p>
-      `;
-    } else {
-      card.innerHTML = `
-        <strong>🔓 Opened on ${data.unlockDate}</strong>
-        <div style="margin-top:10px; border-top: 1px solid var(--border); padding-top:10px; white-space: pre-wrap;">
-          ${data.content}
-        </div>
-      `;
+    if (querySnapshot.empty) {
+      listEl.innerHTML = "<p class='muted'>Your vault is empty.</p>";
+      return;
     }
-    
-    listEl.appendChild(card);
-  });
+
+    const now = new Date().toISOString().split('T')[0]; // Current date YYYY-MM-DD
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const isLocked = data.unlockDate > now;
+      
+      const card = document.createElement("div");
+      card.className = `capsule-card ${isLocked ? 'locked' : 'unlocked'}`;
+      
+      if (isLocked) {
+        card.innerHTML = `
+          <strong>🔒 Locked until ${data.unlockDate}</strong>
+          <p class="muted" style="margin-top:10px;">This letter is from your past self. You'll have to wait a bit longer to see what it says!</p>
+        `;
+      } else {
+        card.innerHTML = `
+          <strong>🔓 Opened on ${data.unlockDate}</strong>
+          <div style="margin-top:10px; border-top: 1px solid var(--border); padding-top:10px; white-space: pre-wrap;">
+            ${data.content}
+          </div>
+        `;
+      }
+      
+      listEl.appendChild(card);
+    });
+  } catch (err) {
+    console.error("Load vault failed:", err);
+    listEl.innerHTML = "<p class='muted'>Could not load vault. Check connection.</p>";
+  }
 }
