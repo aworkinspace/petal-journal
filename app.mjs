@@ -159,8 +159,12 @@ function toast(msg) {
   function renderSpotify(base) {
     const host = $("spotifyEmbed"); if (!host || !base) return;
     const theme = darks.has(localStorage.getItem("petal_theme")) ? "dark" : "light";
-    host.innerHTML = `<iframe class="spotify-iframe" style="width:100%; height:352px; border:0; border-radius:16px;" src="${base}?theme=${theme}" loading="lazy"></iframe>`;
-  }
+    // Make sure this is in your Spotify render function
+host.innerHTML = `<iframe 
+  src="${finalSrc}" 
+  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+  loading="lazy"></iframe>`;
+
 
   document.addEventListener("DOMContentLoaded", () => {
     const saved = localStorage.getItem("petal_spotify_embed");
