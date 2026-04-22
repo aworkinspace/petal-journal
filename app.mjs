@@ -87,7 +87,9 @@ function toast(msg) {
   const STORAGE_KEY = "petal_entries_v1";
   let entries = [];
   let activeId = null;
-    // Helper to find all unique tags
+  let activeTag = null; // Important: Added this variable definition
+
+  // 1. Helper to find all unique tags from your entries
   function allTagsFromEntries() {
     const DEFAULT_TAGS = ["gratitude", "work", "health", "family"];
     const set = new Set(DEFAULT_TAGS);
@@ -97,7 +99,7 @@ function toast(msg) {
     return [...set].sort();
   }
 
-  // Function to draw the tag buttons
+  // 2. Function to draw the tag buttons in the sidebar
   function renderTagChips() {
     const tagRow = $("tagRow");
     if (!tagRow) return;
@@ -109,18 +111,19 @@ function toast(msg) {
     tagRow.querySelectorAll('.chip.tag').forEach(btn => {
       btn.onclick = () => {
         const tag = btn.dataset.tag;
-        activeTag = (activeTag === tag) ? null : tag;
+        activeTag = (activeTag === tag) ? null : tag; // Toggle filter on/off
         renderTagChips();
         renderList();
       };
     });
   }
 
-    function renderList() {
-    const list = $("entryList"); if (!list) return;
+  // 3. Function to draw the list of entry cards
+  function renderList() {
+    const list = $("entryList"); 
+    if (!list) return;
     const q = ($("search")?.value || "").toLowerCase();
     
-    // Updated filtering logic
     const filtered = entries.filter(e => {
       const matchTag = activeTag ? (e.tags || []).includes(activeTag) : true;
       const matchSearch = ((e.title||"") + (e.content||"")).toLowerCase().includes(q);
@@ -137,50 +140,35 @@ function toast(msg) {
     list.querySelectorAll('.entry-card').forEach(card => {
       card.onclick = () => {
         const e = entries.find(ent => ent.id === card.dataset.id);
-        activeId = e.id; $("date").value = e.date; $("mood").value = e.mood; 
-        $("title").value = e.title; $("tagsInput").value = (e.tags || []).join(', '); 
-        $("content").innerHTML = e.content;
+        activeId = e.id; 
+        if($("date")) $("date").value = e.date; 
+        if($("mood")) $("mood").value = e.mood; 
+        if($("title")) $("title").value = e.title; 
+        if($("tagsInput")) $("tagsInput").value = (e.tags || []).join(', '); 
+        if($("content")) $("content").innerHTML = e.content;
       };
     });
     if ($("count")) $("count").textContent = filtered.length;
   }
 
-
-  // 2. This creates the actual "chips" in the sidebar
-  function renderTagChips() {
-    const tagRow = document.getElementById("tagRow");
-    if (!tagRow) return;
-
-    const tags = allTagsFromEntries();
-    tagRow.innerHTML = tags.map(t => `
-      <button class="chip tag ${activeTag === t ? 'active' : ''}" 
-              data-tag="${t}" type="button">
-        ${t}
-      </button>
-    `).join('');
-
-    // Add click listeners to filter by tag
-    tagRow.querySelectorAll('.chip.tag').forEach(btn => {
-      btn.onclick = () => {
-        const tag = btn.dataset.tag;
-        activeTag = activeTag === tag ? null : tag; // Toggle filter
-        renderTagChips();
-        renderList();
-      };
-    });
-  }
-
-      };
-    });
-  }
-
   function resetEditor() {
-    activeId = null; $("date").value = new Date().toISOString().split('T')[0]; $("mood").value = "Calm"; $("title").value = ""; $("content").innerHTML = ""; $("tagsInput").value = "";
+    activeId = null; 
+    if($("date")) $("date").value = new Date().toISOString().split('T')[0]; 
+    if($("mood")) $("mood").value = "Calm"; 
+    if($("title")) $("title").value = ""; 
+    if($("content")) $("content").innerHTML = ""; 
+    if($("tagsInput")) $("tagsInput").value = "";
   }
 
-  $("btnNew")?.addEventListener('click', () => { resetEditor(); const sfx = $("newEntrySfx"); if(sfx) sfx.play(); });
+  // --- Listeners ---
+  
+  $("btnNew")?.addEventListener('click', () => { 
+    resetEditor(); 
+    const sfx = $("newEntrySfx"); 
+    if(sfx) sfx.play(); 
+  });
 
-    $("btnSave")?.addEventListener('click', () => {
+  $("btnSave")?.addEventListener('click', () => {
     const data = { 
       id: activeId || Date.now().toString(), 
       date: $("date").value, 
@@ -194,34 +182,34 @@ function toast(msg) {
     if (!activeId) entries.push(data); 
     else entries = entries.map(e => e.id === activeId ? data : e);
 
-    // 1. Save to browser memory
     localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); 
-    
-    // 2. Refresh the UI
-    renderList();      // Updates the list of cards
-    renderTagChips();  // <--- ADD THIS: Updates the tag buttons in the sidebar
-    
-    // 3. Feedback
+    renderList();      
+    renderTagChips();  
     toast("Saved!");
     const sfx = $("saveSfx"); if (sfx) sfx.play();
   });
 
-
   $("btnDelete")?.addEventListener('click', () => {
-    if (!activeId || !confirm("Delete this?")) return;
+    if (!activeId || !confirm("Delete this entry?")) return;
     entries = entries.filter(e => e.id !== activeId);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); renderList();
-    resetEditor(); toast("Deleted.");
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); 
+    renderList();
+    renderTagChips();
+    resetEditor(); 
+    toast("Deleted.");
     const sfx = $("deleteSfx"); if (sfx) sfx.play();
   });
 
-    document.addEventListener("DOMContentLoaded", () => {
-    try { entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); } catch { entries = []; }
-    renderList();
-    renderTagChips(); // <--- ADD THIS so tags show up when page opens
+  document.addEventListener("DOMContentLoaded", () => {
+    try { 
+      entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); 
+    } catch { 
+      entries = []; 
+    }
+    renderList(); 
+    renderTagChips(); // Ensure tags load on start
     $("search")?.addEventListener('input', renderList);
   });
-
 })();
 
 /* ------------------- Music & Spotify ------------------- */
