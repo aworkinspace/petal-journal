@@ -58,9 +58,11 @@ btnSeal.onclick = async () => {
     btnSeal.textContent = "Sealing...";
 
     // Create a Promise that rejects after 10 seconds as a timeout
-    const timeout = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error("Database connection timed out. Please try again.")), 10000)
-    );
+    // Changed 10000 to 30000 (30 seconds)
+const timeout = new Promise((_, reject) => 
+  setTimeout(() => reject(new Error("Database connection timed out. It might be taking a while due to a slow network.")), 30000)
+);
+
 
     const docData = {
       userId: currentUser.uid,
