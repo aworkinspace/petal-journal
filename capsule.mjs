@@ -142,3 +142,60 @@ async function loadVault() {
     listEl.innerHTML = "<p class='muted'>Could not load vault. Check connection.</p>";
   }
 }
+/* ------------------------ Spotify Logic (Floating Widget) ------------------------ */
+(() => {
+  const urlEl = document.getElementById("spotifyUrl");
+  const btnSet = document.getElementById("btnSetSpotify");
+  const btnClear = document.getElementById("btnClearSpotify");
+  const host = document.getElementById("spotifyEmbed");
+
+  if (!urlEl || !btnSet || !btnClear || !host) return;
+
+  function toEmbed(url) {
+    if (!url) return null;
+    const match = url.match(/(?:playlist|album|track|show|episode)\/([a-zA-Z0-9]+)/);
+    const id = match?.[1];
+    let type = 'playlist';
+    if (url.includes('track/')) type = 'track';
+    if (url.includes('album/')) type = 'album';
+    if (url.includes('show/')) type = 'show';
+    if (url.includes('episode/')) type = 'episode';
+    return id ? `https://open.spotify.com/embed/${type}/${id}` : null;
+  }
+
+  function renderSpotify(baseEmbedUrl) {
+    if (!host || !baseEmbedUrl) return;
+    // Decision for theme colors
+    const darkThemes = ["midnight", "dusky_rose", "mauve_night", "cosmic_starfall", "midnight_snowfall"];
+    const currentTheme = localStorage.getItem("petal_theme") || "petal";
+    const spotifyTheme = darkThemes.includes(currentTheme) ? "dark" : "light";
+    
+    host.innerHTML = `<iframe class="spotify-iframe" src="${baseEmbedUrl}?theme=${spotifyTheme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+  }
+
+  // Use .onclick for maximum reliability in the widget
+  btnSet.onclick = () => {
+    const embed = toEmbed(urlEl.value.trim());
+    if (embed) {
+      localStorage.setItem("petal_spotify_embed", embed);
+      localStorage.setItem("petal_spotify_url", urlEl.value.trim());
+      renderSpotify(embed);
+    } else {
+      alert("Invalid Spotify link! Use a playlist, song, or podcast link.");
+    }
+  };
+
+  btnClear.onclick = () => {
+    localStorage.removeItem("petal_spotify_embed");
+    localStorage.removeItem("petal_spotify_url");
+    urlEl.value = "";
+    host.innerHTML = "";
+  };
+
+  // Initial Load: Check if a playlist was already set on the main page
+  const saved = localStorage.getItem("petal_spotify_embed");
+  if (saved) {
+    renderSpotify(saved);
+    urlEl.value = localStorage.getItem("petal_spotify_url") || "";
+  }
+})();
