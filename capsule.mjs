@@ -43,51 +43,48 @@ btnSeal.onclick = async () => {
   const content = contentEl.value.trim();
   const unlockDate = dateEl.value;
 
+  if (!currentUser) {
+    alert("Wait a moment... auth is still loading.");
+    return;
+  }
+
   if (!content || !unlockDate) {
     alert("Please write a letter and choose an unlock date!");
     return;
   }
 
-  if (!currentUser) {
-    alert("You must be logged in to seal a capsule.");
-    return;
-  }
-
   try {
     btnSeal.disabled = true;
-    btnSeal.textContent = "Sealing...";
-
-    // Create a Promise that rejects after 10 seconds as a timeout
-    // Changed 10000 to 30000 (30 seconds)
-const timeout = new Promise((_, reject) => 
-  setTimeout(() => reject(new Error("Database connection timed out. It might be taking a while due to a slow network.")), 30000)
-);
-
+    btnSeal.textContent = "Connecting...";
 
     const docData = {
-      userId: currentUser.uid,
+      userId: currentUser.uid, // This MUST match the rules
       content: content,
-      unlockDate: unlockDate, // Format: YYYY-MM-DD
+      unlockDate: unlockDate,
       createdAt: new Date().toISOString()
     };
 
-    // Race the database write against our 10-second timer
+    console.log("Sending data for UID:", currentUser.uid);
+
+    const timeout = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error("Database connection timed out. Check your Firestore Rules!")), 30000)
+    );
+
+    // This is the active write
     await Promise.race([
       addDoc(collection(window.firebaseDb, "capsules"), docData),
       timeout
     ]);
 
-    console.log("Firestore write successful!");
+    toast("Letter sealed in the vault!");
     contentEl.value = "";
     dateEl.value = "";
     btnSeal.disabled = false;
     btnSeal.textContent = "Seal Capsule 🔒";
-    
-    alert("Your letter has been sealed and placed in the vault!");
     loadVault();
   } catch (e) {
-    console.error("Seal failed:", e);
-    alert("Error: " + e.message);
+    console.error("Seal Error:", e);
+    alert(e.message);
     btnSeal.disabled = false;
     btnSeal.textContent = "Seal Capsule 🔒";
   }
