@@ -20,12 +20,9 @@
     <!-- Firebase SDKs (exposed for script.js) -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-import {
-  getAuth,
-  setPersistence,
-  browserLocalPersistence
-} from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+import { getAuth, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js"; // <--- ADD THIS LINE
 
       // REPLACE your old config with this NEW one:
 const firebaseConfig = {
