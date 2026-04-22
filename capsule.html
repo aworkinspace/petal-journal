@@ -113,31 +113,29 @@
   import { getAuth, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
   import { initializeFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
-  // REPLACE your old config with this NEW one:
-const firebaseConfig = {
-  apiKey: "AIzaSyBNB-V-biC7y2-dKx_qzYCpplnwU2r5PaI",
-  authDomain: "petal-journal-final.firebaseapp.com",
-  projectId: "petal-journal-final",
-  storageBucket: "petal-journal-final.firebasestorage.app",
-  messagingSenderId: "805852798492",
-  appId: "1:805852798492:web:0e2b1e4fa74850a77a09d9",
-  measurementId: "G-WP4KPK7QD3"
-};
+  const firebaseConfig = {
+    apiKey: "AIzaSyBNB-V-biC7y2-dKx_qzYCpplnwU2r5PaI",
+    authDomain: "petal-journal-final.firebaseapp.com",
+    projectId: "petal-journal-final",
+    storageBucket: "petal-journal-final.firebasestorage.app",
+    messagingSenderId: "805852798492",
+    appId: "1:805852798492:web:0e2b1e4fa74850a77a09d9",
+    measurementId: "G-WP4KPK7QD3"
+  };
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  setPersistence(auth, browserLocalPersistence);
+  setPersistence(auth, browserLocalPersistence).catch(console.error);
 
-  // THE NEW INIT: No cache, standard connection
-  // In capsule.html, update the initFirestore line:
-const db = initializeFirestore(app, {
-  experimentalForceLongPolling: true,
-}, "petal-db"); // Add your new database ID here
-
+  // This is the most stable way to connect!
+  const db = initializeFirestore(app, {
+    experimentalForceLongPolling: true,
+  });
 
   window.firebaseAuth = auth;
   window.firebaseDb = db;
 </script>
+
 
     <!-- Connect the logic -->
     <script type="module" src="capsule.mjs"></script>
