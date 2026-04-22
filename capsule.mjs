@@ -1,8 +1,5 @@
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-import { 
-  collection, addDoc, query, where, getDocs, 
-  enableNetwork, disableNetwork 
-} from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { collection, addDoc, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
 const contentEl = document.getElementById("capsuleContent");
 const dateEl = document.getElementById("unlockDate");
@@ -10,40 +7,26 @@ const btnSeal = document.getElementById("btnSeal");
 const listEl = document.getElementById("capsuleList");
 
 let currentUser = null;
-const db = window.firebaseDb;
 
-// --- FORCE RECONNECT LOGIC (Fixes the 'Client is Offline' bug) ---
-(async () => {
-  try {
-    if (db) {
-      await disableNetwork(db);
-      await enableNetwork(db);
-      console.log("Capsule Vault connected");
-    }
-  } catch (e) {
-    console.error("Network reset failed", e);
-  }
-})();
-
-// 1. Auth Observer
+/* ------------------- Auth Listener ------------------- */
 onAuthStateChanged(window.firebaseAuth, (user) => {
   if (user) {
     currentUser = user;
     loadVault();
   } else {
-    // Give it a moment to check auth status
+    // Redirect if not logged in
     setTimeout(() => {
-      if(!window.firebaseAuth.currentUser) window.location.href = "login.html";
+      if (!window.firebaseAuth.currentUser) window.location.href = "login.html";
     }, 3000);
   }
 });
 
-// 2. Seal (Save) Logic
+/* ------------------- Seal Capsule Logic ------------------- */
 btnSeal.onclick = async () => {
   const content = contentEl.value.trim();
   const unlockDate = dateEl.value;
 
-  if (!currentUser) { alert("Auth loading... try again in 2 seconds."); return; }
+  if (!currentUser) { alert("Please wait for login to finish..."); return; }
   if (!content || !unlockDate) { alert("Please fill in both fields!"); return; }
 
   try {
@@ -57,46 +40,27 @@ btnSeal.onclick = async () => {
       createdAt: new Date().toISOString()
     };
 
-    // No timeout promise needed for this test - let it run naturally
+    // Standard save - no timeout, letting Firestore handle the network
     await addDoc(collection(window.firebaseDb, "capsules"), docData);
 
-    console.log("Success!");
+    console.log("Letter successfully sealed!");
     contentEl.value = "";
     dateEl.value = "";
     btnSeal.disabled = false;
     btnSeal.textContent = "Seal Capsule 🔒";
+    
+    // Refresh the list
     loadVault();
-    toast("Letter sealed!");
+    alert("Your letter has been placed in the vault!");
   } catch (e) {
     console.error("Firestore Error:", e);
-    alert("System error: " + e.message);
+    alert("Save failed: " + e.message);
     btnSeal.disabled = false;
     btnSeal.textContent = "Seal Capsule 🔒";
   }
 };
 
-
-    // This is the active write
-    await Promise.race([
-      addDoc(collection(window.firebaseDb, "capsules"), docData),
-      timeout
-    ]);
-
-    toast("Letter sealed in the vault!");
-    contentEl.value = "";
-    dateEl.value = "";
-    btnSeal.disabled = false;
-    btnSeal.textContent = "Seal Capsule 🔒";
-    loadVault();
-  } catch (e) {
-    console.error("Seal Error:", e);
-    alert(e.message);
-    btnSeal.disabled = false;
-    btnSeal.textContent = "Seal Capsule 🔒";
-  }
-};
-
-// 3. Load Vault Logic
+/* ------------------- Load Vault Logic ------------------- */
 async function loadVault() {
   if (!listEl) return;
   listEl.innerHTML = "<p class='muted'>Opening the vault...</p>";
@@ -115,7 +79,7 @@ async function loadVault() {
       return;
     }
 
-    const now = new Date().toISOString().split('T')[0]; // Current date YYYY-MM-DD
+    const now = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 
     querySnapshot.forEach((doc) => {
       const data = doc.data();
@@ -127,7 +91,7 @@ async function loadVault() {
       if (isLocked) {
         card.innerHTML = `
           <strong>🔒 Locked until ${data.unlockDate}</strong>
-          <p class="muted" style="margin-top:10px;">This letter is from your past self. You'll have to wait a bit longer to see what it says!</p>
+          <p class="muted" style="margin-top:10px;">This letter is from your past self. You'll have to wait a bit longer!</p>
         `;
       } else {
         card.innerHTML = `
@@ -137,15 +101,15 @@ async function loadVault() {
           </div>
         `;
       }
-      
       listEl.appendChild(card);
     });
   } catch (err) {
     console.error("Load vault failed:", err);
-    listEl.innerHTML = "<p class='muted'>Could not load vault. Check connection.</p>";
+    listEl.innerHTML = "<p class='muted'>Connection slow... still trying to reach vault.</p>";
   }
 }
-/* ------------------------ Spotify Logic (Floating Widget) ------------------------ */
+
+/* ------------------------ Spotify Logic ------------------------ */
 (() => {
   const urlEl = document.getElementById("spotifyUrl");
   const btnSet = document.getElementById("btnSetSpotify");
@@ -166,39 +130,26 @@ async function loadVault() {
     return id ? `https://open.spotify.com/embed/${type}/${id}` : null;
   }
 
-  function renderSpotify(baseEmbedUrl) {
-    if (!host || !baseEmbedUrl) return;
-    // Decision for theme colors
-    const darkThemes = ["midnight", "dusky_rose", "mauve_night", "cosmic_starfall", "midnight_snowfall"];
-    const currentTheme = localStorage.getItem("petal_theme") || "petal";
-    const spotifyTheme = darkThemes.includes(currentTheme) ? "dark" : "light";
-    
-    host.innerHTML = `<iframe class="spotify-iframe" src="${baseEmbedUrl}?theme=${spotifyTheme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+  function renderSpotify(base) {
+    const darks = ["midnight", "cosmic_starfall", "midnight_snowfall"];
+    const theme = darks.includes(localStorage.getItem("petal_theme")) ? "dark" : "light";
+    host.innerHTML = `<iframe class="spotify-iframe" src="${base}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" loading="lazy"></iframe>`;
   }
 
-  // Use .onclick for maximum reliability in the widget
   btnSet.onclick = () => {
     const embed = toEmbed(urlEl.value.trim());
     if (embed) {
       localStorage.setItem("petal_spotify_embed", embed);
-      localStorage.setItem("petal_spotify_url", urlEl.value.trim());
       renderSpotify(embed);
-    } else {
-      alert("Invalid Spotify link! Use a playlist, song, or podcast link.");
     }
   };
 
   btnClear.onclick = () => {
     localStorage.removeItem("petal_spotify_embed");
-    localStorage.removeItem("petal_spotify_url");
-    urlEl.value = "";
     host.innerHTML = "";
+    urlEl.value = "";
   };
 
-  // Initial Load: Check if a playlist was already set on the main page
   const saved = localStorage.getItem("petal_spotify_embed");
-  if (saved) {
-    renderSpotify(saved);
-    urlEl.value = localStorage.getItem("petal_spotify_url") || "";
-  }
+  if (saved) renderSpotify(saved);
 })();
