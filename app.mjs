@@ -87,6 +87,34 @@ function toast(msg) {
   const STORAGE_KEY = "petal_entries_v1";
   let entries = [];
   let activeId = null;
+    // Helper to find all unique tags
+  function allTagsFromEntries() {
+    const DEFAULT_TAGS = ["gratitude", "work", "health", "family"];
+    const set = new Set(DEFAULT_TAGS);
+    entries.forEach(e => {
+      if (e.tags) e.tags.forEach(t => set.add(t.toLowerCase()));
+    });
+    return [...set].sort();
+  }
+
+  // Function to draw the tag buttons
+  function renderTagChips() {
+    const tagRow = $("tagRow");
+    if (!tagRow) return;
+    const tags = allTagsFromEntries();
+    tagRow.innerHTML = tags.map(t => `
+      <button class="chip tag ${activeTag === t ? 'active' : ''}" data-tag="${t}" type="button">${t}</button>
+    `).join('');
+
+    tagRow.querySelectorAll('.chip.tag').forEach(btn => {
+      btn.onclick = () => {
+        const tag = btn.dataset.tag;
+        activeTag = (activeTag === tag) ? null : tag;
+        renderTagChips();
+        renderList();
+      };
+    });
+  }
 
   function renderList() {
     const list = $("entryList"); if (!list) return;
