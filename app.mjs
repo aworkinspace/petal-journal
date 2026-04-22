@@ -165,9 +165,25 @@ function toast(msg) {
   document.addEventListener("DOMContentLoaded", () => {
     const saved = localStorage.getItem("petal_spotify_embed");
     if (saved) renderSpotify(saved);
+
+    // SET BUTTON
     $("btnSetSpotify")?.addEventListener("click", () => {
       const embed = toEmbed($("spotifyUrl").value.trim());
-      if (embed) { localStorage.setItem("petal_spotify_embed", embed); renderSpotify(embed); toast("Spotify Set!"); }
+      if (embed) { 
+        localStorage.setItem("petal_spotify_embed", embed); 
+        localStorage.setItem("petal_spotify_url", $("spotifyUrl").value.trim());
+        renderSpotify(embed); 
+        toast("Spotify Set!"); 
+      }
+    });
+
+    // CLEAR BUTTON (ADDED THIS)
+    $("btnClearSpotify")?.addEventListener("click", () => {
+      localStorage.removeItem("petal_spotify_embed");
+      localStorage.removeItem("petal_spotify_url");
+      if ($("spotifyUrl")) $("spotifyUrl").value = "";
+      if ($("spotifyEmbed")) $("spotifyEmbed").innerHTML = "";
+      toast("Spotify Cleared!");
     });
   });
 
@@ -176,6 +192,7 @@ function toast(msg) {
     if (saved) renderSpotify(saved);
   });
 })();
+
 
 /* ------------------- Seasonal Animations ------------------- */
 (() => {
