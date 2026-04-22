@@ -144,12 +144,32 @@ function toast(msg) {
 
   $("btnNew")?.addEventListener('click', () => { resetEditor(); const sfx = $("newEntrySfx"); if(sfx) sfx.play(); });
 
-  $("btnSave")?.addEventListener('click', () => {
-    const data = { id: activeId || Date.now().toString(), date: $("date").value, mood: $("mood").value, title: $("title").value, content: $("content").innerHTML, tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), updatedAt: Date.now() };
-    if (!activeId) entries.push(data); else entries = entries.map(e => e.id === activeId ? data : e);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); renderList(); toast("Saved!");
+    $("btnSave")?.addEventListener('click', () => {
+    const data = { 
+      id: activeId || Date.now().toString(), 
+      date: $("date").value, 
+      mood: $("mood").value, 
+      title: $("title").value, 
+      content: $("content").innerHTML, 
+      tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), 
+      updatedAt: Date.now() 
+    };
+
+    if (!activeId) entries.push(data); 
+    else entries = entries.map(e => e.id === activeId ? data : e);
+
+    // 1. Save to browser memory
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); 
+    
+    // 2. Refresh the UI
+    renderList();      // Updates the list of cards
+    renderTagChips();  // <--- ADD THIS: Updates the tag buttons in the sidebar
+    
+    // 3. Feedback
+    toast("Saved!");
     const sfx = $("saveSfx"); if (sfx) sfx.play();
   });
+
 
   $("btnDelete")?.addEventListener('click', () => {
     if (!activeId || !confirm("Delete this?")) return;
