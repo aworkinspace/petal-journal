@@ -43,32 +43,38 @@ btnSeal.onclick = async () => {
   const content = contentEl.value.trim();
   const unlockDate = dateEl.value;
 
-  if (!currentUser) {
-    alert("Wait a moment... auth is still loading.");
-    return;
-  }
-
-  if (!content || !unlockDate) {
-    alert("Please write a letter and choose an unlock date!");
-    return;
-  }
+  if (!currentUser) { alert("Auth loading... try again in 2 seconds."); return; }
+  if (!content || !unlockDate) { alert("Please fill in both fields!"); return; }
 
   try {
     btnSeal.disabled = true;
-    btnSeal.textContent = "Connecting...";
+    btnSeal.textContent = "Sealing...";
 
     const docData = {
-      userId: currentUser.uid, // This MUST match the rules
+      userId: currentUser.uid,
       content: content,
       unlockDate: unlockDate,
       createdAt: new Date().toISOString()
     };
 
-    console.log("Sending data for UID:", currentUser.uid);
+    // No timeout promise needed for this test - let it run naturally
+    await addDoc(collection(window.firebaseDb, "capsules"), docData);
 
-    const timeout = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error("Database connection timed out. Check your Firestore Rules!")), 30000)
-    );
+    console.log("Success!");
+    contentEl.value = "";
+    dateEl.value = "";
+    btnSeal.disabled = false;
+    btnSeal.textContent = "Seal Capsule 🔒";
+    loadVault();
+    toast("Letter sealed!");
+  } catch (e) {
+    console.error("Firestore Error:", e);
+    alert("System error: " + e.message);
+    btnSeal.disabled = false;
+    btnSeal.textContent = "Seal Capsule 🔒";
+  }
+};
+
 
     // This is the active write
     await Promise.race([
