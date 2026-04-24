@@ -119,16 +119,25 @@ function toast(msg) {
   }
 
   // --- NEW: Function to toggle Level 5 stickers ---
-  function checkUnlocks() {
+    function checkUnlocks() {
     const currentLevel = getZenLevel();
-    // This finds any sticker button with the class "level-5-reward"
+    
+    // 1. Stickers
     document.querySelectorAll(".level-5-reward").forEach(el => {
-      if (currentLevel >= 5) {
-        el.style.display = "inline-flex";
-      } else {
-        el.style.display = "none";
-      }
+      el.style.display = currentLevel >= 5 ? "inline-flex" : "none";
     });
+
+    // 2. Theme Dropdown
+    const optGolden = document.getElementById("optGolden");
+    if (optGolden) {
+      if (currentLevel >= 5) {
+        optGolden.disabled = false;
+        optGolden.textContent = "✨ Golden Petal (Unlocked!)";
+      } else {
+        optGolden.disabled = true;
+        optGolden.textContent = "🔒 Level 5: Golden Petal";
+      }
+    }
   }
 
   function allTagsFromEntries() {
