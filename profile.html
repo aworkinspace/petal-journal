@@ -35,7 +35,7 @@
         const name = localStorage.getItem("petal_theme") || "petal";
         const t = THEMES[name] || THEMES.petal;
         for (const k in t) document.documentElement.style.setProperty(k, t[k]);
-      })();
+      })(); // <--- Make sure this line has the });
     </script>
 
     <style>
