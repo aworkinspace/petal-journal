@@ -238,6 +238,7 @@ const firebaseConfig = {
     if (document.getElementById("zenLevel")) document.getElementById("zenLevel").textContent = `Level ${level}`;
     if (document.getElementById("zenXP")) document.getElementById("zenXP").textContent = `${currentXPInLevel} / ${xpPerLevel} XP`;
     if (document.getElementById("zenBarFill")) document.getElementById("zenBarFill").style.width = `${progressPercent}%`;
+badgeImg.src = "assets/golden-sprout.gif";
 
     // Reward Check
     if (level >= 5) {
