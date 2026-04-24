@@ -208,24 +208,19 @@ const firebaseConfig = {
 
   const auth = window.firebaseAuth;
   const db = window.firebaseDb;
-  const storage = window.firebaseStorage;
   let currentUser = null;
 
   /* ------------------- Zen XP Logic ------------------- */
   function updateZenProgress() {
     const rawEntries = localStorage.getItem("petal_entries_v1") || "[]";
-    const whiteboardSaves = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
+    const wbSaves = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
     const visionSaves = parseInt(localStorage.getItem("petal_vision_count") || "0");
     const capsuleSaves = parseInt(localStorage.getItem("petal_capsule_count") || "0");
 
     let entries = [];
     try { entries = JSON.parse(rawEntries); } catch (e) { entries = []; }
 
-    let totalXP = 0;
-    totalXP += (entries.length * 50);
-    totalXP += (whiteboardSaves * 20);
-    totalXP += (visionSaves * 30);
-    totalXP += (capsuleSaves * 100);
+    let totalXP = (entries.length * 50) + (wbSaves * 20) + (visionSaves * 30) + (capsuleSaves * 100);
 
     entries.forEach(e => {
       if (e.content) {
@@ -239,40 +234,46 @@ const firebaseConfig = {
     const currentXPInLevel = totalXP % xpPerLevel;
     const progressPercent = (currentXPInLevel / xpPerLevel) * 100;
 
-    if (document.getElementById("zenLevel")) document.getElementById("zenLevel").textContent = `Level ${level}`;
-    if (document.getElementById("zenXP")) document.getElementById("zenXP").textContent = `${currentXPInLevel} / ${xpPerLevel} XP`;
-    if (document.getElementById("zenBarFill")) document.getElementById("zenBarFill").style.width = `${progressPercent}%`;
+    const levelEl = document.getElementById("zenLevel");
+    const xpEl = document.getElementById("zenXP");
+    const barEl = document.getElementById("zenBarFill");
+    const badgeEl = document.getElementById("level5Badge");
 
-        // Reward Check
+    if (levelEl) levelEl.textContent = `Level ${level}`;
+    if (xpEl) xpEl.textContent = `${currentXPInLevel} / ${xpPerLevel} XP`;
+    if (barEl) barEl.style.width = `${progressPercent}%`;
+
+    // Level 5 Reward Check
     if (level >= 5) {
-      const badgeEl = document.getElementById("level5Badge");
       if (badgeEl) {
         badgeEl.style.display = "flex";
-        // Find the image inside the badge container
         const img = badgeEl.querySelector("img");
-        if (img) {
-          img.src = "assets/golden-sprout.gif"; 
-        }
+        if (img) img.src = "assets/golden-sprout.gif";
       }
-
       const opt = document.querySelector('option[value="golden_petal"]');
-      if (opt) { 
-        opt.disabled = false; 
-        opt.textContent = "✨ Golden Petal (Unlocked!)"; 
+      if (opt) {
+        opt.disabled = false;
+        opt.textContent = "✨ Golden Petal (Unlocked!)";
       }
+    }
   }
 
   /* ------------------- Profile Logic ------------------- */
   async function loadProfile(user) {
-    if (document.getElementById("userEmail")) document.getElementById("userEmail").textContent = user.email || "";
-    if (document.getElementById("displayName")) document.getElementById("displayName").value = user.displayName || "";
-    if (user.photoURL && document.getElementById("profilePic")) document.getElementById("profilePic").src = user.photoURL;
+    const emailEl = document.getElementById("userEmail");
+    const nameEl = document.getElementById("displayName");
+    const bdayEl = document.getElementById("userBirthday");
+
+    if (emailEl) emailEl.textContent = user.email || "";
+    if (nameEl) nameEl.value = user.displayName || "";
+    if (user.photoURL && document.getElementById("profilePic")) {
+       document.getElementById("profilePic").src = user.photoURL;
+    }
 
     try {
       const userDoc = await getDoc(doc(db, "users", user.uid));
-      if (userDoc.exists()) {
-        const bday = userDoc.data().birthday;
-        if (document.getElementById("userBirthday")) document.getElementById("userBirthday").value = bday || "";
+      if (userDoc.exists() && bdayEl) {
+        bdayEl.value = userDoc.data().birthday || "";
       }
     } catch (error) { console.error("Firestore error:", error); }
     
@@ -291,9 +292,10 @@ const firebaseConfig = {
   document.getElementById("btnUpdateProfile")?.addEventListener("click", async () => {
     if (!currentUser) return;
     const nextName = document.getElementById("displayName").value.trim();
+    const bday = document.getElementById("userBirthday").value;
     try {
       await updateProfile(currentUser, { displayName: nextName });
-      await setDoc(doc(db, "users", currentUser.uid), { birthday: document.getElementById("userBirthday").value }, { merge: true });
+      await setDoc(doc(db, "users", currentUser.uid), { birthday: bday }, { merge: true });
       alert("Profile Saved!");
     } catch (e) { alert("Error saving profile."); }
   });
