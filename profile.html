@@ -272,6 +272,36 @@ const firebaseConfig = {
           location.href = "login.html";
         }
       });
+      function updateZenProgress() {
+  const entries = JSON.parse(localStorage.getItem("petal_entries_v1") || "[]");
+  const whiteboardSaves = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
+  
+  // Calculate total XP
+  let totalXP = entries.length * 50; // 50 XP per entry
+  
+  entries.forEach(e => {
+    // 1 XP per word in the content
+    const wordCount = e.content.split(/\s+/).filter(Boolean).length;
+    totalXP += wordCount;
+  });
+
+  totalXP += (whiteboardSaves * 20); // 20 XP per doodle
+
+  // Level Logic: Each level takes 200 XP
+  const levelXP = 200;
+  const level = Math.floor(totalXP / levelXP) + 1;
+  const currentXPInLevel = totalXP % levelXP;
+  const progressPercent = (currentXPInLevel / levelXP) * 100;
+
+  // Update the UI
+  document.getElementById("zenLevel").textContent = `Level ${level}`;
+  document.getElementById("zenXP").textContent = `${currentXPInLevel} / ${levelXP} XP`;
+  document.getElementById("zenBarFill").style.width = `${progressPercent}%`;
+}
+
+// Call this inside your onAuthStateChanged or at the bottom of your script
+updateZenProgress();
+
     </script>
   </body>
 </html>
