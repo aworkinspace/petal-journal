@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Petal Journal — Wishing Well</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
+
+    <!-- Early Theme Loader -->
+    <script>
+      (function () {
+        const name = localStorage.getItem("petal_theme") || "petal";
+        const THEMES = {
+          petal: {"--bg":"#FFF0F1","--surface":"#FFF0F1","--text":"#2B2B33","--accent":"#FFA5D6"},
+          midnight: {"--bg":"#0F0D14","--surface":"#14121A","--text":"#F2F0F7","--accent":"#FFA5D6"}
+        };
+        const t = THEMES[name] || THEMES.petal;
+        for (const k in t) document.documentElement.style.setProperty(k, t[k]);
+      })();
+    </script>
+
+    <style>
+      .well-wrap { max-width: 600px; margin: 40px auto; text-align: center; padding: 20px; }
+      
+      /* The Pond Visual */
+      .pond {
+        width: 100%; height: 300px;
+        background: color-mix(in srgb, var(--primary-soft) 40%, #87CEEB);
+        border: 8px solid var(--border);
+        border-radius: 50%;
+        position: relative;
+        margin: 30px 0;
+        overflow: hidden;
+        box-shadow: inset 0 10px 30px rgba(0,0,0,0.1);
+      }
+      
+      /* Floating Wish animations */
+      .wish-petal {
+        position: absolute;
+        width: 20px; height: 20px;
+        background: var(--accent);
+        border-radius: 50% 0 50% 0;
+        opacity: 0.6;
+        animation: drift 10s infinite ease-in-out;
+      }
+
+      @keyframes drift {
+        0%, 100% { transform: translate(0, 0) rotate(0deg); }
+        50% { transform: translate(20px, 15px) rotate(45deg); }
+      }
+
+      .wish-input {
+        width: 100%; padding: 15px;
+        font-family: "VT323"; font-size: 22px;
+        border: 4px solid var(--btn-text);
+        background: var(--surface); color: var(--text);
+        margin-bottom: 15px; outline: none;
+      }
+
+      .history-panel { margin-top: 30px; text-align: left; }
+      .wish-card { padding: 10px; border-bottom: 1px solid var(--border); font-size: 18px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand"><h1>Wishing Well</h1></div>
+      <div class="top-actions"><a class="btn" href="index.html">Back</a></div>
+    </header>
+
+    <div class="well-wrap">
+      <div class="pond" id="pond">
+        <!-- Drifting petals added by JS -->
+      </div>
+
+      <div class="panel panel-pad">
+        <h2 style="margin-top:0">Manifest an Intention</h2>
+        <input type="text" id="wishText" class="wish-input" placeholder="Type your wish here..." maxlength="100">
+        <button class="btn" id="btnToss">Toss into Well ✨</button>
+      </div>
+
+      <div class="history-panel">
+        <div class="section-title">Past Intentions</div>
+        <div id="wishHistory"></div>
+      </div>
+    </div>
+
+    <!-- Firebase Init (Use your Config) -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+      import { getAuth } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+
+      const firebaseConfig = { 
+        apiKey: "AIzaSyBNB-V-biC7y2-dKx_qzYCpplnwU2r5PaI",
+        authDomain: "petal-journal-final.firebaseapp.com",
+        projectId: "petal-journal-final",
+        storageBucket: "petal-journal-final.firebasestorage.app",
+        messagingSenderId: "805852798492",
+        appId: "1:805852798492:web:0e2b1e4fa74850a77a09d9"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      window.firebaseAuth = getAuth(app);
+      window.firebaseDb = getFirestore(app);
+    </script>
+    <script type="module" src="well.mjs"></script>
+  </body>
+</html>
