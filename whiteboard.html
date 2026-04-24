@@ -454,12 +454,20 @@
     }
   });
 
-  saveBtn.addEventListener("click", () => {
+    saveBtn.addEventListener("click", () => {
     const a = document.createElement("a");
     a.download = "whiteboard.png";
     a.href = canvas.toDataURL("image/png");
     a.click();
+
+    // --- ADD THIS ZEN XP LOGIC HERE ---
+    let count = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
+    localStorage.setItem("petal_whiteboard_count", count + 1);
+    
+    // Optional: Show a tiny alert or toast that they earned XP
+    if (typeof toast === "function") toast("+20 Zen XP earned!");
   });
+
 
   canvas.addEventListener("mousedown", down);
   canvas.addEventListener("mousemove", move);
