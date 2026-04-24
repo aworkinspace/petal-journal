@@ -258,7 +258,7 @@
   const sizeEl = document.getElementById("size");
   const penBtn = document.getElementById("pen");
   const eraserBtn = document.getElementById("eraser");
-  const fillBtn = document.getElementById("btnFill"); // Added for Fill
+  const fillBtn = document.getElementById("btnFill"); 
   const clearBtn = document.getElementById("clear");
   const saveBtn = document.getElementById("save");
   const penStyleEl = document.getElementById("penStyle");
@@ -272,7 +272,7 @@
   penStyleEl?.addEventListener("change", () => (penStyle = penStyleEl.value));
   penBtn.addEventListener("click", () => (mode = "pen"));
   eraserBtn.addEventListener("click", () => (mode = "eraser"));
-  fillBtn?.addEventListener("click", () => (mode = "fill")); // Toggle Fill Mode
+  fillBtn?.addEventListener("click", () => (mode = "fill")); 
 
   function resize() {
     const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
@@ -301,326 +301,139 @@
   function pos(e) {
     const rect = canvas.getBoundingClientRect();
     const p = e.touches ? e.touches[0] : e;
-    return {
-      x: p.clientX - rect.left,
-      y: p.clientY - rect.top
-    };
+    return { x: p.clientX - rect.left, y: p.clientY - rect.top };
   }
 
   function stroke(a, b) {
     const size = Number(sizeEl.value);
+    ctx.globalCompositeOperation = "source-over";
+
     if (mode === "eraser") {
-      ctx.globalCompositeOperation = "source-over";
-      ctx.globalAlpha = 1;
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
-      ctx.lineWidth = size;
       ctx.strokeStyle = "#ffffff";
-      ctx.beginPath();
-      ctx.moveTo(a.x, a.y);
-      ctx.lineTo(b.x, b.y);
-      ctx.stroke();
+      ctx.lineWidth = size;
+      ctx.lineCap = "round";
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
       return;
     }
 
-    ctx.globalCompositeOperation = "source-over";
     ctx.strokeStyle = colorEl.value;
+    ctx.fillStyle = colorEl.value;
 
     if (penStyle === "marker") {
       ctx.globalAlpha = 0.8;
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
       ctx.lineWidth = size * 1.5;
-      ctx.beginPath();
-      ctx.moveTo(a.x, a.y);
-      ctx.lineTo(b.x, b.y);
-      ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
       ctx.globalAlpha = 1;
-      return;
-    }
-
-    if (penStyle === "highlighter") {
+    } else if (penStyle === "highlighter") {
       ctx.globalAlpha = 0.3;
-      ctx.lineCap = "butt";
-      ctx.lineJoin = "round";
       ctx.lineWidth = size * 2.5;
-      ctx.beginPath();
-      ctx.moveTo(a.x, a.y);
-      ctx.lineTo(b.x, b.y);
-      ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
       ctx.globalAlpha = 1;
-      return;
-    }
-
-    if (penStyle === "spray") {
-      ctx.fillStyle = colorEl.value;
+    } else if (penStyle === "spray") {
       const density = 15;
       for (let i = 0; i < density; i++) {
         const angle = Math.random() * Math.PI * 2;
         const radius = Math.random() * size * 1.5;
-        const x = b.x + Math.cos(angle) * radius;
-        const y = b.y + Math.sin(angle) * radius;
-        ctx.beginPath();
-        ctx.arc(x, y, 1, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(b.x + Math.cos(angle) * radius, b.y + Math.sin(angle) * radius, 1, 0, Math.PI * 2); ctx.fill();
       }
-      return;
-    }
-
-    if (penStyle === "watercolor") {
-      ctx.fillStyle = colorEl.value;
-      const steps = 5;
-      for (let i = 0; i < steps; i++) {
-        const t = i / steps;
-        const x = a.x + (b.x - a.x) * t;
-        const y = a.y + (b.y - a.y) * t;
-        const jx = (Math.random() - 0.5) * size;
-        const jy = (Math.random() - 0.5) * size;
-        ctx.globalAlpha = 0.1;
-        ctx.beginPath();
-        ctx.arc(x + jx, y + jy, size * 1.5, 0, Math.PI * 2);
-        ctx.fill();
+    } else if (penStyle === "watercolor") {
+      ctx.globalAlpha = 0.1;
+      for (let i = 0; i < 5; i++) {
+        const x = a.x + (b.x - a.x) * (i/5);
+        const y = a.y + (b.y - a.y) * (i/5);
+        ctx.beginPath(); ctx.arc(x + (Math.random()-0.5)*size, y + (Math.random()-0.5)*size, size*1.5, 0, Math.PI * 2); ctx.fill();
       }
       ctx.globalAlpha = 1;
-      return;
+    } else {
+      ctx.lineWidth = size;
+      ctx.lineCap = "round";
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
     }
-
-    ctx.globalAlpha = 1;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-    ctx.lineWidth = size;
-    ctx.beginPath();
-    ctx.moveTo(a.x, a.y);
-    ctx.lineTo(b.x, b.y);
-    ctx.stroke();
-  }
-  if (penStyle === "rainbow") {
-    ctx.strokeStyle = `hsl(${Date.now() / 10}, 100%, 50%)`; // Cycles through the rainbow
-    ctx.lineWidth = size;
-    ctx.beginPath();
-    ctx.moveTo(a.x, a.y);
-    ctx.lineTo(b.x, b.y);
-    ctx.stroke();
-    return;
   }
 
-  // PAINT BUCKET LOGIC
   function floodFill(startX, startY, fillColor) {
     const dpr = window.devicePixelRatio || 1;
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imageData.data;
-
-    const r = parseInt(fillColor.slice(1, 3), 16);
-    const g = parseInt(fillColor.slice(3, 5), 16);
-    const b = parseInt(fillColor.slice(5, 7), 16);
-
-    const xFixed = Math.floor(startX * dpr);
-    const yFixed = Math.floor(startY * dpr);
-    const i = (yFixed * canvas.width + xFixed) * 4;
-    const targetColor = [data[i], data[i + 1], data[i + 2], data[i + 3]];
-
-    if (targetColor[0] === r && targetColor[1] === g && targetColor[2] === b) return;
-
-    const stack = [[xFixed, yFixed]];
+    const r = parseInt(fillColor.slice(1, 3), 16), g = parseInt(fillColor.slice(3, 5), 16), b = parseInt(fillColor.slice(5, 7), 16);
+    const xF = Math.floor(startX * dpr), yF = Math.floor(startY * dpr);
+    const i = (yF * canvas.width + xF) * 4;
+    const target = [data[i], data[i+1], data[i+2], data[i+3]];
+    if (target[0] === r && target[1] === g && target[2] === b) return;
+    const stack = [[xF, yF]];
     while (stack.length) {
       const [x, y] = stack.pop();
       const idx = (y * canvas.width + x) * 4;
-
-      if (x >= 0 && x < canvas.width && y >= 0 && y < canvas.height &&
-        data[idx] === targetColor[0] && data[idx + 1] === targetColor[1] &&
-        data[idx + 2] === targetColor[2] && data[idx + 3] === targetColor[3]) {
-
-        data[idx] = r;
-        data[idx + 1] = g;
-        data[idx + 2] = b;
-        data[idx + 3] = 255;
-
-        stack.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
+      if (x >= 0 && x < canvas.width && y >= 0 && y < canvas.height && data[idx] === target[0] && data[idx+1] === target[1] && data[idx+2] === target[2]) {
+        data[idx] = r; data[idx+1] = g; data[idx+2] = b; data[idx+3] = 255;
+        stack.push([x+1, y], [x-1, y], [x, y+1], [x, y-1]);
       }
     }
     ctx.putImageData(imageData, 0, 0);
   }
 
-  function down(e) {
-    if (draggingRef) return;
-    const p = pos(e);
-    if (mode === "fill") {
-      floodFill(p.x, p.y, colorEl.value);
-    } else {
-      drawing = true;
-      last = p;
-    }
+  function down(e) { 
+    if (draggingRef) return; 
+    const p = pos(e); 
+    if (mode === "fill") { floodFill(p.x, p.y, colorEl.value); } 
+    else { drawing = true; last = p; } 
   }
-
-  function move(e) {
-    if (draggingRef || !drawing || mode === "fill") return;
-    e.preventDefault();
-    const p = pos(e);
-    stroke(last, p);
-    last = p;
-  }
-
-  function up() {
-    drawing = false;
-    last = null;
-    draggingRef = false;
-  }
+  function move(e) { if (!drawing || mode === "fill") return; e.preventDefault(); const p = pos(e); stroke(last, p); last = p; }
+  function up() { drawing = false; last = null; draggingRef = false; }
 
   clearBtn.addEventListener("click", () => {
-    const rect = canvas.getBoundingClientRect();
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, rect.width, rect.height);
-    const sfx = document.getElementById("clearSfx");
-    if (sfx) {
-      sfx.currentTime = 0;
-      sfx.play().catch(() => {});
-    }
+    ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    const sfx = document.getElementById("clearSfx"); if (sfx) { sfx.currentTime = 0; sfx.play().catch(()=>{}); }
   });
 
-    saveBtn.addEventListener("click", () => {
+  saveBtn.addEventListener("click", () => {
     const a = document.createElement("a");
-    a.download = "whiteboard.png";
-    a.href = canvas.toDataURL("image/png");
-    a.click();
-
-    // --- ADD THIS ZEN XP LOGIC HERE ---
+    a.download = "whiteboard.png"; a.href = canvas.toDataURL("image/png"); a.click();
+    // XP Reward
     let count = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
     localStorage.setItem("petal_whiteboard_count", count + 1);
-    
-    // Optional: Show a tiny alert or toast that they earned XP
-    if (typeof toast === "function") toast("+20 Zen XP earned!");
   });
-
 
   canvas.addEventListener("mousedown", down);
   canvas.addEventListener("mousemove", move);
   window.addEventListener("mouseup", up);
-  canvas.addEventListener("touchstart", down, { passive: true });
-  canvas.addEventListener("touchmove", move, { passive: false });
+  canvas.addEventListener("touchstart", down);
+  canvas.addEventListener("touchmove", move);
   window.addEventListener("touchend", up);
-  resize();
   window.addEventListener("resize", resize);
+  resize();
 
-      // --- Music Logic (with intro.mp3) ---
-      (() => {
-        const audio = document.getElementById("bgm");
-        const btn = document.getElementById("btnMusic");
-        const btnNext = document.getElementById("btnNextTrack");
-        const vol = document.getElementById("musicVol");
-        if (!audio || !btn || !vol) return;
+  // Music Widget Logic
+  (() => {
+    const audio = document.getElementById("bgm");
+    const tracks = ["assets/lofi.mp3", "assets/elevator.mp3", "assets/monty.mp3", "assets/intro.mp3"];
+    let i = Number(localStorage.getItem("petal_track_index") || "0") % tracks.length;
+    if (audio) audio.src = tracks[i];
+    document.getElementById("btnMusic").onclick = () => { if(audio.paused) audio.play(); else audio.pause(); };
+    document.getElementById("btnNextTrack").onclick = () => { i = (i+1)%tracks.length; audio.src = tracks[i]; audio.play(); localStorage.setItem("petal_track_index", i); };
+  })();
 
-        const tracks = ["assets/lofi.mp3", "assets/elevator.mp3", "assets/monty.mp3", "assets/intro.mp3"];
-        let i = Number(localStorage.getItem("petal_track_index") || "0") % tracks.length;
-
-        audio.volume = Number(localStorage.getItem("petal_music_vol") || 0.35);
-        vol.value = audio.volume;
-
-        function setTrack(nextIndex, autoplay = false) {
-          i = (nextIndex + tracks.length) % tracks.length;
-          localStorage.setItem("petal_track_index", i);
-          const playing = !audio.paused;
-          audio.src = tracks[i];
-          if (autoplay || playing) audio.play().catch(() => {});
-          btn.textContent = audio.paused ? "Play Music" : "Pause Music";
-        }
-
-        btn.onclick = () => { if (audio.paused) audio.play(); else audio.pause(); btn.textContent = audio.paused ? "Play Music" : "Pause Music"; };
-        btnNext.onclick = () => setTrack(i + 1, true);
-        audio.onended = () => setTrack(i + 1, true);
-        vol.oninput = () => { audio.volume = vol.value; localStorage.setItem("petal_music_vol", vol.value); };
-        setTrack(i, false);
-      })();
-
-      // --- Reference Image Logic ---
-      (() => {
-        const btnRef = document.getElementById("btnRef");
-        const btnRefClear = document.getElementById("btnRefClear");
-        const refPicker = document.getElementById("refPicker");
-        const refScaleEl = document.getElementById("refScale");
-        let refImg = null, refX = 20, refY = 20, refScale = 1, dragOffX = 0, dragOffY = 0;
-
-        function redraw() {
-          const dpr = window.devicePixelRatio || 1;
-          refCtx.clearRect(0, 0, refCanvas.width/dpr, refCanvas.height/dpr);
-          if (!refImg) return;
-          refCtx.globalAlpha = 0.55;
-          refCtx.drawImage(refImg, refX, refY, refImg.width * refScale, refImg.height * refScale);
-          refCtx.globalAlpha = 1;
-        }
-
-        btnRef.onclick = () => refPicker.click();
-        refPicker.onchange = (e) => {
-          const file = e.target.files?.[0];
-          if (!file) return;
-          const url = URL.createObjectURL(file);
-          const img = new Image();
-          img.onload = () => {
-            refImg = img;
-            refScale = Math.min(1, (canvas.width/2) / img.width);
-            refScaleEl.value = refScale;
-            redraw();
-          };
-          img.src = url;
-        };
-        refScaleEl.oninput = () => { refScale = Number(refScaleEl.value); redraw(); };
-        btnRefClear.onclick = () => { refImg = null; redraw(); };
-
-        canvas.onmousedown = (e) => {
-          if (!refImg || !e.shiftKey) return;
-          const p = pos(e);
-          draggingRef = true;
-          dragOffX = p.x - refX; dragOffY = p.y - refY;
-        };
-        canvas.onmousemove = (e) => { if (draggingRef) { const p = pos(e); refX = p.x - dragOffX; refY = p.y - dragOffY; redraw(); } };
-      })();
-            // --- Spotify Logic ---
-(() => {
-  const urlEl = document.getElementById("spotifyUrl");
-  const btnSet = document.getElementById("btnSetSpotify");
-  const btnClear = document.getElementById("btnClearSpotify");
-  const host = document.getElementById("spotifyEmbed");
-
-  if (!urlEl || !btnSet || !btnClear || !host) return;
-
-  function toEmbed(url) {
-    if (!url) return null;
-    const match = url.match(/(?:playlist|album|track|show|episode)\/([a-zA-Z0-9]+)/);
-    const id = match?.[1];
-    let type = 'playlist';
-    if (url.includes('track/')) type = 'track';
-    if (url.includes('album/')) type = 'album';
-    if (url.includes('show/')) type = 'show';
-    if (url.includes('episode/')) type = 'episode';
-    return id ? `https://open.spotify.com/embed/${type}/${id}` : null;
-  }
-
-  function render(baseEmbedUrl) {
-    if (!host || !baseEmbedUrl) return;
-    // Simple dark mode check
-    const isDark = ["midnight", "dusky_rose", "mauve_night"].includes(localStorage.getItem("petal_theme"));
-    const theme = isDark ? "dark" : "light";
-    host.innerHTML = `<iframe class="spotify-iframe" src="${baseEmbedUrl}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
-  }
-
-  btnSet.onclick = () => {
-    const embed = toEmbed(urlEl.value.trim());
-    if (embed) {
-      localStorage.setItem("petal_spotify_embed", embed);
-      render(embed);
+  // Spotify Logic
+  (() => {
+    const urlEl = document.getElementById("spotifyUrl"), btnSet = document.getElementById("btnSetSpotify"), btnClr = document.getElementById("btnClearSpotify"), host = document.getElementById("spotifyEmbed");
+    if (!urlEl || !host) return;
+    function render(base) {
+      const darks = ["midnight", "cosmic_starfall", "midnight_snowfall"];
+      const theme = darks.includes(localStorage.getItem("petal_theme")) ? "dark" : "light";
+      host.innerHTML = `<iframe class="spotify-iframe" src="${base}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`;
     }
-  };
+    btnSet.onclick = () => { 
+      const match = urlEl.value.match(/(?:playlist|track|album)\/([a-zA-Z0-9]+)/);
+      if (match) { 
+        const type = urlEl.value.includes("track") ? "track" : "playlist";
+        const embed = `https://open.spotify.com/embed/${type}/${match[1]}`;
+        localStorage.setItem("petal_spotify_embed", embed); render(embed); 
+      }
+    };
+    btnClr.onclick = () => { localStorage.removeItem("petal_spotify_embed"); host.innerHTML = ""; };
+    if (localStorage.getItem("petal_spotify_embed")) render(localStorage.getItem("petal_spotify_embed"));
+  })();
+</script>
 
-  btnClear.onclick = () => {
-    localStorage.removeItem("petal_spotify_embed");
-    host.innerHTML = "";
-    urlEl.value = "";
-  };
-
-  // Initial Load
-  const saved = localStorage.getItem("petal_spotify_embed");
-  if (saved) render(saved);
-})();
-
-    </script>
   </body>
 </html>
