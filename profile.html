@@ -242,15 +242,24 @@ const firebaseConfig = {
     if (document.getElementById("zenLevel")) document.getElementById("zenLevel").textContent = `Level ${level}`;
     if (document.getElementById("zenXP")) document.getElementById("zenXP").textContent = `${currentXPInLevel} / ${xpPerLevel} XP`;
     if (document.getElementById("zenBarFill")) document.getElementById("zenBarFill").style.width = `${progressPercent}%`;
-badgeImg.src = "assets/golden-sprout.gif";
 
-    // Reward Check
+        // Reward Check
     if (level >= 5) {
-      const badge = document.getElementById("level5Badge");
-      if (badge) badge.style.display = "flex";
+      const badgeEl = document.getElementById("level5Badge");
+      if (badgeEl) {
+        badgeEl.style.display = "flex";
+        // Find the image inside the badge container
+        const img = badgeEl.querySelector("img");
+        if (img) {
+          img.src = "assets/golden-sprout.gif"; 
+        }
+      }
+
       const opt = document.querySelector('option[value="golden_petal"]');
-      if (opt) { opt.disabled = false; opt.textContent = "✨ Golden Petal (Unlocked!)"; }
-    }
+      if (opt) { 
+        opt.disabled = false; 
+        opt.textContent = "✨ Golden Petal (Unlocked!)"; 
+      }
   }
 
   /* ------------------- Profile Logic ------------------- */
