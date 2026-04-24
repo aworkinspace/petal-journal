@@ -273,8 +273,42 @@ const firebaseConfig = {
         }
       });
       function updateZenProgress() {
+  // 1. Get the data from browser memory
   const entries = JSON.parse(localStorage.getItem("petal_entries_v1") || "[]");
   const whiteboardSaves = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
+  
+  // 2. Calculate total XP
+  let totalXP = entries.length * 50; // 50 XP per journal entry
+  
+  entries.forEach(e => {
+    // 1 XP per word written in journal entries
+    // We strip HTML tags first so code doesn't count as words
+    const plainText = e.content.replace(/<[^>]*>/g, ' ');
+    const wordCount = plainText.split(/\s+/).filter(Boolean).length;
+    totalXP += wordCount;
+  });
+
+  totalXP += (whiteboardSaves * 20); // 20 XP per whiteboard doodle saved
+
+  // 3. Level Logic: Each level takes 200 XP
+  const xpPerLevel = 200;
+  const level = Math.floor(totalXP / xpPerLevel) + 1;
+  const currentXPInLevel = totalXP % xpPerLevel;
+  const progressPercent = (currentXPInLevel / xpPerLevel) * 100;
+
+  // 4. Update the actual HTML elements on the page
+  const levelEl = document.getElementById("zenLevel");
+  const xpEl = document.getElementById("zenXP");
+  const barEl = document.getElementById("zenBarFill");
+
+  if (levelEl) levelEl.textContent = `Level ${level}`;
+  if (xpEl) xpEl.textContent = `${currentXPInLevel} / ${xpPerLevel} XP`;
+  if (barEl) barEl.style.width = `${progressPercent}%`;
+}
+
+// 5. Run the function immediately when the profile page loads
+updateZenProgress();
+
   
   // Calculate total XP
   let totalXP = entries.length * 50; // 50 XP per entry
@@ -301,7 +335,6 @@ const firebaseConfig = {
 
 // Call this inside your onAuthStateChanged or at the bottom of your script
 updateZenProgress();
-const whiteboardSaves = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
     </script>
   </body>
 </html>
