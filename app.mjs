@@ -81,15 +81,42 @@ function toast(msg) {
   document.getElementById("btnSignOut")?.addEventListener("click", () => signOut(auth).then(() => toast("Logged out.")));
 })();
 
-/* ------------------- Journal Logic ------------------- */
+/* ------------------- Journal Logic (With Level Unlocks) ------------------- */
 (() => {
   const $ = (id) => document.getElementById(id);
   const STORAGE_KEY = "petal_entries_v1";
   let entries = [];
   let activeId = null;
-  let activeTag = null; // Important: Added this variable definition
+  let activeTag = null;
 
-  // 1. Helper to find all unique tags from your entries
+  // --- NEW: Level Calculation Helper ---
+  function getZenLevel() {
+    const wbSaves = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
+    const visionSaves = parseInt(localStorage.getItem("petal_vision_count") || "0");
+    const capsuleSaves = parseInt(localStorage.getItem("petal_capsule_count") || "0");
+    
+    let totalXP = (entries.length * 50) + (wbSaves * 20) + (visionSaves * 30) + (capsuleSaves * 100);
+    entries.forEach(e => {
+      const plainText = (e.content || "").replace(/<[^>]*>/g, ' ');
+      totalXP += plainText.split(/\s+/).filter(Boolean).length;
+    });
+
+    return Math.floor(totalXP / 200) + 1; // Level 1 starts at 0 XP
+  }
+
+  // --- NEW: Function to toggle Level 5 stickers ---
+  function checkUnlocks() {
+    const currentLevel = getZenLevel();
+    // This finds any sticker button with the class "level-5-reward"
+    document.querySelectorAll(".level-5-reward").forEach(el => {
+      if (currentLevel >= 5) {
+        el.style.display = "inline-flex";
+      } else {
+        el.style.display = "none";
+      }
+    });
+  }
+
   function allTagsFromEntries() {
     const DEFAULT_TAGS = ["gratitude", "work", "health", "family"];
     const set = new Set(DEFAULT_TAGS);
@@ -99,7 +126,6 @@ function toast(msg) {
     return [...set].sort();
   }
 
-  // 2. Function to draw the tag buttons in the sidebar
   function renderTagChips() {
     const tagRow = $("tagRow");
     if (!tagRow) return;
@@ -111,19 +137,17 @@ function toast(msg) {
     tagRow.querySelectorAll('.chip.tag').forEach(btn => {
       btn.onclick = () => {
         const tag = btn.dataset.tag;
-        activeTag = (activeTag === tag) ? null : tag; // Toggle filter on/off
+        activeTag = (activeTag === tag) ? null : tag;
         renderTagChips();
         renderList();
       };
     });
   }
 
-  // 3. Function to draw the list of entry cards
   function renderList() {
     const list = $("entryList"); 
     if (!list) return;
     const q = ($("search")?.value || "").toLowerCase();
-    
     const filtered = entries.filter(e => {
       const matchTag = activeTag ? (e.tags || []).includes(activeTag) : true;
       const matchSearch = ((e.title||"") + (e.content||"")).toLowerCase().includes(q);
@@ -160,56 +184,37 @@ function toast(msg) {
     if($("tagsInput")) $("tagsInput").value = "";
   }
 
-  // --- Listeners ---
-  
   $("btnNew")?.addEventListener('click', () => { 
     resetEditor(); 
     const sfx = $("newEntrySfx"); 
     if(sfx) sfx.play(); 
   });
 
-    $("btnSave")?.addEventListener('click', () => {
-    // 1. Get the content and calculate XP
+  $("btnSave")?.addEventListener('click', () => {
     const contentHtml = $("content").innerHTML || "";
     const plainText = contentHtml.replace(/<[^>]*>/g, ' ');
     const wordCount = plainText.split(/\s+/).filter(Boolean).length;
     const xpEarned = 50 + wordCount;
 
-    // 2. Prepare the data object
     const data = { 
       id: activeId || Date.now().toString(), 
-      date: $("date").value, 
-      mood: $("mood").value, 
-      title: $("title").value, 
-      content: contentHtml, 
-      tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), 
+      date: $("date").value, mood: $("mood").value, title: $("title").value, 
+      content: contentHtml, tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), 
       updatedAt: Date.now() 
     };
 
-    // 3. Update the entries array
-    if (!activeId) {
-      entries.push(data); 
-    } else {
-      entries = entries.map(e => e.id === activeId ? data : e);
-    }
+    if (!activeId) entries.push(data); 
+    else entries = entries.map(e => e.id === activeId ? data : e);
 
-    // 4. Save to browser memory
     localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); 
-    
-    // 5. Refresh the UI
     renderList();      
     renderTagChips();  
+    checkUnlocks(); // <--- UPDATE UNLOCKS ON SAVE
     
-    // 6. Visual & Audio Feedback
     toast(`Saved! +${xpEarned} Zen XP earned.`);
-    
     const sfx = document.getElementById("saveSfx");
-    if (sfx) {
-      sfx.currentTime = 0; // Reset to start
-      sfx.play().catch(err => console.error("Audio block:", err));
-    }
+    if (sfx) { sfx.currentTime = 0; sfx.play().catch(() => {}); }
   });
-
 
   $("btnDelete")?.addEventListener('click', () => {
     if (!activeId || !confirm("Delete this entry?")) return;
@@ -217,6 +222,7 @@ function toast(msg) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); 
     renderList();
     renderTagChips();
+    checkUnlocks(); // <--- UPDATE UNLOCKS ON DELETE
     resetEditor(); 
     toast("Deleted.");
     const sfx = $("deleteSfx"); if (sfx) sfx.play();
@@ -225,11 +231,10 @@ function toast(msg) {
   document.addEventListener("DOMContentLoaded", () => {
     try { 
       entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); 
-    } catch { 
-      entries = []; 
-    }
+    } catch { entries = []; }
     renderList(); 
-    renderTagChips(); // Ensure tags load on start
+    renderTagChips(); 
+    checkUnlocks(); // <--- CHECK UNLOCKS ON LOAD
     $("search")?.addEventListener('input', renderList);
   });
 })();
