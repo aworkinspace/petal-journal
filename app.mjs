@@ -48,6 +48,28 @@ function applyVars(vars) {
 }
 
 function applyTheme(themeName) {
+  // 1. Safety Check: Is the user actually Level 5?
+  if (themeName === "golden_petal") {
+     const wbSaves = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
+     const visionSaves = parseInt(localStorage.getItem("petal_vision_count") || "0");
+     const capsuleSaves = parseInt(localStorage.getItem("petal_capsule_count") || "0");
+     const entries = JSON.parse(localStorage.getItem("petal_entries_v1") || "[]");
+     
+     // Calculate total XP roughly (same as your Level 5 logic)
+     let totalXP = (entries.length * 50) + (wbSaves * 20) + (visionSaves * 30) + (capsuleSaves * 100);
+     entries.forEach(e => {
+       const words = (e.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
+       totalXP += words;
+     });
+
+     // If total XP is less than 800 (which is Level 5), force back to petal
+     if (totalXP < 800) { 
+        themeName = "petal"; 
+        toast("Reach Level 5 to unlock Golden Petal!");
+     }
+  } // <--- THIS BRACE was missing in your version!
+
+  // 2. Standard theme applying logic
   if (themeName === "custom") {
     const raw = localStorage.getItem("petal_custom_theme_vars");
     if (raw) try { applyVars(JSON.parse(raw)); } catch {}
@@ -57,20 +79,11 @@ function applyTheme(themeName) {
     applyVars(theme);
     localStorage.setItem("petal_theme", themeName);
   }
+
+  // 3. Tell the rest of the site (Spotify, Animations) the theme changed
   document.dispatchEvent(new CustomEvent('themeChanged'));
 }
-function applyTheme(themeName) {
-  // Prevent using Golden Petal if level is too low
-  if (themeName === "golden_petal") {
-     const wbSaves = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
-     const entries = JSON.parse(localStorage.getItem("petal_entries_v1") || "[]");
-     // Simple check: 800 XP roughly equals Level 5
-     if (entries.length < 5 && wbSaves < 5) { 
-        themeName = "petal"; 
-     }
-  }
-  // ... rest of your applyTheme code ...
-}
+
 
 function applySkin(skinName) {
   const notebook = document.getElementById("notebook");
