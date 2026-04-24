@@ -216,11 +216,13 @@ const firebaseConfig = {
     const wbSaves = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
     const visionSaves = parseInt(localStorage.getItem("petal_vision_count") || "0");
     const capsuleSaves = parseInt(localStorage.getItem("petal_capsule_count") || "0");
+    const wellSaves = parseInt(localStorage.getItem("petal_well_count") || "0"); // NEW: Get Well count
 
     let entries = [];
     try { entries = JSON.parse(rawEntries); } catch (e) { entries = []; }
 
-    let totalXP = (entries.length * 50) + (wbSaves * 20) + (visionSaves * 30) + (capsuleSaves * 100);
+    // NEW: Added (wellSaves * 30) to the end of this math line
+    let totalXP = (entries.length * 50) + (wbSaves * 20) + (visionSaves * 30) + (capsuleSaves * 100) + (wellSaves * 30);
 
     entries.forEach(e => {
       if (e.content) {
