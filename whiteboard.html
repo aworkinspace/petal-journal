@@ -380,6 +380,15 @@
     ctx.lineTo(b.x, b.y);
     ctx.stroke();
   }
+  if (penStyle === "rainbow") {
+    ctx.strokeStyle = `hsl(${Date.now() / 10}, 100%, 50%)`; // Cycles through the rainbow
+    ctx.lineWidth = size;
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(b.x, b.y);
+    ctx.stroke();
+    return;
+  }
 
   // PAINT BUCKET LOGIC
   function floodFill(startX, startY, fillColor) {
