@@ -264,9 +264,6 @@ const firebaseConfig = {
   }
 }
 
-
-    });
-
     const xpPerLevel = 200;
     const level = Math.floor(totalXP / xpPerLevel) + 1;
     const currentXPInLevel = totalXP % xpPerLevel;
@@ -276,8 +273,8 @@ const firebaseConfig = {
     if (document.getElementById("zenXP")) document.getElementById("zenXP").textContent = `${currentXPInLevel} / ${xpPerLevel} XP`;
     if (document.getElementById("zenBarFill")) document.getElementById("zenBarFill").style.width = `${progressPercent}%`;
   }
-
-  /* ------------------- Profile Logic ------------------- */
+});
+      /* ------------------- Profile Logic ------------------- */
   async function loadProfile(user) {
     document.getElementById("userEmail").textContent = user.email || "";
     document.getElementById("displayName").value = user.displayName || "";
