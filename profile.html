@@ -244,6 +244,19 @@ const firebaseConfig = {
       secretTheme.textContent = "✨ Golden Petal (Unlocked!)";
     }
   }
+  // Level 5 Check
+  if (level >= 5) {
+    // Show Badge
+    const badge = document.getElementById("level5Badge");
+    if (badge) badge.style.display = "flex";
+
+    // Unlock Theme Option on Profile
+    const opt = document.querySelector('option[value="golden_petal"]');
+    if (opt) {
+      opt.disabled = false;
+      opt.textContent = "✨ Golden Petal (Unlocked!)";
+    }
+  }
 
     });
 
