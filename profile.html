@@ -167,214 +167,84 @@ const firebaseConfig = {
     </div>
 
     <script type="module">
-      import { onAuthStateChanged, updateProfile, deleteUser } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-      import { doc, getDoc, setDoc, deleteDoc, enableNetwork, disableNetwork } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-      import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
+  import { onAuthStateChanged, updateProfile, deleteUser } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+  import { doc, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+  import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
 
-      const auth = window.firebaseAuth;
-      const db = window.firebaseDb;
-      const storage = window.firebaseStorage;
+  const auth = window.firebaseAuth;
+  const db = window.firebaseDb;
+  const storage = window.firebaseStorage;
+  let currentUser = null;
 
-      // Force Reconnect Logic
-      (async () => {
-        try {
-          await disableNetwork(db);
-          await enableNetwork(db);
-          console.log("Firestore reconnected");
-        } catch (e) {}
-      })();
+  /* ------------------- Zen XP Logic ------------------- */
+  function updateZenProgress() {
+    const rawEntries = localStorage.getItem("petal_entries_v1") || "[]";
+    const whiteboardSaves = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
+    const visionSaves = parseInt(localStorage.getItem("petal_vision_count") || "0");
+    const capsuleSaves = parseInt(localStorage.getItem("petal_capsule_count") || "0");
 
-      const $ = (id) => document.getElementById(id);
-      const profilePicEl = $("profilePic");
-      const userEmailEl = $("userEmail");
-      const displayNameEl = $("displayName");
-      const userBirthdayEl = $("userBirthday");
-      const btnUploadPic = $("btnUploadPic");
-      const picUploadEl = $("picUpload");
-      const picUploadMsgEl = $("picUploadMsg");
-      const nameUpdateMsgEl = $("nameUpdateMsg");
-      const birthdayUpdateMsgEl = $("birthdayUpdateMsg");
-      const generalMsgEl = $("generalMsg");
-      const btnUpdateProfile = $("btnUpdateProfile");
-      const btnDeleteAccount = $("btnDeleteAccount");
-      const DEFAULT_PIC = "assets/default-profile.png";
-      let currentUser = null;
+    let entries = [];
+    try { entries = JSON.parse(rawEntries); } catch (e) { entries = []; }
 
-      function showMsg(el, msg, isError = false) {
-        if (!el) return;
-        el.textContent = msg;
-        el.style.color = isError ? "var(--accent)" : "var(--text-muted)";
+    let totalXP = 0;
+    totalXP += (entries.length * 50);
+    totalXP += (whiteboardSaves * 20);
+    totalXP += (visionSaves * 30);
+    totalXP += (capsuleSaves * 100);
+
+    entries.forEach(e => {
+      if (e.content) {
+        const plainText = e.content.replace(/<[^>]*>/g, ' ');
+        totalXP += plainText.split(/\s+/).filter(Boolean).length;
       }
+    });
 
-      function cacheBust(url) {
-        if (!url) return url;
-        const u = new URL(url, location.href);
-        u.searchParams.set("v", String(Date.now()));
-        return u.toString();
-      }
+    const xpPerLevel = 200;
+    const level = Math.floor(totalXP / xpPerLevel) + 1;
+    const currentXPInLevel = totalXP % xpPerLevel;
+    const progressPercent = (currentXPInLevel / xpPerLevel) * 100;
 
-      async function loadProfile(user) {
-        userEmailEl.textContent = user.email || "";
-        displayNameEl.value = user.displayName || "";
-        profilePicEl.src = user.photoURL ? cacheBust(user.photoURL) : DEFAULT_PIC;
-        try {
-          const userDoc = await getDoc(doc(db, "users", user.uid));
-          if (userDoc.exists()) {
-            const data = userDoc.data();
-            userBirthdayEl.value = data.birthday || "";
-          }
-        } catch (error) {
-          console.error("loadProfile Firestore error:", error);
-          showMsg(generalMsgEl, "Syncing profile...", false);
-        }
-      }
-
-      btnUploadPic?.addEventListener("click", () => picUploadEl?.click());
-      picUploadEl?.addEventListener("change", async (e) => {
-        const file = e.target.files?.[0];
-        if (!file || !currentUser) return;
-        showMsg(picUploadMsgEl, "Uploading...", false);
-        try {
-          const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
-          const path = `profile_pictures/${currentUser.uid}/profile_${Date.now()}.${ext}`;
-          const storageRef = ref(storage, path);
-          await uploadBytes(storageRef, file);
-          const photoURL = await getDownloadURL(storageRef);
-          await updateProfile(currentUser, { photoURL });
-          profilePicEl.src = cacheBust(photoURL);
-          showMsg(picUploadMsgEl, "Picture updated!");
-        } catch (error) {
-          showMsg(picUploadMsgEl, "Error uploading.", true);
-        }
-      });
-
-      btnUpdateProfile?.addEventListener("click", async () => {
-        if (!currentUser) return;
-        showMsg(generalMsgEl, "Saving...", false);
-        try {
-          const nextName = displayNameEl.value.trim();
-          if (nextName !== (currentUser.displayName || "")) {
-            await updateProfile(currentUser, { displayName: nextName });
-          }
-          await setDoc(doc(db, "users", currentUser.uid), { birthday: userBirthdayEl.value || "" }, { merge: true });
-          showMsg(generalMsgEl, "Profile saved!");
-        } catch (error) {
-          showMsg(generalMsgEl, "Error saving.", true);
-        }
-      });
-
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          currentUser = user;
-          loadProfile(user);
-        } else {
-          location.href = "login.html";
-        }
-      });
-      function updateZenProgress() {
-  console.log("--- Updating Zen Progress ---");
-
-  // 1. Pull data from memory
-  const rawEntries = localStorage.getItem("petal_entries_v1") || "[]";
-  const whiteboardSaves = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
-  const visionSaves = parseInt(localStorage.getItem("petal_vision_count") || "0");
-  const capsuleSaves = parseInt(localStorage.getItem("petal_capsule_count") || "0");
-
-  let entries = [];
-  try {
-    entries = JSON.parse(rawEntries);
-  } catch (e) {
-    console.error("Error parsing entries:", e);
+    if (document.getElementById("zenLevel")) document.getElementById("zenLevel").textContent = `Level ${level}`;
+    if (document.getElementById("zenXP")) document.getElementById("zenXP").textContent = `${currentXPInLevel} / ${xpPerLevel} XP`;
+    if (document.getElementById("zenBarFill")) document.getElementById("zenBarFill").style.width = `${progressPercent}%`;
   }
 
-  // 2. Start calculation
-  let totalXP = 0;
+  /* ------------------- Profile Logic ------------------- */
+  async function loadProfile(user) {
+    document.getElementById("userEmail").textContent = user.email || "";
+    document.getElementById("displayName").value = user.displayName || "";
+    if (user.photoURL) document.getElementById("profilePic").src = user.photoURL;
 
-  // Base points for counts
-  totalXP += (entries.length * 50);   // 50 XP per journal
-  totalXP += (whiteboardSaves * 20); // 20 XP per doodle
-  totalXP += (visionSaves * 30);      // 30 XP per vision board item
-  totalXP += (capsuleSaves * 100);    // 100 XP per time capsule
+    try {
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      if (userDoc.exists()) {
+        document.getElementById("userBirthday").value = userDoc.data().birthday || "";
+      }
+    } catch (error) { console.error("Firestore error:", error); }
+    
+    updateZenProgress(); // Refresh XP once profile loads
+  }
 
-  // Points for words written
-  entries.forEach((e, index) => {
-    if (e.content) {
-      // Clean HTML tags and count words
-      const plainText = e.content.replace(/<[^>]*>/g, ' ');
-      const words = plainText.split(/\s+/).filter(Boolean).length;
-      totalXP += words; // 1 XP per word
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      currentUser = user;
+      loadProfile(user);
+    } else {
+      window.location.href = "login.html";
     }
   });
 
-  console.log("Total XP Calculated:", totalXP);
-
-  // 3. Level Logic (Every 200 XP = 1 Level)
-  const xpPerLevel = 200; 
-  const level = Math.floor(totalXP / xpPerLevel) + 1;
-  const currentXPInLevel = totalXP % xpPerLevel;
-  const progressPercent = (currentXPInLevel / xpPerLevel) * 100;
-
-  // 4. Update the UI
-  const levelEl = document.getElementById("zenLevel");
-  const xpEl = document.getElementById("zenXP");
-  const barEl = document.getElementById("zenBarFill");
-
-  if (levelEl) levelEl.textContent = `Level ${level}`;
-  if (xpEl) xpEl.textContent = `${currentXPInLevel} / ${xpPerLevel} XP`;
-  if (barEl) barEl.style.width = `${progressPercent}%`;
-}
-
-// Run it!
-updateZenProgress();
-
-
-  totalXP += (whiteboardSaves * 20); // 20 XP per whiteboard doodle saved
-
-  // 3. Level Logic: Each level takes 200 XP
-  const xpPerLevel = 200;
-  const level = Math.floor(totalXP / xpPerLevel) + 1;
-  const currentXPInLevel = totalXP % xpPerLevel;
-  const progressPercent = (currentXPInLevel / xpPerLevel) * 100;
-
-  // 4. Update the actual HTML elements on the page
-  const levelEl = document.getElementById("zenLevel");
-  const xpEl = document.getElementById("zenXP");
-  const barEl = document.getElementById("zenBarFill");
-
-  if (levelEl) levelEl.textContent = `Level ${level}`;
-  if (xpEl) xpEl.textContent = `${currentXPInLevel} / ${xpPerLevel} XP`;
-  if (barEl) barEl.style.width = `${progressPercent}%`;
-}
-
-// 5. Run the function immediately when the profile page loads
-updateZenProgress();
-
-  
-  // Calculate total XP
-  let totalXP = entries.length * 50; // 50 XP per entry
-  
-  entries.forEach(e => {
-    // 1 XP per word in the content
-    const wordCount = e.content.split(/\s+/).filter(Boolean).length;
-    totalXP += wordCount;
+  // Save Profile Button
+  document.getElementById("btnUpdateProfile")?.addEventListener("click", async () => {
+    if (!currentUser) return;
+    const nextName = document.getElementById("displayName").value.trim();
+    try {
+      await updateProfile(currentUser, { displayName: nextName });
+      await setDoc(doc(db, "users", currentUser.uid), { birthday: document.getElementById("userBirthday").value }, { merge: true });
+      alert("Profile Saved!");
+    } catch (e) { alert("Error saving profile."); }
   });
 
-  totalXP += (whiteboardSaves * 20); // 20 XP per doodle
-
-  // Level Logic: Each level takes 200 XP
-  const levelXP = 200;
-  const level = Math.floor(totalXP / levelXP) + 1;
-  const currentXPInLevel = totalXP % levelXP;
-  const progressPercent = (currentXPInLevel / levelXP) * 100;
-
-  // Update the UI
-  document.getElementById("zenLevel").textContent = `Level ${level}`;
-  document.getElementById("zenXP").textContent = `${currentXPInLevel} / ${levelXP} XP`;
-  document.getElementById("zenBarFill").style.width = `${progressPercent}%`;
-}
-
-// Call this inside your onAuthStateChanged or at the bottom of your script
-updateZenProgress();
-    </script>
+</script>
   </body>
 </html>
