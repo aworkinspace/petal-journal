@@ -209,54 +209,61 @@ const firebaseConfig = {
 
   /* ------------------- Zen XP Logic ------------------- */
   function updateZenProgress() {
-    const rawEntries = localStorage.getItem("petal_entries_v1") || "[]";
-    const whiteboardSaves = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
-    const visionSaves = parseInt(localStorage.getItem("petal_vision_count") || "0");
-    const capsuleSaves = parseInt(localStorage.getItem("petal_capsule_count") || "0");
+  const rawEntries = localStorage.getItem("petal_entries_v1") || "[]";
+  const whiteboardSaves = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
+  const visionSaves = parseInt(localStorage.getItem("petal_vision_count") || "0");
+  const capsuleSaves = parseInt(localStorage.getItem("petal_capsule_count") || "0");
 
-    let entries = [];
-    try { entries = JSON.parse(rawEntries); } catch (e) { entries = []; }
+  let entries = [];
+  try { entries = JSON.parse(rawEntries); } catch (e) { entries = []; }
 
-    let totalXP = 0;
-    totalXP += (entries.length * 50);
-    totalXP += (whiteboardSaves * 20);
-    totalXP += (visionSaves * 30);
-    totalXP += (capsuleSaves * 100);
+  // 1. Calculate totalXP FIRST
+  let totalXP = 0;
+  totalXP += (entries.length * 50);
+  totalXP += (whiteboardSaves * 20);
+  totalXP += (visionSaves * 30);
+  totalXP += (capsuleSaves * 100);
 
-    entries.forEach(e => {
-      if (e.content) {
-        const plainText = e.content.replace(/<[^>]*>/g, ' ');
-        totalXP += plainText.split(/\s+/).filter(Boolean).length;
-      }
-        // Check for Level 5 Rewards
-  const themeSelect = document.getElementById("themeSelect");
+  entries.forEach(e => {
+    if (e.content) {
+      const plainText = e.content.replace(/<[^>]*>/g, ' ');
+      totalXP += plainText.split(/\s+/).filter(Boolean).length;
+    }
+  });
+
+  // 2. NOW define 'level' after totalXP is finished
+  const xpPerLevel = 200;
+  const level = Math.floor(totalXP / xpPerLevel) + 1;
+  const currentXPInLevel = totalXP % xpPerLevel;
+  const progressPercent = (currentXPInLevel / xpPerLevel) * 100;
+
+  // 3. Update the UI Elements
+  const levelEl = document.getElementById("zenLevel");
+  const xpEl = document.getElementById("zenXP");
+  const barEl = document.getElementById("zenBarFill");
   const badgeEl = document.getElementById("level5Badge");
 
-  if (level >= 5) {
-    // 1. Show the Badge
-    if (badgeEl) badgeEl.className = "badge-visible";
+  if (levelEl) levelEl.textContent = `Level ${level}`;
+  if (xpEl) xpEl.textContent = `${currentXPInLevel} / ${xpPerLevel} XP`;
+  if (barEl) barEl.style.width = `${progressPercent}%`;
 
-    // 2. Unlock the Secret Theme in the dropdown
-    // Note: You'll need to add this option to your index.html first!
+  // 4. CHECK REWARDS (This uses the 'level' we just defined)
+  if (level >= 5) {
+    if (badgeEl) {
+      badgeEl.style.display = "flex";
+      // Fixed the 404 error by adding 'assets/' to the path
+      const badgeImg = badgeEl.querySelector("img");
+      if (badgeImg) badgeImg.src = "assets/golden-sprout.gif"; 
+    }
+
     const secretTheme = document.querySelector('option[value="golden_petal"]');
     if (secretTheme) {
       secretTheme.disabled = false;
       secretTheme.textContent = "✨ Golden Petal (Unlocked!)";
     }
   }
-  // Level 5 Check
-  if (level >= 5) {
-    // Show Badge
-    const badge = document.getElementById("level5Badge");
-    if (badge) badge.style.display = "flex";
+}
 
-    // Unlock Theme Option on Profile
-    const opt = document.querySelector('option[value="golden_petal"]');
-    if (opt) {
-      opt.disabled = false;
-      opt.textContent = "✨ Golden Petal (Unlocked!)";
-    }
-  }
 
     });
 
