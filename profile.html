@@ -214,6 +214,23 @@ const firebaseConfig = {
         const plainText = e.content.replace(/<[^>]*>/g, ' ');
         totalXP += plainText.split(/\s+/).filter(Boolean).length;
       }
+        // Check for Level 5 Rewards
+  const themeSelect = document.getElementById("themeSelect");
+  const badgeEl = document.getElementById("level5Badge");
+
+  if (level >= 5) {
+    // 1. Show the Badge
+    if (badgeEl) badgeEl.className = "badge-visible";
+
+    // 2. Unlock the Secret Theme in the dropdown
+    // Note: You'll need to add this option to your index.html first!
+    const secretTheme = document.querySelector('option[value="golden_petal"]');
+    if (secretTheme) {
+      secretTheme.disabled = false;
+      secretTheme.textContent = "✨ Golden Petal (Unlocked!)";
+    }
+  }
+
     });
 
     const xpPerLevel = 200;
