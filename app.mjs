@@ -185,7 +185,9 @@ function toast(msg) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); 
     renderList();      
     renderTagChips();  
-    toast("Saved!");
+    // NEW: Gamified Feedback
+    toast(`Saved! +${pointsEarned} Zen XP earned.`); 
+    
     const sfx = $("saveSfx"); if (sfx) sfx.play();
   });
 
