@@ -273,20 +273,61 @@ const firebaseConfig = {
         }
       });
       function updateZenProgress() {
-  // 1. Get the data from browser memory
-  const entries = JSON.parse(localStorage.getItem("petal_entries_v1") || "[]");
+  console.log("--- Updating Zen Progress ---");
+
+  // 1. Pull data from memory
+  const rawEntries = localStorage.getItem("petal_entries_v1") || "[]";
   const whiteboardSaves = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
-  
-  // 2. Calculate total XP
-  let totalXP = entries.length * 50; // 50 XP per journal entry
-  
-  entries.forEach(e => {
-    // 1 XP per word written in journal entries
-    // We strip HTML tags first so code doesn't count as words
-    const plainText = e.content.replace(/<[^>]*>/g, ' ');
-    const wordCount = plainText.split(/\s+/).filter(Boolean).length;
-    totalXP += wordCount;
+  const visionSaves = parseInt(localStorage.getItem("petal_vision_count") || "0");
+  const capsuleSaves = parseInt(localStorage.getItem("petal_capsule_count") || "0");
+
+  let entries = [];
+  try {
+    entries = JSON.parse(rawEntries);
+  } catch (e) {
+    console.error("Error parsing entries:", e);
+  }
+
+  // 2. Start calculation
+  let totalXP = 0;
+
+  // Base points for counts
+  totalXP += (entries.length * 50);   // 50 XP per journal
+  totalXP += (whiteboardSaves * 20); // 20 XP per doodle
+  totalXP += (visionSaves * 30);      // 30 XP per vision board item
+  totalXP += (capsuleSaves * 100);    // 100 XP per time capsule
+
+  // Points for words written
+  entries.forEach((e, index) => {
+    if (e.content) {
+      // Clean HTML tags and count words
+      const plainText = e.content.replace(/<[^>]*>/g, ' ');
+      const words = plainText.split(/\s+/).filter(Boolean).length;
+      totalXP += words; // 1 XP per word
+    }
   });
+
+  console.log("Total XP Calculated:", totalXP);
+
+  // 3. Level Logic (Every 200 XP = 1 Level)
+  const xpPerLevel = 200; 
+  const level = Math.floor(totalXP / xpPerLevel) + 1;
+  const currentXPInLevel = totalXP % xpPerLevel;
+  const progressPercent = (currentXPInLevel / xpPerLevel) * 100;
+
+  // 4. Update the UI
+  const levelEl = document.getElementById("zenLevel");
+  const xpEl = document.getElementById("zenXP");
+  const barEl = document.getElementById("zenBarFill");
+
+  if (levelEl) levelEl.textContent = `Level ${level}`;
+  if (xpEl) xpEl.textContent = `${currentXPInLevel} / ${xpPerLevel} XP`;
+  if (barEl) barEl.style.width = `${progressPercent}%`;
+}
+
+// Run it!
+updateZenProgress();
+
 
   totalXP += (whiteboardSaves * 20); // 20 XP per whiteboard doodle saved
 
