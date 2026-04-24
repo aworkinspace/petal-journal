@@ -168,28 +168,48 @@ function toast(msg) {
     if(sfx) sfx.play(); 
   });
 
-  $("btnSave")?.addEventListener('click', () => {
+    $("btnSave")?.addEventListener('click', () => {
+    // 1. Get the content and calculate XP
+    const contentHtml = $("content").innerHTML || "";
+    const plainText = contentHtml.replace(/<[^>]*>/g, ' ');
+    const wordCount = plainText.split(/\s+/).filter(Boolean).length;
+    const xpEarned = 50 + wordCount;
+
+    // 2. Prepare the data object
     const data = { 
       id: activeId || Date.now().toString(), 
       date: $("date").value, 
       mood: $("mood").value, 
       title: $("title").value, 
-      content: $("content").innerHTML, 
+      content: contentHtml, 
       tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), 
       updatedAt: Date.now() 
     };
 
-    if (!activeId) entries.push(data); 
-    else entries = entries.map(e => e.id === activeId ? data : e);
+    // 3. Update the entries array
+    if (!activeId) {
+      entries.push(data); 
+    } else {
+      entries = entries.map(e => e.id === activeId ? data : e);
+    }
 
+    // 4. Save to browser memory
     localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); 
+    
+    // 5. Refresh the UI
     renderList();      
     renderTagChips();  
-    // NEW: Gamified Feedback
-    toast(`Saved! +${pointsEarned} Zen XP earned.`); 
     
-    const sfx = $("saveSfx"); if (sfx) sfx.play();
+    // 6. Visual & Audio Feedback
+    toast(`Saved! +${xpEarned} Zen XP earned.`);
+    
+    const sfx = document.getElementById("saveSfx");
+    if (sfx) {
+      sfx.currentTime = 0; // Reset to start
+      sfx.play().catch(err => console.error("Audio block:", err));
+    }
   });
+
 
   $("btnDelete")?.addEventListener('click', () => {
     if (!activeId || !confirm("Delete this entry?")) return;
