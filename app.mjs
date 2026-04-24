@@ -59,6 +59,18 @@ function applyTheme(themeName) {
   }
   document.dispatchEvent(new CustomEvent('themeChanged'));
 }
+function applyTheme(themeName) {
+  // Prevent using Golden Petal if level is too low
+  if (themeName === "golden_petal") {
+     const wbSaves = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
+     const entries = JSON.parse(localStorage.getItem("petal_entries_v1") || "[]");
+     // Simple check: 800 XP roughly equals Level 5
+     if (entries.length < 5 && wbSaves < 5) { 
+        themeName = "petal"; 
+     }
+  }
+  // ... rest of your applyTheme code ...
+}
 
 function applySkin(skinName) {
   const notebook = document.getElementById("notebook");
