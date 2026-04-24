@@ -27,10 +27,11 @@ btnToss.onclick = async () => {
 
     // 1. Save to Firebase
     await addDoc(collection(window.firebaseDb, "manifestations"), {
-      userId: currentUser.uid,
-      text: wish,
-      timestamp: Date.now()
-    });
+  userId: currentUser.uid, // <--- Ensure this is spelled exactly like this
+  text: wish,
+  timestamp: Date.now()
+});
+
 
     // 2. Add Zen XP!
     let count = parseInt(localStorage.getItem("petal_well_count") || "0");
