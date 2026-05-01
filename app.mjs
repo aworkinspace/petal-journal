@@ -426,6 +426,12 @@ function toast(msg) {
         particle.style.width = size; particle.style.height = size;
         particle.style.animationDuration = (Math.random() * 3 + 5) + "s";
       }
+      if (type === "sparks") {
+      particle.className = Math.random() > 0.5 ? "spark spark-blue" : "spark spark-orange";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.bottom = "-20px"; // Start from the bottom
+      particle.style.animationDuration = (Math.random() * 2 + 2) + "s";
+    }
 
       overlay.appendChild(particle);
       setTimeout(() => particle.remove(), 8000);
