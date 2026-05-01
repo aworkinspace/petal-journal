@@ -446,6 +446,14 @@ function toast(msg) {
       particle.style.bottom = "-20px"; // Start from the bottom
       particle.style.animationDuration = (Math.random() * 2 + 2) + "s";
     }
+    // Inside the setInterval of startAnimation(type)
+    if (type === "lightning") {
+      particle.className = "lightning";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = "0";
+      // Lightning is very fast
+      particle.style.animationDuration = "0.4s";
+    }
 
       overlay.appendChild(particle);
       setTimeout(() => particle.remove(), 8000);
