@@ -37,6 +37,21 @@ const THEMES = {
     "--bg-spot-2": "rgba(255, 255, 255, 0.5)",
     "animation": "sunbeams" // Re-uses the summer shimmer animation!
   },
+    ninja_rivalry: {
+    "--bg": "#0D0D1F", // Deep Uchiha Navy
+    "--surface": "#16162D",
+    "--surface-2": "#F97316", // Naruto Orange
+    "--border": "rgba(59, 130, 246, 0.3)", // Chakra Blue
+    "--primary": "#3B82F6", // Sasuke Blue
+    "--primary-soft": "rgba(59, 130, 246, 0.2)",
+    "--accent": "#EF4444", // Sharingan Red
+    "--text": "#F2F0F7",
+    "--text-muted": "rgba(242,240,247,.6)",
+    "--bg-spot-1": "rgba(59, 130, 246, 0.2)", // Chidori Glow
+    "--bg-spot-2": "rgba(249, 115, 22, 0.15)", // Kyuubi Glow
+    "animation": "sparks"
+  },
+
 };
 
 /* ------------------- Theme Helpers ------------------- */
