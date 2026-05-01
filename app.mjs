@@ -542,15 +542,61 @@ document.getElementById("imgPicker")?.addEventListener("change", async (e) => {
 });
 
 (() => {
-  const prompts = ["What’s one small win?", "Write 3 things you’re grateful for.", "Describe your day in 5 words.", "What did you learn today?"];
-  const btn = document.getElementById("btnPrompt");
-  const card = document.getElementById("promptCard");
-  if (!btn || !card) return;
-  if (localStorage.getItem("petal_prompt")) card.textContent = localStorage.getItem("petal_prompt");
-  btn.addEventListener("click", () => {
-    const next = prompts[Math.floor(Math.random() * prompts.length)];
-    card.textContent = next; localStorage.setItem("petal_prompt", next);
-  });
+  /* ------------------------ Prompts Logic (Ninja Edition) ------------------------ */
+(() => {
+  const prompts = [
+    // Standard Cozy Prompts
+    "What’s one small win you had today?",
+    "What’s one thing you can let go of today?",
+    "Write 3 things you’re grateful for (tiny counts).",
+    "Describe your day in 5 words.",
+    "What’s one kind thing you did for yourself today?",
+    
+    // --- NEW: Naruto / Ninja Way Prompts ---
+    "What is your personal 'Ninja Way' (Nindo) for today?",
+    "If you became Hokage tomorrow, what is the first thing you would change to help others?",
+    "What is one 'Jutsu' (a new skill or habit) you are currently training to master?",
+    "Think about your 'Team 7.' Who are the two people who support you the most?",
+    "What does the 'Will of Fire' mean to you in your daily life?",
+    "Recall a time you failed but didn't give up. How did that make you stronger?",
+    "Who is your greatest 'Rival' right now? Is it a person, or a bad habit you're fighting?",
+    "If you could have a heart-to-heart with Master Kakashi, what would you ask him?",
+    "Which Hidden Village matches your current mood? (Leaf, Sand, Cloud, etc.)"
+  ];
+
+  function initPrompts() {
+    const btn = document.getElementById("btnPrompt");
+    const card = document.getElementById("promptCard");
+
+    if (!btn || !card) return;
+
+    const saved = localStorage.getItem("petal_prompt");
+    if (saved) card.textContent = saved;
+
+    function pickNewPrompt() {
+      let next;
+      do {
+        next = prompts[Math.floor(Math.random() * prompts.length)];
+      } while (next === card.textContent && prompts.length > 1);
+
+      card.textContent = next;
+      localStorage.setItem("petal_prompt", next);
+      
+      // Visual feedback
+      card.style.transform = "scale(1.05)";
+      setTimeout(() => card.style.transform = "scale(1)", 100);
+    }
+
+    btn.addEventListener("click", pickNewPrompt);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initPrompts);
+  } else {
+    initPrompts();
+  }
+})();
+
 })();
 
 /* ------------------- Initial Setup ------------------- */
