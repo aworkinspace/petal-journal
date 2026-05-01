@@ -982,3 +982,28 @@ header, .top-actions { overflow: visible; }
   10% { opacity: 0.8; }
   100% { transform: translateY(110vh) translateX(50px); opacity: 0.3; }
 }
+/* NINJA SPARKS STYLE */
+.spark {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: spark-drift linear forwards;
+}
+
+.spark-blue {
+  background: #3B82F6;
+  box-shadow: 0 0 10px 2px #3B82F6;
+}
+
+.spark-orange {
+  background: #F97316;
+  box-shadow: 0 0 10px 2px #F97316;
+}
+
+@keyframes spark-drift {
+  0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateY(-100vh) translateX(50px) scale(0); opacity: 0; }
+}
