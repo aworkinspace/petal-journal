@@ -440,7 +440,7 @@ function toast(msg) {
 
   document.addEventListener("themeChanged", () => {
     const theme = localStorage.getItem("petal_theme");
-    const map = { cosmic_starfall: "meteors", autumn_forest: "leaves", spring_blossom: "blossoms", summer_shimmer: "sunbeams", midnight_snowfall: "snow" };
+    const map = { cosmic_starfall: "meteors", autumn_forest: "leaves", spring_blossom: "blossoms", summer_shimmer: "sunbeams", midnight_snowfall: "snow" , ninja_rivalry: "sparks" };
     startAnimation(map[theme] || null);
   });
 })();
