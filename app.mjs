@@ -480,6 +480,21 @@ function toast(msg) {
       // Lightning is very fast
       particle.style.animationDuration = "0.4s";
     }
+          // Inside the setInterval of startAnimation(type)
+    if (type === "healing") {
+      particle.className = "chakra-orb";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.bottom = "-20px";
+      particle.style.animationDuration = (Math.random() * 2 + 3) + "s";
+    } else if (type === "seals") {
+      const kanji = ["蝦", "蛞", "蛇"]; // Toad, Slug, Snake
+      particle.className = "kanji-seal";
+      particle.textContent = kanji[Math.floor(Math.random() * kanji.length)];
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = Math.random() * 100 + "vh";
+      particle.style.animationDuration = "5s";
+    }
+
 
       overlay.appendChild(particle);
       setTimeout(() => particle.remove(), 8000);
