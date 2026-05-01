@@ -328,7 +328,8 @@ function toast(msg) {
     });
   });
 
-  const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall"]);
+  const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry"]);
+
   
   function toEmbed(url) {
     if (!url) return null;
