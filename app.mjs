@@ -341,7 +341,8 @@ function toast(msg) {
     });
   });
 
-  const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry"]);
+  const darkThemes = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja"]);
+
 
   
   function toEmbed(url) {
@@ -462,7 +463,7 @@ function toast(msg) {
 
   document.addEventListener("themeChanged", () => {
     const theme = localStorage.getItem("petal_theme");
-    const map = { cosmic_starfall: "meteors", autumn_forest: "leaves", spring_blossom: "blossoms", summer_shimmer: "sunbeams", midnight_snowfall: "snow" , ninja_rivalry: "sparks" };
+    const map = { cosmic_starfall: "meteors", autumn_forest: "leaves", spring_blossom: "blossoms", summer_shimmer: "sunbeams", midnight_snowfall: "snow" , ninja_rivalry: "sparks" , copy_ninja: "lightning" };
     startAnimation(map[theme] || null);
   });
 })();
