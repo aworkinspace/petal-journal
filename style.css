@@ -1127,3 +1127,21 @@ header, .top-actions { overflow: visible; }
   10% { opacity: 0.6; }
   100% { transform: translateX(105vw) translateY(100px); opacity: 0; }
 }
+/* GAARA LOVE KANJI STYLE */
+.love-kanji {
+  position: absolute;
+  font-family: "VT323", monospace;
+  font-size: 32px;
+  color: #BC4749; /* Gourd Red */
+  opacity: 0;
+  pointer-events: none;
+  text-shadow: 0 0 5px rgba(188, 71, 73, 0.3);
+  animation: love-drift 6s linear forwards;
+}
+
+@keyframes love-drift {
+  0% { transform: translateY(0) scale(0.8) rotate(-10deg); opacity: 0; }
+  10% { opacity: 0.5; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-100vh) scale(1.2) rotate(10deg); opacity: 0; }
+}
