@@ -151,6 +151,43 @@ const THEMES = {
     "--bg-spot-2": "rgba(255, 255, 255, 0.3)",
     "animation": "love_sand"
   },
+    god_of_shinobi: {
+    "--bg": "#E9F5DB", // Earthy Sage
+    "--surface": "#CFE1B9",
+    "--surface-2": "#718355", // Forest Green
+    "--border": "rgba(113, 131, 85, 0.2)",
+    "--primary": "#B56576", // Armor Red
+    "--primary-soft": "rgba(181, 101, 118, 0.15)",
+    "--accent": "#4F772D", // Mokuton Green
+    "--text": "#31572C",
+    "--text-muted": "#4F772D",
+    "animation": "wood_style"
+  },
+  tactical_suiton: {
+    "--bg": "#F0F8FF", // Ice Blue
+    "--surface": "#D0E1F9",
+    "--surface-2": "#4E6582", // Fur Collar Grey
+    "--border": "rgba(30, 81, 123, 0.2)",
+    "--primary": "#1E517B", // Deep Water Blue
+    "--primary-soft": "rgba(30, 81, 123, 0.1)",
+    "--accent": "#FFFFFF", 
+    "--text": "#102A43",
+    "--text-muted": "#334E68",
+    "animation": "bubbles"
+  },
+  ghost_uchiha: {
+    "--bg": "#0B0B0E", // Eternal Night
+    "--surface": "#16161D",
+    "--surface-2": "#3B1E54", // Susanoo Purple
+    "--border": "rgba(255, 76, 76, 0.15)",
+    "--primary": "#FF4C4C", // Mangekyou Red
+    "--primary-soft": "rgba(255, 76, 76, 0.1)",
+    "--accent": "#FACC15", // Gunbai Gold
+    "--text": "#E2E8F0",
+    "--text-muted": "rgba(226, 232, 240, 0.5)",
+    "animation": "tomoe"
+  },
+
 };
 
 /* ------------------- Theme Helpers ------------------- */
@@ -585,6 +622,26 @@ function toast(msg) {
       particle.style.bottom = "-40px";
       particle.style.animationDuration = (Math.random() * 3 + 4) + "s";
     }
+    // Inside the setInterval of startAnimation(type)
+    if (type === "wood_style") {
+      particle.className = "wood-petal";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = "-20px";
+      particle.style.animationDuration = (Math.random() * 3 + 4) + "s";
+    } else if (type === "bubbles") {
+      particle.className = "bubble";
+      const size = Math.random() * 15 + 5 + "px";
+      particle.style.width = size; particle.style.height = size;
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.bottom = "-20px";
+      particle.style.animationDuration = (Math.random() * 4 + 4) + "s";
+    } else if (type === "tomoe") {
+      particle.className = "tomoe";
+      particle.textContent = "カン"; // Looks a bit like a sharingan mark in pixel font
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = Math.random() * 100 + "vh";
+      particle.style.animationDuration = "4s";
+    }
 
       overlay.appendChild(particle);
       setTimeout(() => particle.remove(), 8000);
@@ -595,7 +652,9 @@ function toast(msg) {
     const theme = localStorage.getItem("petal_theme");
     const map = { cosmic_starfall: "meteors", autumn_forest: "leaves", spring_blossom: "blossoms", summer_shimmer: "sunbeams", midnight_snowfall: "snow" , ninja_rivalry: "sparks" , copy_ninja: "lightning" , medical_kunoichi: "healing", // ADDED
       legendary_sannin: "seals" , akatsuki_cloud: "clouds", hidden_rain: "rain" , kurama_sage: "embers",
-      hidden_sand: "sand" , desert_love: "love_sand" };
+      hidden_sand: "sand" , desert_love: "love_sand" , god_of_shinobi: "wood_style",
+      tactical_suiton: "bubbles",
+      ghost_uchiha: "tomoe" };
     startAnimation(map[theme] || null);
   });
 })();
