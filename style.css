@@ -1277,3 +1277,35 @@ header, .top-actions { overflow: visible; }
   0%, 100% { filter: brightness(1.5) scaleX(1); }
   50% { filter: brightness(2) scaleX(1.3); }
 }
+/* JIRAIYA: THE GALLANT TALE STYLE */
+.sage-leaf {
+  position: absolute;
+  width: 12px; height: 12px;
+  background: #8B0000; /* Red */
+  border-radius: 2px 10px;
+  opacity: 0;
+  pointer-events: none;
+  animation: leaf-fall-slow 8s linear forwards;
+}
+
+.ink-blot {
+  position: absolute;
+  width: 4px; height: 4px;
+  background: #2D1B1B; /* Ink */
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  animation: ink-fade 4s ease-out forwards;
+}
+
+@keyframes leaf-fall-slow {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.5; }
+  100% { transform: translateY(110vh) translateX(80px) rotate(360deg); opacity: 0; }
+}
+
+@keyframes ink-fade {
+  0% { transform: scale(0); opacity: 0; }
+  20% { opacity: 0.3; transform: scale(1.5); }
+  100% { transform: scale(2); opacity: 0; }
+}
