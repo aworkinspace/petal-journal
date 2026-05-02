@@ -414,12 +414,12 @@ h1, .muted {
         transition: transform 0.1s ease;
       }
       .board-item img {
-  max-width: 200px;
-  height: auto;      /* Ensure height isn't 0 */
+  width: 200px;       /* Give it a set width */
+  height: auto;      /* Let height adjust */
   display: block;
   border: 4px solid white;
   box-shadow: var(--shadow);
-  pointer-events: none; /* Helps with dragging */
+  pointer-events: none; 
 }
 
       .board-item:active { cursor: grabbing; transform: scale(1.05); z-index: 100; }
