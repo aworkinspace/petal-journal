@@ -515,11 +515,13 @@ h1, .muted {
 
     <div class="vision-wrap">
       <div class="panel vision-tools panel-pad">
-        <button class="btn" id="btnAddVision" type="button">Add Image</button>
-        <button class="btn" id="btnClearBoard" type="button">Clear Board</button>
-        <small class="muted">Tip: Click and drag to move items.</small>
-        <input type="file" id="visionPicker" accept="image/*" hidden />
-      </div>
+  <button class="btn" id="btnAddVision" type="button">Add Image</button>
+  <button class="btn btn-primary" id="btnManualSave" type="button">Save Board</button> <!-- NEW -->
+  <button class="btn" id="btnClearBoard" type="button">Clear Board</button>
+  <small id="saveStatus" class="muted" style="margin-left: 10px;"></small>
+  <input type="file" id="visionPicker" accept="image/*" hidden />
+</div>
+
 
       <div id="board">
         <!-- Images will appear here -->
