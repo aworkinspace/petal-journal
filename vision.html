@@ -528,14 +528,16 @@ h1, .muted {
 
     <div class="vision-wrap">
       <div class="panel vision-tools panel-pad">
+  <!-- The Button you click -->
   <button class="btn" id="btnAddVision" type="button">Add Image</button>
-  <button class="btn btn-primary" id="btnManualSave" type="button">Save Board</button> <!-- NEW -->
-  <button class="btn" id="btnClearBoard" type="button">Clear Board</button>
-  <small id="saveStatus" class="muted" style="margin-left: 10px;"></small>
+  
+  <!-- The actual file selector (Hidden) -->
   <input type="file" id="visionPicker" accept="image/*" hidden />
+  
+  <button class="btn btn-primary" id="btnManualSave" type="button">Save Board</button>
+  <button class="btn" id="btnClearBoard" type="button">Clear Board</button>
+  <small id="saveStatus" class="muted"></small>
 </div>
-
-
       <div id="board">
         <!-- Images will appear here -->
       </div>
