@@ -5,17 +5,26 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
 
+// 1. Get Elements
 const board = document.getElementById("board");
-const picker = document.getElementById("visionPicker");
 const btnAdd = document.getElementById("btnAddVision");
 const btnClear = document.getElementById("btnClearBoard");
-const btnManualSave = document.getElementById("btnManualSave"); // NEW
-const statusMsg = document.getElementById("saveStatus"); // NEW
+const btnManualSave = document.getElementById("btnManualSave");
+const statusMsg = document.getElementById("saveStatus");
 
-let currentUser = null;
-let activeItem = null;
-let offset = { x: 0, y: 0 };
-const db = window.firebaseDb;
+// 2. Setup the Picker (Safe Method)
+const picker = document.getElementById("visionPicker");
+
+if (btnAdd && picker) {
+  btnAdd.onclick = (e) => {
+    e.preventDefault();
+    console.log("Add button clicked, opening picker...");
+    picker.click();
+  };
+} else {
+  console.error("Could not find btnAddVision or visionPicker in HTML!");
+}
+
 
 // --- FORCE RECONNECT LOGIC ---
 (async () => {
