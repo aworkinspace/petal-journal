@@ -9,34 +9,35 @@ const board = document.getElementById("board");
 const picker = document.getElementById("visionPicker");
 const btnAdd = document.getElementById("btnAddVision");
 const btnClear = document.getElementById("btnClearBoard");
+const btnManualSave = document.getElementById("btnManualSave"); // NEW
+const statusMsg = document.getElementById("saveStatus"); // NEW
 
 let currentUser = null;
 let activeItem = null;
 let offset = { x: 0, y: 0 };
-
 const db = window.firebaseDb;
 
 // --- FORCE RECONNECT LOGIC ---
 (async () => {
   try {
-    await disableNetwork(db); // Kick it off
-    await enableNetwork(db);  // Force it back on
+    await disableNetwork(db);
+    await enableNetwork(db);
     console.log("Vision Board Firestore reconnected");
   } catch (e) {
     console.error("Network reset failed", e);
   }
 })();
 
-// ... rest of your code (onAuthStateChanged, etc.)
-
 // 1. AUTH CHECK
 onAuthStateChanged(window.firebaseAuth, (user) => {
   if (user) {
     currentUser = user;
-    loadBoard(); // Load saved items from database
+    loadBoard();
   } else {
-    alert("Please log in to use the Vision Board.");
-    window.location.href = "login.html";
+    // Wait a moment for auth to catch up before redirecting
+    setTimeout(() => {
+      if (!window.firebaseAuth.currentUser) window.location.href = "login.html";
+    }, 2000);
   }
 });
 
@@ -45,43 +46,30 @@ btnAdd.onclick = () => picker.click();
 
 picker.onchange = async (e) => {
   const file = e.target.files[0];
-  // 1. Safety checks
-  if (!file) return;
-  if (!currentUser) {
-    alert("You must be logged in to add images.");
-    return;
-  }
+  if (!file || !currentUser) return;
 
-  // 2. SHOW INSTANT LOCAL PREVIEW
-  // This makes the image show up immediately even before the upload starts!
+  // Show instant preview
   const localUrl = URL.createObjectURL(file);
   const tempId = "temp_" + Date.now();
   createBoardItem(localUrl, 50, 50, tempId);
   
-  console.log("Image added to board locally. Starting Firebase upload...");
-
-  // 3. UPLOAD TO FIREBASE IN BACKGROUND
   try {
     const path = `vision_boards/${currentUser.uid}/${Date.now()}_${file.name}`;
     const fileRef = storageRef(window.firebaseStorage, path);
-    
     const snapshot = await uploadBytes(fileRef, file);
     const finalUrl = await getDownloadURL(snapshot.ref);
     
-    // Update the temporary local image with the real permanent Firebase URL
+    // Replace blob with real URL
     const newItem = document.querySelector(`[data-id="${tempId}"] img`);
     if (newItem) newItem.src = finalUrl;
     
-    saveBoard(); // Save positions to Firestore
-    console.log("Firebase upload complete!");
+    saveBoard(); 
   } catch (err) {
-    console.error("Firebase upload failed:", err);
-    alert("Upload failed. Check your Firebase Storage rules.");
-    // Remove the failed local preview
+    console.error("Upload failed", err);
     document.querySelector(`[data-id="${tempId}"]`)?.remove();
+    alert("Upload failed. Check your connection/rules.");
   }
 };
-
 
 // 3. CREATE ELEMENT LOGIC
 function createBoardItem(url, x, y, id) {
@@ -91,46 +79,38 @@ function createBoardItem(url, x, y, id) {
   container.style.left = x + "px";
   container.style.top = y + "px";
 
-  // 1. The Image
   const img = document.createElement("img");
   img.src = url;
+  img.style.pointerEvents = "none"; // Better for dragging
   img.draggable = false;
 
-  // 2. The Delete Button
   const delBtn = document.createElement("div");
   delBtn.className = "delete-btn";
   delBtn.innerHTML = "×";
-  
-  // LOGIC: Delete when clicked
   delBtn.onclick = (e) => {
-    e.stopPropagation(); // Stop the click from starting a drag
-    if (confirm("Delete this image from your board?")) {
+    e.stopPropagation();
+    if (confirm("Delete this image?")) {
       container.remove();
-      saveBoard(); // Save the updated board to Firestore
+      saveBoard();
     }
   };
 
-  // Assemble
   container.appendChild(img);
   container.appendChild(delBtn);
   board.appendChild(container);
 
-  // Dragging logic
   container.onmousedown = (e) => startDrag(e, container);
   container.ontouchstart = (e) => startDrag(e, container);
 }
-
 
 // 4. DRAG & DROP ENGINE
 function startDrag(e, item) {
   activeItem = item;
   const clientX = e.touches ? e.touches[0].clientX : e.clientX;
   const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-  
   const rect = item.getBoundingClientRect();
   offset.x = clientX - rect.left;
   offset.y = clientY - rect.top;
-  
   document.onmousemove = drag;
   document.ontouchmove = drag;
   document.onmouseup = stopDrag;
@@ -140,50 +120,64 @@ function startDrag(e, item) {
 function drag(e) {
   if (!activeItem) return;
   e.preventDefault();
-
   const clientX = e.touches ? e.touches[0].clientX : e.clientX;
   const clientY = e.touches ? e.touches[0].clientY : e.clientY;
   const boardRect = board.getBoundingClientRect();
-
-  // Calculate new position relative to the board
-  let newX = clientX - boardRect.left - offset.x;
-  let newY = clientY - boardRect.top - offset.y;
-
-  activeItem.style.left = newX + "px";
-  activeItem.style.top = newY + "px";
+  activeItem.style.left = (clientX - boardRect.left - offset.x) + "px";
+  activeItem.style.top = (clientY - boardRect.top - offset.y) + "px";
 }
 
 function stopDrag() {
   activeItem = null;
   document.onmousemove = null;
   document.ontouchmove = null;
-  saveBoard(); // Save positions whenever an item is dropped
+  saveBoard(); 
 }
 
-// 5. DATABASE LOGIC (Firestore)
+// 5. IMPROVED DATABASE LOGIC
 async function saveBoard() {
   if (!currentUser) return;
+  if (statusMsg) statusMsg.textContent = "Saving...";
+
   const items = [];
   document.querySelectorAll(".board-item").forEach(el => {
-    items.push({
-      id: el.dataset.id,
-      url: el.querySelector("img").src,
-      x: parseInt(el.style.left),
-      y: parseInt(el.style.top)
-    });
+    const img = el.querySelector("img");
+    // CRITICAL: Don't save temporary "blob" URLs or it will break on reload
+    if (img && !img.src.startsWith("blob:")) {
+      items.push({
+        id: el.dataset.id,
+        url: img.src,
+        x: parseInt(el.style.left),
+        y: parseInt(el.style.top)
+      });
+    }
   });
 
-  await setDoc(doc(window.firebaseDb, "vision_boards", currentUser.uid), { items });
+  try {
+    await setDoc(doc(db, "vision_boards", currentUser.uid), { items });
+    if (statusMsg) {
+      statusMsg.textContent = "Progress Saved ✨";
+      setTimeout(() => { if(statusMsg.textContent.includes("Saved")) statusMsg.textContent = ""; }, 3000);
+    }
+  } catch (err) {
+    console.error("Save failed", err);
+    if (statusMsg) statusMsg.textContent = "Sync Error.";
+  }
 }
 
+// Manual Button Listener
+if (btnManualSave) btnManualSave.onclick = () => saveBoard();
+
 async function loadBoard() {
-  const snap = await getDoc(doc(window.firebaseDb, "vision_boards", currentUser.uid));
-  if (snap.exists()) {
-    board.innerHTML = ""; // Clear board before loading
-    snap.data().items.forEach(item => {
-      createBoardItem(item.url, item.x, item.y, item.id);
-    });
-  }
+  try {
+    const snap = await getDoc(doc(db, "vision_boards", currentUser.uid));
+    if (snap.exists()) {
+      board.innerHTML = "";
+      snap.data().items.forEach(item => {
+        createBoardItem(item.url, item.x, item.y, item.id);
+      });
+    }
+  } catch(e) { console.error("Load failed", e); }
 }
 
 // 6. CLEAR BOARD
@@ -193,14 +187,14 @@ btnClear.onclick = async () => {
     saveBoard();
   }
 };
+
 // --- Spotify Logic ---
 (() => {
   const urlEl = document.getElementById("spotifyUrl");
   const btnSet = document.getElementById("btnSetSpotify");
   const btnClear = document.getElementById("btnClearSpotify");
   const host = document.getElementById("spotifyEmbed");
-
-  if (!urlEl || !btnSet || !btnClear || !host) return;
+  if (!urlEl || !host) return;
 
   function toEmbed(url) {
     if (!url) return null;
@@ -214,12 +208,10 @@ btnClear.onclick = async () => {
     return id ? `https://open.spotify.com/embed/${type}/${id}` : null;
   }
 
-  function render(baseEmbedUrl) {
-    if (!host || !baseEmbedUrl) return;
-    // Simple dark mode check
-    const isDark = ["midnight", "dusky_rose", "mauve_night"].includes(localStorage.getItem("petal_theme"));
-    const theme = isDark ? "dark" : "light";
-    host.innerHTML = `<iframe class="spotify-iframe" src="${baseEmbedUrl}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+  function render(base) {
+    const darks = ["midnight", "dusky_rose", "mauve_night", "midnight_snowfall", "ghost_uchiha"];
+    const theme = darks.includes(localStorage.getItem("petal_theme")) ? "dark" : "light";
+    host.innerHTML = `<iframe class="spotify-iframe" style="width:100%; height:152px; border:0; border-radius:12px; margin-top:10px;" src="${base}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
   }
 
   btnSet.onclick = () => {
@@ -236,8 +228,12 @@ btnClear.onclick = async () => {
     urlEl.value = "";
   };
 
-  // Initial Load
-  const saved = localStorage.getItem("petal_spotify_embed");
-  if (saved) render(saved);
+  if (localStorage.getItem("petal_spotify_embed")) render(localStorage.getItem("petal_spotify_embed"));
 })();
 
+// Safety Warning before leaving
+window.onbeforeunload = function() {
+  if (statusMsg && statusMsg.textContent === "Saving...") {
+    return "Your changes are still uploading. Are you sure you want to leave?";
+  }
+};
