@@ -1196,3 +1196,51 @@ header, .top-actions { overflow: visible; }
   80% { opacity: 0.4; }
   100% { transform: scale(1.5) rotate(720deg); opacity: 0; }
 }
+/* ITACHI: FALLING RAVEN FEATHERS */
+.feather {
+  position: absolute;
+  width: 15px; height: 6px;
+  background: #1a1a1a;
+  border-radius: 100% 0 100% 0;
+  pointer-events: none;
+  animation: feather-fall linear forwards;
+}
+
+@keyframes feather-fall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateY(110vh) translateX(50px) rotate(360deg); opacity: 0; }
+}
+
+/* MINATO: TELEPORTATION SPARKS */
+.flash-spark {
+  position: absolute;
+  width: 40px; height: 2px;
+  background: #FFD700;
+  box-shadow: 0 0 10px #FFD700;
+  pointer-events: none;
+  animation: flash-move 0.3s ease-out forwards;
+}
+
+@keyframes flash-move {
+  0% { transform: scaleX(0); opacity: 0; }
+  50% { opacity: 1; transform: scaleX(1.5); }
+  100% { transform: scaleX(0); opacity: 0; }
+}
+
+/* HINATA: FLOATING PEARLS */
+.pearl {
+  position: absolute;
+  width: 8px; height: 8px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+  opacity: 0.4;
+  pointer-events: none;
+  animation: pearl-float 8s infinite ease-in-out;
+}
+
+@keyframes pearl-float {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(15px, -20px); }
+}
