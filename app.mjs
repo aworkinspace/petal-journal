@@ -655,7 +655,19 @@ function toast(msg) {
         const randomRotation = Math.random() * 360;
         particle.style.setProperty('--rot', `${randomRotation}deg`);
         particle.style.animationDuration = "0.25s";
-      }
+     } else if (type === "pearls") {
+      particle.className = "pearl";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = Math.random() * 100 + "vh";
+      
+      // Randomly vary the size slightly (between 10px and 22px)
+      const randomSize = Math.floor(Math.random() * 12 + 10) + "px";
+      particle.style.width = randomSize;
+      particle.style.height = randomSize;
+
+      // Random delay so they don't all move at the same time
+      particle.style.animationDelay = (Math.random() * 5) + "s";
+    }
 
       // --- CRITICAL: Add the particle to the page ---
       overlay.appendChild(particle);
