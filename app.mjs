@@ -703,7 +703,7 @@ function toast(msg) {
         particle.style.top = isLeaf ? "-20px" : (Math.random() * 100 + "vh");
         particle.style.animationDuration = isLeaf ? (Math.random() * 4 + 6) + "s" : "4s";
       }
-    } else if (type === "snakes") {
+    else if (type === "snakes") {
       particle.className = "snake-line";
       particle.style.left = "-50px";
       // Pick a random height to start slithering across
