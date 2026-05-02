@@ -1243,25 +1243,33 @@ header, .top-actions { overflow: visible; }
   0%, 100% { transform: translate(0, 0); }
   50% { transform: translate(15px, -20px); }
 }
-/* GAI SENSEI: RISING GATES AURA */
+/* GAI SENSEI: RADIANT YOUTH AURA */
 .aura-flame {
   position: absolute;
-  width: 4px;
-  background: #EF4444;
-  box-shadow: 0 0 12px 2px #EF4444;
+  width: 5px;
+  background: #FF0000; /* Pure Crimson */
+  /* Intense Outer Glow */
+  box-shadow: 0 0 20px 5px rgba(255, 0, 0, 0.9), 
+              0 0 40px 10px rgba(255, 69, 0, 0.4);
   border-radius: 999px;
   pointer-events: none;
-  animation: aura-rise linear forwards;
+  filter: brightness(1.5); /* Boosts the color past 100% */
+  animation: aura-rise linear forwards, aura-flicker 0.2s infinite;
 }
 
 .aura-orange {
-  background: #F97316;
-  box-shadow: 0 0 12px 2px #F97316;
+  background: #FFD700; /* Pure Gold */
+  box-shadow: 0 0 20px 5px rgba(255, 215, 0, 0.9), 
+              0 0 40px 10px rgba(255, 165, 0, 0.4);
 }
 
 @keyframes aura-rise {
-  0% { transform: translateY(0) scaleX(1); height: 10px; opacity: 0; }
-  20% { opacity: 0.8; }
-  50% { transform: scaleX(2); height: 50px; }
-  100% { transform: translateY(-110vh) scaleX(0.5); height: 100px; opacity: 0; }
+  0% { transform: translateY(0) scaleX(1.5); height: 10px; opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(-110vh) scaleX(0.2); height: 150px; opacity: 0; }
+}
+
+@keyframes aura-flicker {
+  0%, 100% { filter: brightness(1.5) scaleX(1); }
+  50% { filter: brightness(2) scaleX(1.3); }
 }
