@@ -1093,3 +1093,36 @@ header, .top-actions { overflow: visible; }
   10% { opacity: 1; }
   100% { transform: translateY(110vh); opacity: 0.2; }
 }
+/* KURAMA EMBERS STYLE */
+.ember {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #F59E0B;
+  border-radius: 2px; /* Blocky pixels */
+  box-shadow: 0 0 8px #FDE68A;
+  pointer-events: none;
+  animation: ember-rise linear forwards;
+}
+
+@keyframes ember-rise {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  20% { opacity: 0.8; }
+  100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+}
+/* HIDDEN SAND STYLE */
+.sand-grain {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #D2B48C;
+  opacity: 0.6;
+  pointer-events: none;
+  animation: sand-drift linear forwards;
+}
+
+@keyframes sand-drift {
+  0% { transform: translateX(-20px) translateY(0); opacity: 0; }
+  10% { opacity: 0.6; }
+  100% { transform: translateX(105vw) translateY(100px); opacity: 0; }
+}
