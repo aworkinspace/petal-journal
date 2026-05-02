@@ -1211,21 +1211,26 @@ header, .top-actions { overflow: visible; }
   100% { transform: translateY(110vh) translateX(50px) rotate(360deg); opacity: 0; }
 }
 
-/* MINATO: TELEPORTATION SPARKS */
+/* MINATO: INTENSE TELEPORTATION JUTSU */
 .flash-spark {
   position: absolute;
-  width: 40px; height: 2px;
-  background: #FFD700;
-  box-shadow: 0 0 10px #FFD700;
+  /* Make them long rays instead of tiny dots */
+  width: 150px; 
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #FFD700, #FFFFFF, #FFD700, transparent);
+  box-shadow: 0 0 20px 5px rgba(255, 215, 0, 0.9);
   pointer-events: none;
-  animation: flash-move 0.3s ease-out forwards;
+  filter: brightness(2);
+  /* Faster, sharper animation */
+  animation: flash-teleport 0.25s ease-in-out forwards;
 }
 
-@keyframes flash-move {
-  0% { transform: scaleX(0); opacity: 0; }
-  50% { opacity: 1; transform: scaleX(1.5); }
-  100% { transform: scaleX(0); opacity: 0; }
+@keyframes flash-teleport {
+  0% { transform: scaleX(0) rotate(var(--rot)) translate(0, 0); opacity: 0; }
+  10% { opacity: 1; transform: scaleX(1.5) rotate(var(--rot)) translate(0, 0); }
+  100% { transform: scaleX(0.1) rotate(var(--rot)) translate(100px, -100px); opacity: 0; }
 }
+
 
 /* HINATA: FLOATING PEARLS */
 .pearl {
