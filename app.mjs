@@ -101,6 +101,18 @@ const THEMES = {
     "--text-muted": "rgba(224, 224, 224, 0.5)",
     "animation": "clouds"
   },
+  hidden_rain: {
+    "--bg": "#111418", // Dark Stormy Grey
+    "--surface": "#1B2026",
+    "--surface-2": "#2C343D",
+    "--border": "rgba(100, 149, 237, 0.2)",
+    "--primary": "#6495ED", // Steel Blue
+    "--primary-soft": "rgba(100, 149, 237, 0.1)",
+    "--accent": "#87CEEB", // Sky Chakra
+    "--text": "#D1D9E0",
+    "--text-muted": "rgba(209, 217, 224, 0.5)",
+    "animation": "rain"
+  },
 
 };
 
@@ -378,7 +390,7 @@ function toast(msg) {
     });
   });
 
-  const darkThemes = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "legendary_sannin"]);
+  const darkThemes = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "legendary_sannin" , "akatsuki_cloud", "hidden_rain" ]);
 
 
   
@@ -506,7 +518,17 @@ function toast(msg) {
       particle.style.top = Math.random() * 100 + "vh";
       particle.style.animationDuration = "5s";
     }
-
+    if (type === "clouds") {
+      particle.className = "red-cloud";
+      particle.style.left = "-60px";
+      particle.style.top = Math.random() * 100 + "vh";
+      particle.style.animationDuration = (Math.random() * 10 + 15) + "s"; // Very slow drift
+    } else if (type === "rain") {
+      particle.className = "rain-drop";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = "-20px";
+      particle.style.animationDuration = (Math.random() * 0.5 + 0.5) + "s"; // Fast fall
+    }
 
       overlay.appendChild(particle);
       setTimeout(() => particle.remove(), 8000);
@@ -516,7 +538,7 @@ function toast(msg) {
   document.addEventListener("themeChanged", () => {
     const theme = localStorage.getItem("petal_theme");
     const map = { cosmic_starfall: "meteors", autumn_forest: "leaves", spring_blossom: "blossoms", summer_shimmer: "sunbeams", midnight_snowfall: "snow" , ninja_rivalry: "sparks" , copy_ninja: "lightning" , medical_kunoichi: "healing", // ADDED
-      legendary_sannin: "seals" };
+      legendary_sannin: "seals" , akatsuki_cloud: "clouds", hidden_rain: "rain" };
     startAnimation(map[theme] || null);
   });
 })();
