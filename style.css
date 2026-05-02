@@ -1060,3 +1060,21 @@ header, .top-actions { overflow: visible; }
   10% { opacity: 0.4; }
   100% { transform: scale(1.5) rotate(20deg); opacity: 0; }
 }
+/* AKATSUKI CLOUD STYLE */
+.red-cloud {
+  position: absolute;
+  width: 50px;
+  height: 25px;
+  background: #8B0000;
+  border-radius: 50px;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+  pointer-events: none;
+  animation: cloud-drift linear forwards;
+}
+
+@keyframes cloud-drift {
+  0% { transform: translateX(-100px) translateY(0); opacity: 0; }
+  10% { opacity: 0.6; }
+  100% { transform: translateX(100vw) translateY(50px); opacity: 0; }
+}
