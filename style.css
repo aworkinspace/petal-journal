@@ -1243,3 +1243,25 @@ header, .top-actions { overflow: visible; }
   0%, 100% { transform: translate(0, 0); }
   50% { transform: translate(15px, -20px); }
 }
+/* GAI SENSEI: RISING GATES AURA */
+.aura-flame {
+  position: absolute;
+  width: 4px;
+  background: #EF4444;
+  box-shadow: 0 0 12px 2px #EF4444;
+  border-radius: 999px;
+  pointer-events: none;
+  animation: aura-rise linear forwards;
+}
+
+.aura-orange {
+  background: #F97316;
+  box-shadow: 0 0 12px 2px #F97316;
+}
+
+@keyframes aura-rise {
+  0% { transform: translateY(0) scaleX(1); height: 10px; opacity: 0; }
+  20% { opacity: 0.8; }
+  50% { transform: scaleX(2); height: 50px; }
+  100% { transform: translateY(-110vh) scaleX(0.5); height: 100px; opacity: 0; }
+}
