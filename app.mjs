@@ -187,6 +187,42 @@ const THEMES = {
     "--text-muted": "rgba(226, 232, 240, 0.5)",
     "animation": "tomoe"
   },
+  crow_illusion: {
+    "--bg": "#08080A", // Uchiha Shadow
+    "--surface": "#121217",
+    "--surface-2": "#2D0A0A", // Crow Crimson
+    "--border": "rgba(255, 0, 0, 0.1)",
+    "--primary": "#FF3E3E", // Mangekyou Red
+    "--primary-soft": "rgba(255, 62, 62, 0.1)",
+    "--accent": "#4A4A4A", // Raven Grey
+    "--text": "#E0E0E0",
+    "--text-muted": "rgba(224, 224, 224, 0.5)",
+    "animation": "feathers"
+  },
+  yellow_flash: {
+    "--bg": "#FFFFFF", // Minato Cloak White
+    "--surface": "#FFF9E6",
+    "--surface-2": "#FFD700", // Flash Gold
+    "--border": "rgba(0, 168, 232, 0.2)", // Teleport Teal
+    "--primary": "#00A8E8", // Hokage Teal
+    "--primary-soft": "rgba(0, 168, 232, 0.1)",
+    "--accent": "#FF4500", // Seal Red
+    "--text": "#333333",
+    "--text-muted": "#666666",
+    "animation": "teleport"
+  },
+  lavender_pearl: {
+    "--bg": "#F3E8FF", // Hyuga Lavender
+    "--surface": "#FAF5FF",
+    "--surface-2": "#E9D5FF",
+    "--border": "rgba(168, 85, 247, 0.2)",
+    "--primary": "#A855F7", // Gentleness Purple
+    "--primary-soft": "rgba(168, 85, 247, 0.1)",
+    "--accent": "#FFFFFF", // Byakugan White
+    "--text": "#44337A",
+    "--text-muted": "#6B46C1",
+    "animation": "pearls"
+  },
 
 };
 
@@ -642,6 +678,23 @@ function toast(msg) {
       particle.style.top = Math.random() * 100 + "vh";
       particle.style.animationDuration = "4s";
     }
+    // Inside the setInterval of startAnimation(type)
+    if (type === "feathers") {
+      particle.className = "feather";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = "-20px";
+      particle.style.animationDuration = (Math.random() * 3 + 3) + "s";
+    } else if (type === "teleport") {
+      particle.className = "flash-spark";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = Math.random() * 100 + "vh";
+      particle.style.transform = `rotate(${Math.random() * 360}deg)`;
+    } else if (type === "pearls") {
+      particle.className = "pearl";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = Math.random() * 100 + "vh";
+      // Pearls stay on screen longer, so we don't remove them as fast
+    }
 
       overlay.appendChild(particle);
       setTimeout(() => particle.remove(), 8000);
@@ -654,7 +707,9 @@ function toast(msg) {
       legendary_sannin: "seals" , akatsuki_cloud: "clouds", hidden_rain: "rain" , kurama_sage: "embers",
       hidden_sand: "sand" , desert_love: "love_sand" , god_of_shinobi: "wood_style",
       tactical_suiton: "bubbles",
-      ghost_uchiha: "tomoe" };
+      ghost_uchiha: "tomoe" , crow_illusion: "feathers",
+      yellow_flash: "teleport",
+      lavender_pearl: "pearls" };
     startAnimation(map[theme] || null);
   });
 })();
