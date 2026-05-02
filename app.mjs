@@ -619,7 +619,7 @@ function toast(msg) {
 
   let animationInterval = null;
 
-        function startAnimation(type) {
+          function startAnimation(type) {
     if (animationInterval) clearInterval(animationInterval);
     overlay.innerHTML = "";
     if (!type) return;
@@ -697,7 +697,6 @@ function toast(msg) {
     // Dynamic speeds: Minato(80ms), Gai(150ms), Others(800ms)
     }, type === "teleport" ? 80 : (type === "aura" ? 150 : 800));
   }
-  
 
 
   document.addEventListener("themeChanged", () => {
