@@ -1232,22 +1232,21 @@ header, .top-actions { overflow: visible; }
 }
 
 
-/* HINATA: FLOATING PEARLS */
+/* HINATA: ENHANCED FLOATING PEARLS */
 .pearl {
   position: absolute;
-  width: 8px; height: 8px;
+  width: 16px;      /* Doubled the size from 8px */
+  height: 16px;     /* Doubled the size from 8px */
   background: white;
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+  /* Softer, larger glow to match the bigger pearl */
+  box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.5),
+              inset -3px -3px 5px rgba(0, 0, 0, 0.1); /* Tiny shadow for depth */
   opacity: 0.4;
   pointer-events: none;
   animation: pearl-float 8s infinite ease-in-out;
 }
 
-@keyframes pearl-float {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(15px, -20px); }
-}
 /* GAI SENSEI: RADIANT YOUTH AURA */
 .aura-flame {
   position: absolute;
