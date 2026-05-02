@@ -89,6 +89,19 @@ const THEMES = {
     "--text-muted": "#634832",
     "animation": "sage_history"
   },
+    forbidden_lab: {
+    "--bg": "#0D0B12", // Deep Shadow Purple
+    "--surface": "#16141F",
+    "--surface-2": "#4B3F72", // Rope Purple
+    "--border": "rgba(220, 214, 247, 0.1)",
+    "--primary": "#FFD700", // Snake Eye Gold
+    "--primary-soft": "rgba(255, 215, 0, 0.1)",
+    "--accent": "#DCD6F7", // Orochimaru Skin Pale
+    "--text": "#DCD6F7",
+    "--text-muted": "rgba(220, 214, 247, 0.5)",
+    "--bg-spot-1": "rgba(75, 63, 114, 0.2)",
+    "animation": "snakes"
+  },
   legendary_sannin: {
     "--bg": "#1E1B2E", // Deep Orochimaru Purple
     "--surface": "#2D2B4A",
@@ -556,7 +569,7 @@ function toast(msg) {
   function renderSpotify(base) {
     const host = $("spotifyEmbed");
     if (!host || !base) return;
-    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" ]);
+    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" ]);
     const theme = darks.has(localStorage.getItem("petal_theme")) ? "dark" : "light";
     
     host.innerHTML = `<iframe class="spotify-iframe" style="width:100%; height:352px; border:0; border-radius:16px; margin-top:10px;" src="${base}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
@@ -690,6 +703,14 @@ function toast(msg) {
         particle.style.top = isLeaf ? "-20px" : (Math.random() * 100 + "vh");
         particle.style.animationDuration = isLeaf ? (Math.random() * 4 + 6) + "s" : "4s";
       }
+    } else if (type === "snakes") {
+      particle.className = "snake-line";
+      particle.style.left = "-50px";
+      // Pick a random height to start slithering across
+      particle.style.top = Math.random() * 100 + "vh";
+      // Randomize speed and wavy delay
+      particle.style.animationDuration = (Math.random() * 4 + 6) + "s";
+    }
 
       overlay.appendChild(particle);
       setTimeout(() => particle.remove(), 8000);
@@ -707,7 +728,7 @@ function toast(msg) {
       tactical_suiton: "bubbles",
       ghost_uchiha: "tomoe" , crow_illusion: "feathers",
       yellow_flash: "teleport",
-      lavender_pearl: "pearls" , springtime_youth: "aura" , gallant_tale: "sage_history" };
+      lavender_pearl: "pearls" , springtime_youth: "aura" , gallant_tale: "sage_history" , forbidden_lab: "snakes" };
     startAnimation(map[theme] || null);
   });
 })();
