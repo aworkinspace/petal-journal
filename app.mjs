@@ -127,6 +127,19 @@ const THEMES = {
     "--text-muted": "rgba(242,240,247,.6)",
     "animation": "seals"
   },
+    nine_tails_malice: {
+    "--bg": "#0D0505", // Deep Malice Black
+    "--surface": "#1A0B0B",
+    "--surface-2": "#4A0000", // Cursed Red
+    "--border": "rgba(255, 0, 0, 0.2)",
+    "--primary": "#FF0000", // Pure Tailed-Beast Red
+    "--primary-soft": "rgba(255, 0, 0, 0.1)",
+    "--accent": "#F97316", // Fox Orange
+    "--text": "#F2F0F7",
+    "--text-muted": "rgba(242, 240, 247, 0.5)",
+    "--bg-spot-1": "rgba(255, 0, 0, 0.15)", // Red Chakra Glow
+    "animation": "malice"
+  },
   akatsuki_cloud: {
     "--bg": "#0A0A0C", // Obsidian
     "--surface": "#121217",
@@ -729,7 +742,19 @@ function toast(msg) {
       particle.style.left = Math.random() * 100 + "vw";
       particle.style.top = Math.random() * 100 + "vh";
       particle.style.animationDuration = "4s";
+        } else if (type === "malice") {
+      particle.className = "malice-orb";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.bottom = "-20px";
+      particle.style.animationDuration = (Math.random() * 2 + 3) + "s";
+      
+      // Randomly make some orange for variety
+      if (Math.random() > 0.8) {
+        particle.style.background = "#F97316";
+        particle.style.boxShadow = "0 0 20px 4px #F97316";
+      }
     }
+
 
       overlay.appendChild(particle);
       setTimeout(() => particle.remove(), 8000);
@@ -747,7 +772,7 @@ function toast(msg) {
       tactical_suiton: "bubbles",
       ghost_uchiha: "tomoe" , crow_illusion: "feathers",
       yellow_flash: "teleport",
-      lavender_pearl: "pearls" , springtime_youth: "aura" , gallant_tale: "sage_history" , forbidden_lab: "snakes" , slug_princess: "hundred_seals" };
+      lavender_pearl: "pearls" , springtime_youth: "aura" , gallant_tale: "sage_history" , forbidden_lab: "snakes" , slug_princess: "hundred_seals" , nine_tails_malice: "malice" };
     startAnimation(map[theme] || null);
   });
 })();
