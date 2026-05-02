@@ -102,6 +102,19 @@ const THEMES = {
     "--bg-spot-1": "rgba(75, 63, 114, 0.2)",
     "animation": "snakes"
   },
+    slug_princess: {
+    "--bg": "#F0F9F6", // Very Pale Mint
+    "--surface": "#E6F2ED",
+    "--surface-2": "#14B8A6", // Tsunade Teal
+    "--border": "rgba(20, 184, 166, 0.2)",
+    "--primary": "#14B8A6", // Strength Teal
+    "--primary-soft": "rgba(20, 184, 166, 0.15)",
+    "--accent": "#B45309", // Gambling Red/Brown
+    "--text": "#0F4C3A", // Deep Forest Green
+    "--text-muted": "#3D7061",
+    "--bg-spot-1": "rgba(20, 184, 166, 0.1)",
+    "animation": "hundred_seals"
+  },
   legendary_sannin: {
     "--bg": "#1E1B2E", // Deep Orochimaru Purple
     "--surface": "#2D2B4A",
@@ -710,6 +723,12 @@ function toast(msg) {
       particle.style.top = Math.random() * 100 + "vh";
       // Randomize speed and wavy delay
       particle.style.animationDuration = (Math.random() * 4 + 6) + "s";
+    } 
+    else if (type === "hundred_seals") {
+      particle.className = "diamond-seal";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = Math.random() * 100 + "vh";
+      particle.style.animationDuration = "4s";
     }
 
       overlay.appendChild(particle);
@@ -728,7 +747,7 @@ function toast(msg) {
       tactical_suiton: "bubbles",
       ghost_uchiha: "tomoe" , crow_illusion: "feathers",
       yellow_flash: "teleport",
-      lavender_pearl: "pearls" , springtime_youth: "aura" , gallant_tale: "sage_history" , forbidden_lab: "snakes" };
+      lavender_pearl: "pearls" , springtime_youth: "aura" , gallant_tale: "sage_history" , forbidden_lab: "snakes" , slug_princess: "hundred_seals" };
     startAnimation(map[theme] || null);
   });
 })();
@@ -788,6 +807,9 @@ document.getElementById("imgPicker")?.addEventListener("change", async (e) => {
         "Which Hidden Village matches your current mood? (Leaf, Sand, Cloud, etc.)", // <--- ADDED COMMA HERE
     "‘A person grows up when they're able to overcome hardships.’ What is a hardship you are currently overcoming?",
     "If you were writing your own 'Gallant Tale,' what would the current chapter be titled?",
+    "‘People become stronger because they have memories they can't forget.’ What is a memory that makes you strong today?",
+"If you had the 'Strength of a Hundred' today, what task would you tackle first?",
+
 ];
 
 
