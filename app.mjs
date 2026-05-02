@@ -595,7 +595,7 @@ function toast(msg) {
     const theme = localStorage.getItem("petal_theme");
     const map = { cosmic_starfall: "meteors", autumn_forest: "leaves", spring_blossom: "blossoms", summer_shimmer: "sunbeams", midnight_snowfall: "snow" , ninja_rivalry: "sparks" , copy_ninja: "lightning" , medical_kunoichi: "healing", // ADDED
       legendary_sannin: "seals" , akatsuki_cloud: "clouds", hidden_rain: "rain" , kurama_sage: "embers",
-      hidden_sand: "sand" };
+      hidden_sand: "sand" , desert_love: "love_sand" };
     startAnimation(map[theme] || null);
   });
 })();
