@@ -33,9 +33,9 @@
   --btn-border: var(--border);
   --btn-text: var(--text);
 
-  /* NEW: theme-controlled top background blobs */
-  --bg-spot-1: var(--periwinkle-200);
-  --bg-spot-2: var(--pink-200);
+ --bg-spot-1: transparent;
+--bg-spot-2: transparent;
+
 }
 
 *{ box-sizing:border-box; }
