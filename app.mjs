@@ -238,6 +238,19 @@ const THEMES = {
     "--text-muted": "rgba(226, 232, 240, 0.5)",
     "animation": "tomoe"
   },
+    kamui_dimension: {
+    "--bg": "#0F0F12", // Void Grey
+    "--surface": "#1A1B21",
+    "--surface-2": "#F97316", // Obito Mask Orange
+    "--border": "rgba(249, 115, 22, 0.2)",
+    "--primary": "#F97316", // Portal Orange
+    "--primary-soft": "rgba(249, 115, 22, 0.1)",
+    "--accent": "#FF0000", // Sharingan Red
+    "--text": "#D1D5DB",
+    "--text-muted": "rgba(209, 213, 219, 0.5)",
+    "--bg-spot-1": "rgba(249, 115, 22, 0.1)",
+    "animation": "warps"
+  },
   crow_illusion: {
     "--bg": "#08080A", // Uchiha Shadow
     "--surface": "#121217",
@@ -743,6 +756,12 @@ function toast(msg) {
       particle.style.left = Math.random() * 100 + "vw";
       particle.style.top = Math.random() * 100 + "vh";
       particle.style.animationDuration = "4s";
+        } else if (type === "warps") {
+      particle.className = "kamui-warp";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = Math.random() * 100 + "vh";
+      // Each swirl lasts 3 seconds
+      particle.style.animationDuration = "3s";
     }
 
     else if (type === "hundred_seals") {
@@ -795,7 +814,8 @@ function toast(msg) {
       forbidden_lab: "snakes",
       slug_princess: "hundred_seals",
       nine_tails_malice: "malice",
-      springtime_youth: "aura"
+      springtime_youth: "aura",
+      kamui_dimension: "warps"
     };
     startAnimation(map[theme] || null);
   });
