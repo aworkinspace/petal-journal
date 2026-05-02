@@ -223,6 +223,20 @@ const THEMES = {
     "--text-muted": "#6B46C1",
     "animation": "pearls"
   },
+  springtime_youth: {
+    "--bg": "#0B1A0E", // Deep Jumpsuit Green
+    "--surface": "#162B1A",
+    "--surface-2": "#F97316", // Leg-warmer Orange
+    "--border": "rgba(239, 68, 68, 0.3)", // Gate Red
+    "--primary": "#22C55E", // Youth Green
+    "--primary-soft": "rgba(34, 197, 94, 0.15)",
+    "--accent": "#EF4444", // Eighth Gate Red
+    "--text": "#F2F0F7",
+    "--text-muted": "rgba(242,240,247,.6)",
+    "--bg-spot-1": "rgba(34, 197, 94, 0.1)", // Green aura glow
+    "--bg-spot-2": "rgba(239, 68, 68, 0.1)",  // Red gate glow
+    "animation": "aura"
+  },
 
 };
 
@@ -727,6 +741,14 @@ function toast(msg) {
       // Pearls stay on screen longer, so we don't remove them as fast
     }
 
+      if (type === "aura") {
+      particle.className = Math.random() > 0.3 ? "aura-flame" : "aura-flame aura-orange";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.bottom = "-100px";
+      // Aura moves with different speeds
+      particle.style.animationDuration = (Math.random() * 1.5 + 1.5) + "s";
+      }
+      
       overlay.appendChild(particle);
       setTimeout(() => particle.remove(), 8000);
     }, type === "snow" ? 250 : 800);
@@ -740,7 +762,7 @@ function toast(msg) {
       tactical_suiton: "bubbles",
       ghost_uchiha: "tomoe" , crow_illusion: "feathers",
       yellow_flash: "teleport",
-      lavender_pearl: "pearls" };
+      lavender_pearl: "pearls" , springtime_youth: "aura" };
     startAnimation(map[theme] || null);
   });
 })();
