@@ -474,85 +474,116 @@ function toast(msg) {
   });
 })();
 
-/* ------------------- Music & Spotify ------------------- */
+/* ------------------- Music & Spotify (Fixed & Debugged) ------------------- */
 (() => {
   const $ = (id) => document.getElementById(id);
   const tracks = ["assets/lofi.mp3", "assets/elevator.mp3", "assets/monty.mp3", "assets/intro.mp3"];
   let trackIdx = Number(localStorage.getItem("petal_track_index") || "0") % tracks.length;
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const bgm = $("bgm"); 
-    if (!bgm) return;
-    
+  // 1. MUSIC PLAYER LOGIC
+  function initMusic() {
+    const bgm = $("bgm");
+    const btnMusic = $("btnMusic");
+    const btnNext = $("btnNextTrack");
+    if (!bgm || !btnMusic) return;
+
     bgm.volume = Number(localStorage.getItem("petal_music_vol") || 0.35);
     bgm.src = tracks[trackIdx];
 
-    $("btnMusic")?.addEventListener("click", () => { 
-      if (bgm.paused) bgm.play(); else bgm.pause(); 
-      $("btnMusic").textContent = bgm.paused ? "Play Music" : "Pause Music"; 
-    });
+    btnMusic.onclick = () => {
+      if (bgm.paused) bgm.play().catch(e => console.log("Play blocked"));
+      else bgm.pause();
+      btnMusic.textContent = bgm.paused ? "Play Music" : "Pause Music";
+    };
 
-    $("btnNextTrack")?.addEventListener("click", () => { 
-      trackIdx = (trackIdx + 1) % tracks.length; 
-      bgm.src = tracks[trackIdx]; 
-      bgm.play(); 
-      localStorage.setItem("petal_track_index", trackIdx); 
-    });
-  });
+    if (btnNext) {
+      btnNext.onclick = () => {
+        trackIdx = (trackIdx + 1) % tracks.length;
+        bgm.src = tracks[trackIdx];
+        bgm.play();
+        localStorage.setItem("petal_track_index", trackIdx);
+      };
+    }
+  }
 
-  const darkThemes = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "legendary_sannin" , "akatsuki_cloud", "hidden_rain" ]);
-
-
-  
+  // 2. SPOTIFY LOGIC
   function toEmbed(url) {
+    console.log("Processing URL:", url);
     if (!url) return null;
+    
+    // Improved Regex to catch IDs even with ?si=... at the end
     const match = url.match(/(?:playlist|album|track|show|episode)\/([a-zA-Z0-9]+)/);
-    const id = match?.[1];
+    if (!match) return null;
+    
+    const id = match[1];
     let type = 'playlist';
     if (url.includes('track/')) type = 'track';
-    if (url.includes('album/')) type = 'album';
-    if (url.includes('show/')) type = 'show';
-    if (url.includes('episode/')) type = 'episode';
-    return id ? `https://open.spotify.com/embed/${type}/${id}` : null;
+    else if (url.includes('album/')) type = 'album';
+    else if (url.includes('show/')) type = 'show';
+    else if (url.includes('episode/')) type = 'episode';
+    
+    const embedUrl = `https://open.spotify.com/embed/${type}/${id}`;
+    console.log("Generated Embed URL:", embedUrl);
+    return embedUrl;
   }
 
   function renderSpotify(base) {
-    const host = $("spotifyEmbed"); 
+    const host = $("spotifyEmbed");
     if (!host || !base) return;
+    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin"]);
     const theme = darks.has(localStorage.getItem("petal_theme")) ? "dark" : "light";
-    host.innerHTML = `<iframe class="spotify-iframe" style="width:100%; height:352px; border:0; border-radius:16px;" src="${base}?theme=${theme}" loading="lazy"></iframe>`;
+    
+    host.innerHTML = `<iframe class="spotify-iframe" style="width:100%; height:352px; border:0; border-radius:16px; margin-top:10px;" src="${base}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  // 3. ATTACH LISTENERS
+  function initSpotify() {
     const saved = localStorage.getItem("petal_spotify_embed");
     if (saved) renderSpotify(saved);
 
-    // SET BUTTON
-    $("btnSetSpotify")?.addEventListener("click", () => {
-      const embed = toEmbed($("spotifyUrl").value.trim());
-      if (embed) { 
-        localStorage.setItem("petal_spotify_embed", embed); 
-        localStorage.setItem("petal_spotify_url", $("spotifyUrl").value.trim());
-        renderSpotify(embed); 
-        toast("Spotify Set!"); 
-      }
-    });
+    const btnSet = $("btnSetSpotify");
+    const btnClr = $("btnClearSpotify");
+    const urlInput = $("spotifyUrl");
 
-    // CLEAR BUTTON
-    $("btnClearSpotify")?.addEventListener("click", () => {
-      localStorage.removeItem("petal_spotify_embed");
-      localStorage.removeItem("petal_spotify_url");
-      if ($("spotifyUrl")) $("spotifyUrl").value = "";
-      if ($("spotifyEmbed")) $("spotifyEmbed").innerHTML = "";
-      toast("Spotify Cleared!");
-    });
-  });
+    if (btnSet) {
+      btnSet.onclick = () => {
+        const rawUrl = urlInput.value.trim();
+        const embed = toEmbed(rawUrl);
+        if (embed) {
+          localStorage.setItem("petal_spotify_embed", embed);
+          localStorage.setItem("petal_spotify_url", rawUrl);
+          renderSpotify(embed);
+          toast("Spotify Set!");
+        } else {
+          alert("Invalid Spotify link! Please copy a link to a playlist, song, or podcast.");
+        }
+      };
+    }
+
+    if (btnClr) {
+      btnClr.onclick = () => {
+        localStorage.removeItem("petal_spotify_embed");
+        localStorage.removeItem("petal_spotify_url");
+        if (urlInput) urlInput.value = "";
+        if ($("spotifyEmbed")) $("spotifyEmbed").innerHTML = "";
+        toast("Spotify Cleared");
+      };
+    }
+  }
+
+  // RUN ON LOAD
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => { initMusic(); initSpotify(); });
+  } else {
+    initMusic(); initSpotify();
+  }
 
   document.addEventListener('themeChanged', () => {
     const saved = localStorage.getItem("petal_spotify_embed");
     if (saved) renderSpotify(saved);
   });
-})(); // This correctly closes the IIFE
+})();
+
 
 /* ------------------- Seasonal Animations ------------------- */
 (() => {
