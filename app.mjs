@@ -736,7 +736,15 @@ function toast(msg) {
       particle.style.top = Math.random() * 100 + "vh";
       // Randomize speed and wavy delay
       particle.style.animationDuration = (Math.random() * 4 + 6) + "s";
-    } 
+        } else if (type === "tomoe") {
+      particle.className = "tomoe";
+      // We'll use the 'comma' character or a curly mark to mimic a tomoe
+      particle.textContent = "©"; 
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = Math.random() * 100 + "vh";
+      particle.style.animationDuration = "4s";
+    }
+
     else if (type === "hundred_seals") {
       particle.className = "diamond-seal";
       particle.style.left = Math.random() * 100 + "vw";
@@ -764,15 +772,31 @@ function toast(msg) {
   }
 
 
-  document.addEventListener("themeChanged", () => {
+    document.addEventListener("themeChanged", () => {
     const theme = localStorage.getItem("petal_theme");
-    const map = { cosmic_starfall: "meteors", autumn_forest: "leaves", spring_blossom: "blossoms", summer_shimmer: "sunbeams", midnight_snowfall: "snow" , ninja_rivalry: "sparks" , copy_ninja: "lightning" , medical_kunoichi: "healing", // ADDED
-      legendary_sannin: "seals" , akatsuki_cloud: "clouds", hidden_rain: "rain" , kurama_sage: "embers",
-      hidden_sand: "sand" , desert_love: "love_sand" , god_of_shinobi: "wood_style",
+    const map = { 
+      cosmic_starfall: "meteors", 
+      autumn_forest: "leaves", 
+      spring_blossom: "blossoms", 
+      summer_shimmer: "sunbeams", 
+      midnight_snowfall: "snow",
+      ninja_rivalry: "sparks",
+      copy_ninja: "lightning",
+      medical_kunoichi: "healing",
+      legendary_sannin: "seals",
+      desert_love: "love_sand",
+      god_of_shinobi: "wood_style",
       tactical_suiton: "bubbles",
-      ghost_uchiha: "tomoe" , crow_illusion: "feathers",
+      ghost_uchiha: "tomoe", // <--- ENSURE THIS IS HERE
+      crow_illusion: "feathers",
       yellow_flash: "teleport",
-      lavender_pearl: "pearls" , springtime_youth: "aura" , gallant_tale: "sage_history" , forbidden_lab: "snakes" , slug_princess: "hundred_seals" , nine_tails_malice: "malice" };
+      lavender_pearl: "pearls",
+      gallant_tale: "sage_history",
+      forbidden_lab: "snakes",
+      slug_princess: "hundred_seals",
+      nine_tails_malice: "malice",
+      springtime_youth: "aura"
+    };
     startAnimation(map[theme] || null);
   });
 })();
