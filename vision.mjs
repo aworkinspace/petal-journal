@@ -55,30 +55,55 @@ btnAdd.onclick = () => picker.click();
 
 picker.onchange = async (e) => {
   const file = e.target.files[0];
-  if (!file || !currentUser) return;
+  if (!file) return;
 
-  // Show instant preview
+  console.log("File selected:", file.name);
+
+  // 1. AUTH CHECK
+  if (!currentUser) {
+    alert("Please log in first!");
+    return;
+  }
+
+  // 2. CREATE A LOCAL PREVIEW IMMEDIATELY
+  // This ensures you see the image even if the internet is slow
   const localUrl = URL.createObjectURL(file);
   const tempId = "temp_" + Date.now();
-  createBoardItem(localUrl, 50, 50, tempId);
   
+  console.log("Creating local preview...");
+  createBoardItem(localUrl, 50, 50, tempId);
+
+  // 3. START FIREBASE UPLOAD
   try {
-    const path = `vision_boards/${currentUser.uid}/${Date.now()}_${file.name}`;
+    console.log("Starting Firebase Storage upload...");
+    const path = `vision_boards/${currentUser.uid}/${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
     const fileRef = storageRef(window.firebaseStorage, path);
+    
     const snapshot = await uploadBytes(fileRef, file);
     const finalUrl = await getDownloadURL(snapshot.ref);
     
-    // Replace blob with real URL
-    const newItem = document.querySelector(`[data-id="${tempId}"] img`);
-    if (newItem) newItem.src = finalUrl;
+    console.log("Upload successful! URL:", finalUrl);
+
+    // Swap the local preview URL with the permanent Firebase URL
+    const itemEl = document.querySelector(`[data-id="${tempId}"] img`);
+    if (itemEl) {
+      itemEl.src = finalUrl;
+      // Mark as ready to save
+      itemEl.parentElement.dataset.id = Date.now().toString(); 
+    }
     
-    saveBoard(); 
+    saveBoard(); // Save positions to Firestore
   } catch (err) {
-    console.error("Upload failed", err);
+    console.error("FIREBASE ERROR:", err);
+    // If upload fails, remove the "broken" local image
     document.querySelector(`[data-id="${tempId}"]`)?.remove();
-    alert("Upload failed. Check your connection/rules.");
+    alert("Upload failed: " + err.message);
   }
+
+  // Clear the picker so you can select the same file twice if needed
+  e.target.value = "";
 };
+
 
 // 3. CREATE ELEMENT LOGIC
 function createBoardItem(url, x, y, id) {
@@ -101,6 +126,8 @@ function createBoardItem(url, x, y, id) {
     if (confirm("Delete this image?")) {
       container.remove();
       saveBoard();
+      board.appendChild(container); // <--- THIS is the line that makes it appear
+  console.log("Item appended to board.");
     }
   };
 
