@@ -144,6 +144,21 @@
     "--text-muted": "#78350F",
     "animation": "sand"
   },
+            desert_love: {
+    "--bg": "#F2E8CF", // Warm Sand
+    "--surface": "#EAD7B1",
+    "--surface-2": "#D4A373",
+    "--border": "rgba(188, 71, 73, 0.2)", // Red tint
+    "--primary": "#BC4749", // Gourd Red
+    "--primary-soft": "rgba(188, 71, 73, 0.15)",
+    "--accent": "#6A994E", // Eye Teal
+    "--text": "#386641",
+    "--text-muted": "#6A994E",
+    "--bg-spot-1": "rgba(188, 71, 73, 0.05)",
+    "--bg-spot-2": "rgba(255, 255, 255, 0.3)",
+    "animation": "love_sand"
+  },
+
         };
         const t = THEMES[name] || THEMES.petal;
         for (const k in t) document.documentElement.style.setProperty(k, t[k]);
