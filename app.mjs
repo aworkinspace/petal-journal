@@ -664,6 +664,7 @@ function toast(msg) {
       
       // Minato is the FASTEST, so the particles need to appear very quickly
       particle.style.animationDuration = "0.25s";
+    }
 
       overlay.appendChild(particle);
       setTimeout(() => particle.remove(), 8000);
