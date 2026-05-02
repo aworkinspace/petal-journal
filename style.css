@@ -1310,3 +1310,29 @@ header, .top-actions { overflow: visible; }
   20% { opacity: 0.3; transform: scale(1.5); }
   100% { transform: scale(2); opacity: 0; }
 }
+/* OROCHIMARU: SLITHERING SNAKES */
+.snake-line {
+  position: absolute;
+  width: 40px;
+  height: 4px;
+  background: var(--surface-2);
+  border-radius: 10px;
+  opacity: 0.4;
+  pointer-events: none;
+  animation: slither linear forwards;
+}
+
+@keyframes slither {
+  0% { 
+    transform: translateX(-50px) translateY(0); 
+    opacity: 0; 
+  }
+  10% { opacity: 0.4; }
+  25% { transform: translateX(25vw) translateY(20px); }
+  50% { transform: translateX(50vw) translateY(-20px); }
+  75% { transform: translateX(75vw) translateY(20px); }
+  100% { 
+    transform: translateX(110vw) translateY(0); 
+    opacity: 0; 
+  }
+}
