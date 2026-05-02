@@ -607,7 +607,7 @@ function toast(msg) {
 
   let animationInterval = null;
 
-  function startAnimation(type) {
+    function startAnimation(type) {
     if (animationInterval) clearInterval(animationInterval);
     overlay.innerHTML = "";
     if (!type) return;
@@ -626,7 +626,6 @@ function toast(msg) {
         particle.style.left = startX + "px";
         particle.style.top = "-50px";
         particle.style.animationDuration = (Math.random() * 3 + 4) + "s";
-        particle.style.backgroundColor = Math.random() > 0.5 ? "var(--accent)" : "var(--primary)";
       } else if (type === "blossoms") {
         particle.className = "blossom";
         particle.style.left = startX + "px";
@@ -644,115 +643,23 @@ function toast(msg) {
         const size = Math.random() * 4 + 2 + "px";
         particle.style.width = size; particle.style.height = size;
         particle.style.animationDuration = (Math.random() * 3 + 5) + "s";
+      } 
+      // --- ADD THE AURA BLOCK HERE ---
+      else if (type === "aura") {
+        particle.className = Math.random() > 0.3 ? "aura-flame" : "aura-flame aura-orange";
+        particle.style.left = Math.random() * 100 + "vw";
+        particle.style.bottom = "-100px";
+        particle.style.animationDuration = (Math.random() * 1.5 + 1.5) + "s";
       }
-      if (type === "sparks") {
-      particle.className = Math.random() > 0.5 ? "spark spark-blue" : "spark spark-orange";
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.bottom = "-20px"; // Start from the bottom
-      particle.style.animationDuration = (Math.random() * 2 + 2) + "s";
-    }
-    // Inside the setInterval of startAnimation(type)
-    if (type === "lightning") {
-      particle.className = "lightning";
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.top = "0";
-      // Lightning is very fast
-      particle.style.animationDuration = "0.4s";
-    }
-          // Inside the setInterval of startAnimation(type)
-    if (type === "healing") {
-      particle.className = "chakra-orb";
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.bottom = "-20px";
-      particle.style.animationDuration = (Math.random() * 2 + 3) + "s";
-    } else if (type === "seals") {
-      const kanji = ["蝦", "蛞", "蛇"]; // Toad, Slug, Snake
-      particle.className = "kanji-seal";
-      particle.textContent = kanji[Math.floor(Math.random() * kanji.length)];
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.top = Math.random() * 100 + "vh";
-      particle.style.animationDuration = "5s";
-    }
-    if (type === "clouds") {
-      particle.className = "red-cloud";
-      particle.style.left = "-60px";
-      particle.style.top = Math.random() * 100 + "vh";
-      particle.style.animationDuration = (Math.random() * 10 + 15) + "s"; // Very slow drift
-    } else if (type === "rain") {
-      particle.className = "rain-drop";
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.top = "-20px";
-      particle.style.animationDuration = (Math.random() * 0.5 + 0.5) + "s"; // Fast fall
-    }
-    if (type === "embers") {
-      particle.className = "ember";
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.bottom = "-20px";
-      particle.style.animationDuration = (Math.random() * 2 + 3) + "s";
-    } else if (type === "sand") {
-      particle.className = "sand-grain";
-      particle.style.left = "-10px";
-      particle.style.top = Math.random() * 100 + "vh";
-      particle.style.animationDuration = (Math.random() * 2 + 2) + "s";
-    }
-          // Inside the setInterval of startAnimation(type)
-    if (type === "love_sand") {
-      particle.className = "love-kanji";
-      particle.textContent = "愛"; // The Kanji for Love
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.bottom = "-40px";
-      particle.style.animationDuration = (Math.random() * 3 + 4) + "s";
-    }
-    // Inside the setInterval of startAnimation(type)
-    if (type === "wood_style") {
-      particle.className = "wood-petal";
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.top = "-20px";
-      particle.style.animationDuration = (Math.random() * 3 + 4) + "s";
-    } else if (type === "bubbles") {
-      particle.className = "bubble";
-      const size = Math.random() * 15 + 5 + "px";
-      particle.style.width = size; particle.style.height = size;
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.bottom = "-20px";
-      particle.style.animationDuration = (Math.random() * 4 + 4) + "s";
-    } else if (type === "tomoe") {
-      particle.className = "tomoe";
-      particle.textContent = "カン"; // Looks a bit like a sharingan mark in pixel font
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.top = Math.random() * 100 + "vh";
-      particle.style.animationDuration = "4s";
-    }
-    // Inside the setInterval of startAnimation(type)
-    if (type === "feathers") {
-      particle.className = "feather";
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.top = "-20px";
-      particle.style.animationDuration = (Math.random() * 3 + 3) + "s";
-    } else if (type === "teleport") {
-      particle.className = "flash-spark";
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.top = Math.random() * 100 + "vh";
-      particle.style.transform = `rotate(${Math.random() * 360}deg)`;
-    } else if (type === "pearls") {
-      particle.className = "pearl";
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.top = Math.random() * 100 + "vh";
-      // Pearls stay on screen longer, so we don't remove them as fast
-    }
+      // -------------------------------
 
-      if (type === "aura") {
-      particle.className = Math.random() > 0.3 ? "aura-flame" : "aura-flame aura-orange";
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.bottom = "-100px";
-      // Aura moves with different speeds
-      particle.style.animationDuration = (Math.random() * 1.5 + 1.5) + "s";
-      }
-      
       overlay.appendChild(particle);
       setTimeout(() => particle.remove(), 8000);
-    }, type === "snow" ? 250 : 800);
+
+    // Update the speed here: 150ms for Aura makes it look much brighter/denser!
+    }, type === "snow" ? 250 : (type === "aura" ? 150 : 800));
   }
+
 
   document.addEventListener("themeChanged", () => {
     const theme = localStorage.getItem("petal_theme");
