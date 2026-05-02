@@ -764,10 +764,11 @@ document.getElementById("imgPicker")?.addEventListener("change", async (e) => {
     "Recall a time you failed but didn't give up. How did that make you stronger?",
     "Who is your greatest 'Rival' right now? Is it a person, or a bad habit you're fighting?",
     "If you could have a heart-to-heart with Master Kakashi, what would you ask him?",
-    "Which Hidden Village matches your current mood? (Leaf, Sand, Cloud, etc.)"
+        "Which Hidden Village matches your current mood? (Leaf, Sand, Cloud, etc.)", // <--- ADDED COMMA HERE
     "‘A person grows up when they're able to overcome hardships.’ What is a hardship you are currently overcoming?",
     "If you were writing your own 'Gallant Tale,' what would the current chapter be titled?",
 ];
+
 
   function initPrompts() {
     const btn = document.getElementById("btnPrompt");
