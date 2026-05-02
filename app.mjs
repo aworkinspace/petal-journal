@@ -77,6 +77,18 @@ const THEMES = {
     "--text-muted": "#9F1239",
     "animation": "healing"
   },
+    gallant_tale: {
+    "--bg": "#F5E6D3", // Aged Parchment
+    "--surface": "#FCF8F0",
+    "--surface-2": "#8B0000", // Signature Jiraiya Red
+    "--border": "rgba(139, 0, 0, 0.2)",
+    "--primary": "#B45309", // Warm Sage Orange
+    "--primary-soft": "rgba(180, 83, 9, 0.15)",
+    "--accent": "#FACC15", // Toad Oil Gold
+    "--text": "#2D1B1B", // Deep Ink
+    "--text-muted": "#634832",
+    "animation": "sage_history"
+  },
   legendary_sannin: {
     "--bg": "#1E1B2E", // Deep Orochimaru Purple
     "--surface": "#2D2B4A",
@@ -668,6 +680,14 @@ function toast(msg) {
       // Random delay so they don't all move at the same time
       particle.style.animationDelay = (Math.random() * 5) + "s";
     }
+    // Inside the setInterval of startAnimation(type)
+    if (type === "sage_history") {
+      const isLeaf = Math.random() > 0.3;
+      particle.className = isLeaf ? "sage-leaf" : "ink-blot";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = isLeaf ? "-20px" : (Math.random() * 100 + "vh");
+      particle.style.animationDuration = isLeaf ? (Math.random() * 4 + 6) + "s" : "4s";
+    }
 
       // --- CRITICAL: Add the particle to the page ---
       overlay.appendChild(particle);
@@ -689,7 +709,7 @@ function toast(msg) {
       tactical_suiton: "bubbles",
       ghost_uchiha: "tomoe" , crow_illusion: "feathers",
       yellow_flash: "teleport",
-      lavender_pearl: "pearls" , springtime_youth: "aura" };
+      lavender_pearl: "pearls" , springtime_youth: "aura" , gallant_tale: "sage_history" };
     startAnimation(map[theme] || null);
   });
 })();
@@ -747,6 +767,10 @@ document.getElementById("imgPicker")?.addEventListener("change", async (e) => {
     "Who is your greatest 'Rival' right now? Is it a person, or a bad habit you're fighting?",
     "If you could have a heart-to-heart with Master Kakashi, what would you ask him?",
     "Which Hidden Village matches your current mood? (Leaf, Sand, Cloud, etc.)"
+    // Add this to your prompts array
+"‘A person grows up when they're able to overcome hardships.’ What is a hardship you are currently overcoming?",
+"If you were writing your own 'Gallant Tale,' what would the current chapter be titled?",
+
   ];
 
   function initPrompts() {
