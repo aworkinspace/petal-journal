@@ -113,6 +113,30 @@ const THEMES = {
     "--text-muted": "rgba(209, 217, 224, 0.5)",
     "animation": "rain"
   },
+  kurama_sage: {
+    "--bg": "#FFFBEB", // Pale Gold Cream
+    "--surface": "#FEF3C7",
+    "--surface-2": "#FDE68A",
+    "--border": "rgba(245, 158, 11, 0.2)", 
+    "--primary": "#F59E0B", // Golden Orange
+    "--primary-soft": "rgba(245, 158, 11, 0.15)",
+    "--accent": "#D97706", // Deep Amber
+    "--text": "#451A03",
+    "--text-muted": "#92400E",
+    "animation": "embers"
+  },
+  hidden_sand: {
+    "--bg": "#F5F5DC", // Light Beige Sand
+    "--surface": "#EFEBD8",
+    "--surface-2": "#D2B48C", // Tan
+    "--border": "rgba(153, 27, 27, 0.15)", // Gourd Red tint
+    "--primary": "#991B1B", // Desert Crimson
+    "--primary-soft": "rgba(153, 27, 27, 0.1)",
+    "--accent": "#B45309", // Warm Brown
+    "--text": "#451A03",
+    "--text-muted": "#78350F",
+    "animation": "sand"
+  },
 
 };
 
@@ -529,7 +553,17 @@ function toast(msg) {
       particle.style.top = "-20px";
       particle.style.animationDuration = (Math.random() * 0.5 + 0.5) + "s"; // Fast fall
     }
-
+    if (type === "embers") {
+      particle.className = "ember";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.bottom = "-20px";
+      particle.style.animationDuration = (Math.random() * 2 + 3) + "s";
+    } else if (type === "sand") {
+      particle.className = "sand-grain";
+      particle.style.left = "-10px";
+      particle.style.top = Math.random() * 100 + "vh";
+      particle.style.animationDuration = (Math.random() * 2 + 2) + "s";
+    }
       overlay.appendChild(particle);
       setTimeout(() => particle.remove(), 8000);
     }, type === "snow" ? 250 : 800);
@@ -538,7 +572,8 @@ function toast(msg) {
   document.addEventListener("themeChanged", () => {
     const theme = localStorage.getItem("petal_theme");
     const map = { cosmic_starfall: "meteors", autumn_forest: "leaves", spring_blossom: "blossoms", summer_shimmer: "sunbeams", midnight_snowfall: "snow" , ninja_rivalry: "sparks" , copy_ninja: "lightning" , medical_kunoichi: "healing", // ADDED
-      legendary_sannin: "seals" , akatsuki_cloud: "clouds", hidden_rain: "rain" };
+      legendary_sannin: "seals" , akatsuki_cloud: "clouds", hidden_rain: "rain" , kurama_sage: "embers",
+      hidden_sand: "sand" };
     startAnimation(map[theme] || null);
   });
 })();
