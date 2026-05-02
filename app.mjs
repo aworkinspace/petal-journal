@@ -652,6 +652,18 @@ function toast(msg) {
         particle.style.animationDuration = (Math.random() * 1.5 + 1.5) + "s";
       }
       // -------------------------------
+          } else if (type === "teleport") {
+      particle.className = "flash-spark";
+      // Pick any random spot on the whole screen
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = Math.random() * 100 + "vh";
+      
+      // Random rotation so they go in all directions
+      const randomRotation = Math.random() * 360;
+      particle.style.setProperty('--rot', `${randomRotation}deg`);
+      
+      // Minato is the FASTEST, so the particles need to appear very quickly
+      particle.style.animationDuration = "0.25s";
 
       overlay.appendChild(particle);
       setTimeout(() => particle.remove(), 8000);
