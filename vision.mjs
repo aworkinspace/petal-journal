@@ -57,32 +57,51 @@ picker.onchange = async (e) => {
   const file = e.target.files[0];
   if (!file) return;
 
-  console.log("File selected:", file.name);
-
-  // 1. AUTH CHECK
-  if (!currentUser) {
-    alert("Please log in first!");
+  // 1. Get the current logged-in user
+  const activeUser = window.firebaseAuth.currentUser;
+  if (!activeUser) {
+    alert("Auth loading... please wait a second and try again!");
     return;
   }
 
   // 2. CREATE A LOCAL PREVIEW IMMEDIATELY
-  // This ensures you see the image even if the internet is slow
   const localUrl = URL.createObjectURL(file);
   const tempId = "temp_" + Date.now();
   
   console.log("Creating local preview...");
   createBoardItem(localUrl, 50, 50, tempId);
 
-  // 3. START FIREBASE UPLOAD
+  // 3. START FIREBASE UPLOAD IN BACKGROUND
   try {
     console.log("Starting Firebase Storage upload...");
-    const path = `vision_boards/${currentUser.uid}/${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
+    const path = `vision_boards/${activeUser.uid}/${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
     const fileRef = storageRef(window.firebaseStorage, path);
     
     const snapshot = await uploadBytes(fileRef, file);
     const finalUrl = await getDownloadURL(snapshot.ref);
     
-    console.log("Upload successful! URL:", finalUrl);
+    console.log("Upload successful! Swapping to permanent URL.");
+
+    // Find the temporary item we just made and give it the real Firebase URL
+    const itemEl = document.querySelector(`[data-id="${tempId}"] img`);
+    if (itemEl) {
+      itemEl.src = finalUrl;
+      // Change the ID from 'temp_...' to a real one for saving
+      itemEl.parentElement.dataset.id = Date.now().toString(); 
+    }
+    
+    saveBoard(); // Save the final state to Firestore
+  } catch (err) {
+    console.error("FIREBASE UPLOAD ERROR:", err);
+    // If the upload fails, remove the "broken" local preview
+    document.querySelector(`[data-id="${tempId}"]`)?.remove();
+    alert("Upload failed. Check your Firebase Storage rules.");
+  }
+
+  // Reset the picker so you can select the same file again
+  e.target.value = "";
+};
+
 
     // Swap the local preview URL with the permanent Firebase URL
     const itemEl = document.querySelector(`[data-id="${tempId}"] img`);
