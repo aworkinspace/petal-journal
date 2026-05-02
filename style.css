@@ -33,9 +33,8 @@
   --btn-border: var(--border);
   --btn-text: var(--text);
 
- --bg-spot-1: var(--rose-70);
-  --bg-spot-2: var(--rose-70);
-
+   --bg-spot-1: var(--rose-50);
+  --bg-spot-2: var(--rose-50);
 }
 
 *{ box-sizing:border-box; }
