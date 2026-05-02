@@ -390,54 +390,46 @@ h1, .muted {
 
       .vision-wrap { max-width: 1200px; margin: 0 auto; padding: 20px; }
       
-      /* The Board Area */
-      #board {
-        width: 100%;
-        height: 80vh;
-        position: relative;
-        background: var(--surface);
-        border: 4px dashed var(--border);
-        border-radius: 16px;
-        overflow: hidden;
-        margin-top: 20px;
-        /* Pixel art background pattern */
-        background-image: radial-gradient(var(--border) 1px, transparent 1px);
-        background-size: 20px 20px;
-      }
-
-      /* Board items (images) */
-      .board-item {
-        position: absolute;
-        cursor: grab;
-        user-select: none;
-        touch-action: none;
-        transition: transform 0.1s ease;
-      }
-      .board-item img {
-  width: 200px;       /* Give it a set width */
-  height: auto;      /* Let height adjust */
-  display: block;
-  border: 4px solid white;
-  box-shadow: var(--shadow);
-  pointer-events: none; 
-}
-
-      .board-item:active { cursor: grabbing; transform: scale(1.05); z-index: 100; }
-
-      .vision-tools { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-      /* Update the Board style */
+      /* CLEANED BOARD STYLE */
 #board {
   width: 100%;
   height: 80vh;
   position: relative;
-  background: var(--surface); /* Matches theme */
-  border: 4px dashed var(--border); /* Matches theme */
+  background: var(--surface);
+  border: 4px dashed var(--border);
   border-radius: 16px;
-  overflow: hidden;
   margin-top: 20px;
+  /* verification pattern */
   background-image: radial-gradient(var(--border) 1px, transparent 1px);
   background-size: 20px 20px;
+  
+  /* THIS IS IMPORTANT: Ensure images don't vanish if they go off-edge during drag */
+  overflow: auto; 
+  display: block !important;
+  z-index: 1;
 }
+
+.board-item {
+  position: absolute;
+  z-index: 100; /* High z-index to stay above background */
+  display: inline-block;
+  line-height: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.board-item img {
+  width: 200px; 
+  height: auto;
+  border: 4px solid white;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  display: block;
+}
+
+
+      .board-item:active { cursor: grabbing; transform: scale(1.05); z-index: 100; }
+
+      .vision-tools { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 
 .btn:hover { transform: translate(-2px, -2px); filter: brightness(1.05); }
 .btn:active { transform: translate(2px, 2px); box-shadow: none; }
