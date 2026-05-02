@@ -577,6 +577,15 @@ function toast(msg) {
       particle.style.top = Math.random() * 100 + "vh";
       particle.style.animationDuration = (Math.random() * 2 + 2) + "s";
     }
+          // Inside the setInterval of startAnimation(type)
+    if (type === "love_sand") {
+      particle.className = "love-kanji";
+      particle.textContent = "愛"; // The Kanji for Love
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.bottom = "-40px";
+      particle.style.animationDuration = (Math.random() * 3 + 4) + "s";
+    }
+
       overlay.appendChild(particle);
       setTimeout(() => particle.remove(), 8000);
     }, type === "snow" ? 250 : 800);
