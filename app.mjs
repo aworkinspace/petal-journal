@@ -51,6 +51,105 @@ const THEMES = {
   monster_mist: { "--bg": "#051622", "--surface": "#0B2435", "--surface-2": "#1A759F", "--border": "rgba(160, 233, 255, 0.2)", "--primary": "#52B69A", "--accent": "#184E77", "--text": "#D9EDF7", "--text-muted": "rgba(217, 237, 247, 0.5)" },
   stinky_aloe: { "--bg": "#0D110D", "--surface": "#1A1F1A", "--surface-2": "#4D7C0F", "--border": "rgba(255, 255, 255, 0.1)", "--primary": "#FFFFFF", "--accent": "#000000", "--text": "#E2E8F0", "--text-muted": "rgba(226, 232, 240, 0.4)", "--bg-spot-1": "rgba(77, 124, 15, 0.15)" },
   god_of_shinobi: { "--bg": "#E9F5DB", "--surface": "#CFE1B9", "--surface-2": "#718355", "--border": "#4F772D", "--primary": "#B56576", "--accent": "#31572C", "--text": "#132A13", "--text-muted": "#31572C", "--bg-spot-1": "rgba(49, 87, 44, 0.15)", "--bg-spot-2": "rgba(113, 131, 85, 0.2)" },
+    tactical_suiton: {
+    "--bg": "#050B1A", // Deep Abyss Blue
+    "--surface": "#0A1426",
+    "--surface-2": "#1E3A8A", 
+    "--border": "rgba(100, 255, 218, 0.1)",
+    "--primary": "#64FFDA", 
+    "--primary-soft": "rgba(100, 255, 218, 0.1)",
+    "--accent": "#F0F8FF", 
+    "--text": "#CCD6F6",
+    "--text-muted": "#8892B0",
+    "--bg-spot-1": "#050B1A", // Force dark spot
+    "--bg-spot-2": "#050B1A", // Force dark spot
+    "animation": "bubbles"
+  },
+  ghost_uchiha: {
+    "--bg": "#050505", // Eternal Night Black
+    "--surface": "#0D0D0D",
+    "--surface-2": "#3B1E54", // Susanoo Purple
+    "--border": "rgba(255, 76, 76, 0.15)",
+    "--primary": "#FF4C4C", 
+    "--primary-soft": "rgba(255, 76, 76, 0.1)",
+    "--accent": "#FACC15", 
+    "--text": "#E2E8F0",
+    "--text-muted": "rgba(226, 232, 240, 0.5)",
+    "--bg-spot-1": "#050505", // Force dark spot
+    "--bg-spot-2": "#050505", // Force dark spot
+    "animation": "tomoe"
+  },
+  kamui_dimension: {
+    "--bg": "#080808", // Void Black
+    "--surface": "#121212",
+    "--surface-2": "#F97316", // Obito Mask Orange
+    "--border": "rgba(249, 115, 22, 0.2)",
+    "--primary": "#F97316", 
+    "--primary-soft": "rgba(249, 115, 22, 0.1)",
+    "--accent": "#FF0000", 
+    "--text": "#D1D5DB",
+    "--text-muted": "rgba(209, 213, 219, 0.5)",
+    "--bg-spot-1": "#080808", // Force dark spot
+    "--bg-spot-2": "#080808", // Force dark spot
+    "animation": "warps"
+  },
+  crow_illusion: {
+    "--bg": "#08080A", // Uchiha Shadow
+    "--surface": "#121217",
+    "--surface-2": "#2D0A0A", // Crow Crimson
+    "--border": "rgba(255, 0, 0, 0.1)",
+    "--primary": "#FF3E3E", 
+    "--primary-soft": "rgba(255, 62, 62, 0.1)",
+    "--accent": "#4A4A4A", 
+    "--text": "#E0E0E0",
+    "--text-muted": "rgba(224, 224, 224, 0.5)",
+    "--bg-spot-1": "#08080A", // Force dark
+    "--bg-spot-2": "#08080A", // Force dark
+    "animation": "feathers"
+  },
+  yellow_flash: {
+    "--bg": "#FFFFFF", // Minato Cloak White
+    "--surface": "#FFFDF0",
+    "--surface-2": "#FFD700", // Flash Gold
+    "--border": "rgba(0, 168, 232, 0.2)",
+    "--primary": "#00A8E8", 
+    "--primary-soft": "rgba(0, 168, 232, 0.1)",
+    "--accent": "#FF4500", 
+    "--text": "#1A1A1A",
+    "--text-muted": "#555555",
+    "--bg-spot-1": "rgba(255, 215, 0, 0.2)", // Golden Glow
+    "--bg-spot-2": "rgba(255, 255, 255, 0.5)",
+    "animation": "teleport"
+  },
+  lavender_pearl: {
+    "--bg": "#F3E8FF", // Hyuga Lavender
+    "--surface": "#FAF5FF",
+    "--surface-2": "#E9D5FF",
+    "--border": "rgba(168, 85, 247, 0.2)",
+    "--primary": "#A855F7", 
+    "--primary-soft": "rgba(168, 85, 247, 0.1)",
+    "--accent": "#FFFFFF", 
+    "--text": "#44337A",
+    "--text-muted": "#6B46C1",
+    "--bg-spot-1": "rgba(168, 85, 247, 0.15)", // Soft Lavender Glow
+    "--bg-spot-2": "rgba(255, 255, 255, 0.4)",
+    "animation": "pearls"
+  },
+  springtime_youth: {
+    "--bg": "#0B1A0E", // Deep Jumpsuit Green
+    "--surface": "#162B1A",
+    "--surface-2": "#FFD700", // Gold energy
+    "--border": "#FF4500", 
+    "--primary": "#32CD32", 
+    "--primary-soft": "rgba(50, 205, 50, 0.2)",
+    "--accent": "#FF0000", 
+    "--text": "#F2F0F7",
+    "--text-muted": "rgba(242,240,247,.6)",
+    "--bg-spot-1": "#0B1A0E", // Force dark
+    "--bg-spot-2": "#0B1A0E", // Force dark
+    "animation": "aura"
+  },
+
   desert_love: { "--bg": "#F2E8CF", "--surface": "#EAD7B1", "--surface-2": "#D4A373", "--border": "rgba(188, 71, 73, 0.2)", "--primary": "#BC4749", "--accent": "#6A994E", "--text": "#386641", "--text-muted": "#6A994E", "--bg-spot-1": "rgba(188, 71, 73, 0.05)", "--bg-spot-2": "rgba(255, 255, 255, 0.3)" }
 };
 
