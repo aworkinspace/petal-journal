@@ -12,7 +12,7 @@
       (function () {
         const name = localStorage.getItem("petal_theme") || "petal";
         const THEMES = {
-   petal: { "--bg": "var(--rose-50)", "--surface": "var(--rose-50)", "--surface-2": "var(--pink-200)", "--border": "var(--mauve-200)", "--primary": "var(--periwinkle-400)", "--primary-soft": "var(--periwinkle-200)", "--accent": "var(--pink-500)", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(167,171,222,.45)", "--bg-spot-2": "rgba(255,165,214,.35)" },
+petal: { "--bg": "var(--rose-50)", "--surface": "var(--rose-50)", "--surface-2": "var(--pink-200)", "--border": "var(--mauve-200)", "--primary": "var(--periwinkle-400)", "--primary-soft": "var(--periwinkle-200)", "--accent": "var(--pink-500)", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(167,171,222,.45)", "--bg-spot-2": "rgba(255,165,214,.35)" },
   lavender: { "--bg": "#F6F2FF", "--surface": "#F6F2FF", "--surface-2": "#EDE4FF", "--border": "#D8CBF2", "--primary": "#A7ABDE", "--primary-soft": "#CED1F8", "--accent": "#D7A6FF", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(215,166,255,.32)", "--bg-spot-2": "rgba(167,171,222,.28)" },
   sky_sorbet: { "--bg": "#F2FBFF", "--surface": "#F2FBFF", "--surface-2": "#DFF3FF", "--border": "#C7E4F5", "--primary": "#7DB6FF", "--primary-soft": "#CFE4FF", "--accent": "#FFA5D6", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(125,182,255,.30)", "--bg-spot-2": "rgba(255,165,214,.24)" },
   peach_milk: { "--bg": "#FFF6F0", "--surface": "#FFF6F0", "--surface-2": "#FFE3D2", "--border": "#F2CDBB", "--primary": "#A7ABDE", "--primary-soft": "#CED1F8", "--accent": "#FFB38A", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(255,179,138,.34)", "--bg-spot-2": "rgba(167,171,222,.24)" },
@@ -43,6 +43,19 @@
     "--bg-spot-1": "rgba(255, 223, 0, 0.25)",
     "--bg-spot-2": "rgba(255, 255, 255, 0.5)",
     "animation": "sunbeams" // Re-uses the summer shimmer animation!
+  },
+    six_paths_sage: {
+    "--bg": "#FFFFFF",
+    "--surface": "#FDFDFD",
+    "--surface-2": "#1A1A1A", // Black for contrast
+    "--border": "#FFD700", // Gold
+    "--primary": "#FFD700",
+    "--primary-soft": "rgba(255, 215, 0, 0.2)",
+    "--accent": "#000000",
+    "--text": "#1A1A1A",
+    "--text-muted": "#555555",
+    "--bg-spot-1": "rgba(255, 215, 0, 0.1)",
+    "animation": "truth_orbs"
   },
     ninja_rivalry: {
     "--bg": "#0D0D1F", // Deep Uchiha Navy
@@ -84,7 +97,44 @@
     "--text-muted": "#9F1239",
     "animation": "healing"
   },
-          gallant_tale: {
+    shadow_possession: {
+    "--bg": "#0A0B0D", // Pitch Black Shadow
+    "--surface": "#14171A",
+    "--surface-2": "#2D3436", // Tactical Grey
+    "--border": "rgba(46, 204, 113, 0.15)", // Subtle Vest Green
+    "--primary": "#2ECC71", // Shikamaru Green
+    "--primary-soft": "rgba(46, 204, 113, 0.1)",
+    "--accent": "#000000", // Shadow Black
+    "--text": "#E0E0E0",
+    "--text-muted": "rgba(224, 224, 224, 0.5)",
+    "--bg-spot-1": "rgba(0, 0, 0, 0.8)",
+    "animation": "shadows"
+  },
+    mind_transfer: {
+    "--bg": "#F5F3FF", // Soft Lavender
+    "--surface": "#EDE9FE",
+    "--surface-2": "#C4B5FD", 
+    "--border": "rgba(139, 92, 246, 0.2)",
+    "--primary": "#8B5CF6", // Ino Purple
+    "--primary-soft": "rgba(139, 92, 246, 0.15)",
+    "--accent": "#10B981", // Flower/Medical Green
+    "--text": "#4C1D95",
+    "--text-muted": "#7C3AED",
+    "animation": "mind_waves"
+  },
+  butterfly_mode: {
+    "--bg": "#2D0A0A", // Akimichi Crimson
+    "--surface": "#3F1212",
+    "--surface-2": "#1E3A8A", // Blue Wing Chakra
+    "--border": "rgba(59, 130, 246, 0.3)",
+    "--primary": "#3B82F6", // Butterfly Blue
+    "--primary-soft": "rgba(59, 130, 246, 0.2)",
+    "--accent": "#FACC15", // Armor Gold
+    "--text": "#FEE2E2",
+    "--text-muted": "rgba(254, 226, 226, 0.5)",
+    "animation": "butterflies"
+  },
+    gallant_tale: {
     "--bg": "#F5E6D3", // Aged Parchment
     "--surface": "#FCF8F0",
     "--surface-2": "#8B0000", // Signature Jiraiya Red
@@ -96,7 +146,7 @@
     "--text-muted": "#634832",
     "animation": "sage_history"
   },
-  forbidden_lab: {
+    forbidden_lab: {
     "--bg": "#0D0B12", // Deep Shadow Purple
     "--surface": "#16141F",
     "--surface-2": "#4B3F72", // Rope Purple
@@ -159,6 +209,104 @@
     "--text-muted": "rgba(224, 224, 224, 0.5)",
     "animation": "clouds"
   },
+    hidan_ritual: {
+    "--bg": "#080808", // Pure Ritual Black
+    "--surface": "#121212",
+    "--surface-2": "#4A0000", // Dried Blood Red
+    "--border": "rgba(255, 0, 0, 0.2)",
+    "--primary": "#FF0000", // Fresh Blood Crimson
+    "--primary-soft": "rgba(255, 0, 0, 0.1)",
+    "--accent": "#FFFFFF", // Skeleton Bone White
+    "--text": "#E5E5E5",
+    "--text-muted": "rgba(229, 229, 229, 0.5)",
+    "--bg-spot-1": "rgba(74, 0, 0, 0.3)",
+    "animation": "jashin"
+  },
+    kakuzu_hearts: {
+    "--bg": "#0F110D", // Dark Earth Green
+    "--surface": "#1A1D17",
+    "--surface-2": "#3E4437", // Mask Olive
+    "--border": "rgba(255, 215, 0, 0.15)", // Greed Gold
+    "--primary": "#FFD700", // Gold
+    "--primary-soft": "rgba(255, 215, 0, 0.1)",
+    "--accent": "#B22222", // Heart Red
+    "--text": "#D1D5DB",
+    "--text-muted": "rgba(209, 213, 223, 0.5)",
+    "--bg-spot-1": "rgba(62, 68, 55, 0.2)",
+    "animation": "threads"
+  },
+    art_explosion: {
+    "--bg": "#FFFDF0", // Clay White
+    "--surface": "#FEF3C7",
+    "--surface-2": "#FBBF24", // Deidara Yellow
+    "--border": "rgba(0, 168, 232, 0.2)", // Eye Scope Blue
+    "--primary": "#00A8E8", // Scope Blue
+    "--primary-soft": "rgba(0, 168, 232, 0.1)",
+    "--accent": "#FF4500", // Explosion Red
+    "--text": "#451A03",
+    "--text-muted": "#92400E",
+    "animation": "explosive_birds"
+  },
+  eternal_beauty: {
+    "--bg": "#0D0B0B", // Puppet Case Black
+    "--surface": "#1A1616",
+    "--surface-2": "#4A0E0E", // Sasori Red
+    "--border": "rgba(168, 85, 247, 0.2)", // Poison Purple
+    "--primary": "#A855F7", // Poison Purple
+    "--primary-soft": "rgba(168, 85, 247, 0.1)",
+    "--accent": "#D2B48C", // Wood Tan
+    "--text": "#FEE2E2",
+    "--text-muted": "rgba(254, 226, 226, 0.5)",
+    "animation": "puppet_strings"
+  },
+      paper_angel: {
+    "--bg": "#E0E7FF", // Blue-tinted white
+    "--surface": "#EEF2FF",
+    "--surface-2": "#818CF8", // Konan Purple/Blue
+    "--border": "rgba(129, 140, 248, 0.2)",
+    "--primary": "#6366F1", 
+    "--primary-soft": "rgba(99, 102, 241, 0.1)",
+    "--accent": "#4338CA", 
+    "--text": "#1E1B4B",
+    "--text-muted": "#4338CA",
+    "animation": "paper"
+  },
+  six_paths_pain: {
+    "--bg": "#0D0D0F", // Rinnegan Grey-Black
+    "--surface": "#16161A",
+    "--surface-2": "#4C1D95", // Rinnegan Purple
+    "--border": "rgba(139, 92, 246, 0.2)",
+    "--primary": "#8B5CF6", // Chakra Purple
+    "--primary-soft": "rgba(139, 92, 246, 0.1)",
+    "--accent": "#FF4500", // Receiver Orange
+    "--text": "#D1D5DB",
+    "--text-muted": "rgba(209, 213, 219, 0.5)",
+    "animation": "gravity"
+  },
+  original_hope: {
+    "--bg": "#F0F9FF", // Rain Blue
+    "--surface": "#E0F2FE",
+    "--surface-2": "#F97316", // Yahiko Orange
+    "--border": "rgba(14, 165, 233, 0.2)",
+    "--primary": "#0EA5E9", // Hope Blue
+    "--primary-soft": "rgba(14, 165, 233, 0.1)",
+    "--accent": "#FB923C", 
+    "--text": "#0C4A6E",
+    "--text-muted": "#0369A1",
+    "animation": "rain" // Re-uses rain logic but we can add orange sparks
+  },
+  tobi_good_boy: {
+    "--bg": "#FFF7ED", // Mask Orange Cream
+    "--surface": "#FFEDD5",
+    "--surface-2": "#FB923C", // Mask Orange
+    "--border": "rgba(34, 197, 94, 0.2)", // "Good Boy" Green
+    "--primary": "#22C55E", 
+    "--primary-soft": "rgba(34, 197, 94, 0.1)",
+    "--accent": "#EA580C", 
+    "--text": "#431407",
+    "--text-muted": "#7C2D12",
+    "animation": "tobi_swirl"
+  },
   hidden_rain: {
     "--bg": "#111418", // Dark Stormy Grey
     "--surface": "#1B2026",
@@ -209,28 +357,32 @@
     "--bg-spot-2": "rgba(255, 255, 255, 0.3)",
     "animation": "love_sand"
   },
-    god_of_shinobi: {
-    "--bg": "#E9F5DB", // Earthy Sage
+      god_of_shinobi: {
+    "--bg": "#E9F5DB", 
     "--surface": "#CFE1B9",
-    "--surface-2": "#718355", // Forest Green
-    "--border": "rgba(113, 131, 85, 0.2)",
+    "--surface-2": "#718355",
+    "--border": "#4F772D",
     "--primary": "#B56576", // Armor Red
-    "--primary-soft": "rgba(181, 101, 118, 0.15)",
-    "--accent": "#4F772D", // Mokuton Green
-    "--text": "#31572C",
-    "--text-muted": "#4F772D",
+    "--primary-soft": "rgba(181, 101, 118, 0.2)",
+    "--accent": "#31572C", 
+    "--text": "#132A13",
+    "--text-muted": "#31572C",
+    "--bg-spot-1": "rgba(49, 87, 44, 0.15)", // Deep Forest Shadows
+    "--bg-spot-2": "rgba(113, 131, 85, 0.2)", // Mossy Light
     "animation": "wood_style"
   },
-  tactical_suiton: {
-    "--bg": "#F0F8FF", // Ice Blue
-    "--surface": "#D0E1F9",
-    "--surface-2": "#4E6582", // Fur Collar Grey
-    "--border": "rgba(30, 81, 123, 0.2)",
-    "--primary": "#1E517B", // Deep Water Blue
-    "--primary-soft": "rgba(30, 81, 123, 0.1)",
-    "--accent": "#FFFFFF", 
-    "--text": "#102A43",
-    "--text-muted": "#334E68",
+    tactical_suiton: {
+    "--bg": "#0A192F", // Deep Ocean Navy
+    "--surface": "#112240",
+    "--surface-2": "#1E3A8A", // Water Chakra Blue
+    "--border": "rgba(100, 255, 218, 0.2)", // Teal highlight
+    "--primary": "#64FFDA", // Senju Teal
+    "--primary-soft": "rgba(100, 255, 218, 0.1)",
+    "--accent": "#F0F8FF", // Pure White
+    "--text": "#CCD6F6",
+    "--text-muted": "#8892B0",
+    "--bg-spot-1": "rgba(30, 58, 138, 0.3)", // Deep blue glow
+    "--bg-spot-2": "rgba(100, 255, 218, 0.05)",
     "animation": "bubbles"
   },
   ghost_uchiha: {
@@ -245,7 +397,7 @@
     "--text-muted": "rgba(226, 232, 240, 0.5)",
     "animation": "tomoe"
   },
-          kamui_dimension: {
+    kamui_dimension: {
     "--bg": "#0F0F12", // Void Grey
     "--surface": "#1A1B21",
     "--surface-2": "#F97316", // Obito Mask Orange
@@ -294,7 +446,7 @@
     "--text-muted": "#6B46C1",
     "animation": "pearls"
   },
-springtime_youth: {
+  springtime_youth: {
     "--bg": "#0B1A0E", // Deep Jumpsuit Green
     "--surface": "#162B1A",
     "--surface-2": "#F97316", // Leg-warmer Orange
@@ -307,6 +459,19 @@ springtime_youth: {
     "--bg-spot-1": "rgba(34, 197, 94, 0.1)", // Green aura glow
     "--bg-spot-2": "rgba(239, 68, 68, 0.1)",  // Red gate glow
     "animation": "aura"
+  },
+  eternal_amaterasu: {
+    "--bg": "#050505", // Absolute Black
+    "--surface": "#0D0D0D",
+    "--surface-2": "#1A1A1A",
+    "--border": "rgba(138, 43, 226, 0.2)", // Pale Purple heat
+    "--primary": "#000000", // The flames are black
+    "--primary-soft": "rgba(0, 0, 0, 0.8)",
+    "--accent": "#8A2BE2", // Violet highlight
+    "--text": "#E0E0E0",
+    "--text-muted": "rgba(224, 224, 224, 0.4)",
+    "--bg-spot-1": "rgba(75, 0, 130, 0.15)", // Deep Indigo glow
+    "animation": "black_fire"
   },
         };
         const t = THEMES[name] || THEMES.petal;
