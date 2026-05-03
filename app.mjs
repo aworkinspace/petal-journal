@@ -1245,6 +1245,7 @@ document.getElementById("imgPicker")?.addEventListener("change", async (e) => {
     "If you were writing your own 'Gallant Tale,' what would the current chapter be titled?",
     "‘People become stronger because they have memories they can't forget.’ What is a memory that makes you strong today?",
 "If you had the 'Strength of a Hundred' today, what task would you tackle first?",
+    "‘True art is an explosion!’ What was the most exciting or 'explosive' moment of your week?",
 
 ];
 
