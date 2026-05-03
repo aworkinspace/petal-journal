@@ -838,7 +838,6 @@ function toast(msg) {
           particle.style.bottom = "-20px";
         }
         particle.style.animationDuration = "4s";
-      }
       } 
       else if (type === "wood_style") {
         const isVine = Math.random() > 0.7; 
