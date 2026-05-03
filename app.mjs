@@ -240,6 +240,19 @@ const THEMES = {
     "--text-muted": "#92400E",
     "animation": "explosive_birds"
   },
+    ultimate_masterpiece: {
+    "--bg": "#FFFFFF", 
+    "--surface": "#FAFAFA",
+    "--surface-2": "#FFD700", // Masterpiece Gold
+    "--border": "rgba(255, 215, 0, 0.3)",
+    "--primary": "#FFD700", 
+    "--primary-soft": "rgba(255, 215, 0, 0.1)",
+    "--accent": "#000000", // Dark Ink for contrast
+    "--text": "#1A1A1A",
+    "--text-muted": "#666666",
+    "--bg-spot-1": "rgba(255, 255, 255, 1)", // Blinding white
+    "animation": "c0_explosion"
+  },
   eternal_beauty: {
     "--bg": "#0D0B0B", // Puppet Case Black
     "--surface": "#1A1616",
@@ -971,7 +984,16 @@ function toast(msg) {
       particle.style.left = Math.random() * 100 + "vw";
       particle.style.top = "-20px";
       particle.style.animationDuration = "3s";
-    } else if (type === "puppet_strings") {
+        } else if (type === "c0_explosion") {
+      particle.className = "chakra-shard";
+      // Randomly decide if it's a square or a diamond
+      if (Math.random() > 0.5) particle.style.borderRadius = "50%"; 
+      
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = Math.random() * 100 + "vh";
+      particle.style.animationDuration = "2s";
+    }
+ else if (type === "puppet_strings") {
       particle.className = "puppet-string";
       particle.style.left = Math.random() * 100 + "vw";
       particle.style.top = "0";
@@ -1156,7 +1178,8 @@ function toast(msg) {
       original_hope: "rain",
       tobi_good_boy: "tobi_swirl",
       monster_mist: "sharks",
-      stinky_aloe: "flytraps"
+      stinky_aloe: "flytraps",
+      ultimate_masterpiece: "c0_explosion"
     };
     startAnimation(map[theme] || null);
   });
