@@ -762,8 +762,16 @@ function toast(msg) {
       particle.style.top = Math.random() * 100 + "vh";
       // Each swirl lasts 3 seconds
       particle.style.animationDuration = "3s";
+        } else if (type === "feathers") {
+      particle.className = "feather";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = "-30px";
+      // Itachi's feathers should drift slowly and gracefully
+      particle.style.animationDuration = (Math.random() * 4 + 5) + "s";
+      
+      // Randomly flip some feathers for variety
+      if (Math.random() > 0.5) particle.style.transform = "scaleX(-1)";
     }
-
     else if (type === "hundred_seals") {
       particle.className = "diamond-seal";
       particle.style.left = Math.random() * 100 + "vw";
