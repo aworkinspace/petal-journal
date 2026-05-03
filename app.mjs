@@ -202,6 +202,19 @@ const THEMES = {
     "--text-muted": "rgba(224, 224, 224, 0.5)",
     "animation": "clouds"
   },
+    hidan_ritual: {
+    "--bg": "#080808", // Pure Ritual Black
+    "--surface": "#121212",
+    "--surface-2": "#4A0000", // Dried Blood Red
+    "--border": "rgba(255, 0, 0, 0.2)",
+    "--primary": "#FF0000", // Fresh Blood Crimson
+    "--primary-soft": "rgba(255, 0, 0, 0.1)",
+    "--accent": "#FFFFFF", // Skeleton Bone White
+    "--text": "#E5E5E5",
+    "--text-muted": "rgba(229, 229, 229, 0.5)",
+    "--bg-spot-1": "rgba(74, 0, 0, 0.3)",
+    "animation": "jashin"
+  },
   hidden_rain: {
     "--bg": "#111418", // Dark Stormy Grey
     "--surface": "#1B2026",
@@ -675,7 +688,7 @@ function toast(msg) {
   function renderSpotify(base) {
     const host = $("spotifyEmbed");
     if (!host || !base) return;
-    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" , "butterfly_mode" ]);
+    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" , "butterfly_mode" , "hidan_ritual" ]);
     const theme = darks.has(localStorage.getItem("petal_theme")) ? "dark" : "light";
     
     host.innerHTML = `<iframe class="spotify-iframe" style="width:100%; height:352px; border:0; border-radius:16px; margin-top:10px;" src="${base}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
@@ -816,6 +829,13 @@ function toast(msg) {
         particle.style.setProperty('--rot', edge > 0.25 ? "90deg" : "-90deg"); // From sides
       }
       particle.style.animationDuration = (Math.random() * 2 + 3) + "s";
+        } else if (type === "jashin") {
+      particle.className = "jashin-seal";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = Math.random() * 100 + "vh";
+      // Random rotation for the symbols
+      particle.style.transform = `rotate(${Math.random() * 360}deg)`;
+      particle.style.animationDuration = "5s";
     }
       else if (type === "pearls") {
         particle.className = "pearl";
@@ -960,7 +980,8 @@ function toast(msg) {
       six_paths_sage: "truth_orbs",
       shadow_possession: "shadows",
       mind_transfer: "mind_waves",
-      butterfly_mode: "butterflies"
+      butterfly_mode: "butterflies",
+      hidan_ritual: "jashin"
     };
     startAnimation(map[theme] || null);
   });
