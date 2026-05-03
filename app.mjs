@@ -824,7 +824,21 @@ function toast(msg) {
           particle.style.background = "#F97316";
           particle.style.boxShadow = "0 0 20px 4px #F97316";
         }
-      } 
+          } else if (type === "bubbles") {
+      const isRipple = Math.random() > 0.6; // 40% chance for a ripple
+      
+      if (isRipple) {
+        particle.className = "water-ripple";
+        particle.style.left = Math.random() * 100 + "vw";
+        particle.style.top = Math.random() * 100 + "vh";
+        particle.style.animationDuration = "4s";
+      } else {
+        particle.className = "water-drop";
+        particle.style.left = Math.random() * 100 + "vw";
+        particle.style.bottom = "-20px";
+        particle.style.animationDuration = (Math.random() * 1 + 2) + "s";
+      }
+ 
             else if (type === "wood_style") {
         const isVine = Math.random() > 0.7; 
         if (isVine) {
