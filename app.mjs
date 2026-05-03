@@ -412,13 +412,13 @@ function toast(msg) {
         else { p.className = "water-drop"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; }
         p.style.animationDuration = "4s";
       } 
-              else if (type === "seals") {
-        const kanji = ["蝦", "蛞", "蛇"]; // Toad, Slug, Snake
-        particle.className = "kanji-seal";
-        particle.textContent = kanji[Math.floor(Math.random() * kanji.length)];
-        particle.style.left = Math.random() * 100 + "vw";
-        particle.style.top = Math.random() * 100 + "vh";
-        particle.style.animationDuration = "5s";
+                    else if (type === "seals") {
+        const kanji = ["蝦", "蛞", "蛇"]; 
+        p.className = "kanji-seal"; // Changed 'particle' to 'p'
+        p.textContent = kanji[Math.floor(Math.random() * kanji.length)];
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDuration = "5s";
       }
       else if (type === "spirals") { p.className = "uzumaki-spiral"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "5s"; } 
       else if (type === "bolts") { p.className = "chidori-bolt"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.transform = `rotate(${Math.random() * 360}deg)`; p.style.animationDuration = "0.3s"; }
