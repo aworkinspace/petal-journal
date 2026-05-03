@@ -369,6 +369,10 @@ springtime_youth: {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
+.kage-aura {
+  box-shadow: 0 0 20px 5px rgba(255, 215, 0, 0.4), var(--shadow) !important;
+  border: 2px solid #FFD700 !important;
+}
 
     </style>
 
@@ -432,6 +436,8 @@ const firebaseConfig = {
   <img src="assets/golden-sprout.gif" alt="Level 5 Badge" style="width:40px; margin-bottom:10px;">
   <span>Zen Master Achievement Unlocked!</span>
 </div>
+      <div id="ninjaRank" class="section-title">Rank: Genin</div>
+
     </div>
     <div class="zen-bar-bg">
       <div id="zenBarFill" class="zen-bar-fill"></div>
@@ -478,7 +484,7 @@ const firebaseConfig = {
   const $ = (id) => document.getElementById(id);
 
   /* ------------------- Zen XP Logic ------------------- */
-  function updateZenProgress() {
+   function updateZenProgress() {
     const rawEntries = localStorage.getItem("petal_entries_v1") || "[]";
     const wbSaves = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
     const visionSaves = parseInt(localStorage.getItem("petal_vision_count") || "0");
@@ -502,18 +508,45 @@ const firebaseConfig = {
     const currentXPInLevel = totalXP % xpPerLevel;
     const progressPercent = (currentXPInLevel / xpPerLevel) * 100;
 
+    // --- UI UPDATES ---
     if ($("zenLevel")) $("zenLevel").textContent = `Level ${level}`;
     if ($("zenXP")) $("zenXP").textContent = `${currentXPInLevel} / ${xpPerLevel} XP`;
     if ($("zenBarFill")) $("zenBarFill").style.width = `${progressPercent}%`;
 
+    // --- NINJA RANK LOGIC ---
+    let rank = "Genin";
+    if (level >= 5) rank = "Jonin";
+    if (level >= 10) rank = "Kage";
+    if ($("ninjaRank")) $("ninjaRank").textContent = `Rank: ${rank}`;
+
+    // --- LEVEL 5 REWARDS ---
     if (level >= 5) {
       if ($("level5Badge")) {
         $("level5Badge").style.display = "flex";
         const img = $("level5Badge").querySelector("img");
         if (img) img.src = "assets/golden-sprout.gif";
       }
-      const opt = document.querySelector('option[value="golden_petal"]');
-      if (opt) { opt.disabled = false; opt.textContent = "✨ Golden Petal (Unlocked!)"; }
+      const optGolden = document.querySelector('option[value="golden_petal"]');
+      if (optGolden) { 
+        optGolden.disabled = false; 
+        optGolden.textContent = "✨ Golden Petal (Unlocked!)"; 
+      }
+    }
+
+    // --- LEVEL 10 REWARDS (LEGENDARY) ---
+    if (level >= 10) {
+      // 1. Add the Kage Aura glow to all panels
+      document.querySelectorAll(".panel").forEach(p => p.classList.add("kage-aura"));
+
+      // 2. Unlock the God-Tier Theme
+      const optGod = document.querySelector('option[value="six_paths_sage"]');
+      if (optGod) {
+        optGod.disabled = false;
+        optGod.textContent = "☀️ Six Paths Sage (LEGENDARY)";
+      }
+      
+      // 3. Optional: Show a Level 10 badge if you have one
+      if ($("level10Badge")) $("level10Badge").style.display = "flex";
     }
   }
 
