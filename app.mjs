@@ -215,16 +215,18 @@ const THEMES = {
     "--bg-spot-2": "rgba(255, 255, 255, 0.3)",
     "animation": "love_sand"
   },
-    god_of_shinobi: {
-    "--bg": "#E9F5DB", // Earthy Sage
+      god_of_shinobi: {
+    "--bg": "#E9F5DB", 
     "--surface": "#CFE1B9",
-    "--surface-2": "#718355", // Forest Green
-    "--border": "rgba(113, 131, 85, 0.2)",
+    "--surface-2": "#718355",
+    "--border": "#4F772D",
     "--primary": "#B56576", // Armor Red
-    "--primary-soft": "rgba(181, 101, 118, 0.15)",
-    "--accent": "#4F772D", // Mokuton Green
-    "--text": "#31572C",
-    "--text-muted": "#4F772D",
+    "--primary-soft": "rgba(181, 101, 118, 0.2)",
+    "--accent": "#31572C", 
+    "--text": "#132A13",
+    "--text-muted": "#31572C",
+    "--bg-spot-1": "rgba(49, 87, 44, 0.15)", // Deep Forest Shadows
+    "--bg-spot-2": "rgba(113, 131, 85, 0.2)", // Mossy Light
     "animation": "wood_style"
   },
   tactical_suiton: {
@@ -828,6 +830,19 @@ function toast(msg) {
       if (Math.random() > 0.8) {
         particle.style.background = "#F97316";
         particle.style.boxShadow = "0 0 20px 4px #F97316";
+          } else if (type === "wood_style") {
+      const isVine = Math.random() > 0.7; // 30% chance for a vine
+      
+      if (isVine) {
+        particle.className = "wood-vine";
+        particle.style.left = Math.random() * 100 + "vw";
+        particle.style.bottom = "0"; // Grows from the bottom
+        particle.style.animationDuration = "5s";
+      } else {
+        particle.className = "wood-petal";
+        particle.style.left = Math.random() * 100 + "vw";
+        particle.style.top = "-20px";
+        particle.style.animationDuration = (Math.random() * 3 + 4) + "s";
       }
     }
 
