@@ -529,49 +529,57 @@ function toast(msg) {
   clearTimeout(toast._id); toast._id = setTimeout(() => t.classList.remove("show"), 2200);
 }
 
-/* ------------------- Firebase Logic (With Session Buffer) ------------------- */
+/* ------------------- Firebase Logic (Force Menu Update) ------------------- */
 (() => {
   const auth = window.firebaseAuth;
   if (!auth) return;
 
   onAuthStateChanged(auth, (user) => {
+    // We look for both possible IDs to be safe
     const loginBtn = document.getElementById("authButton");
     const profBtn = document.getElementById("profileButton");
     const outBtn = document.getElementById("btnSignOut");
 
     if (user) {
-      // USER IS LOGGED IN
-      if (loginBtn) loginBtn.style.display = "none";
-      if (profBtn) { 
-        profBtn.style.display = "inline-flex"; 
-        profBtn.textContent = user.displayName ? `${user.displayName}'s Profile` : "My Profile"; 
+      console.log("Login detected for:", user.email);
+      
+      // Force Hide Login
+      if (loginBtn) {
+        loginBtn.style.setProperty("display", "none", "important");
       }
-      if (outBtn) outBtn.style.display = "inline-flex";
-      console.log("Session verified for:", user.email);
+      
+      // Force Show Profile & Logout
+      if (profBtn) {
+        profBtn.style.setProperty("display", "inline-flex", "important");
+        profBtn.textContent = user.displayName ? `${user.displayName}'s Profile` : "My Profile";
+      }
+      if (outBtn) {
+        outBtn.style.setProperty("display", "inline-flex", "important");
+      }
+      
+      // Check for Level-based rewards now that we know who the user is
+      if (typeof checkUnlocks === "function") checkUnlocks();
+
     } else {
-      // USER SEEMS LOGGED OUT
-      // We wait 3 seconds to confirm it isn't just a slow network connection
+      // Small delay for slow networks
       setTimeout(() => {
         if (!window.firebaseAuth.currentUser) {
-          if (loginBtn) loginBtn.style.display = "inline-flex";
-          if (profBtn) profBtn.style.display = "none";
-          if (outBtn) outBtn.style.display = "none";
-          console.log("No active session found.");
+          if (loginBtn) loginBtn.style.setProperty("display", "inline-flex", "important");
+          if (profBtn) profBtn.style.setProperty("display", "none", "important");
+          if (outBtn) outBtn.style.setProperty("display", "none", "important");
         }
-      }, 3000); 
+      }, 2000);
     }
   });
 
+  // Logout Logic
   document.getElementById("btnSignOut")?.addEventListener("click", () => {
     signOut(auth).then(() => {
-      toast("Logged out.");
-      // Optional: force clear any local project ghosts
       localStorage.removeItem("petal_early_access");
-      setTimeout(() => location.reload(), 1000);
+      location.reload(); 
     });
   });
 })();
-
 
 /* ------------------- Journal Logic (With Level Unlocks) ------------------- */
 (() => {
