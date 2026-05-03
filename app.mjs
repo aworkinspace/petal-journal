@@ -3,7 +3,7 @@ import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/
 import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
 
-/* ----------------------------- Theme Logic ----------------------------- */
+/* ----------------------------- Theme Data ----------------------------- */
 const THEMES = {
   petal: { "--bg": "var(--rose-50)", "--surface": "var(--rose-50)", "--surface-2": "var(--pink-200)", "--border": "var(--mauve-200)", "--primary": "var(--periwinkle-400)", "--primary-soft": "var(--periwinkle-200)", "--accent": "var(--pink-500)", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(167,171,222,.45)", "--bg-spot-2": "rgba(255,165,214,.35)" },
   lavender: { "--bg": "#F6F2FF", "--surface": "#F6F2FF", "--surface-2": "#EDE4FF", "--border": "#D8CBF2", "--primary": "#A7ABDE", "--primary-soft": "#CED1F8", "--accent": "#D7A6FF", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(215,166,255,.32)", "--bg-spot-2": "rgba(167,171,222,.28)" },
@@ -54,10 +54,12 @@ const THEMES = {
   desert_love: { "--bg": "#F2E8CF", "--surface": "#EAD7B1", "--surface-2": "#D4A373", "--border": "rgba(188, 71, 73, 0.2)", "--primary": "#BC4749", "--accent": "#6A994E", "--text": "#386641", "--text-muted": "#6A994E", "--bg-spot-1": "rgba(188, 71, 73, 0.05)", "--bg-spot-2": "rgba(255, 255, 255, 0.3)" }
 };
 
-/* ------------------- Helpers ------------------- */
+/* ------------------- Theme Helpers ------------------- */
 function applyVars(vars) {
   if (!vars) return;
-  for (const [k, v] of Object.entries(vars)) document.documentElement.style.setProperty(k, v);
+  for (const [k, v] of Object.entries(vars)) {
+    document.documentElement.style.setProperty(k, v);
+  }
 }
 
 function applyTheme(themeName) {
@@ -68,7 +70,10 @@ function applyTheme(themeName) {
     const wl = parseInt(localStorage.getItem("petal_well_count") || "0");
     const entries = JSON.parse(localStorage.getItem("petal_entries_v1") || "[]");
     let totalXP = (entries.length * 50) + (wb * 20) + (vs * 30) + (cp * 100) + (wl * 30);
-    entries.forEach(e => totalXP += (e.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length);
+    entries.forEach(e => {
+       const words = (e.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
+       totalXP += words;
+    });
 
     if (themeName === "golden_petal" && totalXP < 800) { themeName = "petal"; toast("Level 5 required!"); }
     if (themeName === "six_paths_sage" && totalXP < 1800) { themeName = "petal"; toast("Level 10 required!"); }
@@ -115,7 +120,8 @@ function toast(msg) {
       }, 2500);
     }
   });
-  document.getElementById("btnSignOut")?.addEventListener("click", () => signOut(auth).then(() => location.reload()));
+  const signBtn = document.getElementById("btnSignOut");
+  if(signBtn) signBtn.onclick = () => signOut(auth).then(() => location.reload());
 })();
 
 /* ------------------- Journal Logic ------------------- */
@@ -132,14 +138,23 @@ function toast(msg) {
     const cp = parseInt(localStorage.getItem("petal_capsule_count") || "0");
     const wl = parseInt(localStorage.getItem("petal_well_count") || "0");
     let totalXP = (entries.length * 50) + (wb * 20) + (vs * 30) + (cp * 100) + (wl * 30);
-    entries.forEach(e => totalXP += (e.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length);
+    entries.forEach(e => {
+       const words = (e.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
+       totalXP += words;
+    });
     return Math.floor(totalXP / 200) + 1;
   }
 
   function checkUnlocks() {
     const lvl = getZenLevel();
-    document.querySelectorAll(".level-5-reward").forEach(el => el.style.display = lvl >= 5 ? "inline-flex" : "none");
-    const optG = $("optGolden"); if (optG) { optG.disabled = lvl < 5; optG.textContent = lvl >= 5 ? "✨ Golden Petal" : "🔒 Level 5"; }
+    document.querySelectorAll(".level-5-reward").forEach(el => {
+        el.style.display = lvl >= 5 ? "inline-flex" : "none";
+    });
+    const optG = $("optGolden"); 
+    if (optG) { 
+        optG.disabled = lvl < 5; 
+        optG.textContent = lvl >= 5 ? "✨ Golden Petal" : "🔒 Level 5"; 
+    }
   }
 
   function renderList() {
@@ -154,7 +169,12 @@ function toast(msg) {
     list.innerHTML = filtered.map(e => `<div class="entry-card" data-id="${e.id}"><h4>${e.title || '(Untitled)'}</h4><p>${e.date} • ${e.mood}</p></div>`).join('');
     list.querySelectorAll('.entry-card').forEach(card => card.onclick = () => {
         const e = entries.find(ent => ent.id === card.dataset.id);
-        activeId = e.id; $("date").value = e.date; $("mood").value = e.mood; $("title").value = e.title; $("tagsInput").value = (e.tags || []).join(', '); $("content").innerHTML = e.content;
+        activeId = e.id; 
+        if($("date")) $("date").value = e.date; 
+        if($("mood")) $("mood").value = e.mood; 
+        if($("title")) $("title").value = e.title; 
+        if($("tagsInput")) $("tagsInput").value = (e.tags || []).join(', '); 
+        if($("content")) $("content").innerHTML = e.content;
     });
     if ($("count")) $("count").textContent = filtered.length;
   }
@@ -164,21 +184,28 @@ function toast(msg) {
     const tags = new Set(["gratitude", "work", "health", "family"]);
     entries.forEach(e => e.tags && e.tags.forEach(t => tags.add(t.toLowerCase())));
     row.innerHTML = [...tags].sort().map(t => `<button class="chip tag ${activeTag === t ? 'active' : ''}" data-tag="${t}">${t}</button>`).join('');
-    row.querySelectorAll('.chip.tag').forEach(btn => btn.onclick = () => { activeTag = activeTag === btn.dataset.tag ? null : btn.dataset.tag; renderTagChips(); renderList(); });
+    row.querySelectorAll('.chip.tag').forEach(btn => btn.onclick = () => { 
+        activeTag = activeTag === btn.dataset.tag ? null : btn.dataset.tag; 
+        renderTagChips(); 
+        renderList(); 
+    });
   }
 
   $("btnSave")?.addEventListener('click', () => {
     const html = $("content").innerHTML;
     const data = { id: activeId || Date.now().toString(), date: $("date").value, mood: $("mood").value, title: $("title").value, content: html, tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), updatedAt: Date.now() };
     if (!activeId) entries.push(data); else entries = entries.map(e => e.id === activeId ? data : e);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); renderList(); renderTagChips(); checkUnlocks(); toast("Saved!");
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); 
+    renderList(); renderTagChips(); checkUnlocks(); 
+    toast("Saved!");
     $("saveSfx")?.play();
   });
 
   $("btnDelete")?.addEventListener('click', () => {
     if (!activeId || !confirm("Delete?")) return;
     entries = entries.filter(e => e.id !== activeId);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); renderList(); renderTagChips(); checkUnlocks();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); 
+    renderList(); renderTagChips(); checkUnlocks();
     activeId = null; $("title").value = ""; $("content").innerHTML = ""; toast("Deleted.");
     $("deleteSfx")?.play();
   });
@@ -198,9 +225,9 @@ function toast(msg) {
 
   function renderSpotify(base) {
     const host = $("spotifyEmbed"); if (!host || !base) return;
-    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" , "butterfly_mode" , "hidan_ritual" , "kakuzu_hearts" , "eternal_beauty" , "monster_mist" , "stinky_aloe" , "uchiha_avenger" , "eternal_amaterasu"]);
+    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" , "butterfly_mode" , "hidan_ritual" , "kakuzu_hearts" , "eternal_beauty" , "monster_mist" , "stinky_aloe" , "uchiha_avenger" , "eternal_amaterasu" , "six_paths_pain"]);
     const theme = darks.has(localStorage.getItem("petal_theme")) ? "dark" : "light";
-    host.innerHTML = `<iframe class="spotify-iframe" style="width:100%; height:352px; border:0; border-radius:16px;" src="${base}?theme=${theme}" loading="lazy"></iframe>`;
+    host.innerHTML = `<iframe class="spotify-iframe" style="width:100%; height:352px; border:0; border-radius:16px;" src="${base}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
   }
 
   document.addEventListener("DOMContentLoaded", () => {
@@ -221,10 +248,14 @@ function toast(msg) {
             localStorage.setItem("petal_spotify_embed", base); renderSpotify(base);
         }
     });
-    $("btnClearSpotify")?.onclick = () => { localStorage.removeItem("petal_spotify_embed"); $("spotifyEmbed").innerHTML = ""; };
+    const clrBtn = $("btnClearSpotify");
+    if(clrBtn) clrBtn.onclick = () => { localStorage.removeItem("petal_spotify_embed"); $("spotifyEmbed").innerHTML = ""; };
   });
 
-  document.addEventListener('themeChanged', () => { renderSpotify(localStorage.getItem("petal_spotify_embed")); });
+  document.addEventListener('themeChanged', () => { 
+    const saved = localStorage.getItem("petal_spotify_embed");
+    if(saved) renderSpotify(saved); 
+  });
 })();
 
 /* ------------------- Seasonal Animations ------------------- */
@@ -274,6 +305,12 @@ function toast(msg) {
       else if (type === "sharks") { p.className = "shark-fin"; p.style.left = "-40px"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; } 
       else if (type === "flytraps") { p.className = "flytrap-spike"; p.style.left = Math.random() * 100 + "vw"; const isT = Math.random() > 0.5; p.style[isT ? 'top' : 'bottom'] = "-10px"; if (isT) p.style.transform = "rotate(180deg)"; p.style.animationDuration = "3s"; }
       else if (type === "love_sand") { p.className = "love-kanji"; p.textContent = "愛"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-40px"; p.style.animationDuration = (Math.random() * 3 + 4) + "s"; }
+      else if (type === "shadows") {
+        const edge = Math.random();
+        if (edge > 0.5) { p.style.bottom = "-50px"; p.style.left = Math.random() * 100 + "vw"; p.style.setProperty('--rot', `${(Math.random() * 40) - 20}deg`); } 
+        else { p.style.top = Math.random() * 100 + "vh"; p.style.left = edge > 0.25 ? "-50px" : "100vw"; p.style.setProperty('--rot', edge > 0.25 ? "90deg" : "-90deg"); }
+        p.className = "shadow-tendril"; p.style.animationDuration = (Math.random() * 2 + 3) + "s";
+      }
 
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
@@ -282,26 +319,35 @@ function toast(msg) {
 
   document.addEventListener("themeChanged", () => {
     const theme = localStorage.getItem("petal_theme");
-    const map = { cosmic_starfall: "meteors", autumn_forest: "leaves", spring_blossom: "blossoms", summer_shimmer: "sunbeams", midnight_snowfall: "snow", ninja_rivalry: "sparks", copy_ninja: "lightning", medical_kunoichi: "healing", legendary_sannin: "seals", desert_love: "love_sand", god_of_shinobi: "wood_style", tactical_suiton: "bubbles", ghost_uchiha: "tomoe", crow_illusion: "feathers", yellow_flash: "teleport", lavender_pearl: "pearls", gallant_tale: "sage_history", forbidden_lab: "snakes", slug_princess: "hundred_seals", nine_tails_malice: "malice", springtime_youth: "aura", eternal_amaterasu: "black_fire", kamui_dimension: "warps", six_paths_sage: "truth_orbs", shadow_possession: "shadows", mind_transfer: "mind_waves", butterfly_mode: "butterflies", hidan_ritual: "jashin", kakuzu_hearts: "threads", art_explosion: "explosive_birds", eternal_beauty: "puppet_strings", paper_angel: "paper", six_paths_pain: "gravity", original_hope: "rain", tobi_good_boy: "tobi_swirl", monster_mist: "sharks", stinky_aloe: "flytraps", ultimate_masterpiece: "c0_explosion", hokage_dream: "spirals", uchiha_avenger: "bolts" };
+    const map = { 
+      cosmic_starfall: "meteors", autumn_forest: "leaves", spring_blossom: "blossoms", summer_shimmer: "sunbeams", midnight_snowfall: "snow", 
+      ninja_rivalry: "sparks", copy_ninja: "lightning", medical_kunoichi: "healing", legendary_sannin: "seals", desert_love: "love_sand", 
+      god_of_shinobi: "wood_style", tactical_suiton: "bubbles", ghost_uchiha: "tomoe", crow_illusion: "feathers", yellow_flash: "teleport", 
+      lavender_pearl: "pearls", gallant_tale: "sage_history", forbidden_lab: "snakes", slug_princess: "hundred_seals", nine_tails_malice: "malice", 
+      springtime_youth: "aura", eternal_amaterasu: "black_fire", kamui_dimension: "warps", six_paths_sage: "truth_orbs", shadow_possession: "shadows", 
+      mind_transfer: "mind_waves", butterfly_mode: "butterflies", hidan_ritual: "jashin", kakuzu_hearts: "threads", art_explosion: "explosive_birds", 
+      eternal_beauty: "puppet_strings", paper_angel: "paper", six_paths_pain: "gravity", original_hope: "rain", tobi_good_boy: "tobi_swirl", 
+      monster_mist: "sharks", stinky_aloe: "flytraps", ultimate_masterpiece: "c0_explosion", hokage_dream: "spirals", uchiha_avenger: "bolts" 
+    };
     startAnimation(map[theme] || null);
   });
 })();
 
 /* ------------------- Stickers & Prompts ------------------- */
-const prompts = ["What is your personal 'Ninja Way' for today?", "If you became Hokage tomorrow, what is the first thing you would change?", "What is one 'Jutsu' (a new skill or habit) you are currently training to master?", "Think about your 'Team 7.' Who are the two people who support you the most?", "Recall a time you failed but didn't give up. How did that make you stronger?", "Which Hidden Village matches your current mood?", "‘A person grows up when they're able to overcome hardships.’ What is a hardship you are currently overcoming?", "‘People become stronger because they have memories they can't forget.’ What is a memory that makes you strong today?", "‘True art is an explosion!’ What was the most exciting or 'explosive' moment of your week?"];
+const promptsList = ["What is your personal 'Ninja Way'?", "Becoming Hokage?", "One 'Jutsu' you're mastering?", "Who are your Team 7?", "Recall a time you failed but didn't give up.", "Chapter title?", "Overcome hardships?", "Memories that make you strong?", "Art is an explosion!"];
 
 document.addEventListener("DOMContentLoaded", () => {
   const card = document.getElementById("promptCard");
   if (card) {
-      card.textContent = localStorage.getItem("petal_prompt") || prompts[0];
+      card.textContent = localStorage.getItem("petal_prompt") || promptsList[0];
       document.getElementById("btnPrompt")?.addEventListener("click", () => {
-          const next = prompts[Math.floor(Math.random() * prompts.length)];
+          const next = promptsList[Math.floor(Math.random() * promptsList.length)];
           card.textContent = next; localStorage.setItem("petal_prompt", next);
       });
   }
 
   const picker = document.getElementById("imgPicker");
-  document.getElementById("btnAddImage")?.addEventListener("click", () => { if (!window.firebaseAuth?.currentUser) { alert("Login required"); return; } picker?.click(); });
+  document.getElementById("btnAddImage")?.addEventListener("click", () => picker?.click());
   picker?.addEventListener("change", async (e) => {
     const file = e.target.files?.[0]; if (!file || !window.firebaseAuth?.currentUser) return;
     try { toast("Uploading..."); const path = `entry_images/${window.firebaseAuth.currentUser.uid}/${Date.now()}_image`; const fileRef = storageRef(window.firebaseStorage, path); await uploadBytes(fileRef, file, { contentType: file.type }); const url = await getDownloadURL(fileRef); const img = document.createElement("img"); img.src = url; img.className = "sticker"; document.getElementById("content").appendChild(img); toast("Added!"); } catch (err) { alert("Failed"); }
@@ -317,8 +363,8 @@ document.addEventListener("click", (e) => {
 document.addEventListener("DOMContentLoaded", () => {
   const theme = localStorage.getItem("petal_theme") || "petal";
   applyTheme(theme); applySkin(localStorage.getItem("petal_skin") || "ruled");
-  if (document.getElementById("themeSelect")) document.getElementById("themeSelect").value = theme;
-  if (document.getElementById("skinSelect")) document.getElementById("skinSelect").value = localStorage.getItem("petal_skin") || "ruled";
-  document.getElementById("themeSelect") && (document.getElementById("themeSelect").onchange = (e) => applyTheme(e.target.value));
-  document.getElementById("skinSelect") && (document.getElementById("skinSelect").onchange = (e) => applySkin(e.target.value));
+  const tSel = document.getElementById("themeSelect"); if (tSel) tSel.value = theme;
+  const sSel = document.getElementById("skinSelect"); if (sSel) sSel.value = localStorage.getItem("petal_skin") || "ruled";
+  if (tSel) tSel.onchange = (e) => applyTheme(e.target.value);
+  if (sSel) sSel.onchange = (e) => applySkin(e.target.value);
 });
