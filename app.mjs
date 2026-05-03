@@ -252,6 +252,54 @@ const THEMES = {
     "--text-muted": "rgba(254, 226, 226, 0.5)",
     "animation": "puppet_strings"
   },
+    paper_angel: {
+    "--bg": "#F8FAFC", // Paper White
+    "--surface": "#F1F5F9",
+    "--surface-2": "#E2E8F0",
+    "--border": "rgba(139, 92, 246, 0.2)",
+    "--primary": "#8B5CF6", // Konan Purple
+    "--primary-soft": "rgba(139, 92, 246, 0.1)",
+    "--accent": "#3B82F6", // Origami Blue
+    "--text": "#1E293B",
+    "--text-muted": "#64748B",
+    "animation": "paper"
+  },
+  god_of_peace: {
+    "--bg": "#FFF7ED", // Hopeful Sun-through-rain
+    "--surface": "#FFEDD5",
+    "--surface-2": "#FB923C", // Yahiko Orange
+    "--border": "rgba(30, 41, 59, 0.1)",
+    "--primary": "#0EA5E9", // Rain Blue
+    "--primary-soft": "rgba(14, 165, 233, 0.1)",
+    "--accent": "#F97316",
+    "--text": "#431407",
+    "--text-muted": "#7C2D12",
+    "animation": "rain" // Re-uses rain but we can make it slower
+  },
+  six_paths_pain: {
+    "--bg": "#0F0B14", // Rinnegan Deep Purple
+    "--surface": "#1A1424",
+    "--surface-2": "#4C1D95", 
+    "--border": "rgba(168, 85, 247, 0.2)",
+    "--primary": "#A855F7", // Rinnegan Purple
+    "--primary-soft": "rgba(168, 85, 247, 0.1)",
+    "--accent": "#FF4500", // Pain Hair Red
+    "--text": "#E9D5FF",
+    "--text-muted": "#A78BFA",
+    "animation": "gravity"
+  },
+  masked_goofball: {
+    "--bg": "#0D0D12", 
+    "--surface": "#1A1A24",
+    "--surface-2": "#F97316", // Tobi Mask Orange
+    "--border": "rgba(249, 115, 22, 0.3)",
+    "--primary": "#F97316", 
+    "--primary-soft": "rgba(249, 115, 22, 0.15)",
+    "--accent": "#FFFFFF", 
+    "--text": "#F2F0F7",
+    "--text-muted": "rgba(242,240,247,.5)",
+    "animation": "tobi_swirl"
+  },
   hidden_rain: {
     "--bg": "#111418", // Dark Stormy Grey
     "--surface": "#1B2026",
