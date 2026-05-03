@@ -678,6 +678,7 @@ petal: { "--bg": "var(--rose-50)", "--surface": "var(--rose-50)", "--surface-2":
 </div>
 
           <script>
+  // 1. Core Canvas Setup
   const refCanvas = document.getElementById("wbRef");
   const refCtx = refCanvas.getContext("2d");
   const canvas = document.getElementById("wb");
@@ -733,6 +734,7 @@ petal: { "--bg": "var(--rose-50)", "--surface": "var(--rose-50)", "--surface-2":
     return { x: p.clientX - rect.left, y: p.clientY - rect.top };
   }
 
+  // 2. Drawing Logic (Styles)
   function stroke(a, b) {
     const size = Number(sizeEl.value);
     ctx.globalCompositeOperation = "source-over";
@@ -780,6 +782,7 @@ petal: { "--bg": "var(--rose-50)", "--surface": "var(--rose-50)", "--surface-2":
     }
   }
 
+  // 3. Paint Bucket logic
   function floodFill(startX, startY, fillColor) {
     const dpr = window.devicePixelRatio || 1;
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -801,6 +804,7 @@ petal: { "--bg": "var(--rose-50)", "--surface": "var(--rose-50)", "--surface-2":
     ctx.putImageData(imageData, 0, 0);
   }
 
+  // 4. Input Handlers
   function down(e) { 
     if (draggingRef) return; 
     const p = pos(e); 
@@ -818,7 +822,6 @@ petal: { "--bg": "var(--rose-50)", "--surface": "var(--rose-50)", "--surface-2":
   saveBtn.addEventListener("click", () => {
     const a = document.createElement("a");
     a.download = "whiteboard.png"; a.href = canvas.toDataURL("image/png"); a.click();
-    // XP Reward
     let count = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
     localStorage.setItem("petal_whiteboard_count", count + 1);
   });
@@ -832,37 +835,95 @@ petal: { "--bg": "var(--rose-50)", "--surface": "var(--rose-50)", "--surface-2":
   window.addEventListener("resize", resize);
   resize();
 
-  // Music Widget Logic
+  // 5. Reference Image Logic
+  (() => {
+    const btnRef = document.getElementById("btnRef");
+    const refPicker = document.getElementById("refPicker");
+    const refScaleEl = document.getElementById("refScale");
+    let refImg = null, refX = 20, refY = 20, refScale = 1;
+
+    function redrawRef() {
+      const dpr = window.devicePixelRatio || 1;
+      refCtx.clearRect(0, 0, refCanvas.width/dpr, refCanvas.height/dpr);
+      if (!refImg) return;
+      refCtx.globalAlpha = 0.5;
+      refCtx.drawImage(refImg, refX, refY, refImg.width * refScale, refImg.height * refScale);
+    }
+
+    btnRef.onclick = () => refPicker.click();
+    refPicker.onchange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const img = new Image();
+      img.onload = () => {
+        refImg = img;
+        refScale = Math.min(1, (canvas.width/2.5) / img.width);
+        if(refScaleEl) refScaleEl.value = refScale;
+        redrawRef();
+      };
+      img.src = URL.createObjectURL(file);
+    };
+    if(refScaleEl) refScaleEl.oninput = () => { refScale = Number(refScaleEl.value); redrawRef(); };
+    document.getElementById("btnRefClear").onclick = () => { refImg = null; redrawRef(); };
+  })();
+
+  // 6. Music & Spotify Logic
   (() => {
     const audio = document.getElementById("bgm");
     const tracks = ["assets/lofi.mp3", "assets/elevator.mp3", "assets/monty.mp3", "assets/intro.mp3"];
     let i = Number(localStorage.getItem("petal_track_index") || "0") % tracks.length;
-    if (audio) audio.src = tracks[i];
+    if (audio) {
+        audio.src = tracks[i];
+        audio.volume = Number(localStorage.getItem("petal_music_vol") || 0.35);
+    }
     document.getElementById("btnMusic").onclick = () => { if(audio.paused) audio.play(); else audio.pause(); };
     document.getElementById("btnNextTrack").onclick = () => { i = (i+1)%tracks.length; audio.src = tracks[i]; audio.play(); localStorage.setItem("petal_track_index", i); };
-  })();
 
-  // Spotify Logic
-  (() => {
     const urlEl = document.getElementById("spotifyUrl"), btnSet = document.getElementById("btnSetSpotify"), btnClr = document.getElementById("btnClearSpotify"), host = document.getElementById("spotifyEmbed");
     if (!urlEl || !host) return;
-    function render(base) {
-      const darks = ["midnight", "cosmic_starfall", "midnight_snowfall"];
+    function renderSpot(base) {
+      const darks = ["midnight", "cosmic_starfall", "shadow_possession", "copy_ninja", "eternal_amaterasu"];
       const theme = darks.includes(localStorage.getItem("petal_theme")) ? "dark" : "light";
-      host.innerHTML = `<iframe class="spotify-iframe" src="${base}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`;
+      host.innerHTML = `<iframe class="spotify-iframe" style="width:100%; height:152px; border:0; border-radius:12px; margin-top:10px;" src="${base}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`;
     }
     btnSet.onclick = () => { 
-      const match = urlEl.value.match(/(?:playlist|track|album)\/([a-zA-Z0-9]+)/);
+      const match = urlEl.value.match(/(?:playlist|track|album|show|episode)\/([a-zA-Z0-9]+)/);
       if (match) { 
         const type = urlEl.value.includes("track") ? "track" : "playlist";
         const embed = `https://open.spotify.com/embed/${type}/${match[1]}`;
-        localStorage.setItem("petal_spotify_embed", embed); render(embed); 
+        localStorage.setItem("petal_spotify_embed", embed); renderSpot(embed); 
       }
     };
     btnClr.onclick = () => { localStorage.removeItem("petal_spotify_embed"); host.innerHTML = ""; };
-    if (localStorage.getItem("petal_spotify_embed")) render(localStorage.getItem("petal_spotify_embed"));
+    if (localStorage.getItem("petal_spotify_embed")) renderSpot(localStorage.getItem("petal_spotify_embed"));
+  })();
+
+  // 7. Seasonal Animations (Matches main page)
+  (() => {
+    const overlay = document.createElement("div");
+    overlay.id = "animation-overlay";
+    overlay.style.cssText = "position:fixed; inset:0; pointer-events:none; z-index:1;";
+    document.body.prepend(overlay);
+    let animationInterval = null;
+
+    function startAnimation(type) {
+      if (animationInterval) clearInterval(animationInterval);
+      overlay.innerHTML = "";
+      if (!type) return;
+      animationInterval = setInterval(() => {
+        const particle = document.createElement("div");
+        const startX = Math.random() * window.innerWidth;
+        if (type === "meteors") { particle.className = "meteor"; particle.style.left = (startX + 400) + "px"; particle.style.top = "-50px"; }
+        else if (type === "leaves") { particle.className = "leaf"; particle.style.left = startX + "px"; particle.style.top = "-50px"; }
+        else if (type === "blossoms") { particle.className = "blossom"; particle.style.left = startX + "px"; particle.style.top = "-50px"; }
+        else if (type === "snow") { particle.className = "snowflake"; particle.style.left = startX + "px"; particle.style.top = "-10px"; const size = Math.random() * 4 + 2 + "px"; particle.style.width = size; particle.style.height = size; }
+        overlay.appendChild(particle);
+        setTimeout(() => particle.remove(), 8000);
+      }, 800);
+    }
+    const map = { cosmic_starfall: "meteors", autumn_forest: "leaves", spring_blossom: "blossoms", midnight_snowfall: "snow" };
+    startAnimation(map[localStorage.getItem("petal_theme")] || null);
   })();
 </script>
-
   </body>
 </html>
