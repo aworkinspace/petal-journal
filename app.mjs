@@ -466,7 +466,27 @@ function toast(msg) {
         if (Math.random() > 0.6) { p.className = "water-ripple"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; } 
         else { p.className = "water-drop"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; }
         p.style.animationDuration = "4s";
-      } 
+      }
+              else if (type === "rain") {
+        p.className = "rain-drop";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = "-20px";
+        p.style.animationDuration = (Math.random() * 0.4 + 0.6) + "s"; // Fast falling
+      }
+      else if (type === "embers") {
+        p.className = "ember";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.bottom = "-20px";
+        // Golden embers rise from the bottom
+        p.style.animationDuration = (Math.random() * 2 + 3) + "s";
+      }
+      else if (type === "sand") {
+        p.className = "sand-grain";
+        p.style.left = "-10px"; // Blow in from the left
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDuration = (Math.random() * 1 + 2) + "s";
+      }
+
               else if (type === "jashin") {
         p.className = "jashin-seal";
         p.style.left = Math.random() * 100 + "vw";
