@@ -426,6 +426,14 @@ function toast(msg) {
         else { p.className = "water-drop"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; }
         p.style.animationDuration = "4s";
       } 
+              else if (type === "jashin") {
+        p.className = "jashin-seal";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        // Random rotation for the symbols
+        p.style.transform = `rotate(${Math.random() * 360}deg)`;
+        p.style.animationDuration = "5s";
+      }
                     else if (type === "seals") {
         const kanji = ["蝦", "蛞", "蛇"]; 
         p.className = "kanji-seal"; // Changed 'particle' to 'p'
