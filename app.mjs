@@ -1172,7 +1172,7 @@ function toast(msg) {
       overlay.appendChild(particle);
       setTimeout(() => particle.remove(), 8000);
 
-    }, }, type === "teleport" || type === "bolts" ? 80 : (type === "aura" ? 150 : 800));
+    }, type === "teleport" || type === "bolts" ? 80 : (type === "aura" ? 150 : 800));
   }
 
   document.addEventListener("themeChanged", () => {
