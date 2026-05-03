@@ -300,6 +300,31 @@ const THEMES = {
     "--text-muted": "#7C2D12",
     "animation": "tobi_swirl"
   },
+    monster_mist: {
+    "--bg": "#051622", // Deep Abyss Blue
+    "--surface": "#0B2435",
+    "--surface-2": "#1A759F", // Samehada Teal
+    "--border": "rgba(160, 233, 255, 0.2)",
+    "--primary": "#52B69A", // Shark Skin Green
+    "--primary-soft": "rgba(82, 182, 154, 0.1)",
+    "--accent": "#184E77", // Water Prison Blue
+    "--text": "#D9EDF7",
+    "--text-muted": "rgba(217, 237, 247, 0.5)",
+    "animation": "sharks"
+  },
+  stinky_aloe: {
+    "--bg": "#0D110D", // Underworld Black
+    "--surface": "#1A1F1A",
+    "--surface-2": "#4D7C0F", // Sprout Green
+    "--border": "rgba(255, 255, 255, 0.1)", // Split personality
+    "--primary": "#FFFFFF", // White Zetsu
+    "--primary-soft": "rgba(255, 255, 255, 0.05)",
+    "--accent": "#000000", // Black Zetsu
+    "--text": "#E2E8F0",
+    "--text-muted": "rgba(226, 232, 240, 0.4)",
+    "--bg-spot-1": "rgba(77, 124, 15, 0.15)", // Aloe Glow
+    "animation": "flytraps"
+  },
   hidden_rain: {
     "--bg": "#111418", // Dark Stormy Grey
     "--surface": "#1B2026",
@@ -787,7 +812,7 @@ function toast(msg) {
   function renderSpotify(base) {
     const host = $("spotifyEmbed");
     if (!host || !base) return;
-    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" , "butterfly_mode" , "hidan_ritual" , "kakuzu_hearts" , "eternal_beauty" ]);
+    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" , "butterfly_mode" , "hidan_ritual" , "kakuzu_hearts" , "eternal_beauty" , "monster_mist" , "stinky_aloe" ]);
     const theme = darks.has(localStorage.getItem("petal_theme")) ? "dark" : "light";
     
     host.innerHTML = `<iframe class="spotify-iframe" style="width:100%; height:352px; border:0; border-radius:16px; margin-top:10px;" src="${base}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
@@ -964,6 +989,19 @@ function toast(msg) {
       particle.className = "tobi-spiral";
       particle.style.left = Math.random() * 100 + "vw";
       particle.style.top = Math.random() * 100 + "vh";
+        } else if (type === "sharks") {
+      particle.className = "shark-fin";
+      particle.style.left = "-40px";
+      particle.style.top = Math.random() * 100 + "vh";
+      particle.style.animationDuration = (Math.random() * 2 + 3) + "s";
+    } else if (type === "flytraps") {
+      particle.className = "flytrap-spike";
+      particle.style.left = Math.random() * 100 + "vw";
+      // Zetsu spikes emerge from the top or bottom edges
+      const isTop = Math.random() > 0.5;
+      particle.style[isTop ? 'top' : 'bottom'] = "-10px";
+      if (isTop) particle.style.transform = "rotate(180deg)";
+      particle.style.animationDuration = "3s";
     }
       else if (type === "pearls") {
         particle.className = "pearl";
@@ -1116,7 +1154,9 @@ function toast(msg) {
       paper_angel: "paper",
       six_paths_pain: "gravity",
       original_hope: "rain",
-      tobi_good_boy: "tobi_swirl"
+      tobi_good_boy: "tobi_swirl",
+      monster_mist: "sharks",
+      stinky_aloe: "flytraps"
     };
     startAnimation(map[theme] || null);
   });
