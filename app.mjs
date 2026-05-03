@@ -103,6 +103,30 @@ const THEMES = {
     "--bg-spot-1": "rgba(0, 0, 0, 0.8)",
     "animation": "shadows"
   },
+    mind_transfer: {
+    "--bg": "#F5F3FF", // Soft Lavender
+    "--surface": "#EDE9FE",
+    "--surface-2": "#C4B5FD", 
+    "--border": "rgba(139, 92, 246, 0.2)",
+    "--primary": "#8B5CF6", // Ino Purple
+    "--primary-soft": "rgba(139, 92, 246, 0.15)",
+    "--accent": "#10B981", // Flower/Medical Green
+    "--text": "#4C1D95",
+    "--text-muted": "#7C3AED",
+    "animation": "mind_waves"
+  },
+  butterfly_mode: {
+    "--bg": "#2D0A0A", // Akimichi Crimson
+    "--surface": "#3F1212",
+    "--surface-2": "#1E3A8A", // Blue Wing Chakra
+    "--border": "rgba(59, 130, 246, 0.3)",
+    "--primary": "#3B82F6", // Butterfly Blue
+    "--primary-soft": "rgba(59, 130, 246, 0.2)",
+    "--accent": "#FACC15", // Armor Gold
+    "--text": "#FEE2E2",
+    "--text-muted": "rgba(254, 226, 226, 0.5)",
+    "animation": "butterflies"
+  },
     gallant_tale: {
     "--bg": "#F5E6D3", // Aged Parchment
     "--surface": "#FCF8F0",
@@ -651,7 +675,7 @@ function toast(msg) {
   function renderSpotify(base) {
     const host = $("spotifyEmbed");
     if (!host || !base) return;
-    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" ]);
+    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" , "butterfly_mode" ]);
     const theme = darks.has(localStorage.getItem("petal_theme")) ? "dark" : "light";
     
     host.innerHTML = `<iframe class="spotify-iframe" style="width:100%; height:352px; border:0; border-radius:16px; margin-top:10px;" src="${base}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
@@ -760,7 +784,17 @@ function toast(msg) {
         particle.style.left = Math.random() * 100 + "vw";
         particle.style.bottom = "-100px";
         particle.style.animationDuration = (Math.random() * 1.5 + 1.5) + "s";
-      } 
+          } else if (type === "mind_waves") {
+      particle.className = "mind-wave";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = Math.random() * 100 + "vh";
+      particle.style.animationDuration = "4s";
+    } else if (type === "butterflies") {
+      particle.className = "butterfly";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.bottom = "-20px";
+      particle.style.animationDuration = (Math.random() * 2 + 4) + "s";
+    } 
       else if (type === "teleport") {
         particle.className = "flash-spark";
         particle.style.left = Math.random() * 100 + "vw";
@@ -924,7 +958,9 @@ function toast(msg) {
       eternal_amaterasu: "black_fire",
       kamui_dimension: "warps",
       six_paths_sage: "truth_orbs",
-      shadow_possession: "shadows"
+      shadow_possession: "shadows",
+      mind_transfer: "mind_waves",
+      butterfly_mode: "butterflies"
     };
     startAnimation(map[theme] || null);
   });
