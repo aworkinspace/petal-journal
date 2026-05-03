@@ -1551,3 +1551,36 @@ header, .top-actions { overflow: visible; }
   50% { transform: translateY(-50vh) translateX(30px) rotate(20deg); }
   100% { transform: translateY(-110vh) translateX(-30px) rotate(-20deg); opacity: 0; }
 }
+/* HIDAN: JASHIN RITUAL SYMBOL */
+.jashin-seal {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 2px solid #FF0000;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow: 0 0 15px #FF0000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: jashin-appear 5s ease-out forwards;
+}
+
+/* The Triangle inside the circle */
+.jashin-seal::after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 20px solid #FF0000;
+  transform: translateY(-2px);
+}
+
+@keyframes jashin-appear {
+  0% { transform: scale(0.5); opacity: 0; }
+  10% { opacity: 0.7; }
+  80% { opacity: 0.4; }
+  100% { transform: scale(1.2); opacity: 0; }
+}
