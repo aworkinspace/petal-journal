@@ -563,10 +563,15 @@ petal: { "--bg": "var(--rose-50)", "--surface": "var(--rose-50)", "--surface-2":
       </main>
     </div>
 
-    <script type="module">
-      import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+        <script type="module">
+      import { 
+        signInWithEmailAndPassword, 
+        createUserWithEmailAndPassword, 
+        sendPasswordResetEmail, 
+        onAuthStateChanged 
+      } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
-      const auth = window.firebaseAuth; // Get auth instance from global scope
+      const auth = window.firebaseAuth; 
 
       const $ = (id) => document.getElementById(id);
       const emailEl = $("email");
@@ -576,75 +581,71 @@ petal: { "--bg": "var(--rose-50)", "--surface": "var(--rose-50)", "--surface-2":
       const btnSignUp = $("btnSignUp");
       const btnResetPassword = $("btnResetPassword");
 
-      // Check if user is already logged in
+      // 1. Check if user is already logged in
       onAuthStateChanged(auth, (user) => {
         if (user) {
           authMsgEl.textContent = `Logged in as ${user.email}. Redirecting...`;
-          // Set early access flag (Firebase user implies early access)
           localStorage.setItem("petal_early_access", "1");
-          setTimeout(() => (location.href = "index.html"), 1500);
+          setTimeout(() => (location.href = "index.html"), 1000);
         } else {
-          // If not logged in, ensure early access flag is off
           localStorage.removeItem("petal_early_access");
         }
       });
 
+      // 2. Login Logic
       btnLogin.addEventListener("click", async () => {
-        const email = emailEl.value;
-        const password = passwordEl.value;
+        const email = emailEl.value.trim();
+        const password = passwordEl.value.trim();
+        
         if (!email || !password) {
           authMsgEl.textContent = "Please enter email and password.";
           return;
         }
+
         authMsgEl.textContent = "Logging in...";
-try {
-  // 1. Wait for the login to finish on the server
-  const userCredential = await signInWithEmailAndPassword(auth, email, pass);
-  console.log("Login successful, saving session...");
-
-  // 2. Wait 500ms to ensure the browser has written the token to the hard drive
-  setTimeout(() => {
-    window.location.href = "index.html";
-  }, 500);
-
-} catch (error) {
-  console.error("Login failed:", error.code, error.message);
-  authMsgEl.textContent = `Login failed: ${error.message}`;
-}
-
-
-      btnSignUp.addEventListener("click", async () => {
-        const email = emailEl.value;
-        const password = passwordEl.value;
-        if (!email || !password) {
-          authMsgEl.textContent = "Please enter email and password.";
-          return;
-        }
-        authMsgEl.textContent = "Signing up...";
         try {
-          await createUserWithEmailAndPassword(auth, email, password);
-          authMsgEl.textContent = "Sign up successful! Redirecting...";
-          localStorage.setItem("petal_early_access", "1");
-          setTimeout(() => (location.href = "index.html"), 1500);
+          await signInWithEmailAndPassword(auth, email, password);
+          console.log("Login successful!");
+          // The onAuthStateChanged above will handle the redirect
         } catch (error) {
-          console.error("Sign up failed:", error.code, error.message);
-          authMsgEl.textContent = `Sign up failed: ${error.message}`;
+          console.error("Login failed:", error.code);
+          authMsgEl.textContent = `Error: ${error.message}`;
         }
       });
 
-      btnResetPassword.addEventListener("click", async () => {
-        const email = emailEl.value;
-        if (!email) {
-          authMsgEl.textContent = "Please enter your email to reset password.";
+      // 3. Sign Up Logic
+      btnSignUp.addEventListener("click", async () => {
+        const email = emailEl.value.trim();
+        const password = passwordEl.value.trim();
+
+        if (!email || !password) {
+          authMsgEl.textContent = "Please enter email and password.";
           return;
         }
-        authMsgEl.textContent = "Sending reset email...";
+
+        authMsgEl.textContent = "Creating account...";
+        try {
+          await createUserWithEmailAndPassword(auth, email, password);
+          authMsgEl.textContent = "Account created! Redirecting...";
+        } catch (error) {
+          console.error("Sign up failed:", error.code);
+          authMsgEl.textContent = `Error: ${error.message}`;
+        }
+      });
+
+      // 4. Reset Password Logic
+      btnResetPassword.addEventListener("click", async () => {
+        const email = emailEl.value.trim();
+        if (!email) {
+          authMsgEl.textContent = "Enter your email first.";
+          return;
+        }
+        authMsgEl.textContent = "Sending reset link...";
         try {
           await sendPasswordResetEmail(auth, email);
-          authMsgEl.textContent = "Password reset email sent (check spam folder!).";
+          authMsgEl.textContent = "Reset link sent! Check your inbox.";
         } catch (error) {
-          console.error("Password reset failed:", error.code, error.message);
-          authMsgEl.textContent = `Password reset failed: ${error.message}`;
+          authMsgEl.textContent = `Error: ${error.message}`;
         }
       });
     </script>
