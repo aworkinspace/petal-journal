@@ -37,6 +37,19 @@ const THEMES = {
     "--bg-spot-2": "rgba(255, 255, 255, 0.5)",
     "animation": "sunbeams" // Re-uses the summer shimmer animation!
   },
+    six_paths_sage: {
+    "--bg": "#FFFFFF",
+    "--surface": "#FDFDFD",
+    "--surface-2": "#1A1A1A", // Black for contrast
+    "--border": "#FFD700", // Gold
+    "--primary": "#FFD700",
+    "--primary-soft": "rgba(255, 215, 0, 0.2)",
+    "--accent": "#000000",
+    "--text": "#1A1A1A",
+    "--text-muted": "#555555",
+    "--bg-spot-1": "rgba(255, 215, 0, 0.1)",
+    "animation": "truth_orbs"
+  },
     ninja_rivalry: {
     "--bg": "#0D0D1F", // Deep Uchiha Navy
     "--surface": "#16162D",
