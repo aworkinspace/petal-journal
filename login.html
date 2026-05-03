@@ -597,16 +597,21 @@ petal: { "--bg": "var(--rose-50)", "--surface": "var(--rose-50)", "--surface-2":
           return;
         }
         authMsgEl.textContent = "Logging in...";
-        try {
-          await signInWithEmailAndPassword(auth, email, password);
-          authMsgEl.textContent = "Login successful! Redirecting...";
-          localStorage.setItem("petal_early_access", "1");
-          setTimeout(() => (location.href = "index.html"), 1500);
-        } catch (error) {
-          console.error("Login failed:", error.code, error.message);
-          authMsgEl.textContent = `Login failed: ${error.message}`;
-        }
-      });
+try {
+  // 1. Wait for the login to finish on the server
+  const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+  console.log("Login successful, saving session...");
+
+  // 2. Wait 500ms to ensure the browser has written the token to the hard drive
+  setTimeout(() => {
+    window.location.href = "index.html";
+  }, 500);
+
+} catch (error) {
+  console.error("Login failed:", error.code, error.message);
+  authMsgEl.textContent = `Login failed: ${error.message}`;
+}
+
 
       btnSignUp.addEventListener("click", async () => {
         const email = emailEl.value;
