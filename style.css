@@ -1647,3 +1647,35 @@ header, .top-actions { overflow: visible; }
   0%, 100% { opacity: 0.1; transform: translateX(0); }
   50% { opacity: 0.4; transform: translateX(10px); }
 }
+/* KONAN: FALLING ORIGAMI PAPER */
+.origami-paper {
+  position: absolute;
+  width: 15px; height: 20px;
+  background: white;
+  border: 1px solid #CBD5E1;
+  opacity: 0.8;
+  pointer-events: none;
+  animation: paper-tumble 6s linear forwards;
+}
+
+@keyframes paper-tumble {
+  0% { transform: translateY(-20px) rotateX(0deg) rotateY(0deg); opacity: 0; }
+  10% { opacity: 0.8; }
+  100% { transform: translateY(110vh) rotateX(720deg) rotateY(360deg) translateX(100px); opacity: 0; }
+}
+
+/* NAGATO: RINNEGAN GRAVITY RIPPLES */
+.gravity-ripple {
+  position: absolute;
+  width: 10px; height: 10px;
+  border: 2px solid #A855F7;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  animation: shinra-tensei 4s ease-out forwards;
+}
+
+@keyframes shinra-tensei {
+  0% { transform: scale(0); opacity: 0; }
+  10% { opacity: 0.5; }
+  100% { transform: scale(20); opacity: 0; border-width: 0
