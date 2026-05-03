@@ -1697,3 +1697,37 @@ header, .top-actions { overflow: visible; }
   0% { transform: scale(0) rotate(0deg); opacity: 1; }
   100% { transform: scale(3) rotate(360deg); opacity: 0; }
 }
+/* KISAME: SHARK FINS */
+.shark-fin {
+  position: absolute;
+  width: 30px; height: 30px;
+  background: var(--surface-2);
+  clip-path: polygon(100% 100%, 0% 100%, 100% 0%); /* Jagged fin shape */
+  opacity: 0;
+  pointer-events: none;
+  animation: shark-swim 4s linear forwards;
+}
+
+@keyframes shark-swim {
+  0% { transform: translateX(-50px) translateY(0); opacity: 0; }
+  20% { opacity: 0.4; }
+  100% { transform: translateX(105vw) translateY(-20px); opacity: 0; }
+}
+
+/* ZETSU: VENUS FLYTRAP SPIKES */
+.flytrap-spike {
+  position: absolute;
+  width: 0; height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 40px solid #2D3A1A; /* Dark Aloe Green */
+  opacity: 0;
+  pointer-events: none;
+  animation: spike-grow 3s ease-in-out forwards;
+}
+
+@keyframes spike-grow {
+  0% { transform: scaleY(0); opacity: 0; }
+  20% { opacity: 0.6; }
+  100% { transform: scaleY(1.5) translateY(-20px); opacity: 0; }
+}
