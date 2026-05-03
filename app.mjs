@@ -90,6 +90,19 @@ const THEMES = {
     "--text-muted": "#9F1239",
     "animation": "healing"
   },
+    shadow_possession: {
+    "--bg": "#0A0B0D", // Pitch Black Shadow
+    "--surface": "#14171A",
+    "--surface-2": "#2D3436", // Tactical Grey
+    "--border": "rgba(46, 204, 113, 0.15)", // Subtle Vest Green
+    "--primary": "#2ECC71", // Shikamaru Green
+    "--primary-soft": "rgba(46, 204, 113, 0.1)",
+    "--accent": "#000000", // Shadow Black
+    "--text": "#E0E0E0",
+    "--text-muted": "rgba(224, 224, 224, 0.5)",
+    "--bg-spot-1": "rgba(0, 0, 0, 0.8)",
+    "animation": "shadows"
+  },
     gallant_tale: {
     "--bg": "#F5E6D3", // Aged Parchment
     "--surface": "#FCF8F0",
@@ -638,7 +651,7 @@ function toast(msg) {
   function renderSpotify(base) {
     const host = $("spotifyEmbed");
     if (!host || !base) return;
-    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" ]);
+    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" ]);
     const theme = darks.has(localStorage.getItem("petal_theme")) ? "dark" : "light";
     
     host.innerHTML = `<iframe class="spotify-iframe" style="width:100%; height:352px; border:0; border-radius:16px; margin-top:10px;" src="${base}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
@@ -755,7 +768,21 @@ function toast(msg) {
         const randomRotation = Math.random() * 360;
         particle.style.setProperty('--rot', `${randomRotation}deg`);
         particle.style.animationDuration = "0.25s";
-      } 
+          } else if (type === "shadows") {
+      particle.className = "shadow-tendril";
+      // Randomly spawn from bottom or sides
+      const edge = Math.random();
+      if (edge > 0.5) {
+        particle.style.bottom = "-50px";
+        particle.style.left = Math.random() * 100 + "vw";
+        particle.style.setProperty('--rot', `${(Math.random() * 40) - 20}deg`); // Upward
+      } else {
+        particle.style.top = Math.random() * 100 + "vh";
+        particle.style.left = edge > 0.25 ? "-50px" : "100vw";
+        particle.style.setProperty('--rot', edge > 0.25 ? "90deg" : "-90deg"); // From sides
+      }
+      particle.style.animationDuration = (Math.random() * 2 + 3) + "s";
+    }
       else if (type === "pearls") {
         particle.className = "pearl";
         particle.style.left = Math.random() * 100 + "vw";
@@ -896,7 +923,8 @@ function toast(msg) {
       springtime_youth: "aura",
       eternal_amaterasu: "black_fire",
       kamui_dimension: "warps",
-      six_paths_sage: "truth_orbs"
+      six_paths_sage: "truth_orbs",
+      shadow_possession: "shadows"
     };
     startAnimation(map[theme] || null);
   });
