@@ -522,7 +522,7 @@ function toast(msg) {
 
   document.addEventListener("themeChanged", () => {
     const theme = localStorage.getItem("petal_theme");
-    const map = { 
+        const map = { 
       cosmic_starfall: "meteors", autumn_forest: "leaves", spring_blossom: "blossoms", summer_shimmer: "sunbeams", midnight_snowfall: "snow", 
       ninja_rivalry: "sparks", copy_ninja: "lightning", medical_kunoichi: "healing", legendary_sannin: "seals", desert_love: "love_sand", 
       god_of_shinobi: "wood_style", tactical_suiton: "bubbles", ghost_uchiha: "tomoe", crow_illusion: "feathers", yellow_flash: "teleport", 
@@ -530,7 +530,8 @@ function toast(msg) {
       springtime_youth: "aura", eternal_amaterasu: "black_fire", kamui_dimension: "warps", six_paths_sage: "truth_orbs", shadow_possession: "shadows", 
       mind_transfer: "mind_waves", butterfly_mode: "butterflies", hidan_ritual: "jashin", kakuzu_hearts: "threads", art_explosion: "explosive_birds", 
       eternal_beauty: "puppet_strings", paper_angel: "paper", six_paths_pain: "gravity", original_hope: "rain", tobi_good_boy: "tobi_swirl", 
-      monster_mist: "sharks", stinky_aloe: "flytraps", ultimate_masterpiece: "c0_explosion", hokage_dream: "spirals", uchiha_avenger: "bolts" 
+      monster_mist: "sharks", stinky_aloe: "flytraps", ultimate_masterpiece: "c0_explosion", hokage_dream: "spirals", uchiha_avenger: "bolts", hidden_rain: "rain", kurama_sage: "embers",
+      hidden_sand: "sand"
     };
     startAnimation(map[theme] || null);
   });
