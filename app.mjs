@@ -832,13 +832,13 @@ function toast(msg) {
           particle.className = "water-ripple";
           particle.style.left = Math.random() * 100 + "vw";
           particle.style.top = Math.random() * 100 + "vh";
-          particle.style.animationDuration = "4s";
         } else {
           particle.className = "water-drop";
           particle.style.left = Math.random() * 100 + "vw";
           particle.style.bottom = "-20px";
-          particle.style.animationDuration = (Math.random() * 1 + 2) + "s";
         }
+        particle.style.animationDuration = "4s";
+      }
       } 
       else if (type === "wood_style") {
         const isVine = Math.random() > 0.7; 
