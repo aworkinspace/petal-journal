@@ -806,6 +806,12 @@ function toast(msg) {
       
       // Randomly flip some feathers for variety
       if (Math.random() > 0.5) particle.style.transform = "scaleX(-1)";
+        } else if (type === "truth_orbs") {
+      particle.className = "truth-orb";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = Math.random() * 100 + "vh";
+      // These orbs don't fall, they just exist and float
+      particle.style.animationDelay = (Math.random() * 5) + "s";
     }
     else if (type === "hundred_seals") {
       particle.className = "diamond-seal";
