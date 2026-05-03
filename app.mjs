@@ -229,16 +229,18 @@ const THEMES = {
     "--bg-spot-2": "rgba(113, 131, 85, 0.2)", // Mossy Light
     "animation": "wood_style"
   },
-  tactical_suiton: {
-    "--bg": "#F0F8FF", // Ice Blue
-    "--surface": "#D0E1F9",
-    "--surface-2": "#4E6582", // Fur Collar Grey
-    "--border": "rgba(30, 81, 123, 0.2)",
-    "--primary": "#1E517B", // Deep Water Blue
-    "--primary-soft": "rgba(30, 81, 123, 0.1)",
-    "--accent": "#FFFFFF", 
-    "--text": "#102A43",
-    "--text-muted": "#334E68",
+    tactical_suiton: {
+    "--bg": "#0A192F", // Deep Ocean Navy
+    "--surface": "#112240",
+    "--surface-2": "#1E3A8A", // Water Chakra Blue
+    "--border": "rgba(100, 255, 218, 0.2)", // Teal highlight
+    "--primary": "#64FFDA", // Senju Teal
+    "--primary-soft": "rgba(100, 255, 218, 0.1)",
+    "--accent": "#F0F8FF", // Pure White
+    "--text": "#CCD6F6",
+    "--text-muted": "#8892B0",
+    "--bg-spot-1": "rgba(30, 58, 138, 0.3)", // Deep blue glow
+    "--bg-spot-2": "rgba(100, 255, 218, 0.05)",
     "animation": "bubbles"
   },
   ghost_uchiha: {
