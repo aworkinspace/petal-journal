@@ -704,155 +704,148 @@ function toast(msg) {
     overlay.innerHTML = "";
     if (!type) return;
 
-    animationInterval = setInterval(() => {
-      const particle = document.createElement("div");
-      const startX = Math.random() * window.innerWidth;
-      
-      if (type === "meteors") {
-        particle.className = "meteor";
-        particle.style.left = (startX + 400) + "px";
-        particle.style.top = "-50px";
-        particle.style.animationDuration = (Math.random() * 1 + 0.5) + "s";
-      } 
-      else if (type === "leaves") {
-        particle.className = "leaf";
-        particle.style.left = startX + "px";
-        particle.style.top = "-50px";
-        particle.style.animationDuration = (Math.random() * 3 + 4) + "s";
-      } 
-      else if (type === "blossoms") {
-        particle.className = "blossom";
-        particle.style.left = startX + "px";
-        particle.style.top = "-50px";
-        particle.style.animationDuration = (Math.random() * 4 + 5) + "s";
-      } 
-      else if (type === "sunbeams") {
-        particle.className = "sunbeam";
-        particle.style.left = startX + "px";
-        particle.style.top = "-150px";
-        particle.style.animationDuration = (Math.random() * 2 + 3) + "s";
-      } 
-      else if (type === "snow") {
-        particle.className = "snowflake";
-        particle.style.left = startX + "px";
-        particle.style.top = "-10px";
-        const size = Math.random() * 4 + 2 + "px";
-        particle.style.width = size; particle.style.height = size;
-        particle.style.animationDuration = (Math.random() * 3 + 5) + "s";
-      } 
-      else if (type === "aura") {
-        particle.className = Math.random() > 0.3 ? "aura-flame" : "aura-flame aura-orange";
-        particle.style.left = Math.random() * 100 + "vw";
-        particle.style.bottom = "-100px";
-        particle.style.animationDuration = (Math.random() * 1.5 + 1.5) + "s";
-      } 
-      else if (type === "teleport") {
-        particle.className = "flash-spark";
-        particle.style.left = Math.random() * 100 + "vw";
-        particle.style.top = Math.random() * 100 + "vh";
-        const randomRotation = Math.random() * 360;
-        particle.style.setProperty('--rot', `${randomRotation}deg`);
-        particle.style.animationDuration = "0.25s";
-      } 
-      else if (type === "pearls") {
-        particle.className = "pearl";
-        particle.style.left = Math.random() * 100 + "vw";
-        particle.style.top = Math.random() * 100 + "vh";
-        const randomSize = Math.floor(Math.random() * 12 + 10) + "px";
-        particle.style.width = randomSize;
-        particle.style.height = randomSize;
-        particle.style.animationDelay = (Math.random() * 5) + "s";
-      }
-      else if (type === "sage_history") {
-        const isLeaf = Math.random() > 0.3;
-        particle.className = isLeaf ? "sage-leaf" : "ink-blot";
-        particle.style.left = Math.random() * 100 + "vw";
-        particle.style.top = isLeaf ? "-20px" : (Math.random() * 100 + "vh");
-        particle.style.animationDuration = isLeaf ? (Math.random() * 4 + 6) + "s" : "4s";
-      }
-    else if (type === "snakes") {
-      particle.className = "snake-line";
-      particle.style.left = "-50px";
-      // Pick a random height to start slithering across
-      particle.style.top = Math.random() * 100 + "vh";
-      // Randomize speed and wavy delay
-      particle.style.animationDuration = (Math.random() * 4 + 6) + "s";
-        } else if (type === "tomoe") {
-      particle.className = "tomoe";
-      // We'll use the 'comma' character or a curly mark to mimic a tomoe
-      particle.textContent = "©"; 
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.top = Math.random() * 100 + "vh";
-      particle.style.animationDuration = "4s";
-        } else if (type === "warps") {
-      particle.className = "kamui-warp";
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.top = Math.random() * 100 + "vh";
-      // Each swirl lasts 3 seconds
-      particle.style.animationDuration = "3s";
-            } else if (type === "black_fire") {
-      particle.className = "black-flame";
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.bottom = "-20px";
-      // Flames should flicker and rise at different speeds
-      particle.style.animationDuration = (Math.random() * 2 + 3) + "s";
-      // Randomly flip them
-      if (Math.random() > 0.5) particle.style.transform = "scaleX(-1)";
-    }
- else if (type === "feathers") {
-      particle.className = "feather";
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.top = "-30px";
-      // Itachi's feathers should drift slowly and gracefully
-      particle.style.animationDuration = (Math.random() * 4 + 5) + "s";
-      
-      // Randomly flip some feathers for variety
-      if (Math.random() > 0.5) particle.style.transform = "scaleX(-1)";
-        } else if (type === "truth_orbs") {
-      particle.className = "truth-orb";
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.top = Math.random() * 100 + "vh";
-      // These orbs don't fall, they just exist and float
-      particle.style.animationDelay = (Math.random() * 5) + "s";
-    }
-    else if (type === "hundred_seals") {
-      particle.className = "diamond-seal";
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.top = Math.random() * 100 + "vh";
-      particle.style.animationDuration = "4s";
-        } else if (type === "malice") {
-      particle.className = "malice-orb";
-      particle.style.left = Math.random() * 100 + "vw";
-      particle.style.bottom = "-20px";
-      particle.style.animationDuration = (Math.random() * 2 + 3) + "s";
-      
-      // Randomly make some orange for variety
-      if (Math.random() > 0.8) {
-        particle.style.background = "#F97316";
-        particle.style.boxShadow = "0 0 20px 4px #F97316";
-          } else if (type === "wood_style") {
-      const isVine = Math.random() > 0.7; // 30% chance for a vine
-      
-      if (isVine) {
-        particle.className = "wood-vine";
-        particle.style.left = Math.random() * 100 + "vw";
-        particle.style.bottom = "0"; // Grows from the bottom
-        particle.style.animationDuration = "5s";
-      } else {
-        particle.className = "wood-petal";
-        particle.style.left = Math.random() * 100 + "vw";
-        particle.style.top = "-20px";
-        particle.style.animationDuration = (Math.random() * 3 + 4) + "s";
-      }
-    }
-
-
-      overlay.appendChild(particle);
-      setTimeout(() => particle.remove(), 8000);
-
-    // Dynamic speeds: Minato(80ms), Gai(150ms), Others(800ms)
-    }, type === "teleport" ? 80 : (type === "aura" ? 150 : 800));
+  animationInterval = setInterval(() => {
+  const particle = document.createElement("div");
+  const startX = Math.random() * window.innerWidth;
+  
+  if (type === "meteors") {
+    particle.className = "meteor";
+    particle.style.left = (startX + 400) + "px";
+    particle.style.top = "-50px";
+    particle.style.animationDuration = (Math.random() * 1 + 0.5) + "s";
+  } 
+  else if (type === "leaves") {
+    particle.className = "leaf";
+    particle.style.left = startX + "px";
+    particle.style.top = "-50px";
+    particle.style.animationDuration = (Math.random() * 3 + 4) + "s";
+  } 
+  else if (type === "blossoms") {
+    particle.className = "blossom";
+    particle.style.left = startX + "px";
+    particle.style.top = "-50px";
+    particle.style.animationDuration = (Math.random() * 4 + 5) + "s";
+  } 
+  else if (type === "sunbeams") {
+    particle.className = "sunbeam";
+    particle.style.left = startX + "px";
+    particle.style.top = "-150px";
+    particle.style.animationDuration = (Math.random() * 2 + 3) + "s";
+  } 
+  else if (type === "snow") {
+    particle.className = "snowflake";
+    particle.style.left = startX + "px";
+    particle.style.top = "-10px";
+    const size = Math.random() * 4 + 2 + "px";
+    particle.style.width = size; particle.style.height = size;
+    particle.style.animationDuration = (Math.random() * 3 + 5) + "s";
+  } 
+  else if (type === "aura") {
+    particle.className = Math.random() > 0.3 ? "aura-flame" : "aura-flame aura-orange";
+    particle.style.left = Math.random() * 100 + "vw";
+    particle.style.bottom = "-100px";
+    particle.style.animationDuration = (Math.random() * 1.5 + 1.5) + "s";
+  } 
+  else if (type === "teleport") {
+    particle.className = "flash-spark";
+    particle.style.left = Math.random() * 100 + "vw";
+    particle.style.top = Math.random() * 100 + "vh";
+    const randomRotation = Math.random() * 360;
+    particle.style.setProperty('--rot', `${randomRotation}deg`);
+    particle.style.animationDuration = "0.25s";
+  } 
+  else if (type === "pearls") {
+    particle.className = "pearl";
+    particle.style.left = Math.random() * 100 + "vw";
+    particle.style.top = Math.random() * 100 + "vh";
+    const randomSize = Math.floor(Math.random() * 12 + 10) + "px";
+    particle.style.width = randomSize;
+    particle.style.height = randomSize;
+    particle.style.animationDelay = (Math.random() * 5) + "s";
   }
+  else if (type === "sage_history") {
+    const isLeaf = Math.random() > 0.3;
+    particle.className = isLeaf ? "sage-leaf" : "ink-blot";
+    particle.style.left = Math.random() * 100 + "vw";
+    particle.style.top = isLeaf ? "-20px" : (Math.random() * 100 + "vh");
+    particle.style.animationDuration = isLeaf ? (Math.random() * 4 + 6) + "s" : "4s";
+  }
+  else if (type === "snakes") {
+    particle.className = "snake-line";
+    particle.style.left = "-50px";
+    particle.style.top = Math.random() * 100 + "vh";
+    particle.style.animationDuration = (Math.random() * 4 + 6) + "s";
+  } 
+  else if (type === "tomoe") {
+    particle.className = "tomoe";
+    particle.textContent = "©"; 
+    particle.style.left = Math.random() * 100 + "vw";
+    particle.style.top = Math.random() * 100 + "vh";
+    particle.style.animationDuration = "4s";
+  } 
+  else if (type === "warps") {
+    particle.className = "kamui-warp";
+    particle.style.left = Math.random() * 100 + "vw";
+    particle.style.top = Math.random() * 100 + "vh";
+    particle.style.animationDuration = "3s";
+  } 
+  else if (type === "black_fire") {
+    particle.className = "black-flame";
+    particle.style.left = Math.random() * 100 + "vw";
+    particle.style.bottom = "-20px";
+    particle.style.animationDuration = (Math.random() * 2 + 3) + "s";
+    if (Math.random() > 0.5) particle.style.transform = "scaleX(-1)";
+  }
+  else if (type === "feathers") {
+    particle.className = "feather";
+    particle.style.left = Math.random() * 100 + "vw";
+    particle.style.top = "-30px";
+    particle.style.animationDuration = (Math.random() * 4 + 5) + "s";
+    if (Math.random() > 0.5) particle.style.transform = "scaleX(-1)";
+  } 
+  else if (type === "truth_orbs") {
+    particle.className = "truth-orb";
+    particle.style.left = Math.random() * 100 + "vw";
+    particle.style.top = Math.random() * 100 + "vh";
+    particle.style.animationDelay = (Math.random() * 5) + "s";
+  }
+  else if (type === "hundred_seals") {
+    particle.className = "diamond-seal";
+    particle.style.left = Math.random() * 100 + "vw";
+    particle.style.top = Math.random() * 100 + "vh";
+    particle.style.animationDuration = "4s";
+  } 
+  else if (type === "malice") {
+    particle.className = "malice-orb";
+    particle.style.left = Math.random() * 100 + "vw";
+    particle.style.bottom = "-20px";
+    particle.style.animationDuration = (Math.random() * 2 + 3) + "s";
+    if (Math.random() > 0.8) {
+      particle.style.background = "#F97316";
+      particle.style.boxShadow = "0 0 20px 4px #F97316";
+    } // Fixed missing closing bracket
+  } 
+  else if (type === "wood_style") {
+    const isVine = Math.random() > 0.7; 
+    if (isVine) {
+      particle.className = "wood-vine";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.bottom = "0"; 
+      particle.style.animationDuration = "5s";
+    } else {
+      particle.className = "wood-petal";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = "-20px";
+      particle.style.animationDuration = (Math.random() * 3 + 4) + "s";
+    }
+  }
+
+  // --- THESE LINES ARE VITAL ---
+  overlay.appendChild(particle);
+  setTimeout(() => particle.remove(), 8000);
+
+}, type === "teleport" ? 80 : (type === "aura" ? 150 : 800));
+
 
 
     document.addEventListener("themeChanged", () => {
