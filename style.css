@@ -1406,3 +1406,24 @@ header, .top-actions { overflow: visible; }
   80% { opacity: 0.4; transform: scale(1.5) rotate(360deg); }
   100% { transform: scale(0) rotate(720deg); opacity: 0; }
 }
+/* AMATERASU: ETERNAL BLACK FLAMES */
+.black-flame {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #000000; /* Pure black center */
+  border-radius: 50% 50% 20% 80%; /* Irregular fire shape */
+  pointer-events: none;
+  /* The glow makes the black visible */
+  box-shadow: 0 0 12px 2px #8A2BE2, 0 0 20px 5px rgba(138, 43, 226, 0.3);
+  filter: blur(1px);
+  z-index: 5;
+  animation: amaterasu-rise linear forwards;
+}
+
+@keyframes amaterasu-rise {
+  0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  50% { transform: translateY(-50vh) scale(2) rotate(180deg); }
+  100% { transform: translateY(-110vh) scale(1) rotate(360deg); opacity: 0; }
+}
