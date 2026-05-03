@@ -1427,3 +1427,26 @@ header, .top-actions { overflow: visible; }
   50% { transform: translateY(-50vh) scale(2) rotate(180deg); }
   100% { transform: translateY(-110vh) scale(1) rotate(360deg); opacity: 0; }
 }
+/* LEVEL 10 ULTIMATE GLOW */
+.kage-aura {
+  box-shadow: 0 0 20px 5px rgba(255, 215, 0, 0.4), var(--shadow) !important;
+  border: 2px solid #FFD700 !important;
+}
+
+/* TRUTH-SEEKER ORBS */
+.truth-orb {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: #000000;
+  border-radius: 50%;
+  box-shadow: 0 0 15px 2px #FFD700; /* Gold glow on black orb */
+  pointer-events: none;
+  z-index: 5;
+  animation: orb-drift 10s infinite ease-in-out;
+}
+
+@keyframes orb-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -50px) scale(1.2); }
+}
