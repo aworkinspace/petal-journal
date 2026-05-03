@@ -825,13 +825,18 @@ function toast(msg) {
           particle.style.boxShadow = "0 0 20px 4px #F97316";
         }
       } 
-      else if (type === "wood_style") {
+            else if (type === "wood_style") {
         const isVine = Math.random() > 0.7; 
         if (isVine) {
           particle.className = "wood-vine";
           particle.style.left = Math.random() * 100 + "vw";
-          particle.style.bottom = "0"; 
-          particle.style.animationDuration = "5s";
+          particle.style.bottom = "-50px"; 
+          
+          // NEW: Random rotation so the curves point left or right
+          const randomRot = Math.random() * 360;
+          particle.style.setProperty('--rot', `${randomRot}deg`);
+          
+          particle.style.animationDuration = (Math.random() * 2 + 4) + "s";
         } else {
           particle.className = "wood-petal";
           particle.style.left = Math.random() * 100 + "vw";
@@ -839,6 +844,7 @@ function toast(msg) {
           particle.style.animationDuration = (Math.random() * 3 + 4) + "s";
         }
       }
+
 
       overlay.appendChild(particle);
       setTimeout(() => particle.remove(), 8000);
