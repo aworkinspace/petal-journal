@@ -252,52 +252,52 @@ const THEMES = {
     "--text-muted": "rgba(254, 226, 226, 0.5)",
     "animation": "puppet_strings"
   },
-    paper_angel: {
-    "--bg": "#F8FAFC", // Paper White
-    "--surface": "#F1F5F9",
-    "--surface-2": "#E2E8F0",
-    "--border": "rgba(139, 92, 246, 0.2)",
-    "--primary": "#8B5CF6", // Konan Purple
-    "--primary-soft": "rgba(139, 92, 246, 0.1)",
-    "--accent": "#3B82F6", // Origami Blue
-    "--text": "#1E293B",
-    "--text-muted": "#64748B",
+      paper_angel: {
+    "--bg": "#E0E7FF", // Blue-tinted white
+    "--surface": "#EEF2FF",
+    "--surface-2": "#818CF8", // Konan Purple/Blue
+    "--border": "rgba(129, 140, 248, 0.2)",
+    "--primary": "#6366F1", 
+    "--primary-soft": "rgba(99, 102, 241, 0.1)",
+    "--accent": "#4338CA", 
+    "--text": "#1E1B4B",
+    "--text-muted": "#4338CA",
     "animation": "paper"
   },
-  god_of_peace: {
-    "--bg": "#FFF7ED", // Hopeful Sun-through-rain
-    "--surface": "#FFEDD5",
-    "--surface-2": "#FB923C", // Yahiko Orange
-    "--border": "rgba(30, 41, 59, 0.1)",
-    "--primary": "#0EA5E9", // Rain Blue
-    "--primary-soft": "rgba(14, 165, 233, 0.1)",
-    "--accent": "#F97316",
-    "--text": "#431407",
-    "--text-muted": "#7C2D12",
-    "animation": "rain" // Re-uses rain but we can make it slower
-  },
   six_paths_pain: {
-    "--bg": "#0F0B14", // Rinnegan Deep Purple
-    "--surface": "#1A1424",
-    "--surface-2": "#4C1D95", 
-    "--border": "rgba(168, 85, 247, 0.2)",
-    "--primary": "#A855F7", // Rinnegan Purple
-    "--primary-soft": "rgba(168, 85, 247, 0.1)",
-    "--accent": "#FF4500", // Pain Hair Red
-    "--text": "#E9D5FF",
-    "--text-muted": "#A78BFA",
+    "--bg": "#0D0D0F", // Rinnegan Grey-Black
+    "--surface": "#16161A",
+    "--surface-2": "#4C1D95", // Rinnegan Purple
+    "--border": "rgba(139, 92, 246, 0.2)",
+    "--primary": "#8B5CF6", // Chakra Purple
+    "--primary-soft": "rgba(139, 92, 246, 0.1)",
+    "--accent": "#FF4500", // Receiver Orange
+    "--text": "#D1D5DB",
+    "--text-muted": "rgba(209, 213, 219, 0.5)",
     "animation": "gravity"
   },
-  masked_goofball: {
-    "--bg": "#0D0D12", 
-    "--surface": "#1A1A24",
-    "--surface-2": "#F97316", // Tobi Mask Orange
-    "--border": "rgba(249, 115, 22, 0.3)",
-    "--primary": "#F97316", 
-    "--primary-soft": "rgba(249, 115, 22, 0.15)",
-    "--accent": "#FFFFFF", 
-    "--text": "#F2F0F7",
-    "--text-muted": "rgba(242,240,247,.5)",
+  original_hope: {
+    "--bg": "#F0F9FF", // Rain Blue
+    "--surface": "#E0F2FE",
+    "--surface-2": "#F97316", // Yahiko Orange
+    "--border": "rgba(14, 165, 233, 0.2)",
+    "--primary": "#0EA5E9", // Hope Blue
+    "--primary-soft": "rgba(14, 165, 233, 0.1)",
+    "--accent": "#FB923C", 
+    "--text": "#0C4A6E",
+    "--text-muted": "#0369A1",
+    "animation": "rain" // Re-uses rain logic but we can add orange sparks
+  },
+  tobi_good_boy: {
+    "--bg": "#FFF7ED", // Mask Orange Cream
+    "--surface": "#FFEDD5",
+    "--surface-2": "#FB923C", // Mask Orange
+    "--border": "rgba(34, 197, 94, 0.2)", // "Good Boy" Green
+    "--primary": "#22C55E", 
+    "--primary-soft": "rgba(34, 197, 94, 0.1)",
+    "--accent": "#EA580C", 
+    "--text": "#431407",
+    "--text-muted": "#7C2D12",
     "animation": "tobi_swirl"
   },
   hidden_rain: {
@@ -937,6 +937,19 @@ function toast(msg) {
       particle.style.left = Math.random() * 100 + "vw";
       particle.style.top = "0";
       // Strings stay on screen, so we only spawn a few
+        } else if (type === "paper") {
+      particle.className = "paper-sheet";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = "-30px";
+      particle.style.animationDuration = (Math.random() * 3 + 4) + "s";
+    } else if (type === "gravity") {
+      particle.className = "gravity-ring";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = Math.random() * 100 + "vh";
+    } else if (type === "tobi_swirl") {
+      particle.className = "tobi-spiral";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = Math.random() * 100 + "vh";
     }
       else if (type === "pearls") {
         particle.className = "pearl";
@@ -1085,7 +1098,11 @@ function toast(msg) {
       hidan_ritual: "jashin",
       kakuzu_hearts: "threads",
       art_explosion: "explosive_birds",
-      eternal_beauty: "puppet_strings"
+      eternal_beauty: "puppet_strings",
+      paper_angel: "paper",
+      six_paths_pain: "gravity",
+      original_hope: "rain",
+      tobi_good_boy: "tobi_swirl"
     };
     startAnimation(map[theme] || null);
   });
