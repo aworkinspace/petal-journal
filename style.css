@@ -1044,23 +1044,27 @@ header, .top-actions { overflow: visible; }
   100% { transform: translateY(-100vh) translateX(30px); opacity: 0; }
 }
 
-/* SANNIN KANJI SEALS */
+/* SANNIN: GLOWING KANJI SEALS */
 .kanji-seal {
   position: absolute;
   font-family: "VT323", monospace;
-  font-size: 24px;
+  font-size: 40px; /* Nice and big */
   color: var(--accent);
   opacity: 0;
   pointer-events: none;
-  text-shadow: 0 0 8px var(--accent);
+  /* The iconic neon glow */
+  text-shadow: 0 0 15px var(--accent), 0 0 30px var(--primary);
+  z-index: 5;
   animation: seal-drift 5s linear forwards;
 }
 
 @keyframes seal-drift {
   0% { transform: scale(0.5) rotate(0deg); opacity: 0; }
-  10% { opacity: 0.4; }
-  100% { transform: scale(1.5) rotate(20deg); opacity: 0; }
+  15% { opacity: 0.7; }
+  85% { opacity: 0.5; }
+  100% { transform: scale(1.5) rotate(25deg); opacity: 0; }
 }
+
 /* AKATSUKI CLOUD STYLE */
 .red-cloud {
   position: absolute;
