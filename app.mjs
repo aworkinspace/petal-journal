@@ -162,6 +162,20 @@ const THEMES = {
     "--bg-spot-2": "#0B1A0E", // Force dark
     "animation": "aura"
   },
+  eternal_amaterasu: {
+    "--bg": "#050505", // Absolute Black
+    "--surface": "#0D0D0D",
+    "--surface-2": "#1A1A1A",
+    "--border": "rgba(138, 43, 226, 0.3)", // Violet heat border
+    "--primary": "#000000", 
+    "--primary-soft": "rgba(0, 0, 0, 0.8)",
+    "--accent": "#8A2BE2", // Bright Violet highlight
+    "--text": "#E0E0E0",
+    "--text-muted": "rgba(224, 224, 224, 0.4)",
+    "--bg-spot-1": "#050505", // Matching bg to keep it dark
+    "--bg-spot-2": "#050505", // Matching bg to keep it dark
+    "animation": "black_fire"
+  },
 
   desert_love: { "--bg": "#F2E8CF", "--surface": "#EAD7B1", "--surface-2": "#D4A373", "--border": "rgba(188, 71, 73, 0.2)", "--primary": "#BC4749", "--accent": "#6A994E", "--text": "#386641", "--text-muted": "#6A994E", "--bg-spot-1": "rgba(188, 71, 73, 0.05)", "--bg-spot-2": "rgba(255, 255, 255, 0.3)" }
 };
