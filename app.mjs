@@ -228,6 +228,30 @@ const THEMES = {
     "--bg-spot-1": "rgba(62, 68, 55, 0.2)",
     "animation": "threads"
   },
+    art_explosion: {
+    "--bg": "#FFFDF0", // Clay White
+    "--surface": "#FEF3C7",
+    "--surface-2": "#FBBF24", // Deidara Yellow
+    "--border": "rgba(0, 168, 232, 0.2)", // Eye Scope Blue
+    "--primary": "#00A8E8", // Scope Blue
+    "--primary-soft": "rgba(0, 168, 232, 0.1)",
+    "--accent": "#FF4500", // Explosion Red
+    "--text": "#451A03",
+    "--text-muted": "#92400E",
+    "animation": "explosive_birds"
+  },
+  eternal_beauty: {
+    "--bg": "#0D0B0B", // Puppet Case Black
+    "--surface": "#1A1616",
+    "--surface-2": "#4A0E0E", // Sasori Red
+    "--border": "rgba(168, 85, 247, 0.2)", // Poison Purple
+    "--primary": "#A855F7", // Poison Purple
+    "--primary-soft": "rgba(168, 85, 247, 0.1)",
+    "--accent": "#D2B48C", // Wood Tan
+    "--text": "#FEE2E2",
+    "--text-muted": "rgba(254, 226, 226, 0.5)",
+    "animation": "puppet_strings"
+  },
   hidden_rain: {
     "--bg": "#111418", // Dark Stormy Grey
     "--surface": "#1B2026",
@@ -701,7 +725,7 @@ function toast(msg) {
   function renderSpotify(base) {
     const host = $("spotifyEmbed");
     if (!host || !base) return;
-    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" , "butterfly_mode" , "hidan_ritual" , "kakuzu_hearts" ]);
+    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" , "butterfly_mode" , "hidan_ritual" , "kakuzu_hearts" , "eternal_beauty" ]);
     const theme = darks.has(localStorage.getItem("petal_theme")) ? "dark" : "light";
     
     host.innerHTML = `<iframe class="spotify-iframe" style="width:100%; height:352px; border:0; border-radius:16px; margin-top:10px;" src="${base}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
@@ -855,6 +879,16 @@ function toast(msg) {
       particle.style.top = "-70px"; // Start above screen
       // Threads move at various "creepy" speeds
       particle.style.animationDuration = (Math.random() * 3 + 4) + "s";
+        } else if (type === "explosive_birds") {
+      particle.className = "clay-bird";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = "-20px";
+      particle.style.animationDuration = "3s";
+    } else if (type === "puppet_strings") {
+      particle.className = "puppet-string";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = "0";
+      // Strings stay on screen, so we only spawn a few
     }
       else if (type === "pearls") {
         particle.className = "pearl";
@@ -1001,7 +1035,9 @@ function toast(msg) {
       mind_transfer: "mind_waves",
       butterfly_mode: "butterflies",
       hidan_ritual: "jashin",
-      kakuzu_hearts: "threads"
+      kakuzu_hearts: "threads",
+      art_explosion: "explosive_birds",
+      eternal_beauty: "puppet_strings"
     };
     startAnimation(map[theme] || null);
   });
