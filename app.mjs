@@ -36,7 +36,20 @@ const THEMES = {
   gallant_tale: { "--bg": "#F5E6D3", "--surface": "#FCF8F0", "--surface-2": "#8B0000", "--border": "rgba(139, 0, 0, 0.2)", "--primary": "#B45309", "--accent": "#FACC15", "--text": "#2D1B1B", "--text-muted": "#634832" },
   forbidden_lab: { "--bg": "#0D0B12", "--surface": "#16141F", "--surface-2": "#4B3F72", "--border": "rgba(220, 214, 247, 0.1)", "--primary": "#FFD700", "--accent": "#DCD6F7", "--text": "#DCD6F7", "--text-muted": "rgba(220, 214, 247, 0.5)", "--bg-spot-1": "rgba(75, 63, 114, 0.2)" },
   slug_princess: { "--bg": "#F0F9F6", "--surface": "#E6F2ED", "--surface-2": "#14B8A6", "--border": "rgba(20, 184, 166, 0.2)", "--primary": "#14B8A6", "--accent": "#B45309", "--text": "#0F4C3A", "--text-muted": "#3D7061", "--bg-spot-1": "rgba(20, 184, 166, 0.1)" },
-  legendary_sannin: { "--bg": "#1E1B2E", "--surface": "#2D2B4A", "--surface-2": "#B45309", "--border": "rgba(20, 184, 166, 0.3)", "--primary": "#14B8A6", "--accent": "#FACC15", "--text": "#F2F0F7", "--text-muted": "rgba(242,240,247,.6)" },
+    legendary_sannin: {
+    "--bg": "#1E1B2E", // Deep Orochimaru Purple
+    "--surface": "#2D2B4A",
+    "--surface-2": "#B45309", // Jiraiya Red
+    "--border": "rgba(20, 184, 166, 0.3)", // Tsunade Teal
+    "--primary": "#14B8A6", 
+    "--primary-soft": "rgba(20, 184, 166, 0.2)",
+    "--accent": "#FACC15", 
+    "--text": "#F2F0F7",
+    "--text-muted": "rgba(242,240,247,.6)",
+    "--bg-spot-1": "#1E1B2E", // Keep it dark
+    "--bg-spot-2": "#1E1B2E", // Keep it dark
+    "animation": "seals"
+  },
   nine_tails_malice: { "--bg": "#0D0505", "--surface": "#1A0B0B", "--surface-2": "#4A0000", "--border": "rgba(255, 0, 0, 0.2)", "--primary": "#FF0000", "--accent": "#F97316", "--text": "#F2F0F7", "--text-muted": "rgba(242, 240, 247, 0.5)", "--bg-spot-1": "rgba(255, 0, 0, 0.15)" },
   akatsuki_cloud: { "--bg": "#0A0A0C", "--surface": "#121217", "--surface-2": "#3D0000", "--border": "rgba(255, 0, 0, 0.15)", "--primary": "#FF0000", "--accent": "#FFFFFF", "--text": "#E0E0E0", "--text-muted": "rgba(224, 224, 224, 0.5)" },
   hidan_ritual: { "--bg": "#080808", "--surface": "#121212", "--surface-2": "#4A0000", "--border": "rgba(255, 0, 0, 0.2)", "--primary": "#FF0000", "--accent": "#FFFFFF", "--text": "#E5E5E5", "--text-muted": "rgba(229, 229, 229, 0.5)", "--bg-spot-1": "rgba(74, 0, 0, 0.3)" },
@@ -399,6 +412,14 @@ function toast(msg) {
         else { p.className = "water-drop"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; }
         p.style.animationDuration = "4s";
       } 
+              else if (type === "seals") {
+        const kanji = ["蝦", "蛞", "蛇"]; // Toad, Slug, Snake
+        particle.className = "kanji-seal";
+        particle.textContent = kanji[Math.floor(Math.random() * kanji.length)];
+        particle.style.left = Math.random() * 100 + "vw";
+        particle.style.top = Math.random() * 100 + "vh";
+        particle.style.animationDuration = "5s";
+      }
       else if (type === "spirals") { p.className = "uzumaki-spiral"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "5s"; } 
       else if (type === "bolts") { p.className = "chidori-bolt"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.transform = `rotate(${Math.random() * 360}deg)`; p.style.animationDuration = "0.3s"; }
       else if (type === "sharks") { p.className = "shark-fin"; p.style.left = "-40px"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; } 
