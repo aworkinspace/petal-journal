@@ -301,6 +301,19 @@ const THEMES = {
     "--bg-spot-2": "rgba(239, 68, 68, 0.1)",  // Red gate glow
     "animation": "aura"
   },
+  eternal_amaterasu: {
+    "--bg": "#050505", // Absolute Black
+    "--surface": "#0D0D0D",
+    "--surface-2": "#1A1A1A",
+    "--border": "rgba(138, 43, 226, 0.2)", // Pale Purple heat
+    "--primary": "#000000", // The flames are black
+    "--primary-soft": "rgba(0, 0, 0, 0.8)",
+    "--accent": "#8A2BE2", // Violet highlight
+    "--text": "#E0E0E0",
+    "--text-muted": "rgba(224, 224, 224, 0.4)",
+    "--bg-spot-1": "rgba(75, 0, 130, 0.15)", // Deep Indigo glow
+    "animation": "black_fire"
+  },
 
 };
 
@@ -762,7 +775,16 @@ function toast(msg) {
       particle.style.top = Math.random() * 100 + "vh";
       // Each swirl lasts 3 seconds
       particle.style.animationDuration = "3s";
-        } else if (type === "feathers") {
+            } else if (type === "black_fire") {
+      particle.className = "black-flame";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.bottom = "-20px";
+      // Flames should flicker and rise at different speeds
+      particle.style.animationDuration = (Math.random() * 2 + 3) + "s";
+      // Randomly flip them
+      if (Math.random() > 0.5) particle.style.transform = "scaleX(-1)";
+    }
+ else if (type === "feathers") {
       particle.className = "feather";
       particle.style.left = Math.random() * 100 + "vw";
       particle.style.top = "-30px";
@@ -823,7 +845,8 @@ function toast(msg) {
       slug_princess: "hundred_seals",
       nine_tails_malice: "malice",
       springtime_youth: "aura",
-      kamui_dimension: "warps"
+      kamui_dimension: "warps",
+      eternal_amaterasu: "black_fire"
     };
     startAnimation(map[theme] || null);
   });
