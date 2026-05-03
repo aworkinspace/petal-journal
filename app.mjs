@@ -176,7 +176,48 @@ const THEMES = {
     "--bg-spot-2": "#050505", // Matching bg to keep it dark
     "animation": "black_fire"
   },
-
+  hidden_rain: {
+    "--bg": "#111418", // Dark Stormy Grey
+    "--surface": "#1B2026",
+    "--surface-2": "#2C343D",
+    "--border": "rgba(100, 149, 237, 0.2)",
+    "--primary": "#6495ED", // Steel Blue
+    "--primary-soft": "rgba(100, 149, 237, 0.1)",
+    "--accent": "#87CEEB", // Sky Chakra
+    "--text": "#D1D9E0",
+    "--text-muted": "rgba(209, 217, 224, 0.5)",
+    "--bg-spot-1": "#111418", // Keep it dark
+    "--bg-spot-2": "#111418", // Keep it dark
+    "animation": "rain"
+  },
+  kurama_sage: {
+    "--bg": "#FFFBEB", // Pale Gold Cream
+    "--surface": "#FEF3C7",
+    "--surface-2": "#FDE68A",
+    "--border": "rgba(245, 158, 11, 0.2)", 
+    "--primary": "#F59E0B", // Golden Orange
+    "--primary-soft": "rgba(245, 158, 11, 0.15)",
+    "--accent": "#D97706", // Deep Amber
+    "--text": "#451A03",
+    "--text-muted": "#92400E",
+    "--bg-spot-1": "rgba(255, 215, 0, 0.2)", // Golden Sun Glow
+    "--bg-spot-2": "rgba(255, 255, 255, 0.5)",
+    "animation": "embers"
+  },
+  hidden_sand: {
+    "--bg": "#F5F5DC", // Light Beige Sand
+    "--surface": "#EFEBD8",
+    "--surface-2": "#D2B48C", // Tan
+    "--border": "rgba(153, 27, 27, 0.15)", // Gourd Red tint
+    "--primary": "#991B1B", // Desert Crimson
+    "--primary-soft": "rgba(153, 27, 27, 0.1)",
+    "--accent": "#B45309", // Warm Brown
+    "--text": "#451A03",
+    "--text-muted": "#78350F",
+    "--bg-spot-1": "rgba(210, 180, 140, 0.2)", // Sandy Dust Glow
+    "--bg-spot-2": "rgba(245, 245, 220, 0.4)",
+    "animation": "sand"
+  },
   desert_love: { "--bg": "#F2E8CF", "--surface": "#EAD7B1", "--surface-2": "#D4A373", "--border": "rgba(188, 71, 73, 0.2)", "--primary": "#BC4749", "--accent": "#6A994E", "--text": "#386641", "--text-muted": "#6A994E", "--bg-spot-1": "rgba(188, 71, 73, 0.05)", "--bg-spot-2": "rgba(255, 255, 255, 0.3)" }
 };
 
