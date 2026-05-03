@@ -50,6 +50,31 @@ const THEMES = {
     "--bg-spot-1": "rgba(255, 215, 0, 0.1)",
     "animation": "truth_orbs"
   },
+    hokage_dream: {
+    "--bg": "#FFF7ED", // Warm Sun Orange
+    "--surface": "#FFEDD5",
+    "--surface-2": "#F97316", // Naruto Orange
+    "--border": "rgba(59, 130, 246, 0.2)", // Jacket Blue
+    "--primary": "#F97316", 
+    "--primary-soft": "rgba(249, 115, 22, 0.15)",
+    "--accent": "#3B82F6", // Rasengan Blue
+    "--text": "#431407",
+    "--text-muted": "#7C2D12",
+    "animation": "spirals"
+  },
+  uchiha_avenger: {
+    "--bg": "#0A0A1F", // Deep Uchiha Navy
+    "--surface": "#14142D",
+    "--surface-2": "#6D28D9", // Susanoo Purple
+    "--border": "rgba(160, 233, 255, 0.2)", // Chidori Glow
+    "--primary": "#A0E9FF", // Electric Blue
+    "--primary-soft": "rgba(160, 233, 255, 0.1)",
+    "--accent": "#EF4444", // Sharingan Red
+    "--text": "#D1D5DB",
+    "--text-muted": "rgba(209, 213, 219, 0.4)",
+    "--bg-spot-1": "rgba(109, 40, 217, 0.2)",
+    "animation": "bolts"
+  },
     ninja_rivalry: {
     "--bg": "#0D0D1F", // Deep Uchiha Navy
     "--surface": "#16162D",
@@ -825,7 +850,7 @@ function toast(msg) {
   function renderSpotify(base) {
     const host = $("spotifyEmbed");
     if (!host || !base) return;
-    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" , "butterfly_mode" , "hidan_ritual" , "kakuzu_hearts" , "eternal_beauty" , "monster_mist" , "stinky_aloe" ]);
+    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" , "butterfly_mode" , "hidan_ritual" , "kakuzu_hearts" , "eternal_beauty" , "monster_mist" , "stinky_aloe" , "uchiha_avenger" ]);
     const theme = darks.has(localStorage.getItem("petal_theme")) ? "dark" : "light";
     
     host.innerHTML = `<iframe class="spotify-iframe" style="width:100%; height:352px; border:0; border-radius:16px; margin-top:10px;" src="${base}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
@@ -1094,7 +1119,18 @@ function toast(msg) {
         if (Math.random() > 0.8) {
           particle.style.background = "#F97316";
           particle.style.boxShadow = "0 0 20px 4px #F97316";
-        }
+            } else if (type === "spirals") {
+      particle.className = "uzumaki-spiral";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = Math.random() * 100 + "vh";
+      particle.style.animationDuration = "5s";
+    } else if (type === "bolts") {
+      particle.className = "chidori-bolt";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = Math.random() * 100 + "vh";
+      particle.style.transform = `rotate(${Math.random() * 360}deg)`;
+      particle.style.animationDuration = "0.3s";
+    }
                 else if (type === "bubbles") {
         const isRipple = Math.random() > 0.6; 
         if (isRipple) {
@@ -1179,7 +1215,9 @@ function toast(msg) {
       tobi_good_boy: "tobi_swirl",
       monster_mist: "sharks",
       stinky_aloe: "flytraps",
-      ultimate_masterpiece: "c0_explosion"
+      ultimate_masterpiece: "c0_explosion",
+      hokage_dream: "spirals",
+      uchiha_avenger: "bolts",
     };
     startAnimation(map[theme] || null);
   });
