@@ -1513,3 +1513,41 @@ header, .top-actions { overflow: visible; }
     transform: rotate(calc(var(--rot) - 5deg)) scaleY(1.5); 
   }
 }
+/* INO: MIND TRANSFER WAVES */
+.mind-wave {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border: 2px solid #8B5CF6;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  animation: mind-expand 4s ease-out forwards;
+}
+
+@keyframes mind-expand {
+  0% { transform: scale(0); opacity: 0; }
+  20% { opacity: 0.4; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+/* CHOJI: CHAKRA BUTTERFLIES */
+.butterfly {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background: #3B82F6;
+  /* Simple pixel-style butterfly shape */
+  clip-path: polygon(0% 20%, 50% 50%, 0% 80%, 100% 80%, 50% 50%, 100% 20%);
+  box-shadow: 0 0 10px #3B82F6;
+  opacity: 0;
+  pointer-events: none;
+  animation: butterfly-fly 6s linear forwards;
+}
+
+@keyframes butterfly-fly {
+  0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0; }
+  20% { opacity: 0.8; }
+  50% { transform: translateY(-50vh) translateX(30px) rotate(20deg); }
+  100% { transform: translateY(-110vh) translateX(-30px) rotate(-20deg); opacity: 0; }
+}
