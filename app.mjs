@@ -215,6 +215,19 @@ const THEMES = {
     "--bg-spot-1": "rgba(74, 0, 0, 0.3)",
     "animation": "jashin"
   },
+    kakuzu_hearts: {
+    "--bg": "#0F110D", // Dark Earth Green
+    "--surface": "#1A1D17",
+    "--surface-2": "#3E4437", // Mask Olive
+    "--border": "rgba(255, 215, 0, 0.15)", // Greed Gold
+    "--primary": "#FFD700", // Gold
+    "--primary-soft": "rgba(255, 215, 0, 0.1)",
+    "--accent": "#B22222", // Heart Red
+    "--text": "#D1D5DB",
+    "--text-muted": "rgba(209, 213, 223, 0.5)",
+    "--bg-spot-1": "rgba(62, 68, 55, 0.2)",
+    "animation": "threads"
+  },
   hidden_rain: {
     "--bg": "#111418", // Dark Stormy Grey
     "--surface": "#1B2026",
@@ -688,7 +701,7 @@ function toast(msg) {
   function renderSpotify(base) {
     const host = $("spotifyEmbed");
     if (!host || !base) return;
-    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" , "butterfly_mode" , "hidan_ritual" ]);
+    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" , "butterfly_mode" , "hidan_ritual" , "kakuzu_hearts" ]);
     const theme = darks.has(localStorage.getItem("petal_theme")) ? "dark" : "light";
     
     host.innerHTML = `<iframe class="spotify-iframe" style="width:100%; height:352px; border:0; border-radius:16px; margin-top:10px;" src="${base}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
@@ -836,6 +849,12 @@ function toast(msg) {
       // Random rotation for the symbols
       particle.style.transform = `rotate(${Math.random() * 360}deg)`;
       particle.style.animationDuration = "5s";
+        } else if (type === "threads") {
+      particle.className = "stitch-thread";
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = "-70px"; // Start above screen
+      // Threads move at various "creepy" speeds
+      particle.style.animationDuration = (Math.random() * 3 + 4) + "s";
     }
       else if (type === "pearls") {
         particle.className = "pearl";
@@ -981,7 +1000,8 @@ function toast(msg) {
       shadow_possession: "shadows",
       mind_transfer: "mind_waves",
       butterfly_mode: "butterflies",
-      hidan_ritual: "jashin"
+      hidan_ritual: "jashin",
+      kakuzu_hearts: "threads"
     };
     startAnimation(map[theme] || null);
   });
