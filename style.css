@@ -1147,37 +1147,46 @@ header, .top-actions { overflow: visible; }
   90% { opacity: 0.3; }
   100% { transform: translateY(-100vh) scale(1.2) rotate(10deg); opacity: 0; }
 }
-/* HASHIRAMA: CURVED WOOD STYLE VINES */
+/* HASHIRAMA: CURVED WOOD STYLE */
 .wood-vine {
   position: absolute;
-  width: 50px;             /* Width of the curve arc */
-  height: 0;               /* Starts at 0 height */
-  border-left: 5px solid #31572C; /* Thicker "bark" */
-  border-radius: 50%;      /* Creates the curve */
+  width: 50px;
+  height: 0;
+  border-left: 5px solid #31572C;
+  border-radius: 50%;
   opacity: 0;
   pointer-events: none;
-  /* Glowing moss effect */
-  box-shadow: -4px 0 12px rgba(79, 119, 45, 0.4); 
+  box-shadow: -4px 0 12px rgba(79, 119, 45, 0.4);
   z-index: 4;
   animation: vine-curve-grow 6s ease-in-out forwards;
 }
 
-@keyframes vine-curve-grow {
-  0% { 
-    height: 0; 
-    opacity: 0; 
-    transform: rotate(var(--rot)) scale(0.5); 
-  }
-  15% { 
-    opacity: 0.6; 
-  }
-  100% { 
-    height: 300px;         /* How far the vine reaches */
-    opacity: 0; 
-    /* The vine twists slightly as it grows */
-    transform: rotate(calc(var(--rot) + 25deg)) scale(1.2); 
-  }
+/* HASHIRAMA: SAGE MODE CIRCLE */
+.sage-mark {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border: 4px solid #31572C;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow: 0 0 20px #4F772D;
+  z-index: 3;
+  animation: sage-pulse 5s ease-out forwards;
 }
+
+@keyframes vine-curve-grow {
+  0% { height: 0; opacity: 0; transform: rotate(var(--rot)) scale(0.5); }
+  15% { opacity: 0.6; }
+  100% { height: 400px; opacity: 0; transform: rotate(calc(var(--rot) + 30deg)) scale(1.3); }
+}
+
+@keyframes sage-pulse {
+  0% { transform: scale(0); opacity: 0; }
+  20% { opacity: 0.4; }
+  100% { transform: scale(6); opacity: 0; }
+}
+
 
 /* TOBIRAMA: WATER DROPLETS */
 .water-drop {
