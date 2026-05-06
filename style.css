@@ -1831,3 +1831,68 @@ header, .top-actions { overflow: visible; }
   50% { opacity: 1; transform: scaleX(1.2) rotate(var(--rot)); }
   100% { transform: scaleX(1.5) rotate(var(--rot)) translateY(10px); opacity: 0; }
 }
+/* MEGUMI: SHADOW SHIKIGAMI */
+.shadow-wolf {
+  position: absolute;
+  width: 40px; height: 20px;
+  background: black;
+  clip-path: polygon(0% 100%, 20% 70%, 40% 100%, 60% 40%, 80% 100%, 100% 70%, 100% 100%);
+  opacity: 0;
+  pointer-events: none;
+  animation: shikigami-rise 4s ease-out forwards;
+}
+
+/* GETO: CURSED SPIRIT ORBS */
+.cursed-orb {
+  position: absolute;
+  width: 15px; height: 15px;
+  background: radial-gradient(circle, #9F7AEA, #000);
+  border-radius: 50%;
+  box-shadow: 0 0 15px #9F7AEA;
+  opacity: 0;
+  pointer-events: none;
+  animation: orb-swirl 6s ease-in-out forwards;
+}
+
+/* CHOSO: PIERCING BLOOD */
+.blood-streak {
+  position: absolute;
+  width: 100px; height: 2px;
+  background: #E53E3E;
+  box-shadow: 0 0 10px #E53E3E;
+  pointer-events: none;
+  animation: blood-pierce 0.4s linear forwards;
+}
+
+/* YUJI: DIVERGENT IMPACT */
+.impact-ring {
+  position: absolute;
+  width: 40px; height: 40px;
+  border: 3px solid #3182CE;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: double-impact 0.6s ease-out forwards;
+}
+
+@keyframes shikigami-rise {
+  0% { transform: translateY(20px) scaleY(0); opacity: 0; }
+  20% { opacity: 0.4; transform: translateY(0) scaleY(1); }
+  100% { transform: translateY(-40px) scale(1.2); opacity: 0; }
+}
+
+@keyframes orb-swirl {
+  0% { transform: translate(0, 0) scale(0); opacity: 0; }
+  20% { opacity: 0.6; }
+  100% { transform: translate(100px, -100px) scale(1.5); opacity: 0; }
+}
+
+@keyframes blood-pierce {
+  0% { transform: scaleX(0) translateX(0); opacity: 1; }
+  100% { transform: scaleX(2) translateX(300px); opacity: 0; }
+}
+
+@keyframes double-impact {
+  0% { transform: scale(0); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; border-color: #E53E3E; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
