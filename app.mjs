@@ -293,6 +293,19 @@ const THEMES = {
     "--text-muted": "#718096",
     "animation": "impacts"
   },
+  blood_brother: {
+    "--bg": "#120A10", // Deepest Plum Black
+    "--surface": "#1A0F17",
+    "--surface-2": "#8B5CF6", // Lavender Markings
+    "--border": "rgba(229, 62, 62, 0.2)",
+    "--primary": "#E53E3E", // Blood Red
+    "--primary-soft": "rgba(229, 62, 62, 0.15)",
+    "--accent": "#F5E6D3", // Scarf Cream
+    "--text": "#F5E6D3",
+    "--text-muted": "rgba(245, 230, 211, 0.5)",
+    "--bg-spot-1": "rgba(139, 92, 246, 0.1)", // Lavender Glow
+    "animation": "supernova"
+  },
 
 };
 
@@ -467,7 +480,7 @@ function toast(msg) {
 
   function renderSpotify(base) {
     const host = $("spotifyEmbed"); if (!host || !base) return;
-    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" , "butterfly_mode" , "hidan_ritual" , "kakuzu_hearts" , "eternal_beauty" , "monster_mist" , "stinky_aloe" , "uchiha_avenger" , "eternal_amaterasu" , "six_paths_pain" , "ten_shadows" , "cursed_manipulation" , "death_painting"]);
+    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" , "butterfly_mode" , "hidan_ritual" , "kakuzu_hearts" , "eternal_beauty" , "monster_mist" , "stinky_aloe" , "uchiha_avenger" , "eternal_amaterasu" , "six_paths_pain" , "ten_shadows" , "cursed_manipulation" , "death_painting" , "blood_brother" ]);
     const theme = darks.has(localStorage.getItem("petal_theme")) ? "dark" : "light";
     host.innerHTML = `<iframe class="spotify-iframe" style="width:100%; height:352px; border:0; border-radius:16px;" src="${base}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
   }
@@ -640,7 +653,15 @@ function toast(msg) {
       p.className = "impact-ring";
       p.style.left = Math.random() * 100 + "vw";
       p.style.top = Math.random() * 100 + "vh";
+        } else if (type === "supernova") {
+      p.className = "blood-orb";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.top = Math.random() * 100 + "vh";
+      p.style.animationDuration = "3s";
+      // Randomly offset the delay so they don't all pop at once
+      p.style.animationDelay = (Math.random() * 2) + "s";
     }
+
 
 
       overlay.appendChild(p);
@@ -660,7 +681,7 @@ function toast(msg) {
       eternal_beauty: "puppet_strings", paper_angel: "paper", six_paths_pain: "gravity", original_hope: "rain", tobi_good_boy: "tobi_swirl", 
       monster_mist: "sharks", stinky_aloe: "flytraps", ultimate_masterpiece: "c0_explosion", hokage_dream: "spirals", uchiha_avenger: "bolts", hidden_rain: "rain", kurama_sage: "embers",
       hidden_sand: "sand", infinite_void: "infinity", malevolent_shrine: "slashes", ten_shadows: "shikigami",
-      cursed_manipulation: "cursed_orbs", death_painting: "blood_streaks", divergent_fist: "impacts"
+      cursed_manipulation: "cursed_orbs", death_painting: "blood_streaks", divergent_fist: "impacts", blood_brother: "supernova",
     };
     startAnimation(map[theme] || null);
   });
