@@ -458,9 +458,30 @@ function toast(msg) {
       else if (type === "truth_orbs") { p.className = "truth-orb"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDelay = (Math.random() * 5) + "s"; }
       else if (type === "hundred_seals") { p.className = "diamond-seal"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "4s"; } 
       else if (type === "malice") { p.className = "malice-orb"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; if (Math.random() > 0.8) { p.style.background = "#F97316"; p.style.boxShadow = "0 0 20px 4px #F97316"; } } 
-      else if (type === "wood_style") { 
-        if (Math.random() > 0.7) { p.className = "wood-vine"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-50px"; const rot = Math.random() * 360; p.style.setProperty('--rot', `${rot}deg`); p.style.animationDuration = (Math.random() * 2 + 4) + "s"; } 
-        else { p.className = "wood-petal"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-20px"; p.style.animationDuration = (Math.random() * 3 + 4) + "s"; }
+            else if (type === "wood_style") {
+        const rand = Math.random();
+        
+        if (rand > 0.9) { // 10% chance for a Sage Mark
+          p.className = "sage-mark";
+          p.style.left = "50vw"; // Center of screen
+          p.style.top = "50vh";
+          p.style.transform = "translate(-50%, -50%)";
+          p.style.animationDuration = "5s";
+        } 
+        else if (rand > 0.6) { // 30% chance for a Vine
+          p.className = "wood-vine";
+          p.style.left = Math.random() * 100 + "vw";
+          p.style.bottom = "-50px"; 
+          const randomRot = Math.random() * 360;
+          p.style.setProperty('--rot', `${randomRot}deg`);
+          p.style.animationDuration = "6s";
+        } 
+        else { // 60% chance for Leaves
+          p.className = "wood-petal";
+          p.style.left = Math.random() * 100 + "vw";
+          p.style.top = "-20px";
+          p.style.animationDuration = (Math.random() * 3 + 4) + "s";
+        }
       }
       else if (type === "bubbles") {
         if (Math.random() > 0.6) { p.className = "water-ripple"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; } 
