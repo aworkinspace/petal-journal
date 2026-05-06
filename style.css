@@ -1896,3 +1896,22 @@ header, .top-actions { overflow: visible; }
   50% { transform: scale(1.5); opacity: 0.5; border-color: #E53E3E; }
   100% { transform: scale(2.5); opacity: 0; }
 }
+/* CHOSO: SUPERNOVA STYLE */
+.blood-orb {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #E53E3E;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #E53E3E;
+  pointer-events: none;
+  opacity: 0;
+  animation: supernova-pop 3s ease-in-out forwards;
+}
+
+@keyframes supernova-pop {
+  0% { transform: scale(0) translateY(0); opacity: 0; }
+  20% { opacity: 1; transform: scale(1.2) translateY(-20px); }
+  80% { transform: scale(1) translateY(-40px); opacity: 0.8; }
+  100% { transform: scale(4) translateY(-50px); opacity: 0; filter: blur(4px); }
+}
