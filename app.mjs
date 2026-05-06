@@ -219,6 +219,32 @@ const THEMES = {
     "animation": "sand"
   },
   desert_love: { "--bg": "#F2E8CF", "--surface": "#EAD7B1", "--surface-2": "#D4A373", "--border": "rgba(188, 71, 73, 0.2)", "--primary": "#BC4749", "--accent": "#6A994E", "--text": "#386641", "--text-muted": "#6A994E", "--bg-spot-1": "rgba(188, 71, 73, 0.05)", "--bg-spot-2": "rgba(255, 255, 255, 0.3)" }
+  infinite_void: {
+    "--bg": "#0A0B14", // Deep Space Navy
+    "--surface": "#121421",
+    "--surface-2": "#00D2FF", // Limitless Blue
+    "--border": "rgba(0, 210, 255, 0.2)",
+    "--primary": "#00D2FF", 
+    "--primary-soft": "rgba(0, 210, 255, 0.1)",
+    "--accent": "#FFFFFF", // Six Eyes White
+    "--text": "#E0E7FF",
+    "--text-muted": "rgba(224, 231, 255, 0.5)",
+    "--bg-spot-1": "rgba(0, 210, 255, 0.15)",
+    "animation": "infinity"
+  },
+  malevolent_shrine: {
+    "--bg": "#0D0000", // Shrine Shadow
+    "--surface": "#1A0505",
+    "--surface-2": "#FF003C", // Cursed Energy Red
+    "--border": "rgba(255, 0, 60, 0.2)",
+    "--primary": "#FF003C", 
+    "--primary-soft": "rgba(255, 0, 60, 0.1)",
+    "--accent": "#FACC15", // King of Curses Gold
+    "--text": "#FFE4E6",
+    "--text-muted": "rgba(255, 228, 230, 0.5)",
+    "--bg-spot-1": "rgba(255, 0, 60, 0.15)",
+    "animation": "slashes"
+  },
 };
 
 /* ------------------- Theme Helpers ------------------- */
@@ -535,10 +561,24 @@ function toast(msg) {
         else { p.style.top = Math.random() * 100 + "vh"; p.style.left = edge > 0.25 ? "-50px" : "100vw"; p.style.setProperty('--rot', edge > 0.25 ? "90deg" : "-90deg"); }
         p.className = "shadow-tendril"; p.style.animationDuration = (Math.random() * 2 + 3) + "s";
       }
+      else if (type === "infinity") {
+        p.className = "infinity-ring";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDuration = "4s";
+      }
+      else if (type === "slashes") {
+        p.className = "sukuna-slash";
+        p.style.left = Math.random() * 80 + 10 + "vw";
+        p.style.top = Math.random() * 80 + 10 + "vh";
+        const randomRot = Math.random() * 360;
+        p.style.setProperty('--rot', `${randomRot}deg`);
+        p.style.animationDuration = "0.3s";
+      }
 
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
-    }, type === "teleport" || type === "bolts" ? 80 : (type === "aura" ? 150 : 800));
+    }, type === "teleport" || type === "bolts" || type === "slashes" ? 80 : (type === "aura" ? 150 : 800));
   }
 
   document.addEventListener("themeChanged", () => {
@@ -552,7 +592,7 @@ function toast(msg) {
       mind_transfer: "mind_waves", butterfly_mode: "butterflies", hidan_ritual: "jashin", kakuzu_hearts: "threads", art_explosion: "explosive_birds", 
       eternal_beauty: "puppet_strings", paper_angel: "paper", six_paths_pain: "gravity", original_hope: "rain", tobi_good_boy: "tobi_swirl", 
       monster_mist: "sharks", stinky_aloe: "flytraps", ultimate_masterpiece: "c0_explosion", hokage_dream: "spirals", uchiha_avenger: "bolts", hidden_rain: "rain", kurama_sage: "embers",
-      hidden_sand: "sand"
+      hidden_sand: "sand", infinite_void: "infinity", malevolent_shrine: "slashes"
     };
     startAnimation(map[theme] || null);
   });
