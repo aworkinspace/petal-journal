@@ -1795,3 +1795,39 @@ header, .top-actions { overflow: visible; }
   50% { opacity: 0.5; transform: scaleX(0.5); }
   100% { height: 40vh; opacity: 0; transform: scaleX(1); }
 }
+/* GOJO: INFINITY RIPPLES */
+.infinity-ring {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border: 1px solid #00D2FF;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow: 0 0 20px #00D2FF;
+  animation: limitless-expand 4s ease-out forwards;
+}
+
+@keyframes limitless-expand {
+  0% { transform: scale(0); opacity: 0; }
+  10% { opacity: 0.5; }
+  100% { transform: scale(10); opacity: 0; }
+}
+
+/* SUKUNA: DISMANTLE SLASHES */
+.sukuna-slash {
+  position: absolute;
+  width: 200px;
+  height: 2px;
+  background: #FF003C;
+  box-shadow: 0 0 15px #FF003C;
+  pointer-events: none;
+  opacity: 0;
+  animation: dismantle-flash 0.3s ease-in-out forwards;
+}
+
+@keyframes dismantle-flash {
+  0% { transform: scaleX(0) rotate(var(--rot)); opacity: 0; }
+  50% { opacity: 1; transform: scaleX(1.2) rotate(var(--rot)); }
+  100% { transform: scaleX(1.5) rotate(var(--rot)) translateY(10px); opacity: 0; }
+}
