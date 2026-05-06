@@ -245,6 +245,55 @@ const THEMES = {
     "--bg-spot-1": "rgba(255, 0, 60, 0.15)",
     "animation": "slashes"
   },
+    ten_shadows: {
+    "--bg": "#05080A", // Shadow Abyss
+    "--surface": "#0D1117",
+    "--surface-2": "#1A202C", 
+    "--border": "rgba(45, 55, 72, 0.3)",
+    "--primary": "#4FD1C5", // Divine Dog Teal
+    "--primary-soft": "rgba(79, 209, 197, 0.1)",
+    "--accent": "#000000", // Shadow Black
+    "--text": "#E2E8F0",
+    "--text-muted": "rgba(226, 232, 240, 0.5)",
+    "animation": "shikigami"
+  },
+  cursed_manipulation: {
+    "--bg": "#121212", // Monk Robe Black
+    "--surface": "#1E1E1E",
+    "--surface-2": "#B7791F", // Robe Gold
+    "--border": "rgba(183, 121, 31, 0.2)",
+    "--primary": "#9F7AEA", // Spirit Purple
+    "--primary-soft": "rgba(159, 122, 234, 0.1)",
+    "--accent": "#ECC94B", 
+    "--text": "#F7FAFC",
+    "--text-muted": "rgba(247, 250, 252, 0.5)",
+    "animation": "cursed_orbs"
+  },
+  death_painting: {
+    "--bg": "#1A0505", // Blood Plum
+    "--surface": "#2D0A0A",
+    "--surface-2": "#742A2A", 
+    "--border": "rgba(229, 62, 62, 0.2)",
+    "--primary": "#E53E3E", // Piercing Blood Red
+    "--primary-soft": "rgba(229, 62, 62, 0.1)",
+    "--accent": "#FFFFFF", // Mask White
+    "--text": "#FFF5F5",
+    "--text-muted": "rgba(255, 245, 245, 0.5)",
+    "animation": "blood_streaks"
+  },
+  divergent_fist: {
+    "--bg": "#FFF5F7", // Itadori Pink
+    "--surface": "#FFEDF1",
+    "--surface-2": "#3182CE", // Cursed Energy Blue
+    "--border": "rgba(49, 130, 206, 0.2)",
+    "--primary": "#3182CE", 
+    "--primary-soft": "rgba(49, 130, 206, 0.1)",
+    "--accent": "#E53E3E", // Tiger Red
+    "--text": "#2D3748",
+    "--text-muted": "#718096",
+    "animation": "impacts"
+  },
+
 };
 
 /* ------------------- Theme Helpers ------------------- */
@@ -574,7 +623,25 @@ function toast(msg) {
         const randomRot = Math.random() * 360;
         p.style.setProperty('--rot', `${randomRot}deg`);
         p.style.animationDuration = "0.3s";
-      }
+          } else if (type === "shikigami") {
+      p.className = "shadow-wolf";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.bottom = "10vh";
+    } else if (type === "cursed_orbs") {
+      p.className = "cursed-orb";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.top = Math.random() * 100 + "vh";
+    } else if (type === "blood_streaks") {
+      p.className = "blood-streak";
+      p.style.left = "-100px";
+      p.style.top = Math.random() * 100 + "vh";
+      p.style.transform = `rotate(${(Math.random() * 20) - 10}deg)`;
+    } else if (type === "impacts") {
+      p.className = "impact-ring";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.top = Math.random() * 100 + "vh";
+    }
+
 
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
@@ -592,7 +659,8 @@ function toast(msg) {
       mind_transfer: "mind_waves", butterfly_mode: "butterflies", hidan_ritual: "jashin", kakuzu_hearts: "threads", art_explosion: "explosive_birds", 
       eternal_beauty: "puppet_strings", paper_angel: "paper", six_paths_pain: "gravity", original_hope: "rain", tobi_good_boy: "tobi_swirl", 
       monster_mist: "sharks", stinky_aloe: "flytraps", ultimate_masterpiece: "c0_explosion", hokage_dream: "spirals", uchiha_avenger: "bolts", hidden_rain: "rain", kurama_sage: "embers",
-      hidden_sand: "sand", infinite_void: "infinity", malevolent_shrine: "slashes"
+      hidden_sand: "sand", infinite_void: "infinity", malevolent_shrine: "slashes", ten_shadows: "shikigami",
+      cursed_manipulation: "cursed_orbs", death_painting: "blood_streaks", divergent_fist: "impacts"
     };
     startAnimation(map[theme] || null);
   });
