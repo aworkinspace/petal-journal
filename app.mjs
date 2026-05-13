@@ -306,6 +306,30 @@ const THEMES = {
     "--bg-spot-1": "rgba(139, 92, 246, 0.1)", // Lavender Glow
     "animation": "supernova"
   },
+  ratio_sorcerer: {
+    "--bg": "#FAF7F0", // Clean Stationery White
+    "--surface": "#F2EAD3",
+    "--surface-2": "#3D5A80", // Nanami Tie Blue
+    "--border": "rgba(61, 90, 128, 0.2)",
+    "--primary": "#EE6C4D", // 7:3 Strike Orange
+    "--primary-soft": "rgba(238, 108, 77, 0.1)",
+    "--accent": "#98C1D9", // Clear Sky Blue
+    "--text": "#293241", // Deep Professional Navy
+    "--text-muted": "#3D5A80",
+    "animation": "clock_ticks"
+  },
+  blue_spring: {
+    "--bg": "#E0F2FE", // Nostalgic Sky Blue
+    "--surface": "#F0F9FF",
+    "--surface-2": "#BAE6FD", 
+    "--border": "rgba(14, 165, 233, 0.2)",
+    "--primary": "#0EA5E9", // Youthful Blue
+    "--primary-soft": "rgba(14, 165, 233, 0.1)",
+    "--accent": "#FFFFFF", // Summer Cloud White
+    "--text": "#0369A1",
+    "--text-muted": "#0EA5E9",
+    "animation": "summer_clouds"
+  },
 
 };
 
@@ -661,6 +685,18 @@ function toast(msg) {
       // Randomly offset the delay so they don't all pop at once
       p.style.animationDelay = (Math.random() * 2) + "s";
     }
+    } else if (type === "clock_ticks") {
+      p.className = "clock-hand";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.bottom = "-20px";
+      p.style.animationDuration = (Math.random() * 2 + 4) + "s";
+    } else if (type === "summer_clouds") {
+      p.className = "summer-cloud";
+      p.style.top = Math.random() * 40 + "vh"; // Clouds stay in the top half
+      p.style.left = "-150px";
+      p.style.width = (Math.random() * 100 + 100) + "px";
+      p.style.animationDuration = (Math.random() * 10 + 15) + "s"; // Very slow movement
+    }
 
 
 
@@ -681,7 +717,8 @@ function toast(msg) {
       eternal_beauty: "puppet_strings", paper_angel: "paper", six_paths_pain: "gravity", original_hope: "rain", tobi_good_boy: "tobi_swirl", 
       monster_mist: "sharks", stinky_aloe: "flytraps", ultimate_masterpiece: "c0_explosion", hokage_dream: "spirals", uchiha_avenger: "bolts", hidden_rain: "rain", kurama_sage: "embers",
       hidden_sand: "sand", infinite_void: "infinity", malevolent_shrine: "slashes", ten_shadows: "shikigami",
-      cursed_manipulation: "cursed_orbs", death_painting: "blood_streaks", divergent_fist: "impacts", blood_brother: "supernova",
+      cursed_manipulation: "cursed_orbs", death_painting: "blood_streaks", divergent_fist: "impacts", blood_brother: "supernova", ratio_sorcerer: "clock_ticks",
+      blue_spring: "summer_clouds",
     };
     startAnimation(map[theme] || null);
   });
