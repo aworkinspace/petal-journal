@@ -330,6 +330,54 @@ const THEMES = {
     "--text-muted": "#0EA5E9",
     "animation": "summer_clouds"
   },
+  strongest_man: {
+    "--bg": "#1A1A1A", // Whitebeard Coat Grey
+    "--surface": "#262626",
+    "--surface-2": "#B45309", // Captain's Mark Gold
+    "--border": "rgba(255, 255, 255, 0.2)",
+    "--primary": "#FFFFFF", // The Great Moustache White
+    "--primary-soft": "rgba(255, 255, 255, 0.1)",
+    "--accent": "#7C3AED", // Gura Gura Purple
+    "--text": "#F9FAFB",
+    "--text-muted": "#9CA3AF",
+    "animation": "air_cracks"
+  },
+  surgeon_death: {
+    "--bg": "#0D1117", // Law's Hoodie Navy
+    "--surface": "#161B22",
+    "--surface-2": "#FACC15", // Law's Hat Yellow
+    "--border": "rgba(56, 189, 248, 0.3)", // Room Blue
+    "--primary": "#38BDF8", // Gamma Knife Blue
+    "--primary-soft": "rgba(56, 189, 248, 0.1)",
+    "--accent": "#000000", // Heart Tattoo Black
+    "--text": "#E2E8F0",
+    "--text-muted": "rgba(226, 232, 240, 0.5)",
+    "animation": "room_scan"
+  },
+  sun_god: {
+    "--bg": "#FFFFFF", // Gear 5 White
+    "--surface": "#F8FAFC",
+    "--surface-2": "#DDD6FE", // Nika Purple
+    "--border": "rgba(167, 139, 250, 0.2)",
+    "--primary": "#C084FC", // Joyboy Purple
+    "--primary-soft": "rgba(192, 132, 252, 0.1)",
+    "--accent": "#FACC15", // Sun Gold
+    "--text": "#1E293B",
+    "--text-muted": "#64748B",
+    "animation": "drum_beats"
+  },
+  silent_heart: {
+    "--bg": "#FFF1F2", // Corazon Pink
+    "--surface": "#FFE4E6",
+    "--surface-2": "#111827", // Feather Coat Black
+    "--border": "rgba(244, 63, 94, 0.2)",
+    "--primary": "#F43F5E", // Love Red
+    "--primary-soft": "rgba(244, 63, 94, 0.1)",
+    "--accent": "#FB7185", 
+    "--text": "#4C0519",
+    "--text-muted": "#9F1239",
+    "animation": "hearts"
+  },
 
 };
 
@@ -504,7 +552,7 @@ function toast(msg) {
 
   function renderSpotify(base) {
     const host = $("spotifyEmbed"); if (!host || !base) return;
-    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" , "butterfly_mode" , "hidan_ritual" , "kakuzu_hearts" , "eternal_beauty" , "monster_mist" , "stinky_aloe" , "uchiha_avenger" , "eternal_amaterasu" , "six_paths_pain" , "ten_shadows" , "cursed_manipulation" , "death_painting" , "blood_brother" ]);
+    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" , "butterfly_mode" , "hidan_ritual" , "kakuzu_hearts" , "eternal_beauty" , "monster_mist" , "stinky_aloe" , "uchiha_avenger" , "eternal_amaterasu" , "six_paths_pain" , "ten_shadows" , "cursed_manipulation" , "death_painting" , "blood_brother" , "strongest_man" , "surgeon_death" , ]);
     const theme = darks.has(localStorage.getItem("petal_theme")) ? "dark" : "light";
     host.innerHTML = `<iframe class="spotify-iframe" style="width:100%; height:352px; border:0; border-radius:16px;" src="${base}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
   }
@@ -695,9 +743,27 @@ function toast(msg) {
       p.style.left = "-150px";
       p.style.width = (Math.random() * 100 + 100) + "px";
       p.style.animationDuration = (Math.random() * 10 + 15) + "s"; // Very slow movement
+        } else if (type === "air_cracks") {
+      p.className = "air-crack";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.top = Math.random() * 100 + "vh";
+      p.style.setProperty('--rot', `${Math.random() * 360}deg`);
+      p.style.animationDuration = "0.4s";
+    } else if (type === "room_scan") {
+      p.className = "room-circle";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.top = Math.random() * 100 + "vh";
+    } else if (type === "drum_beats") {
+      p.className = "drum-beat";
+      p.textContent = "DUM!";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.top = Math.random() * 100 + "vh";
+    } else if (type === "hearts") {
+      p.className = "snowflake"; // Re-uses the snow logic but we change color in CSS
+      p.style.backgroundColor = "#F43F5E";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.top = "-10px";
     }
-
-
 
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
@@ -717,7 +783,10 @@ function toast(msg) {
       monster_mist: "sharks", stinky_aloe: "flytraps", ultimate_masterpiece: "c0_explosion", hokage_dream: "spirals", uchiha_avenger: "bolts", hidden_rain: "rain", kurama_sage: "embers",
       hidden_sand: "sand", infinite_void: "infinity", malevolent_shrine: "slashes", ten_shadows: "shikigami",
       cursed_manipulation: "cursed_orbs", death_painting: "blood_streaks", divergent_fist: "impacts", blood_brother: "supernova", ratio_sorcerer: "clock_ticks",
-      blue_spring: "summer_clouds",
+      blue_spring: "summer_clouds", strongest_man: "air_cracks",
+      surgeon_death: "room_scan",
+      sun_god: "drum_beats",
+      silent_heart: "hearts",
     };
     startAnimation(map[theme] || null);
   });
