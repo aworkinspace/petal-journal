@@ -54,6 +54,18 @@ const THEMES = {
     "--text-muted": "rgba(236, 253, 245, 0.4)",
     "animation": "fireflies"
   },
+  retro_handheld: {
+    "--bg": "#E0E0E0", // Classic Gameboy Grey
+    "--surface": "#F5F5F5",
+    "--surface-2": "#A0A0A0", 
+    "--border": "#4A4A4A",
+    "--primary": "#4A4A4A", 
+    "--primary-soft": "rgba(74, 74, 74, 0.1)",
+    "--accent": "#FF0000", // Action Button Red
+    "--text": "#1A1A1A",
+    "--text-muted": "#4A4A4A",
+    "animation": "pixels"
+  },
   cosmic_starfall: { "--bg": "#0D0B1A", "--surface": "#16142E", "--surface-2": "#231F4D", "--border": "rgba(183,166,255,.14)", "--primary": "#B7A6FF", "--primary-soft": "rgba(183,166,255,.25)", "--accent": "#FFD700", "--text": "#F2F0F7", "--text-muted": "rgba(242,240,247,.75)", "--bg-spot-1": "rgba(130,100,255,0.2)", "--bg-spot-2": "rgba(50,200,255,0.1)" },
   autumn_forest: { "--bg": "#FFF9F2", "--surface": "#FCF3E8", "--surface-2": "#F5E6D3", "--border": "#DBC7B5", "--primary": "#A67B5B", "--primary-soft": "#E3D5C4", "--accent": "#D95D39", "--text": "#4A3728", "--text-muted": "#856D5B" },
   spring_blossom: { "--bg": "#FFF5F8", "--surface": "#FEF0F5", "--surface-2": "#FDE2E9", "--border": "#F9C8D9", "--primary": "#FFB7C5", "--primary-soft": "#FFE4E8", "--accent": "#FF69B4", "--text": "#5E3A44", "--text-muted": "#8A6B74" },
@@ -414,7 +426,30 @@ const THEMES = {
     "--text-muted": "#9F1239",
     "animation": "hearts"
   },
-
+flower_archeologist: {
+    "--bg": "#FAF5FF", // Robin Lilac
+    "--surface": "#FFFFFF",
+    "--surface-2": "#E9D5FF", 
+    "--border": "rgba(107, 70, 193, 0.2)",
+    "--primary": "#9F7AEA", 
+    "--primary-soft": "rgba(159, 122, 234, 0.1)",
+    "--accent": "#553C9A", 
+    "--text": "#2D2159",
+    "--text-muted": "#553C9A",
+    "animation": "arms"
+  },
+  legendary_merchant: {
+    "--bg": "#F0FAF0", // Urahara Hat Green
+    "--surface": "#FFFFFF",
+    "--surface-2": "#2D4F1E", // Darker Coat Green
+    "--border": "rgba(45, 79, 30, 0.2)",
+    "--primary": "#81C784", 
+    "--primary-soft": "rgba(129, 199, 132, 0.1)",
+    "--accent": "#388E3C", 
+    "--text": "#1B3012",
+    "--text-muted": "#4A7031",
+    "animation": "fans"
+  },
 };
 
 /* ------------------- Theme Helpers ------------------- */
@@ -874,7 +909,20 @@ function toast(msg) {
         p.style.left = Math.random() * 100 + "vw";
         p.style.top = Math.random() * 100 + "vh";
         p.style.animationDelay = (Math.random() * 4) + "s";
-      }
+    } else if (type === "fans") {
+      p.className = "paper-fan";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.top = "-20px";
+      p.style.animationDuration = (Math.random() * 4 + 6) + "s";
+    } else if (type === "arms") {
+      p.className = "flower-arm";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.top = Math.random() * 100 + "vh";
+    } else if (type === "pixels") {
+      p.className = "pixel-heart";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.top = Math.random() * 100 + "vh";
+    }
 
 
       overlay.appendChild(p);
@@ -898,7 +946,9 @@ function toast(msg) {
       blue_spring: "summer_clouds", strongest_man: "air_cracks",
       surgeon_death: "room_scan",
       sun_god: "drum_beats",
-      silent_heart: "hearts",
+      silent_heart: "hearts", legendary_merchant: "fans",
+      flower_archeologist: "arms",
+      retro_handheld: "pixels",
     };
     startAnimation(map[theme] || null);
   });
