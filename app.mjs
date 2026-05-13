@@ -767,7 +767,7 @@ function toast(msg) {
 
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
-    }, type === "teleport" || type === "bolts" || type === "slashes" ? 80 : (type === "aura" ? 150 : 800));
+    }, (type === "teleport" || type === "bolts" || type === "air_cracks") ? 80 : 800);
   }
 
   document.addEventListener("themeChanged", () => {
