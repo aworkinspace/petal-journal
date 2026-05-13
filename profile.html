@@ -493,79 +493,132 @@
     </div>
 
     <script type="module">
-      import { onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-      import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-      import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
+  import { onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+  import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+  import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
 
-      const auth = window.firebaseAuth;
-      const db = window.firebaseDb;
-      const storage = window.firebaseStorage;
-      let currentUser = null;
-      const $ = (id) => document.getElementById(id);
+  const auth = window.firebaseAuth;
+  const db = window.firebaseDb;
+  const storage = window.firebaseStorage;
+  let currentUser = null;
+  const $ = (id) => document.getElementById(id);
 
-      function updateZenProgress() {
-        const wb = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
-        const vs = parseInt(localStorage.getItem("petal_vision_count") || "0");
-        const cp = parseInt(localStorage.getItem("petal_capsule_count") || "0");
-        const wl = parseInt(localStorage.getItem("petal_well_count") || "0");
-        const entries = JSON.parse(localStorage.getItem("petal_entries_v1") || "[]");
+  function updateZenProgress() {
+    console.log("--- Zen XP Calculation Start ---");
 
-        let totalXP = (entries.length * 50) + (wb * 20) + (vs * 30) + (cp * 100) + (wl * 30);
-        entries.forEach(e => totalXP += (e.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length);
+    // 1. Get counts with a safety fallback to 0
+    const wb = Number(localStorage.getItem("petal_whiteboard_count")) || 0;
+    const vs = Number(localStorage.getItem("petal_vision_count")) || 0;
+    const cp = Number(localStorage.getItem("petal_capsule_count")) || 0;
+    const wl = Number(localStorage.getItem("petal_well_count")) || 0;
 
-        const xpPerLevel = 200;
-        const level = Math.floor(totalXP / xpPerLevel) + 1;
-        const currentXPInLevel = totalXP % xpPerLevel;
-        const progressPercent = (currentXPInLevel / xpPerLevel) * 100;
+    let entries = [];
+    try {
+      entries = JSON.parse(localStorage.getItem("petal_entries_v1") || "[]");
+    } catch (e) {
+      console.error("XP Error: Could not parse entries", e);
+      entries = [];
+    }
 
-        if ($("zenLevel")) $("zenLevel").textContent = `Level ${level}`;
-        if ($("zenXP")) $("zenXP").textContent = `${currentXPInLevel} / ${xpPerLevel} XP`;
-        if ($("zenBarFill")) $("zenBarFill").style.width = `${progressPercent}%`;
-        
-        let rank = "Genin";
-        if (level >= 5) rank = "Jonin";
-        if (level >= 10) rank = "Kage";
-        if ($("ninjaRank")) $("ninjaRank").textContent = `Rank: ${rank}`;
+    // 2. Base Calculation
+    let totalXP = (entries.length * 50) + (wb * 20) + (vs * 30) + (cp * 100) + (wl * 30);
+    
+    console.log(`Base XP from counts: ${totalXP}`);
 
-        if (level >= 5 && $("level5Badge")) $("level5Badge").className = "badge-visible";
-        if (level >= 10) document.querySelectorAll(".panel").forEach(p => p.classList.add("kage-aura"));
+    // 3. Word Count XP (1 XP per word)
+    entries.forEach((e, i) => {
+      if (e.content && typeof e.content === 'string') {
+        const plainText = e.content.replace(/<[^>]*>/g, ' ');
+        const words = plainText.split(/\s+/).filter(Boolean).length;
+        totalXP += words;
       }
+    });
 
-      $("btnUploadPic")?.addEventListener("click", () => $("picUpload")?.click());
-      $("picUpload")?.addEventListener("change", async (e) => {
-        const file = e.target.files[0];
-        if (!file || !currentUser) return;
-        $("picUploadMsg").textContent = "Uploading...";
-        try {
-          const path = `profile_pictures/${currentUser.uid}/profile.${file.name.split('.').pop()}`;
-          const sRef = ref(storage, path);
-          await uploadBytes(sRef, file);
-          const url = await getDownloadURL(sRef);
-          await updateProfile(currentUser, { photoURL: url });
-          $("profilePic").src = url;
-          $("picUploadMsg").textContent = "Success!";
-        } catch (err) { $("picUploadMsg").textContent = "Error!"; }
-      });
+    console.log(`Final Total XP: ${totalXP}`);
 
-      onAuthStateChanged(auth, async (user) => {
-        if (user) {
-          currentUser = user;
-          $("displayName").value = user.displayName || "";
-          if (user.photoURL) $("profilePic").src = user.photoURL;
-          const userDoc = await getDoc(doc(db, "users", user.uid));
-          if (userDoc.exists()) $("userBirthday").value = userDoc.data().birthday || "";
-          updateZenProgress();
-        } else { window.location.href = "login.html"; }
-      });
+    // 4. Level Logic
+    const xpPerLevel = 200;
+    const level = Math.floor(totalXP / xpPerLevel) + 1;
+    const currentXPInLevel = totalXP % xpPerLevel;
+    const progressPercent = (currentXPInLevel / xpPerLevel) * 100;
 
-      $("btnUpdateProfile")?.addEventListener("click", async () => {
-        if (!currentUser) return;
-        try {
-          await updateProfile(currentUser, { displayName: $("displayName").value.trim() });
-          await setDoc(doc(db, "users", currentUser.uid), { birthday: $("userBirthday").value }, { merge: true });
-          alert("Saved!");
-        } catch (e) { alert("Error!"); }
-      });
-    </script>
+    // 5. UI Updates
+    if ($("zenLevel")) $("zenLevel").textContent = `Level ${level}`;
+    if ($("zenXP")) $("zenXP").textContent = `${currentXPInLevel} / ${xpPerLevel} XP`;
+    if ($("zenBarFill")) $("zenBarFill").style.width = `${progressPercent}%`;
+    
+    let rank = "Genin";
+    if (level >= 5) rank = "Jonin";
+    if (level >= 10) rank = "Kage";
+    if ($("ninjaRank")) $("ninjaRank").textContent = `Rank: ${rank}`;
+
+    // 6. Rewards Check
+    if (level >= 5) {
+      if ($("level5Badge")) $("level5Badge").className = "badge-visible";
+      
+      const optGolden = document.querySelector('option[value="golden_petal"]');
+      if (optGolden) {
+        optGolden.disabled = false;
+        optGolden.textContent = "✨ Golden Petal (Unlocked!)";
+      }
+    }
+
+    if (level >= 10) {
+      document.querySelectorAll(".panel").forEach(p => p.classList.add("kage-aura"));
+      const optGod = document.querySelector('option[value="six_paths_sage"]');
+      if (optGod) {
+        optGod.disabled = false;
+        optGod.textContent = "☀️ Six Paths Sage (Unlocked!)";
+      }
+    }
+  }
+
+  /* ------------------- Profile Actions ------------------- */
+
+  $("btnUploadPic")?.addEventListener("click", () => $("picUpload")?.click());
+  
+  $("picUpload")?.addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (!file || !currentUser) return;
+    $("picUploadMsg").textContent = "Uploading...";
+    try {
+      const path = `profile_pictures/${currentUser.uid}/profile.${file.name.split('.').pop()}`;
+      const sRef = ref(storage, path);
+      await uploadBytes(sRef, file);
+      const url = await getDownloadURL(sRef);
+      await updateProfile(currentUser, { photoURL: url });
+      $("profilePic").src = url;
+      $("picUploadMsg").textContent = "Success!";
+    } catch (err) { 
+      console.error(err);
+      $("picUploadMsg").textContent = "Error!"; 
+    }
+  });
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      currentUser = user;
+      $("displayName").value = user.displayName || "";
+      if (user.photoURL) $("profilePic").src = user.photoURL;
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      if (userDoc.exists()) $("userBirthday").value = userDoc.data().birthday || "";
+      
+      // Update progress bar
+      updateZenProgress();
+    } else { 
+      window.location.href = "login.html"; 
+    }
+  });
+
+  $("btnUpdateProfile")?.addEventListener("click", async () => {
+    if (!currentUser) return;
+    try {
+      await updateProfile(currentUser, { displayName: $("displayName").value.trim() });
+      await setDoc(doc(db, "users", currentUser.uid), { birthday: $("userBirthday").value }, { merge: true });
+      alert("Profile Saved!");
+      updateZenProgress(); // Refresh bar after saving
+    } catch (e) { alert("Error!"); }
+  });
+</script>
   </body>
 </html>
