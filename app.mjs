@@ -18,6 +18,42 @@ const THEMES = {
   midnight: { "--bg": "#0F0D14", "--surface": "#14121A", "--surface-2": "#1C1824", "--border": "rgba(255,255,255,.14)", "--primary": "#8EA2FF", "--primary-soft": "rgba(142,162,255,.35)", "--accent": "#FFA5D6", "--text": "#F2F0F7", "--text-muted": "rgba(242,240,247,.75)", "--bg-spot-1": "rgba(142,162,255,.18)", "--bg-spot-2": "rgba(255,165,214,.12)" },
   strawberry_matcha: { "--bg": "#F7FFF6", "--surface": "#F7FFF6", "--surface-2": "#E8F7E6", "--border": "#CFE6CC", "--primary": "#7FBF9B", "--primary-soft": "#CFEBDD", "--accent": "#FF8FB8", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(127,191,155,.28)", "--bg-spot-2": "rgba(255,143,184,.22)" },
   blueberry_yogurt: { "--bg": "#F4F6FF", "--surface": "#F4F6FF", "--surface-2": "#E2E7FF", "--border": "#CAD3FF", "--primary": "#7F8CFF", "--primary-soft": "#C9D0FF", "--accent": "#FFA5D6", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(127,140,255,.30)", "--bg-spot-2": "rgba(255,165,214,.20)" },
+    cyberpunk_neo: {
+    "--bg": "#050505",
+    "--surface": "#0D0D0D",
+    "--surface-2": "#FF007A", // Neon Pink
+    "--border": "rgba(0, 243, 255, 0.3)", // Neon Teal
+    "--primary": "#00F3FF",
+    "--primary-soft": "rgba(0, 243, 255, 0.1)",
+    "--accent": "#FF007A",
+    "--text": "#E0E0E0",
+    "--text-muted": "rgba(224, 224, 224, 0.5)",
+    "animation": "glitch"
+  },
+  deep_sea_abyss: {
+    "--bg": "#02080D",
+    "--surface": "#04121A",
+    "--surface-2": "#00FFC2", // Bio-Green
+    "--border": "rgba(0, 255, 194, 0.15)",
+    "--primary": "#00FFC2",
+    "--primary-soft": "rgba(0, 255, 194, 0.05)",
+    "--accent": "#0077B6", // Deep Water Blue
+    "--text": "#CAF0F8",
+    "--text-muted": "rgba(202, 240, 248, 0.4)",
+    "animation": "plankton"
+  },
+  fairy_forest: {
+    "--bg": "#0B120E",
+    "--surface": "#141D17",
+    "--surface-2": "#EAB308", // Glow Yellow
+    "--border": "rgba(34, 197, 94, 0.2)",
+    "--primary": "#22C55E", // Moss Green
+    "--primary-soft": "rgba(34, 197, 94, 0.1)",
+    "--accent": "#FEF08A",
+    "--text": "#ECFDF5",
+    "--text-muted": "rgba(236, 253, 245, 0.4)",
+    "animation": "fireflies"
+  },
   cosmic_starfall: { "--bg": "#0D0B1A", "--surface": "#16142E", "--surface-2": "#231F4D", "--border": "rgba(183,166,255,.14)", "--primary": "#B7A6FF", "--primary-soft": "rgba(183,166,255,.25)", "--accent": "#FFD700", "--text": "#F2F0F7", "--text-muted": "rgba(242,240,247,.75)", "--bg-spot-1": "rgba(130,100,255,0.2)", "--bg-spot-2": "rgba(50,200,255,0.1)" },
   autumn_forest: { "--bg": "#FFF9F2", "--surface": "#FCF3E8", "--surface-2": "#F5E6D3", "--border": "#DBC7B5", "--primary": "#A67B5B", "--primary-soft": "#E3D5C4", "--accent": "#D95D39", "--text": "#4A3728", "--text-muted": "#856D5B" },
   spring_blossom: { "--bg": "#FFF5F8", "--surface": "#FEF0F5", "--surface-2": "#FDE2E9", "--border": "#F9C8D9", "--primary": "#FFB7C5", "--primary-soft": "#FFE4E8", "--accent": "#FF69B4", "--text": "#5E3A44", "--text-muted": "#8A6B74" },
@@ -821,10 +857,29 @@ function toast(msg) {
       p.style.left = Math.random() * 100 + "vw";
       p.style.top = "-10px";
     }
+      else if (type === "glitch") {
+        p.className = "glitch-box";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.backgroundColor = Math.random() > 0.5 ? "#FF007A" : "#00F3FF";
+      }
+      else if (type === "plankton") {
+        p.className = "plankton";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDelay = (Math.random() * 10) + "s";
+      }
+      else if (type === "fireflies") {
+        p.className = "firefly";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDelay = (Math.random() * 4) + "s";
+      }
+
 
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
-    }, (type === "teleport" || type === "bolts" || type === "air_cracks") ? 80 : 800);
+    }, (type === "teleport" || type === "bolts" || type === "air_cracks" || type === "glitch") ? 80 : 800);
   }
 
   document.addEventListener("themeChanged", () => {
