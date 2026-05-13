@@ -977,11 +977,17 @@ function toast(msg) {
         p.style.bottom = "10vh";
         p.style.animationDuration = (Math.random() * 2 + 2) + "s";
       }
-
+      else if (type === "lightning") {
+        p.className = "lightning";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = "0";
+        // Lightning is very fast and sharp
+        p.style.animationDuration = "0.4s";
+      }
 
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
-    }, (type === "teleport" || type === "bolts" || type === "air_cracks" || type === "glitch") ? 80 : 800);
+    }, (type === "teleport" || type === "bolts" || type === "air_cracks" || type === "glitch" || type === "lightning") ? 80 : 800);
   }
 
   document.addEventListener("themeChanged", () => {
