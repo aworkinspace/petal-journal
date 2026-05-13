@@ -518,7 +518,7 @@ function toast(msg) {
     });
   }
 
-    $("btnSave")?.addEventListener('click', () => {
+      $("btnSave")?.addEventListener('click', async () => { // Added 'async' here
     console.log("Save button clicked!");
 
     const contentHtml = $("content").innerHTML || "";
@@ -545,25 +545,44 @@ function toast(msg) {
       else entries.push(data);
     }
 
-    // 3. THE FIX: Write to Local Storage
+    // 3. Write to Local Storage (Keep for offline speed)
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-      console.log("Saved to Local Storage successfully. Entry count:", entries.length);
-    } catch (e) {
-      console.error("Local Storage Save Failed:", e);
-      alert("Browser memory full or blocked!");
+    } catch (e) { console.error("Local Save Failed:", e); }
+
+    // 4. NEW: Sync to Firestore (For cross-device support)
+    const auth = window.firebaseAuth;
+    const db = window.firebaseDb;
+    if (auth.currentUser) {
+      try {
+        // Save the specific entry
+        await setDoc(doc(db, "entries", data.id), { ...data, userId: auth.currentUser.uid }, { merge: true });
+        
+        // Save total XP counts (whiteboard, well, etc)
+        const stats = {
+          whiteboard: Number(localStorage.getItem("petal_whiteboard_count")) || 0,
+          vision: Number(localStorage.getItem("petal_vision_count")) || 0,
+          capsule: Number(localStorage.getItem("petal_capsule_count")) || 0,
+          well: Number(localStorage.getItem("petal_well_count")) || 0,
+          updatedAt: Date.now()
+        };
+        await setDoc(doc(db, "users", auth.currentUser.uid, "stats", "zen"), stats, { merge: true });
+        
+        console.log("Cloud Sync Successful");
+      } catch (err) { console.error("Cloud Sync Failed:", err); }
     }
     
-    // 4. Refresh UI
+    // 5. Refresh UI
     renderList();      
     renderTagChips();  
     if (typeof checkUnlocks === "function") checkUnlocks();
     
-    // 5. Feedback
-    toast("Saved! Zen XP increased.");
+    // 6. Feedback
+    toast("Saved! Zen XP increased and Cloud Synced.");
     const sfx = document.getElementById("saveSfx");
     if (sfx) { sfx.currentTime = 0; sfx.play().catch(() => {}); }
   });
+
 
 
   $("btnDelete")?.addEventListener('click', () => {
