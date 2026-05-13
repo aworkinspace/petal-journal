@@ -1952,3 +1952,49 @@ header, .top-actions { overflow: visible; }
   90% { opacity: 0.5; }
   100% { transform: translateX(110vw); opacity: 0; }
 }
+/* WHITEBEARD: AIR CRACKS */
+.air-crack {
+  position: absolute;
+  width: 2px; height: 100px;
+  background: white;
+  box-shadow: 0 0 15px white;
+  pointer-events: none;
+  animation: tremor 0.4s ease-out forwards;
+}
+
+@keyframes tremor {
+  0% { transform: scaleY(0) rotate(var(--rot)); opacity: 1; }
+  100% { transform: scaleY(2) rotate(var(--rot)); opacity: 0; }
+}
+
+/* LAW: ROOM SCANNER */
+.room-circle {
+  position: absolute;
+  width: 150px; height: 150px;
+  border: 1px solid #38BDF8;
+  border-radius: 50%;
+  pointer-events: none;
+  background: rgba(56, 189, 248, 0.05);
+  animation: room-pulse 5s ease-in-out forwards;
+}
+
+@keyframes room-pulse {
+  0% { transform: scale(0); opacity: 0; }
+  50% { opacity: 0.3; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+/* LUFFY: DRUMS OF LIBERATION */
+.drum-beat {
+  position: absolute;
+  font-family: "VT323", monospace;
+  font-size: 24px;
+  color: #C084FC;
+  pointer-events: none;
+  animation: beat-pop 2s ease-out forwards;
+}
+
+@keyframes beat-pop {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(3); opacity: 0; }
+}
