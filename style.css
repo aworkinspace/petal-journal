@@ -2039,3 +2039,52 @@ header, .top-actions { overflow: visible; }
   0%, 100% { opacity: 0; transform: scale(0.5); }
   50% { opacity: 0.8; transform: scale(1.2) translateY(-20px); }
 }
+/* URAHARA: FLOATING FANS */
+.paper-fan {
+  position: absolute;
+  width: 20px; height: 12px;
+  background: #2D4F1E;
+  clip-path: polygon(0% 100%, 20% 0%, 80% 0%, 100% 100%);
+  opacity: 0.3;
+  pointer-events: none;
+  animation: fan-drift 8s linear forwards;
+}
+
+/* ROBIN: HANA HANA PETALS */
+.flower-arm {
+  position: absolute;
+  width: 15px; height: 15px;
+  background: #FBB6CE; /* Pinkish Petal */
+  border-radius: 50% 0 50% 0;
+  opacity: 0.6;
+  pointer-events: none;
+  animation: petal-swirl 5s ease-in-out forwards;
+}
+
+/* RETRO: 8-BIT HEARTS */
+.pixel-heart {
+  position: absolute;
+  width: 12px; height: 12px;
+  background: #FF0000;
+  clip-path: polygon(0% 30%, 20% 30%, 20% 10%, 40% 10%, 40% 30%, 60% 30%, 60% 10%, 80% 10%, 80% 30%, 100% 30%, 100% 70%, 80% 70%, 80% 90%, 60% 90%, 60% 100%, 40% 100%, 40% 90%, 20% 90%, 20% 70%, 0% 70%);
+  opacity: 0.5;
+  pointer-events: none;
+  animation: heart-float 4s ease-out forwards;
+}
+
+@keyframes fan-drift {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+  20% { opacity: 0.3; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+@keyframes petal-swirl {
+  0% { transform: scale(0) rotate(0deg); opacity: 0; }
+  20% { opacity: 0.8; }
+  100% { transform: scale(1.5) rotate(720deg) translate(50px, 50px); opacity: 0; }
+}
+
+@keyframes heart-float {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+}
