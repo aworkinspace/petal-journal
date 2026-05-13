@@ -66,6 +66,42 @@ const THEMES = {
     "--text-muted": "#4A4A4A",
     "animation": "pixels"
   },
+    classic_desktop: {
+    "--bg": "#008080", // That specific 90s Teal
+    "--surface": "#C0C0C0", // Windows Grey
+    "--surface-2": "#FFFFFF",
+    "--border": "#000000",
+    "--primary": "#000080", // Taskbar Blue
+    "--primary-soft": "rgba(0, 0, 128, 0.1)",
+    "--accent": "#C0C0C0",
+    "--text": "#000000",
+    "--text-muted": "#404040",
+    "animation": "cursors"
+  },
+  farm_life: {
+    "--bg": "#78B159", // Grass Green
+    "--surface": "#F4EBD0", // Parchment
+    "--surface-2": "#8B5A2B", // Wood Brown
+    "--border": "#4D331F",
+    "--primary": "#FF8C00", // Carrot Orange
+    "--primary-soft": "rgba(255, 140, 0, 0.1)",
+    "--accent": "#EE4B2B", 
+    "--text": "#2D1B1B",
+    "--text-muted": "#5C4033",
+    "animation": "crops"
+  },
+  cozy_cafe: {
+    "--bg": "#E6CCB2", // Latte
+    "--surface": "#EDE0D4",
+    "--surface-2": "#7F5539", // Espresso
+    "--border": "#9C6644",
+    "--primary": "#B08968", 
+    "--primary-soft": "rgba(176, 137, 104, 0.1)",
+    "--accent": "#DDB892",
+    "--text": "#432818",
+    "--text-muted": "#7F5539",
+    "animation": "steam"
+  },
   cosmic_starfall: { "--bg": "#0D0B1A", "--surface": "#16142E", "--surface-2": "#231F4D", "--border": "rgba(183,166,255,.14)", "--primary": "#B7A6FF", "--primary-soft": "rgba(183,166,255,.25)", "--accent": "#FFD700", "--text": "#F2F0F7", "--text-muted": "rgba(242,240,247,.75)", "--bg-spot-1": "rgba(130,100,255,0.2)", "--bg-spot-2": "rgba(50,200,255,0.1)" },
   autumn_forest: { "--bg": "#FFF9F2", "--surface": "#FCF3E8", "--surface-2": "#F5E6D3", "--border": "#DBC7B5", "--primary": "#A67B5B", "--primary-soft": "#E3D5C4", "--accent": "#D95D39", "--text": "#4A3728", "--text-muted": "#856D5B" },
   spring_blossom: { "--bg": "#FFF5F8", "--surface": "#FEF0F5", "--surface-2": "#FDE2E9", "--border": "#F9C8D9", "--primary": "#FFB7C5", "--primary-soft": "#FFE4E8", "--accent": "#FF69B4", "--text": "#5E3A44", "--text-muted": "#8A6B74" },
@@ -923,6 +959,24 @@ function toast(msg) {
       p.style.left = Math.random() * 100 + "vw";
       p.style.top = Math.random() * 100 + "vh";
     }
+      else if (type === "cursors") {
+        p.className = "pixel-cursor";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDelay = (Math.random() * 5) + "s";
+      }
+      else if (type === "crops") {
+        p.className = "pixel-crop";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = "-20px";
+        p.style.backgroundColor = Math.random() > 0.5 ? "#FF8C00" : "#78B159";
+      }
+      else if (type === "steam") {
+        p.className = "pixel-steam";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.bottom = "10vh";
+        p.style.animationDuration = (Math.random() * 2 + 2) + "s";
+      }
 
 
       overlay.appendChild(p);
