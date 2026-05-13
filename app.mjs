@@ -684,7 +684,6 @@ function toast(msg) {
       p.style.animationDuration = "3s";
       // Randomly offset the delay so they don't all pop at once
       p.style.animationDelay = (Math.random() * 2) + "s";
-    }
     } else if (type === "clock_ticks") {
       p.className = "clock-hand";
       p.style.left = Math.random() * 100 + "vw";
