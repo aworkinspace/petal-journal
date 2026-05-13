@@ -724,56 +724,79 @@ function toast(msg) {
 })();
 
 /* ------------------- Stickers & Prompts ------------------- */
-/* ------------------------ Prompts Logic (JJK Edition) ------------------------ */
-const prompts = [
+/* ------------------------ Prompts Logic (Naruto & JJK Edition) ------------------------ */
+(() => {
+  const allPrompts = [
     // --- JJK / Sorcerer Prompts ---
-    "Nanami says 'Overtime is a drag.' What is one task you need to finish *now* so you can truly rest tonight?",
-    "‘Are you the strongest because you’re you?’ What is one unique trait that defines who you are at your core?",
-    "If you could use a Domain Expansion to create your perfect safe space, what would it look like and who would be there?",
-    "Choso lives for his brothers. Who are the people in your life that feel like 'family,' and how did you support them today?",
-    "Like Megumi’s shadows, we all have parts of ourselves we hide. What is one 'shadow' part of yourself you’re learning to accept?",
-    "Nanami says being an adult is a series of little despairs. What was one small frustration today, and how did you shake it off?",
-    "Nobara never apologizes for being herself. What is one thing you love about your personality that you refuse to change for anyone?",
-    "Yuji fights to give people a 'proper death.' What does a 'proper life' (a life well-lived) look like to you right now?",
-    "Geto struggled with the weight of his mission. Are you carrying a burden for others that isn't yours to bear?",
-    "If you had the 'Strength of a Hundred' (or a Grade 1 Sorcerer's power), what mountain would you move today?",
+    "Nanami says 'Overtime is a drag.' What is one task you need to finish *now* so you can truly rest?",
+    "‘Are you the strongest because you’re you?’ What is one unique trait that defines you at your core?",
+    "If you could use a Domain Expansion to create your perfect safe space, what would it look like?",
+    "Choso lives for his brothers. Who are the people in your life that feel like 'family'?",
+    "Like Megumi’s shadows, we all have parts we hide. What is one 'shadow' part of yourself you’re accepting?",
+    "Nanami says being an adult is a series of little despairs. What was one small frustration today?",
+    "Nobara never apologizes for being herself. What is one thing you love about your personality?",
+    "Yuji fights to give people a 'proper death.' What does a 'proper life' look like to you right now?",
+    "Geto struggled with the weight of his mission. Are you carrying a burden that isn't yours to bear?",
     "Recall a moment today where you felt like you were in the 'Zone' (Black Flash). What were you doing?",
 
-    // --- Naruto / Ninja Way Prompts ---
-    // --- The Founding Fathers & Legacy ---
-    "Hashirama built the Leaf from a dream. If you were starting a village (or a community) today, what would be your first rule?",
-    "Madara dreamed of a 'perfect' world in the Infinite Tsukuyomi. Describe your ideal dream world—what do you see when you close your eyes?",
-    "Tobirama was a master of tactics. What is the most 'tactical' or smartest decision you made to help yourself today?",
-    "If you were to plant a forest for the future (like Hashirama), what 'seeds' of good habits are you planting right now?",
-
-    // --- The Uchiha & Inner Shadows ---
-    "Itachi protected the village from the shadows. What is something kind you did for someone today that they might never know about?",
-    "Obito felt lost in a 'world of lies.' What is one truth about yourself that you are holding onto tightly today?",
-    "Shisui was the master of Body Flicker. If you could teleport anywhere in the world for just 10 minutes to de-stress, where would you go?",
+    // --- Naruto / Founding Fathers Prompts ---
+    "Hashirama built the Leaf from a dream. If you were starting a village today, what would be your first rule?",
+    "Madara dreamed of a 'perfect' world. Describe your ideal dream world—what do you see?",
+    "Tobirama was a master of tactics. What is the smartest decision you made for yourself today?",
+    "If you were to plant a forest for the future, what 'seeds' of good habits are you planting right now?",
+    "Itachi protected the village from the shadows. What is something kind you did today that no one saw?",
+    "Obito felt lost in a 'world of lies.' What is one truth about yourself that you are holding onto?",
     "We all wear 'masks' like Tobi sometimes. What mask are you wearing today, and what happens when you take it off?",
+    "Jiraiya believed in a world of understanding. Who did you try to understand a little better today?",
+    "Tsunade says memories make us strong. Write down one memory that gives you strength when you're sad.",
+    "Orochimaru sought knowledge. What is one piece of knowledge or a skill you want to keep forever?",
+    "Gai Sensei says the 'Springtime of Youth' never ends! What made your heart beat faster with excitement today?",
+    "Master Kakashi says those who abandon friends are scum. How did you show up for your circle today?",
+    "Naruto never goes back on his word. What is one promise you made to yourself that you are keeping?",
+    "Sakura mastered healing. What part of your heart or mind needs a little 'Healing Jutsu' tonight?",
+    "Which Hidden Village matches your current mood? (Leaf, Sand, Cloud, etc.)",
+    "‘A person grows up when they're able to overcome hardships.’ What is a hardship you are overcoming?",
+    "If you were writing your own 'Gallant Tale,' what would the current chapter be titled?",
+    "‘True art is an explosion!’ What was the most exciting or 'explosive' moment of your week?"
+  ];
 
-    // --- The Sannin & Life Lessons ---
-    "Jiraiya believed in a world where people truly understand each other. Who did you try to understand a little better today?",
-    "Tsunade says memories make us strong. Write down one 'Legendary' memory from your past that gives you strength when you're sad.",
-    "Orochimaru sought immortality through knowledge. What is one piece of knowledge or a skill you want to keep with you forever?",
+  function initPrompts() {
+    const btn = document.getElementById("btnPrompt");
+    const card = document.getElementById("promptCard");
 
-    // --- Youth & Resilience ---
-    "Gai Sensei says the 'Springtime of Youth' never ends! What made your heart beat faster with excitement or passion today?",
-    "Master Kakashi says those who abandon their friends are worse than scum. How did you show up for your 'Team 7' (your inner circle) today?",
-    "Naruto never goes back on his word. What is one promise you made to yourself that you are determined to keep?",
-    "Sakura mastered the art of healing. What part of your heart or mind needs a little 'Healing Jutsu' tonight?",
+    if (!btn || !card) {
+      console.error("Prompt elements not found!");
+      return;
+    }
 
-    // --- The Akatsuki & Purpose ---
-    "Hidan lived for his ritual. What is your own 'Daily Ritual' that helps you feel grounded and centered?",
-    "Pain (Nagato) wanted the world to know peace. What does 'Peace' look like in your room, your house, or your mind right now?",
-    "Konan's paper can take many forms. If you could fold your current worries into a paper plane and throw them away, what would be written on the wings?",
-    "Deidara says Art is an Explosion. What was the most 'explosive' or exciting moment of your week so far?",
-    
-    // --- Standard Cozy Prompts ---
-    "What’s one small win you had today?",
-    "Describe your day in 5 words.",
-    "What’s one kind thing you did for yourself today?",
-];
+    // Load saved prompt
+    const saved = localStorage.getItem("petal_prompt");
+    if (saved) card.textContent = saved;
+
+    // Attach click event
+    btn.onclick = () => {
+      let next;
+      // Loop to prevent the same prompt appearing twice
+      do {
+        next = allPrompts[Math.floor(Math.random() * allPrompts.length)];
+      } while (next === card.textContent && allPrompts.length > 1);
+
+      card.textContent = next;
+      localStorage.setItem("petal_prompt", next);
+      
+      // Visual feedback "Pop"
+      card.style.transform = "scale(1.05)";
+      setTimeout(() => card.style.transform = "scale(1)", 100);
+    };
+  }
+
+  // Ensure initialization runs regardless of when script loads
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initPrompts);
+  } else {
+    initPrompts();
+  }
+})();
 
 document.addEventListener("DOMContentLoaded", () => {
   const card = document.getElementById("promptCard");
