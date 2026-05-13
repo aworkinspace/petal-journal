@@ -724,7 +724,56 @@ function toast(msg) {
 })();
 
 /* ------------------- Stickers & Prompts ------------------- */
-const promptsList = ["What is your personal 'Ninja Way'?", "Becoming Hokage?", "One 'Jutsu' you're mastering?", "Who are your Team 7?", "Recall a time you failed but didn't give up.", "Chapter title?", "Overcome hardships?", "Memories that make you strong?", "Art is an explosion!"];
+/* ------------------------ Prompts Logic (JJK Edition) ------------------------ */
+const prompts = [
+    // --- JJK / Sorcerer Prompts ---
+    "Nanami says 'Overtime is a drag.' What is one task you need to finish *now* so you can truly rest tonight?",
+    "‘Are you the strongest because you’re you?’ What is one unique trait that defines who you are at your core?",
+    "If you could use a Domain Expansion to create your perfect safe space, what would it look like and who would be there?",
+    "Choso lives for his brothers. Who are the people in your life that feel like 'family,' and how did you support them today?",
+    "Like Megumi’s shadows, we all have parts of ourselves we hide. What is one 'shadow' part of yourself you’re learning to accept?",
+    "Nanami says being an adult is a series of little despairs. What was one small frustration today, and how did you shake it off?",
+    "Nobara never apologizes for being herself. What is one thing you love about your personality that you refuse to change for anyone?",
+    "Yuji fights to give people a 'proper death.' What does a 'proper life' (a life well-lived) look like to you right now?",
+    "Geto struggled with the weight of his mission. Are you carrying a burden for others that isn't yours to bear?",
+    "If you had the 'Strength of a Hundred' (or a Grade 1 Sorcerer's power), what mountain would you move today?",
+    "Recall a moment today where you felt like you were in the 'Zone' (Black Flash). What were you doing?",
+
+    // --- Naruto / Ninja Way Prompts ---
+    // --- The Founding Fathers & Legacy ---
+    "Hashirama built the Leaf from a dream. If you were starting a village (or a community) today, what would be your first rule?",
+    "Madara dreamed of a 'perfect' world in the Infinite Tsukuyomi. Describe your ideal dream world—what do you see when you close your eyes?",
+    "Tobirama was a master of tactics. What is the most 'tactical' or smartest decision you made to help yourself today?",
+    "If you were to plant a forest for the future (like Hashirama), what 'seeds' of good habits are you planting right now?",
+
+    // --- The Uchiha & Inner Shadows ---
+    "Itachi protected the village from the shadows. What is something kind you did for someone today that they might never know about?",
+    "Obito felt lost in a 'world of lies.' What is one truth about yourself that you are holding onto tightly today?",
+    "Shisui was the master of Body Flicker. If you could teleport anywhere in the world for just 10 minutes to de-stress, where would you go?",
+    "We all wear 'masks' like Tobi sometimes. What mask are you wearing today, and what happens when you take it off?",
+
+    // --- The Sannin & Life Lessons ---
+    "Jiraiya believed in a world where people truly understand each other. Who did you try to understand a little better today?",
+    "Tsunade says memories make us strong. Write down one 'Legendary' memory from your past that gives you strength when you're sad.",
+    "Orochimaru sought immortality through knowledge. What is one piece of knowledge or a skill you want to keep with you forever?",
+
+    // --- Youth & Resilience ---
+    "Gai Sensei says the 'Springtime of Youth' never ends! What made your heart beat faster with excitement or passion today?",
+    "Master Kakashi says those who abandon their friends are worse than scum. How did you show up for your 'Team 7' (your inner circle) today?",
+    "Naruto never goes back on his word. What is one promise you made to yourself that you are determined to keep?",
+    "Sakura mastered the art of healing. What part of your heart or mind needs a little 'Healing Jutsu' tonight?",
+
+    // --- The Akatsuki & Purpose ---
+    "Hidan lived for his ritual. What is your own 'Daily Ritual' that helps you feel grounded and centered?",
+    "Pain (Nagato) wanted the world to know peace. What does 'Peace' look like in your room, your house, or your mind right now?",
+    "Konan's paper can take many forms. If you could fold your current worries into a paper plane and throw them away, what would be written on the wings?",
+    "Deidara says Art is an Explosion. What was the most 'explosive' or exciting moment of your week so far?",
+    
+    // --- Standard Cozy Prompts ---
+    "What’s one small win you had today?",
+    "Describe your day in 5 words.",
+    "What’s one kind thing you did for yourself today?",
+];
 
 document.addEventListener("DOMContentLoaded", () => {
   const card = document.getElementById("promptCard");
