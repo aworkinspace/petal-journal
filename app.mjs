@@ -984,6 +984,13 @@ function toast(msg) {
         // Lightning is very fast and sharp
         p.style.animationDuration = "0.4s";
       }
+      else if (type === "paper") {
+        p.className = "paper-sheet";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = "-30px";
+        // Vary the speed so some sheets fall faster than others
+        p.style.animationDuration = (Math.random() * 3 + 4) + "s";
+      }
 
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
