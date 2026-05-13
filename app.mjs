@@ -1002,7 +1002,7 @@ function toast(msg) {
       sun_god: "drum_beats",
       silent_heart: "hearts", legendary_merchant: "fans",
       flower_archeologist: "arms",
-      retro_handheld: "pixels",
+      retro_handheld: "pixels", classic_desktop: "cursors", farm_life: "crops", cozy_cafe: "steam",
     };
     startAnimation(map[theme] || null);
   });
