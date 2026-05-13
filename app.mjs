@@ -518,15 +518,53 @@ function toast(msg) {
     });
   }
 
-  $("btnSave")?.addEventListener('click', () => {
-    const html = $("content").innerHTML;
-    const data = { id: activeId || Date.now().toString(), date: $("date").value, mood: $("mood").value, title: $("title").value, content: html, tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), updatedAt: Date.now() };
-    if (!activeId) entries.push(data); else entries = entries.map(e => e.id === activeId ? data : e);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); 
-    renderList(); renderTagChips(); checkUnlocks(); 
-    toast("Saved!");
-    $("saveSfx")?.play();
+    $("btnSave")?.addEventListener('click', () => {
+    console.log("Save button clicked!");
+
+    const contentHtml = $("content").innerHTML || "";
+    const titleText = $("title").value || "";
+    const dateValue = $("date").value || new Date().toISOString().split('T')[0];
+
+    // 1. Create the data object
+    const data = { 
+      id: activeId || Date.now().toString(), 
+      date: dateValue, 
+      mood: $("mood").value, 
+      title: titleText, 
+      content: contentHtml, 
+      tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), 
+      updatedAt: Date.now() 
+    };
+
+    // 2. Update the entries array in memory
+    if (!activeId) {
+      entries.push(data); 
+    } else {
+      const idx = entries.findIndex(e => e.id === activeId);
+      if (idx !== -1) entries[idx] = data;
+      else entries.push(data);
+    }
+
+    // 3. THE FIX: Write to Local Storage
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+      console.log("Saved to Local Storage successfully. Entry count:", entries.length);
+    } catch (e) {
+      console.error("Local Storage Save Failed:", e);
+      alert("Browser memory full or blocked!");
+    }
+    
+    // 4. Refresh UI
+    renderList();      
+    renderTagChips();  
+    if (typeof checkUnlocks === "function") checkUnlocks();
+    
+    // 5. Feedback
+    toast("Saved! Zen XP increased.");
+    const sfx = document.getElementById("saveSfx");
+    if (sfx) { sfx.currentTime = 0; sfx.play().catch(() => {}); }
   });
+
 
   $("btnDelete")?.addEventListener('click', () => {
     if (!activeId || !confirm("Delete?")) return;
