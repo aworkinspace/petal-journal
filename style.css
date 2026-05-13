@@ -1998,3 +1998,44 @@ header, .top-actions { overflow: visible; }
   0% { transform: scale(1); opacity: 1; }
   100% { transform: scale(3); opacity: 0; }
 }
+/* CYBERPUNK GLITCH */
+.glitch-box {
+  position: absolute;
+  width: 10px; height: 2px;
+  background: var(--primary);
+  box-shadow: 0 0 10px var(--primary);
+  animation: glitch-flicker 0.2s steps(2) forwards;
+}
+@keyframes glitch-flicker {
+  0% { transform: scaleX(0); opacity: 0; }
+  50% { opacity: 1; transform: scaleX(1.5); }
+  100% { opacity: 0; transform: scaleX(0) translateX(20px); }
+}
+
+/* DEEP SEA PLANKTON */
+.plankton {
+  position: absolute;
+  width: 3px; height: 3px;
+  background: #00FFC2;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #00FFC2;
+  animation: plankton-drift 12s infinite ease-in-out;
+}
+@keyframes plankton-drift {
+  0%, 100% { transform: translate(0, 0); opacity: 0.2; }
+  50% { transform: translate(30px, -40px); opacity: 0.8; }
+}
+
+/* FIREFLIES */
+.firefly {
+  position: absolute;
+  width: 4px; height: 4px;
+  background: #FEF08A;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #FEF08A;
+  animation: firefly-pulse 4s infinite ease-in-out;
+}
+@keyframes firefly-pulse {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 0.8; transform: scale(1.2) translateY(-20px); }
+}
