@@ -504,79 +504,84 @@
   let currentUser = null;
   const $ = (id) => document.getElementById(id);
 
-    function updateZenProgress() {
-    console.log("--- STARTING HARD RECOUNT ---");
+     // 1. Note the 'async' at the start!
+  async function updateZenProgress() {
+    console.log("--- STARTING CLOUD-SYNCED RECOUNT ---");
 
-    // 1. Get raw data from storage
-    const storageKeys = {
-      entries: localStorage.getItem("petal_entries_v1"),
-      whiteboard: localStorage.getItem("petal_whiteboard_count"),
-      vision: localStorage.getItem("petal_vision_count"),
-      capsule: localStorage.getItem("petal_capsule_count"),
-      well: localStorage.getItem("petal_well_count")
-    };
+    // 2. Get local data first
+    let wb = Number(localStorage.getItem("petal_whiteboard_count")) || 0;
+    let vs = Number(localStorage.getItem("petal_vision_count")) || 0;
+    let cp = Number(localStorage.getItem("petal_capsule_count")) || 0;
+    let wl = Number(localStorage.getItem("petal_well_count")) || 0;
 
-    console.log("Storage Dump:", storageKeys);
+    // 3. FETCH FROM CLOUD (If user is logged in)
+    if (currentUser) {
+      try {
+        const statsSnap = await getDoc(doc(db, "users", currentUser.uid, "stats", "zen"));
+        if (statsSnap.exists()) {
+          const cloud = statsSnap.data();
+          console.log("Cloud Stats Found:", cloud);
+          
+          // Use Math.max to take the higher number between this phone and the cloud
+          wb = Math.max(wb, cloud.whiteboard || 0);
+          vs = Math.max(vs, cloud.vision || 0);
+          cp = Math.max(cp, cloud.capsule || 0);
+          wl = Math.max(wl, cloud.well || 0);
 
-    // 2. Convert to numbers safely
-    const wb = Number(storageKeys.whiteboard) || 0;
-    const vs = Number(storageKeys.vision) || 0;
-    const cp = Number(storageKeys.capsule) || 0;
-    const wl = Number(storageKeys.well) || 0;
-
-    let entries = [];
-    try {
-      if (storageKeys.entries) {
-        entries = JSON.parse(storageKeys.entries);
+          // Update phone's local storage so it matches the cloud for next time
+          localStorage.setItem("petal_whiteboard_count", wb);
+          localStorage.setItem("petal_vision_count", vs);
+          localStorage.setItem("petal_capsule_count", cp);
+          localStorage.setItem("petal_well_count", wl);
+        }
+      } catch (e) {
+        console.warn("Cloud fetch failed (likely network or rules):", e);
       }
-    } catch (e) {
-      console.error("Failed to parse journal entries", e);
     }
 
-    // 3. Calculation
+    // 4. Handle Journal Entries (Calculated from what's currently on this device)
+    let entries = [];
+    try {
+      const raw = localStorage.getItem("petal_entries_v1");
+      if (raw) entries = JSON.parse(raw);
+    } catch (e) { console.error("Entry parse error", e); }
+
+    // 5. Final Calculation
     let totalXP = 0;
-    
-    // Add points for count of entries
     totalXP += (entries.length * 50); 
     totalXP += (wb * 20);
     totalXP += (vs * 30);
     totalXP += (cp * 100);
     totalXP += (wl * 30);
 
-    // Add points for words in each entry
     entries.forEach(e => {
-      // Ensure e.content exists and is a string
-      const text = String(e.content || "");
-      const cleanText = text.replace(/<[^>]*>/g, ' '); // Strip HTML
-      const wordCount = cleanText.split(/\s+/).filter(Boolean).length;
-      totalXP += wordCount;
+      const text = String(e.content || "").replace(/<[^>]*>/g, ' ');
+      totalXP += text.split(/\s+/).filter(Boolean).length;
     });
 
-    console.log("Final Calculated Total XP:", totalXP);
+    console.log("Final XP Total:", totalXP);
 
-    // 4. Level Math
+    // 6. UI Update
     const xpPerLevel = 200;
     const level = Math.floor(totalXP / xpPerLevel) + 1;
     const currentXPInLevel = totalXP % xpPerLevel;
     const progressPercent = (currentXPInLevel / xpPerLevel) * 100;
 
-    // 5. Force UI Update
-    const bar = document.getElementById("zenBarFill");
-    const xpText = document.getElementById("zenXP");
-    const levelText = document.getElementById("zenLevel");
-
-    if (bar) bar.style.width = progressPercent + "%";
-    if (xpText) xpText.textContent = currentXPInLevel + " / " + xpPerLevel + " XP";
-    if (levelText) levelText.textContent = "Level " + level;
+    if ($("zenBarFill")) $("zenBarFill").style.width = progressPercent + "%";
+    if ($("zenXP")) $("zenXP").textContent = `${currentXPInLevel} / ${xpPerLevel} XP`;
+    if ($("zenLevel")) $("zenLevel").textContent = "Level " + level;
     
     // Rank logic
     let rank = "Genin";
     if (level >= 5) rank = "Jonin";
     if (level >= 10) rank = "Kage";
-    if (document.getElementById("ninjaRank")) document.getElementById("ninjaRank").textContent = "Rank: " + rank;
+    if ($("ninjaRank")) $("ninjaRank").textContent = "Rank: " + rank;
+
+    // Check Level 5 Reward (Show badge)
+    if (level >= 5 && $("level5Badge")) {
+      $("level5Badge").className = "badge-visible";
+    }
   }
-
-
   /* ------------------- Profile Actions ------------------- */
 
   $("btnUploadPic")?.addEventListener("click", () => $("picUpload")?.click());
