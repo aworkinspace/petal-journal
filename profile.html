@@ -504,75 +504,78 @@
   let currentUser = null;
   const $ = (id) => document.getElementById(id);
 
-  function updateZenProgress() {
-    console.log("--- Zen XP Calculation Start ---");
+    function updateZenProgress() {
+    console.log("--- STARTING HARD RECOUNT ---");
 
-    // 1. Get counts with a safety fallback to 0
-    const wb = Number(localStorage.getItem("petal_whiteboard_count")) || 0;
-    const vs = Number(localStorage.getItem("petal_vision_count")) || 0;
-    const cp = Number(localStorage.getItem("petal_capsule_count")) || 0;
-    const wl = Number(localStorage.getItem("petal_well_count")) || 0;
+    // 1. Get raw data from storage
+    const storageKeys = {
+      entries: localStorage.getItem("petal_entries_v1"),
+      whiteboard: localStorage.getItem("petal_whiteboard_count"),
+      vision: localStorage.getItem("petal_vision_count"),
+      capsule: localStorage.getItem("petal_capsule_count"),
+      well: localStorage.getItem("petal_well_count")
+    };
+
+    console.log("Storage Dump:", storageKeys);
+
+    // 2. Convert to numbers safely
+    const wb = Number(storageKeys.whiteboard) || 0;
+    const vs = Number(storageKeys.vision) || 0;
+    const cp = Number(storageKeys.capsule) || 0;
+    const wl = Number(storageKeys.well) || 0;
 
     let entries = [];
     try {
-      entries = JSON.parse(localStorage.getItem("petal_entries_v1") || "[]");
+      if (storageKeys.entries) {
+        entries = JSON.parse(storageKeys.entries);
+      }
     } catch (e) {
-      console.error("XP Error: Could not parse entries", e);
-      entries = [];
+      console.error("Failed to parse journal entries", e);
     }
 
-    // 2. Base Calculation
-    let totalXP = (entries.length * 50) + (wb * 20) + (vs * 30) + (cp * 100) + (wl * 30);
+    // 3. Calculation
+    let totalXP = 0;
     
-    console.log(`Base XP from counts: ${totalXP}`);
+    // Add points for count of entries
+    totalXP += (entries.length * 50); 
+    totalXP += (wb * 20);
+    totalXP += (vs * 30);
+    totalXP += (cp * 100);
+    totalXP += (wl * 30);
 
-    // 3. Word Count XP (1 XP per word)
-    entries.forEach((e, i) => {
-      if (e.content && typeof e.content === 'string') {
-        const plainText = e.content.replace(/<[^>]*>/g, ' ');
-        const words = plainText.split(/\s+/).filter(Boolean).length;
-        totalXP += words;
-      }
+    // Add points for words in each entry
+    entries.forEach(e => {
+      // Ensure e.content exists and is a string
+      const text = String(e.content || "");
+      const cleanText = text.replace(/<[^>]*>/g, ' '); // Strip HTML
+      const wordCount = cleanText.split(/\s+/).filter(Boolean).length;
+      totalXP += wordCount;
     });
 
-    console.log(`Final Total XP: ${totalXP}`);
+    console.log("Final Calculated Total XP:", totalXP);
 
-    // 4. Level Logic
+    // 4. Level Math
     const xpPerLevel = 200;
     const level = Math.floor(totalXP / xpPerLevel) + 1;
     const currentXPInLevel = totalXP % xpPerLevel;
     const progressPercent = (currentXPInLevel / xpPerLevel) * 100;
 
-    // 5. UI Updates
-    if ($("zenLevel")) $("zenLevel").textContent = `Level ${level}`;
-    if ($("zenXP")) $("zenXP").textContent = `${currentXPInLevel} / ${xpPerLevel} XP`;
-    if ($("zenBarFill")) $("zenBarFill").style.width = `${progressPercent}%`;
+    // 5. Force UI Update
+    const bar = document.getElementById("zenBarFill");
+    const xpText = document.getElementById("zenXP");
+    const levelText = document.getElementById("zenLevel");
+
+    if (bar) bar.style.width = progressPercent + "%";
+    if (xpText) xpText.textContent = currentXPInLevel + " / " + xpPerLevel + " XP";
+    if (levelText) levelText.textContent = "Level " + level;
     
+    // Rank logic
     let rank = "Genin";
     if (level >= 5) rank = "Jonin";
     if (level >= 10) rank = "Kage";
-    if ($("ninjaRank")) $("ninjaRank").textContent = `Rank: ${rank}`;
-
-    // 6. Rewards Check
-    if (level >= 5) {
-      if ($("level5Badge")) $("level5Badge").className = "badge-visible";
-      
-      const optGolden = document.querySelector('option[value="golden_petal"]');
-      if (optGolden) {
-        optGolden.disabled = false;
-        optGolden.textContent = "✨ Golden Petal (Unlocked!)";
-      }
-    }
-
-    if (level >= 10) {
-      document.querySelectorAll(".panel").forEach(p => p.classList.add("kage-aura"));
-      const optGod = document.querySelector('option[value="six_paths_sage"]');
-      if (optGod) {
-        optGod.disabled = false;
-        optGod.textContent = "☀️ Six Paths Sage (Unlocked!)";
-      }
-    }
+    if (document.getElementById("ninjaRank")) document.getElementById("ninjaRank").textContent = "Rank: " + rank;
   }
+
 
   /* ------------------- Profile Actions ------------------- */
 
