@@ -579,17 +579,43 @@ function toast(msg) {
     return Math.floor(totalXP / 200) + 1;
   }
 
-  function checkUnlocks() {
+    function checkUnlocks() {
     const lvl = getZenLevel();
+    console.log("Checking Unlocks for Level:", lvl);
+
+    // 1. Level 5: Stickers & Golden Petal
     document.querySelectorAll(".level-5-reward").forEach(el => {
         el.style.display = lvl >= 5 ? "inline-flex" : "none";
     });
+
     const optG = $("optGolden"); 
     if (optG) { 
-        optG.disabled = lvl < 5; 
-        optG.textContent = lvl >= 5 ? "✨ Golden Petal" : "🔒 Level 5"; 
+        if (lvl >= 5) {
+          optG.disabled = false; 
+          optG.textContent = "✨ Golden Petal (Unlocked!)"; 
+        } else {
+          optG.disabled = true;
+          optG.textContent = "🔒 Level 5: Golden Petal";
+        }
+    }
+
+    // 2. Level 10: Six Paths Sage (LEGENDARY)
+    // We search for the option by its value since it might not have an ID
+    const optSixPaths = document.querySelector('option[value="six_paths_sage"]');
+    if (optSixPaths) {
+      if (lvl >= 10) {
+        optSixPaths.disabled = false;
+        optSixPaths.textContent = "☀️ Six Paths Sage (LEGENDARY)";
+        
+        // Add the legendary Kage Aura to all panels on the page
+        document.querySelectorAll(".panel").forEach(p => p.classList.add("kage-aura"));
+      } else {
+        optSixPaths.disabled = true;
+        optSixPaths.textContent = "🔒 Level 10: ???";
+      }
     }
   }
+
 
   function renderList() {
     const list = $("entryList"); if (!list) return;
