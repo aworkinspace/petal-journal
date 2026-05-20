@@ -687,6 +687,7 @@ flower_archeologist: {
     const level = Math.floor(totalXP / xpPerLevel) + 1;
     const currentXPInLevel = totalXP % xpPerLevel;
     const progressPercent = (currentXPInLevel / xpPerLevel) * 100;
+    const dojoXP = Number(localStorage.getItem("petal_dojo_xp")) || 0;
 
     if ($("zenBarFill")) $("zenBarFill").style.width = progressPercent + "%";
     if ($("zenXP")) $("zenXP").textContent = `${currentXPInLevel} / ${xpPerLevel} XP`;
