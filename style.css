@@ -2145,3 +2145,7 @@ header, .top-actions { overflow: visible; }
   50% { opacity: 0.4; transform: scaleX(2); }
   100% { transform: translateY(-100px) scaleX(3); opacity: 0; }
 }
+.kage-aura {
+  box-shadow: 0 0 20px 5px rgba(255, 215, 0, 0.4), var(--shadow) !important;
+  border: 2px solid #FFD700 !important;
+}
