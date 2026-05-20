@@ -14,6 +14,7 @@
       (function () {
         const name = localStorage.getItem("petal_theme") || "petal";
         const THEMES = {
+const THEMES = {
   petal: { "--bg": "var(--rose-50)", "--surface": "var(--rose-50)", "--surface-2": "var(--pink-200)", "--border": "var(--mauve-200)", "--primary": "var(--periwinkle-400)", "--primary-soft": "var(--periwinkle-200)", "--accent": "var(--pink-500)", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(167,171,222,.45)", "--bg-spot-2": "rgba(255,165,214,.35)" },
   lavender: { "--bg": "#F6F2FF", "--surface": "#F6F2FF", "--surface-2": "#EDE4FF", "--border": "#D8CBF2", "--primary": "#A7ABDE", "--primary-soft": "#CED1F8", "--accent": "#D7A6FF", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(215,166,255,.32)", "--bg-spot-2": "rgba(167,171,222,.28)" },
   sky_sorbet: { "--bg": "#F2FBFF", "--surface": "#F2FBFF", "--surface-2": "#DFF3FF", "--border": "#C7E4F5", "--primary": "#7DB6FF", "--primary-soft": "#CFE4FF", "--accent": "#FFA5D6", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(125,182,255,.30)", "--bg-spot-2": "rgba(255,165,214,.24)" },
@@ -74,6 +75,42 @@
     "--text": "#1A1A1A",
     "--text-muted": "#4A4A4A",
     "animation": "pixels"
+  },
+    classic_desktop: {
+    "--bg": "#008080", // That specific 90s Teal
+    "--surface": "#C0C0C0", // Windows Grey
+    "--surface-2": "#FFFFFF",
+    "--border": "#000000",
+    "--primary": "#000080", // Taskbar Blue
+    "--primary-soft": "rgba(0, 0, 128, 0.1)",
+    "--accent": "#C0C0C0",
+    "--text": "#000000",
+    "--text-muted": "#404040",
+    "animation": "cursors"
+  },
+  farm_life: {
+    "--bg": "#78B159", // Grass Green
+    "--surface": "#F4EBD0", // Parchment
+    "--surface-2": "#8B5A2B", // Wood Brown
+    "--border": "#4D331F",
+    "--primary": "#FF8C00", // Carrot Orange
+    "--primary-soft": "rgba(255, 140, 0, 0.1)",
+    "--accent": "#EE4B2B", 
+    "--text": "#2D1B1B",
+    "--text-muted": "#5C4033",
+    "animation": "crops"
+  },
+  cozy_cafe: {
+    "--bg": "#E6CCB2", // Latte
+    "--surface": "#EDE0D4",
+    "--surface-2": "#7F5539", // Espresso
+    "--border": "#9C6644",
+    "--primary": "#B08968", 
+    "--primary-soft": "rgba(176, 137, 104, 0.1)",
+    "--accent": "#DDB892",
+    "--text": "#432818",
+    "--text-muted": "#7F5539",
+    "animation": "steam"
   },
   cosmic_starfall: { "--bg": "#0D0B1A", "--surface": "#16142E", "--surface-2": "#231F4D", "--border": "rgba(183,166,255,.14)", "--primary": "#B7A6FF", "--primary-soft": "rgba(183,166,255,.25)", "--accent": "#FFD700", "--text": "#F2F0F7", "--text-muted": "rgba(242,240,247,.75)", "--bg-spot-1": "rgba(130,100,255,0.2)", "--bg-spot-2": "rgba(50,200,255,0.1)" },
   autumn_forest: { "--bg": "#FFF9F2", "--surface": "#FCF3E8", "--surface-2": "#F5E6D3", "--border": "#DBC7B5", "--primary": "#A67B5B", "--primary-soft": "#E3D5C4", "--accent": "#D95D39", "--text": "#4A3728", "--text-muted": "#856D5B" },
@@ -459,6 +496,20 @@ flower_archeologist: {
     "--text-muted": "#4A7031",
     "animation": "fans"
   },
+    celestial_sovereignty: {
+    "--bg": "#020205", 
+    "--surface": "#08080C",
+    "--surface-2": "#1A1A2E",
+    "--border": "#E2E8F0", // Silver
+    "--primary": "#E2E8F0", 
+    "--primary-soft": "rgba(226, 232, 240, 0.1)",
+    "--accent": "#A855F7", // Dimensional Purple
+    "--text": "#F8FAFC",
+    "--text-muted": "rgba(248, 250, 252, 0.5)",
+    "--bg-spot-1": "rgba(168, 85, 247, 0.1)",
+    "animation": "star_shards"
+  },
+
 };
         const t = THEMES[name] || THEMES.petal;
         for (const k in t) document.documentElement.style.setProperty(k, t[k]);
