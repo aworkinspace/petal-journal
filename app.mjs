@@ -486,6 +486,20 @@ flower_archeologist: {
     "--text-muted": "#4A7031",
     "animation": "fans"
   },
+    celestial_sovereignty: {
+    "--bg": "#020205", 
+    "--surface": "#08080C",
+    "--surface-2": "#1A1A2E",
+    "--border": "#E2E8F0", // Silver
+    "--primary": "#E2E8F0", 
+    "--primary-soft": "rgba(226, 232, 240, 0.1)",
+    "--accent": "#A855F7", // Dimensional Purple
+    "--text": "#F8FAFC",
+    "--text-muted": "rgba(248, 250, 252, 0.5)",
+    "--bg-spot-1": "rgba(168, 85, 247, 0.1)",
+    "animation": "star_shards"
+  },
+
 };
 
 /* ------------------- Theme Helpers ------------------- */
@@ -614,6 +628,23 @@ function toast(msg) {
         optSixPaths.textContent = "🔒 Level 10: ???";
       }
     }
+          // 3. Level 15: Celestial Sovereignty (GOD TIER)
+    const optCelestial = document.querySelector('option[value="celestial_sovereignty"]');
+    let rank = "Genin";
+    if (lvl >= 5) rank = "Jonin";
+    if (lvl >= 10) rank = "Kage";
+    if (lvl >= 15) rank = "Celestial Sage"; // NEW RANK
+
+    if (optCelestial) {
+      if (lvl >= 15) {
+        optCelestial.disabled = false;
+        optCelestial.textContent = "🌌 Celestial Sovereignty (GOD TIER)";
+        // Upgrade the borders to Rainbow Chakra
+        document.querySelectorAll(".panel").forEach(p => p.classList.add("celestial-border"));
+      } else {
+        optCelestial.disabled = true;
+        optCelestial.textContent = "🔒 Level 15: ???";
+      }
   }
 
 
@@ -1017,7 +1048,12 @@ function toast(msg) {
         // Vary the speed so some sheets fall faster than others
         p.style.animationDuration = (Math.random() * 3 + 4) + "s";
       }
-
+      else if (type === "star_shards") {
+        p.className = "star-shard";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDelay = (Math.random() * 3) + "s";
+      }
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
     }, (type === "teleport" || type === "bolts" || type === "air_cracks" || type === "glitch" || type === "lightning") ? 80 : 800);
