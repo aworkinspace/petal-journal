@@ -2149,3 +2149,34 @@ header, .top-actions { overflow: visible; }
   box-shadow: 0 0 20px 5px rgba(255, 215, 0, 0.4), var(--shadow) !important;
   border: 2px solid #FFD700 !important;
 }
+/* LEVEL 15: CELESTIAL CHAKRA FLOW */
+.celestial-border {
+  border: 4px solid transparent !important;
+  background-image: linear-gradient(var(--surface), var(--surface)), 
+                    linear-gradient(45deg, #ff0000, #ff7700, #fffb00, #00ff09, #0051ff, #a200ff, #ff00f2);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  animation: border-glow 4s linear infinite;
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.4) !important;
+}
+
+@keyframes border-glow {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+/* STAR SHARDS ANIMATION */
+.star-shard {
+  position: absolute;
+  width: 4px; height: 4px;
+  background: white;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  box-shadow: 0 0 10px white;
+  pointer-events: none;
+  animation: shard-twinkle 3s ease-in-out infinite;
+}
+
+@keyframes shard-twinkle {
+  0%, 100% { transform: scale(1); opacity: 0.2; }
+  50% { transform: scale(1.5); opacity: 1; }
+}
