@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Petal Journal — Manga Shelf</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
+
+    <!-- Early Theme Loader -->
+    <script>
+      (function () {
+        const name = localStorage.getItem("petal_theme") || "petal";
+        const THEMES = {
+          petal: { "--bg": "var(--rose-50)", "--surface": "var(--rose-50)", "--text": "#2B2B33", "--btn-bg": "#ffffff", "--btn-text": "#2B2B33" },
+          midnight: { "--bg": "#0F0D14", "--surface": "#14121A", "--text": "#F2F0F7", "--btn-bg": "#1C1824", "--btn-text": "#F2F0F7" },
+          flower_archeologist: { "--bg": "#FAF5FF", "--surface": "#FFFFFF", "--text": "#2D2159", "--btn-bg": "#E9D5FF", "--btn-text": "#2D2159" }
+        };
+        const t = THEMES[name] || THEMES.petal;
+        for (const k in t) document.documentElement.style.setProperty(k, t[k]);
+      })();
+    </script>
+
+    <style>
+      .manga-wrap { max-width: 1000px; margin: 0 auto; padding: 20px; }
+      
+      /* The Shelf Grid */
+      .shelf-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 20px; margin-top: 30px;
+      }
+
+      /* Manga Card */
+      .manga-card {
+        background: var(--surface);
+        border: 4px solid var(--btn-text);
+        padding: 10px;
+        text-align: center;
+        box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+        position: relative;
+      }
+      .manga-card img {
+        width: 100%; height: 200px;
+        object-fit: cover;
+        border: 2px solid var(--btn-text);
+        background: #eee;
+        image-rendering: pixelated;
+      }
+      .manga-title { display: block; margin-top: 8px; font-size: 18px; font-weight: bold; }
+      .manga-status { font-size: 14px; color: var(--accent); }
+
+      /* Rating Stars */
+      .stars { color: #FFD700; font-size: 20px; margin-top: 5px; }
+
+      /* Delete Button */
+      .del-manga {
+        position: absolute; top: -10px; right: -10px;
+        background: #ff4d4d; border: 2px solid black;
+        width: 25px; height: 25px; cursor: pointer;
+      }
+
+      .add-panel { max-width: 500px; margin: 0 auto; }
+      .input-group { margin-bottom: 15px; text-align: left; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand"><h1>Manga Shelf</h1><small class="muted">your collection</small></div>
+      <div class="top-actions"><a class="btn" href="index.html">Back</a></div>
+    </header>
+
+    <div class="manga-wrap">
+      <div class="panel panel-pad add-panel">
+        <h2 style="margin-top:0">Add New Manga</h2>
+        
+        <div class="input-group">
+          <label class="section-title">Title</label>
+          <input type="text" id="mangaTitle" class="input" placeholder="e.g. One Piece Vol. 1">
+        </div>
+
+        <div class="input-group">
+          <label class="section-title">Rating (1-5)</label>
+          <select id="mangaRating" class="input">
+            <option value="5">⭐⭐⭐⭐⭐ (Peak)</option>
+            <option value="4">⭐⭐⭐⭐</option>
+            <option value="3">⭐⭐⭐</option>
+            <option value="2">⭐⭐</option>
+            <option value="1">⭐</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label class="section-title">Cover Image</label>
+          <input type="file" id="mangaPicker" accept="image/*" class="input">
+        </div>
+
+        <button class="btn btn-primary" id="btnAddManga" style="width:100%">Add to Shelf 📚</button>
+      </div>
+
+      <div class="shelf-grid" id="mangaShelf">
+        <!-- Manga cards load here -->
+      </div>
+    </div>
+
+    <!-- Firebase Init (Use your Config) -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+      import { getAuth } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+      import { getStorage } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
+
+      const firebaseConfig = { 
+        apiKey: "AIzaSyBNB-V-biC7y2-dKx_qzYCpplnwU2r5PaI",
+        authDomain: "petal-journal-final.firebaseapp.com",
+        projectId: "petal-journal-final",
+        storageBucket: "petal-journal-final.firebasestorage.app",
+        messagingSenderId: "805852798492",
+        appId: "1:805852798492:web:0e2b1e4fa74850a77a09d9"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      window.firebaseAuth = getAuth(app);
+      window.firebaseDb = getFirestore(app);
+      window.firebaseStorage = getStorage(app);
+    </script>
+    <script type="module" src="manga.mjs"></script>
+  </body>
+</html>
