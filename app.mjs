@@ -572,7 +572,7 @@ function toast(msg) {
   if(signBtn) signBtn.onclick = () => signOut(auth).then(() => location.reload());
 })();
 
-/* ------------------- Journal Logic ------------------- */
+/* ------------------- Journal Logic (Balanced & Synced) ------------------- */
 (() => {
   const $ = (id) => document.getElementById(id);
   const STORAGE_KEY = "petal_entries_v1";
@@ -585,6 +585,7 @@ function toast(msg) {
     const vs = parseInt(localStorage.getItem("petal_vision_count") || "0");
     const cp = parseInt(localStorage.getItem("petal_capsule_count") || "0");
     const wl = parseInt(localStorage.getItem("petal_well_count") || "0");
+    
     let totalXP = (entries.length * 50) + (wb * 20) + (vs * 30) + (cp * 100) + (wl * 30);
     entries.forEach(e => {
        const words = (e.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
@@ -593,60 +594,39 @@ function toast(msg) {
     return Math.floor(totalXP / 200) + 1;
   }
 
-    function checkUnlocks() {
+  function checkUnlocks() {
     const lvl = getZenLevel();
-    console.log("Checking Unlocks for Level:", lvl);
-
-    // 1. Level 5: Stickers & Golden Petal
-    document.querySelectorAll(".level-5-reward").forEach(el => {
-        el.style.display = lvl >= 5 ? "inline-flex" : "none";
-    });
-
-    const optG = $("optGolden"); 
+    
+    // Level 5
+    document.querySelectorAll(".level-5-reward").forEach(el => el.style.display = lvl >= 5 ? "inline-flex" : "none");
+    const optG = document.querySelector('option[value="golden_petal"]');
     if (optG) { 
-        if (lvl >= 5) {
-          optG.disabled = false; 
-          optG.textContent = "✨ Golden Petal (Unlocked!)"; 
-        } else {
-          optG.disabled = true;
-          optG.textContent = "🔒 Level 5: Golden Petal";
-        }
+        optG.disabled = lvl < 5; 
+        optG.textContent = lvl >= 5 ? "✨ Golden Petal" : "🔒 Level 5"; 
     }
 
-    // 2. Level 10: Six Paths Sage (LEGENDARY)
-    // We search for the option by its value since it might not have an ID
-    const optSixPaths = document.querySelector('option[value="six_paths_sage"]');
-    if (optSixPaths) {
+    // Level 10
+    const optSix = document.querySelector('option[value="six_paths_sage"]');
+    if (optSix) {
       if (lvl >= 10) {
-        optSixPaths.disabled = false;
-        optSixPaths.textContent = "☀️ Six Paths Sage (LEGENDARY)";
-        
-        // Add the legendary Kage Aura to all panels on the page
+        optSix.disabled = false; optSix.textContent = "☀️ Six Paths Sage";
         document.querySelectorAll(".panel").forEach(p => p.classList.add("kage-aura"));
       } else {
-        optSixPaths.disabled = true;
-        optSixPaths.textContent = "🔒 Level 10: ???";
+        optSix.disabled = true; optSix.textContent = "🔒 Level 10";
       }
     }
-          // 3. Level 15: Celestial Sovereignty (GOD TIER)
-    const optCelestial = document.querySelector('option[value="celestial_sovereignty"]');
-    let rank = "Genin";
-    if (lvl >= 5) rank = "Jonin";
-    if (lvl >= 10) rank = "Kage";
-    if (lvl >= 15) rank = "Celestial Sage"; // NEW RANK
 
-    if (optCelestial) {
+    // Level 15
+    const optCel = document.querySelector('option[value="celestial_sovereignty"]');
+    if (optCel) {
       if (lvl >= 15) {
-        optCelestial.disabled = false;
-        optCelestial.textContent = "🌌 Celestial Sovereignty (GOD TIER)";
-        // Upgrade the borders to Rainbow Chakra
+        optCel.disabled = false; optCel.textContent = "🌌 Celestial Sovereignty";
         document.querySelectorAll(".panel").forEach(p => p.classList.add("celestial-border"));
       } else {
-        optCelestial.disabled = true;
-        optCelestial.textContent = "🔒 Level 15: ???";
+        optCel.disabled = true; optCel.textContent = "🔒 Level 15";
       }
+    }
   }
-
 
   function renderList() {
     const list = $("entryList"); if (!list) return;
@@ -675,79 +655,23 @@ function toast(msg) {
     const tags = new Set(["gratitude", "work", "health", "family"]);
     entries.forEach(e => e.tags && e.tags.forEach(t => tags.add(t.toLowerCase())));
     row.innerHTML = [...tags].sort().map(t => `<button class="chip tag ${activeTag === t ? 'active' : ''}" data-tag="${t}">${t}</button>`).join('');
-    row.querySelectorAll('.chip.tag').forEach(btn => btn.onclick = () => { 
-        activeTag = activeTag === btn.dataset.tag ? null : btn.dataset.tag; 
-        renderTagChips(); 
-        renderList(); 
-    });
+    row.querySelectorAll('.chip.tag').forEach(btn => btn.onclick = () => { activeTag = activeTag === btn.dataset.tag ? null : btn.dataset.tag; renderTagChips(); renderList(); });
   }
 
-      $("btnSave")?.addEventListener('click', async () => { // Added 'async' here
-    console.log("Save button clicked!");
-
-    const contentHtml = $("content").innerHTML || "";
-    const titleText = $("title").value || "";
-    const dateValue = $("date").value || new Date().toISOString().split('T')[0];
-
-    // 1. Create the data object
-    const data = { 
-      id: activeId || Date.now().toString(), 
-      date: dateValue, 
-      mood: $("mood").value, 
-      title: titleText, 
-      content: contentHtml, 
-      tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), 
-      updatedAt: Date.now() 
-    };
-
-    // 2. Update the entries array in memory
-    if (!activeId) {
-      entries.push(data); 
-    } else {
-      const idx = entries.findIndex(e => e.id === activeId);
-      if (idx !== -1) entries[idx] = data;
-      else entries.push(data);
+  $("btnSave")?.addEventListener('click', async () => {
+    const data = { id: activeId || Date.now().toString(), date: $("date").value, mood: $("mood").value, title: $("title").value, content: $("content").innerHTML, tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), updatedAt: Date.now() };
+    if (!activeId) entries.push(data); else entries = entries.map(e => e.id === activeId ? data : e);
+    
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    
+    if (window.firebaseAuth.currentUser) {
+      const db = window.firebaseDb;
+      await setDoc(doc(db, "entries", data.id), { ...data, userId: window.firebaseAuth.currentUser.uid }, { merge: true });
     }
 
-    // 3. Write to Local Storage (Keep for offline speed)
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-    } catch (e) { console.error("Local Save Failed:", e); }
-
-    // 4. NEW: Sync to Firestore (For cross-device support)
-    const auth = window.firebaseAuth;
-    const db = window.firebaseDb;
-    if (auth.currentUser) {
-      try {
-        // Save the specific entry
-        await setDoc(doc(db, "entries", data.id), { ...data, userId: auth.currentUser.uid }, { merge: true });
-        
-        // Save total XP counts (whiteboard, well, etc)
-        const stats = {
-          whiteboard: Number(localStorage.getItem("petal_whiteboard_count")) || 0,
-          vision: Number(localStorage.getItem("petal_vision_count")) || 0,
-          capsule: Number(localStorage.getItem("petal_capsule_count")) || 0,
-          well: Number(localStorage.getItem("petal_well_count")) || 0,
-          updatedAt: Date.now()
-        };
-        await setDoc(doc(db, "users", auth.currentUser.uid, "stats", "zen"), stats, { merge: true });
-        
-        console.log("Cloud Sync Successful");
-      } catch (err) { console.error("Cloud Sync Failed:", err); }
-    }
-    
-    // 5. Refresh UI
-    renderList();      
-    renderTagChips();  
-    if (typeof checkUnlocks === "function") checkUnlocks();
-    
-    // 6. Feedback
-    toast("Saved! Zen XP increased and Cloud Synced.");
-    const sfx = document.getElementById("saveSfx");
-    if (sfx) { sfx.currentTime = 0; sfx.play().catch(() => {}); }
+    renderList(); renderTagChips(); checkUnlocks(); toast("Saved!");
+    $("saveSfx")?.play();
   });
-
-
 
   $("btnDelete")?.addEventListener('click', () => {
     if (!activeId || !confirm("Delete?")) return;
@@ -763,7 +687,8 @@ function toast(msg) {
     renderList(); renderTagChips(); checkUnlocks();
     $("search")?.addEventListener('input', renderList);
   });
-})();
+})(); // Fixed: Balanced closure
+
 
 /* ------------------- Music & Spotify ------------------- */
 (() => {
