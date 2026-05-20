@@ -68,33 +68,40 @@ window.firebaseAuth = auth;
           <summary class="btn" role="button" aria-label="Open menu">Menu</summary>
 
           <div class="menu-panel">
-  <!-- Account Section -->
-  <div class="section-title" style="margin: 5px 0 0 5px;">Account</div>
-  
-  <!-- This will show when logged out -->
-  <a class="btn" id="authButton" href="login.html">Login / Sign Up</a>
-  
-  <!-- This will show when logged in -->
+  <!-- 1. Account Section -->
+  <div class="section-title" style="margin: 5px 0 0 5px;">User Rank</div>
   <a class="btn btn-primary" id="profileButton" href="profile.html" style="display: none;">My Profile</a>
+  <a class="btn" id="authButton" href="login.html">Login / Sign Up</a>
   <button class="btn" id="btnSignOut" type="button" style="display: none;">Logout</button>
 
   <div class="menu-divider"></div>
-  
-  <!-- Other links -->
-  <a class="btn" href="whiteboard.html">Whiteboard</a>
-  <a class="btn" href="vision.html">Vision Board</a>
-  <a class="btn" href="capsule.html">Time Capsule</a>
-  <a class="btn" href="well.html">Manifest</a>
-  <a class="btn" href="garden.html">The Garden</a>
-  <a class="btn btn-accent" href="https://buy.stripe.com/8x214o0rsdlK3uudyEes000" target="_blank">Support</a>
+
+  <!-- 2. Creative Tools -->
+  <div class="section-title" style="margin: 5px 0 0 5px;">Creation</div>
+  <a class="btn" href="whiteboard.html">🎨 Whiteboard</a>
+  <a class="btn" href="vision.html">🖼️ Vision Board</a>
 
   <div class="menu-divider"></div>
 
+  <!-- 3. Growth & Manifesting -->
+  <div class="section-title" style="margin: 5px 0 0 5px;">Zen Garden</div>
+  <a class="btn" href="garden.html">🌻 The Garden</a>
+  <a class="btn" href="well.html">✨ Wishing Well</a>
+  <a class="btn" href="capsule.html">🔒 Time Capsule</a>
+
+  <div class="menu-divider"></div>
+
+  <!-- 4. Collections -->
+  <div class="section-title" style="margin: 5px 0 0 5px;">Library</div>
+  <a class="btn" href="manga.html">📚 Manga Shelf</a>
+  <a class="btn" href="dojo.html" style="opacity: 0.6; cursor: not-allowed;">🥋 Dojo (Soon)</a>
+
+  <div class="menu-divider"></div>
+
+  <!-- 5. Utility -->
   <button class="btn" id="btnExport" type="button">Export Data</button>
-  <button class="btn btn-primary" id="btnNew" type="button">New Entry</button>
+  <button class="btn btn-primary" id="btnNew" type="button" style="background: var(--accent); color: white;">New Entry</button>
 </div>
-        </details>
-      </div>
     </header>
     <div class="shell">
       <aside class="panel panel-pad">
