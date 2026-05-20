@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Petal Journal — The Garden</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
+
+    <style>
+      .garden-wrap { max-width: 1000px; margin: 0 auto; text-align: center; padding: 20px; }
+      
+      /* The Garden Plot */
+      #garden-bed {
+        width: 100%;
+        height: 500px;
+        background: #5C4033; /* Rich Soil Color */
+        border: 10px solid #3d2b1f;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        image-rendering: pixelated;
+        background-image: radial-gradient(#4d331f 2px, transparent 2px);
+        background-size: 40px 40px;
+      }
+
+      .plant {
+        position: absolute;
+        bottom: 20px;
+        transition: all 1s ease-in-out;
+      }
+
+      .stats-panel { margin-top: 20px; font-size: 24px; }
+      
+      /* Grass Overlay */
+      .grass {
+        position: absolute;
+        bottom: 0; width: 100%; height: 40px;
+        background: #78B159;
+        border-top: 4px solid #5C9A44;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand"><h1>The Petal Garden</h1></div>
+      <div class="top-actions"><a class="btn" href="index.html">Back</a></div>
+    </header>
+
+    <div class="garden-wrap">
+      <div id="garden-bed">
+        <div class="grass"></div>
+        <!-- Plants will be generated here -->
+      </div>
+
+      <div class="panel stats-panel panel-pad">
+        <div id="gardenStatus">Total Seeds Sown: 0</div>
+        <small class="muted">Your garden grows as you write in your journal.</small>
+      </div>
+    </div>
+
+    <script type="module" src="garden.mjs"></script>
+  </body>
+</html>
