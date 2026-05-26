@@ -317,6 +317,18 @@ const THEMES = {
     "--bg-spot-2": "#0D0000",
     "animation": "dream_waves"
   },
+    infinite_zen: {
+    "--bg": "#FFFFFF", 
+    "--surface": "rgba(255, 255, 255, 0.8)",
+    "--surface-2": "#F3E8FF",
+    "--border": "#FFD700",
+    "--primary": "#A855F7", 
+    "--primary-soft": "rgba(168, 85, 247, 0.2)",
+    "--accent": "#00D2FF", 
+    "--text": "#1A1A1A",
+    "--text-muted": "#555555",
+    "animation": "divine_aura"
+  },
   infinite_void: {
     "--bg": "#0A0B14", // Deep Space Navy
     "--surface": "#121421",
@@ -651,6 +663,33 @@ function toast(msg) {
         // Apply the rainbow border effect
         if (level >= 15) document.querySelectorAll(".panel").forEach(p => p.classList.add("celestial-border"));
     }
+          // 4. Level 20: Transcendent Sage (THE FINAL FORM)
+    const optZen = document.querySelector('option[value="infinite_zen"]');
+    let rank = "Genin";
+    if (lvl >= 5) rank = "Jonin";
+    if (lvl >= 10) rank = "Kage";
+    if (lvl >= 15) rank = "Celestial Sage";
+    if (lvl >= 20) rank = "Transcendent One 🧘"; // THE FINAL RANK
+
+    if ($("ninjaRank")) $("ninjaRank").textContent = `Rank: ${rank}`;
+
+    if (optZen) {
+      if (lvl >= 20) {
+        optZen.disabled = false;
+        optZen.textContent = "💎 Infinite Zen (TRANSCENDENT)";
+        
+        // TRANSFORM THE UI: Add hologram class to every panel
+        document.querySelectorAll(".panel").forEach(p => {
+            p.classList.remove("kage-aura", "celestial-border"); // Clear old ranks
+            p.classList.add("hologram-panel");
+        });
+        
+        // Update the header to glow
+        document.querySelector("header").style.textShadow = "0 0 20px rgba(168, 85, 247, 0.8)";
+      } else {
+        optZen.disabled = true;
+        optZen.textContent = "🔒 Level 20: ???";
+      }
   }
 
   function renderList() {
@@ -1013,7 +1052,13 @@ function toast(msg) {
         p.className = "soul-cocoon";
         p.style.left = Math.random() * 100 + "vw";
         p.style.top = "-30px";
-      }
+          } else if (type === "divine_aura") {
+      p.className = "zen-shard";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.top = Math.random() * 100 + "vh";
+      p.style.animationDelay = (Math.random() * 5) + "s";
+    }
+
     }
 
       overlay.appendChild(p);
