@@ -598,7 +598,7 @@ function toast(msg) {
   if(signBtn) signBtn.onclick = () => signOut(auth).then(() => location.reload());
 })();
 
-/* ------------------- Journal Logic (Balanced & Synced) ------------------- */
+/* ------------------- Journal Logic (Levels 5-20 + Sync) ------------------- */
 (() => {
   const $ = (id) => document.getElementById(id);
   const STORAGE_KEY = "petal_entries_v1";
@@ -606,13 +606,16 @@ function toast(msg) {
   let activeId = null;
   let activeTag = null;
 
+  // 1. Level Calculation (Syncs all your hard work)
   function getZenLevel() {
-    const wb = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
-    const vs = parseInt(localStorage.getItem("petal_vision_count") || "0");
-    const cp = parseInt(localStorage.getItem("petal_capsule_count") || "0");
-    const wl = parseInt(localStorage.getItem("petal_well_count") || "0");
+    const wb = Number(localStorage.getItem("petal_whiteboard_count")) || 0;
+    const vs = Number(localStorage.getItem("petal_vision_count")) || 0;
+    const cp = Number(localStorage.getItem("petal_capsule_count")) || 0;
+    const wl = Number(localStorage.getItem("petal_well_count")) || 0;
+    const dj = Number(localStorage.getItem("petal_dojo_xp")) || 0;
+    const sm = Number(localStorage.getItem("petal_summon_xp")) || 0;
     
-    let totalXP = (entries.length * 50) + (wb * 20) + (vs * 30) + (cp * 100) + (wl * 30);
+    let totalXP = (entries.length * 50) + (wb * 20) + (vs * 30) + (cp * 100) + (wl * 30) + dj + sm;
     entries.forEach(e => {
        const words = (e.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
        totalXP += words;
@@ -620,78 +623,50 @@ function toast(msg) {
     return Math.floor(totalXP / 200) + 1;
   }
 
-    function checkUnlocks() {
-    // 1. Recalculate everything for the main page
-    const wb = Number(localStorage.getItem("petal_whiteboard_count")) || 0;
-    const vs = Number(localStorage.getItem("petal_vision_count")) || 0;
-    const cp = Number(localStorage.getItem("petal_capsule_count")) || 0;
-    const wl = Number(localStorage.getItem("petal_well_count")) || 0;
-    const dj = Number(localStorage.getItem("petal_dojo_xp")) || 0;
-    const sm = Number(localStorage.getItem("petal_summon_xp")) || 0;
-    const entries = JSON.parse(localStorage.getItem("petal_entries_v1") || "[]");
-    
-    let totalXP = (entries.length * 50) + (wb * 20) + (vs * 30) + (cp * 100) + (wl * 30) + dj + sm;
-    entries.forEach(e => {
-       const words = (e.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
-       totalXP += words;
-    });
+  // 2. Unlock Logic (Levels 5, 10, 15, 20)
+  function checkUnlocks() {
+    const lvl = getZenLevel();
+    console.log("Current Zen Level:", lvl);
 
-    const level = Math.floor(totalXP / 200) + 1;
-    console.log("Unlocks check - Current Level:", level);
-
-    // --- LEVEL 5 UNLOCKS ---
-    document.querySelectorAll(".level-5-reward").forEach(el => el.style.display = level >= 5 ? "inline-flex" : "none");
-    const optGolden = document.querySelector('option[value="golden_petal"]');
-    if (optGolden) {
-        optGolden.disabled = level < 5;
-        optGolden.textContent = level >= 5 ? "✨ Golden Petal (Unlocked!)" : "🔒 Level 5: ???";
+    // Level 5: Stickers + Golden Petal
+    document.querySelectorAll(".level-5-reward").forEach(el => el.style.display = lvl >= 5 ? "inline-flex" : "none");
+    const opt5 = document.querySelector('option[value="golden_petal"]');
+    if (opt5) {
+      opt5.disabled = lvl < 5;
+      opt5.textContent = lvl >= 5 ? "✨ Golden Petal" : "🔒 Level 5";
     }
 
-    // --- LEVEL 10 UNLOCKS ---
-    const optGod = document.querySelector('option[value="six_paths_sage"]');
-    if (optGod) {
-        optGod.disabled = level < 10;
-        optGod.textContent = level >= 10 ? "☀️ Six Paths Sage (Unlocked!)" : "🔒 Level 10: ???";
-        if (level >= 10) document.querySelectorAll(".panel").forEach(p => p.classList.add("kage-aura"));
+    // Level 10: Six Paths Sage + Aura
+    const opt10 = document.querySelector('option[value="six_paths_sage"]');
+    if (opt10) {
+      opt10.disabled = lvl < 10;
+      opt10.textContent = lvl >= 10 ? "☀️ Six Paths Sage" : "🔒 Level 10";
+      if (lvl >= 10) document.querySelectorAll(".panel").forEach(p => p.classList.add("kage-aura"));
     }
 
-    // --- LEVEL 15 UNLOCKS ---
-    const optCelestial = document.querySelector('option[value="celestial_sovereignty"]');
-    if (optCelestial) {
-        optCelestial.disabled = level < 15;
-        optCelestial.textContent = level >= 15 ? "🌌 Celestial Sovereignty (GOD TIER)" : "🔒 Level 15: ???";
-        // Apply the rainbow border effect
-        if (level >= 15) document.querySelectorAll(".panel").forEach(p => p.classList.add("celestial-border"));
+    // Level 15: Celestial Border
+    const opt15 = document.querySelector('option[value="celestial_sovereignty"]');
+    if (opt15) {
+      opt15.disabled = lvl < 15;
+      opt15.textContent = lvl >= 15 ? "🌌 Celestial Sovereignty" : "🔒 Level 15";
+      if (lvl >= 15) document.querySelectorAll(".panel").forEach(p => p.classList.add("celestial-border"));
     }
-          // 4. Level 20: Transcendent Sage (THE FINAL FORM)
-    const optZen = document.querySelector('option[value="infinite_zen"]');
-    let rank = "Genin";
-    if (lvl >= 5) rank = "Jonin";
-    if (lvl >= 10) rank = "Kage";
-    if (lvl >= 15) rank = "Celestial Sage";
-    if (lvl >= 20) rank = "Transcendent One 🧘"; // THE FINAL RANK
 
-    if ($("ninjaRank")) $("ninjaRank").textContent = `Rank: ${rank}`;
-
-    if (optZen) {
+    // Level 20: Hologram UI
+    const opt20 = document.querySelector('option[value="infinite_zen"]');
+    if (opt20) {
+      opt20.disabled = lvl < 20;
+      opt20.textContent = lvl >= 20 ? "💎 Infinite Zen" : "🔒 Level 20";
       if (lvl >= 20) {
-        optZen.disabled = false;
-        optZen.textContent = "💎 Infinite Zen (TRANSCENDENT)";
-        
-        // TRANSFORM THE UI: Add hologram class to every panel
         document.querySelectorAll(".panel").forEach(p => {
-            p.classList.remove("kage-aura", "celestial-border"); // Clear old ranks
-            p.classList.add("hologram-panel");
+          p.classList.remove("kage-aura", "celestial-border");
+          p.classList.add("hologram-panel");
         });
-        
-        // Update the header to glow
-        document.querySelector("header").style.textShadow = "0 0 20px rgba(168, 85, 247, 0.8)";
-      } else {
-        optZen.disabled = true;
-        optZen.textContent = "🔒 Level 20: ???";
       }
+    }
   }
 
+  // 3. UI Rendering
   function renderList() {
     const list = $("entryList"); if (!list) return;
     const q = ($("search")?.value || "").toLowerCase();
@@ -722,18 +697,36 @@ function toast(msg) {
     row.querySelectorAll('.chip.tag').forEach(btn => btn.onclick = () => { activeTag = activeTag === btn.dataset.tag ? null : btn.dataset.tag; renderTagChips(); renderList(); });
   }
 
+  // 4. Save & Sync
   $("btnSave")?.addEventListener('click', async () => {
-    const data = { id: activeId || Date.now().toString(), date: $("date").value, mood: $("mood").value, title: $("title").value, content: $("content").innerHTML, tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), updatedAt: Date.now() };
+    const data = { 
+      id: activeId || Date.now().toString(), 
+      date: $("date").value, 
+      mood: $("mood").value, 
+      title: $("title").value, 
+      content: $("content").innerHTML, 
+      tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), 
+      updatedAt: Date.now() 
+    };
+    
     if (!activeId) entries.push(data); else entries = entries.map(e => e.id === activeId ? data : e);
-    
     localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-    
-    if (window.firebaseAuth.currentUser) {
+
+    // Cloud Sync
+    if (window.firebaseAuth?.currentUser) {
       const db = window.firebaseDb;
-      await setDoc(doc(db, "entries", data.id), { ...data, userId: window.firebaseAuth.currentUser.uid }, { merge: true });
+      try {
+        await setDoc(doc(db, "entries", data.id), { ...data, userId: window.firebaseAuth.currentUser.uid }, { merge: true });
+        const stats = {
+          whiteboard: Number(localStorage.getItem("petal_whiteboard_count")) || 0,
+          well: Number(localStorage.getItem("petal_well_count")) || 0,
+          updatedAt: Date.now()
+        };
+        await setDoc(doc(db, "users", window.firebaseAuth.currentUser.uid, "stats", "zen"), stats, { merge: true });
+      } catch (err) { console.error("Sync Error", err); }
     }
 
-    renderList(); renderTagChips(); checkUnlocks(); toast("Saved!");
+    renderList(); renderTagChips(); checkUnlocks(); toast("Saved & Synced! ✨");
     $("saveSfx")?.play();
   });
 
@@ -746,13 +739,13 @@ function toast(msg) {
     $("deleteSfx")?.play();
   });
 
+  // 5. Initial Load
   document.addEventListener("DOMContentLoaded", () => {
     try { entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); } catch { entries = []; }
     renderList(); renderTagChips(); checkUnlocks();
     $("search")?.addEventListener('input', renderList);
   });
-})(); // Fixed: Balanced closure
-
+})(); 
 
 /* ------------------- Music & Spotify ------------------- */
 (() => {
