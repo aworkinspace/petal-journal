@@ -303,6 +303,20 @@ const THEMES = {
     "animation": "sand"
   },
   desert_love: { "--bg": "#F2E8CF", "--surface": "#EAD7B1", "--surface-2": "#D4A373", "--border": "rgba(188, 71, 73, 0.2)", "--primary": "#BC4749", "--accent": "#6A994E", "--text": "#386641", "--text-muted": "#6A994E", "--bg-spot-1": "rgba(188, 71, 73, 0.05)", "--bg-spot-2": "rgba(255, 255, 255, 0.3)" },
+    infinite_tsukuyomi: {
+    "--bg": "#0D0000", // Deepest Crimson Black
+    "--surface": "#1A0505",
+    "--surface-2": "#7F1D1D", // Blood Moon Red
+    "--border": "rgba(220, 38, 38, 0.3)",
+    "--primary": "#DC2626", // Rinne-Sharingan Red
+    "--primary-soft": "rgba(220, 38, 38, 0.1)",
+    "--accent": "#FFFFFF", // Trapped Soul White
+    "--text": "#FEE2E2",
+    "--text-muted": "rgba(254, 226, 226, 0.5)",
+    "--bg-spot-1": "rgba(220, 38, 38, 0.2)", // Red Moonlight
+    "--bg-spot-2": "#0D0000",
+    "animation": "dream_waves"
+  },
   infinite_void: {
     "--bg": "#0A0B14", // Deep Space Navy
     "--surface": "#121421",
@@ -989,7 +1003,19 @@ function toast(msg) {
         p.style.left = Math.random() * 100 + "vw";
         p.style.top = Math.random() * 100 + "vh";
         p.style.animationDelay = (Math.random() * 3) + "s";
+          } else if (type === "dream_waves") {
+      const isRipple = Math.random() > 0.4;
+      if (isRipple) {
+        p.className = "tsukuyomi-ripple";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+      } else {
+        p.className = "soul-cocoon";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = "-30px";
       }
+    }
+
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
     }, (type === "teleport" || type === "bolts" || type === "air_cracks" || type === "glitch" || type === "lightning") ? 80 : 800);
@@ -1013,7 +1039,7 @@ function toast(msg) {
       sun_god: "drum_beats",
       silent_heart: "hearts", legendary_merchant: "fans",
       flower_archeologist: "arms",
-      retro_handheld: "pixels", classic_desktop: "cursors", farm_life: "crops", cozy_cafe: "steam",
+      retro_handheld: "pixels", classic_desktop: "cursors", farm_life: "crops", cozy_cafe: "steam", infinite_tsukuyomi: "dream_waves" ,
     };
     startAnimation(map[theme] || null);
   });
