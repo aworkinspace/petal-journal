@@ -594,39 +594,51 @@ function toast(msg) {
     return Math.floor(totalXP / 200) + 1;
   }
 
-  function checkUnlocks() {
-    const lvl = getZenLevel();
+    function checkUnlocks() {
+    // 1. Recalculate everything for the main page
+    const wb = Number(localStorage.getItem("petal_whiteboard_count")) || 0;
+    const vs = Number(localStorage.getItem("petal_vision_count")) || 0;
+    const cp = Number(localStorage.getItem("petal_capsule_count")) || 0;
+    const wl = Number(localStorage.getItem("petal_well_count")) || 0;
+    const dj = Number(localStorage.getItem("petal_dojo_xp")) || 0;
+    const sm = Number(localStorage.getItem("petal_summon_xp")) || 0;
+    const entries = JSON.parse(localStorage.getItem("petal_entries_v1") || "[]");
     
-    // Level 5
-    document.querySelectorAll(".level-5-reward").forEach(el => el.style.display = lvl >= 5 ? "inline-flex" : "none");
-    const optG = document.querySelector('option[value="golden_petal"]');
-    if (optG) { 
-        optG.disabled = lvl < 5; 
-        optG.textContent = lvl >= 5 ? "✨ Golden Petal" : "🔒 Level 5"; 
+    let totalXP = (entries.length * 50) + (wb * 20) + (vs * 30) + (cp * 100) + (wl * 30) + dj + sm;
+    entries.forEach(e => {
+       const words = (e.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
+       totalXP += words;
+    });
+
+    const level = Math.floor(totalXP / 200) + 1;
+    console.log("Unlocks check - Current Level:", level);
+
+    // --- LEVEL 5 UNLOCKS ---
+    document.querySelectorAll(".level-5-reward").forEach(el => el.style.display = level >= 5 ? "inline-flex" : "none");
+    const optGolden = document.querySelector('option[value="golden_petal"]');
+    if (optGolden) {
+        optGolden.disabled = level < 5;
+        optGolden.textContent = level >= 5 ? "✨ Golden Petal (Unlocked!)" : "🔒 Level 5: ???";
     }
 
-    // Level 10
-    const optSix = document.querySelector('option[value="six_paths_sage"]');
-    if (optSix) {
-      if (lvl >= 10) {
-        optSix.disabled = false; optSix.textContent = "☀️ Six Paths Sage";
-        document.querySelectorAll(".panel").forEach(p => p.classList.add("kage-aura"));
-      } else {
-        optSix.disabled = true; optSix.textContent = "🔒 Level 10";
-      }
+    // --- LEVEL 10 UNLOCKS ---
+    const optGod = document.querySelector('option[value="six_paths_sage"]');
+    if (optGod) {
+        optGod.disabled = level < 10;
+        optGod.textContent = level >= 10 ? "☀️ Six Paths Sage (Unlocked!)" : "🔒 Level 10: ???";
+        if (level >= 10) document.querySelectorAll(".panel").forEach(p => p.classList.add("kage-aura"));
     }
 
-    // Level 15
-    const optCel = document.querySelector('option[value="celestial_sovereignty"]');
-    if (optCel) {
-      if (lvl >= 15) {
-        optCel.disabled = false; optCel.textContent = "🌌 Celestial Sovereignty";
-        document.querySelectorAll(".panel").forEach(p => p.classList.add("celestial-border"));
-      } else {
-        optCel.disabled = true; optCel.textContent = "🔒 Level 15";
-      }
+    // --- LEVEL 15 UNLOCKS ---
+    const optCelestial = document.querySelector('option[value="celestial_sovereignty"]');
+    if (optCelestial) {
+        optCelestial.disabled = level < 15;
+        optCelestial.textContent = level >= 15 ? "🌌 Celestial Sovereignty (GOD TIER)" : "🔒 Level 15: ???";
+        // Apply the rainbow border effect
+        if (level >= 15) document.querySelectorAll(".panel").forEach(p => p.classList.add("celestial-border"));
     }
   }
+}
 
   function renderList() {
     const list = $("entryList"); if (!list) return;
