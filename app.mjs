@@ -638,7 +638,6 @@ function toast(msg) {
         if (level >= 15) document.querySelectorAll(".panel").forEach(p => p.classList.add("celestial-border"));
     }
   }
-}
 
   function renderList() {
     const list = $("entryList"); if (!list) return;
