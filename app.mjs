@@ -1030,29 +1030,30 @@ function toast(msg) {
         // Vary the speed so some sheets fall faster than others
         p.style.animationDuration = (Math.random() * 3 + 4) + "s";
       }
-      else if (type === "star_shards") {
+            else if (type === "star_shards") {
         p.className = "star-shard";
         p.style.left = Math.random() * 100 + "vw";
         p.style.top = Math.random() * 100 + "vh";
         p.style.animationDelay = (Math.random() * 3) + "s";
-          } else if (type === "dream_waves") {
-      const isRipple = Math.random() > 0.4;
-      if (isRipple) {
-        p.className = "tsukuyomi-ripple";
+      } 
+      else if (type === "dream_waves") {
+        const isRipple = Math.random() > 0.4;
+        if (isRipple) {
+          p.className = "tsukuyomi-ripple";
+          p.style.left = Math.random() * 100 + "vw";
+          p.style.top = Math.random() * 100 + "vh";
+        } else {
+          p.className = "soul-cocoon";
+          p.style.left = Math.random() * 100 + "vw";
+          p.style.top = "-30px";
+        }
+      } // <--- Correctly closes the dream_waves block
+      else if (type === "divine_aura") {
+        p.className = "zen-shard";
         p.style.left = Math.random() * 100 + "vw";
         p.style.top = Math.random() * 100 + "vh";
-      } else {
-        p.className = "soul-cocoon";
-        p.style.left = Math.random() * 100 + "vw";
-        p.style.top = "-30px";
-          } else if (type === "divine_aura") {
-      p.className = "zen-shard";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.top = Math.random() * 100 + "vh";
-      p.style.animationDelay = (Math.random() * 5) + "s";
-    }
-
-    }
+        p.style.animationDelay = (Math.random() * 5) + "s";
+      }
 
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
