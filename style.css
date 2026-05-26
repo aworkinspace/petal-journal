@@ -2180,3 +2180,40 @@ header, .top-actions { overflow: visible; }
   0%, 100% { transform: scale(1); opacity: 0.2; }
   50% { transform: scale(1.5); opacity: 1; }
 }
+/* INFINITE TSUKUYOMI: HYPNOTIC RIPPLES */
+.tsukuyomi-ripple {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border: 1.5px solid #DC2626;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow: 0 0 15px rgba(220, 38, 38, 0.4);
+  animation: tsukuyomi-expand 6s ease-out forwards;
+}
+
+/* Trapped Cocoons */
+.soul-cocoon {
+  position: absolute;
+  width: 8px;
+  height: 20px;
+  background: white;
+  border-radius: 40%;
+  opacity: 0.3;
+  filter: blur(1px);
+  pointer-events: none;
+  animation: cocoon-drift 10s linear forwards;
+}
+
+@keyframes tsukuyomi-expand {
+  0% { transform: scale(0); opacity: 0; }
+  10% { opacity: 0.6; }
+  100% { transform: scale(15); opacity: 0; }
+}
+
+@keyframes cocoon-drift {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.3; }
+  100% { transform: translateY(110vh) rotate(20deg); opacity: 0; }
+}
