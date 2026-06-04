@@ -1277,12 +1277,41 @@ document.addEventListener("click", (e) => {
   }
 });
 
-/* ------------------- Initial Setup ------------------- */
-document.addEventListener("DOMContentLoaded", () => {
-  const theme = localStorage.getItem("petal_theme") || "petal";
-  applyTheme(theme); applySkin(localStorage.getItem("petal_skin") || "ruled");
-  const tSel = document.getElementById("themeSelect"); if (tSel) tSel.value = theme;
-  const sSel = document.getElementById("skinSelect"); if (sSel) sSel.value = localStorage.getItem("petal_skin") || "ruled";
-  if (tSel) tSel.onchange = (e) => applyTheme(e.target.value);
-  if (sSel) sSel.onchange = (e) => applySkin(e.target.value);
+/* ------------------- Initial Setup (Robust Version) ------------------- */
+document.addEventListener("DOMContentLoaded", async () => {
+  const $ = (id) => document.getElementById(id);
+  
+  // 1. Get saved settings
+  const savedTheme = localStorage.getItem("petal_theme") || "petal";
+  const savedSkin = localStorage.getItem("petal_skin") || "ruled";
+
+  // 2. Apply Theme and Skin safely
+  try {
+    // We use await because our new applyTheme calculates XP from the database
+    await applyTheme(savedTheme); 
+    applySkin(savedSkin);
+  } catch (e) {
+    console.error("Theme/Skin load failed:", e);
+    // Fallback to default if everything breaks
+    applyTheme("petal");
+  }
+
+  // 3. Link the Dropdown Menus
+  const tSel = $("themeSelect"); 
+  const sSel = $("skinSelect");
+
+  if (tSel) {
+    tSel.value = savedTheme;
+    tSel.onchange = (e) => applyTheme(e.target.value);
+  }
+
+  if (sSel) {
+    sSel.value = savedSkin;
+    sSel.onchange = (e) => applySkin(e.target.value);
+  }
+
+  // 4. Final Unlock Check (Ensures Level 10/15/20 rewards show up on load)
+  if (typeof checkUnlocks === "function") {
+    checkUnlocks();
+  }
 });
