@@ -717,6 +717,14 @@ flower_archeologist: {
       document.querySelectorAll(".panel").forEach(p => p.classList.add("celestial-border"));
     }
   }
+      let tokens = Number(localStorage.getItem("petal_tokens")) || 0;
+if (currentUser) {
+   // ... existing cloud fetch logic ...
+   tokens = Math.max(tokens, cloud.tokens || 0);
+   localStorage.setItem("petal_tokens", tokens);
+}
+if ($("tokenBalance")) $("tokenBalance").textContent = tokens;
+
   /* ------------------- Profile Actions ------------------- */
 
   $("btnUploadPic")?.addEventListener("click", () => $("picUpload")?.click());
