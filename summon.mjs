@@ -10,6 +10,7 @@ const cards = [
   { name: "Chidori Kakashi", img: "assets/kakashichidori_vmax.png" }, // Kakashi Chidori
   { name: "Kamui Kakashi", img: "assets/kakashikamui_vmax.png" },      // Kakashi Kamui
   { name: "Byakugo Sakura", img: "assets/sakurabyakugo_vmax.png" }, // Sakura Byakugo
+  { name: "Valley of the End", img: "assets/valleyoftheend_vmax.png" }, // Valley of the End
 ];
 
 
