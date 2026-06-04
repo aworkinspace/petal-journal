@@ -697,8 +697,7 @@ function toast(msg) {
     row.querySelectorAll('.chip.tag').forEach(btn => btn.onclick = () => { activeTag = activeTag === btn.dataset.tag ? null : btn.dataset.tag; renderTagChips(); renderList(); });
   }
 
-  // 4. Save & Sync
-  $("btnSave")?.addEventListener('click', async () => {
+   $("btnSave")?.addEventListener('click', async () => {
     const data = { 
       id: activeId || Date.now().toString(), 
       date: $("date").value, 
@@ -708,6 +707,43 @@ function toast(msg) {
       tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), 
       updatedAt: Date.now() 
     };
+
+    // --- NEW: TOKEN CALCULATION ---
+    // Earn 5 tokens per entry + 1 token for every 50 words
+    const wordCount = (data.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
+    const tokensEarned = 5 + Math.floor(wordCount / 50);
+    let currentTokens = Number(localStorage.getItem("petal_tokens")) || 0;
+    localStorage.setItem("petal_tokens", currentTokens + tokensEarned);
+    // ------------------------------
+    
+    if (!activeId) entries.push(data); else entries = entries.map(e => e.id === activeId ? data : e);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+
+    // Cloud Sync
+    if (window.firebaseAuth?.currentUser) {
+      const db = window.firebaseDb;
+      try {
+        await setDoc(doc(db, "entries", data.id), { ...data, userId: window.firebaseAuth.currentUser.uid }, { merge: true });
+        
+        // NEW: Sync Tokens to Cloud Stats too
+        const stats = {
+          whiteboard: Number(localStorage.getItem("petal_whiteboard_count")) || 0,
+          well: Number(localStorage.getItem("petal_well_count")) || 0,
+          tokens: Number(localStorage.getItem("petal_tokens")) || 0, // Syncing tokens
+          updatedAt: Date.now()
+        };
+        await setDoc(doc(db, "users", window.firebaseAuth.currentUser.uid, "stats", "zen"), stats, { merge: true });
+      } catch (err) { console.error("Sync Error", err); }
+    }
+
+    renderList(); renderTagChips(); checkUnlocks(); 
+    
+    // Updated toast to show tokens
+    toast(`Saved! +${tokensEarned} Petal Tokens earned! 🪙`);
+    
+    $("saveSfx")?.play();
+  });
+
     
     if (!activeId) entries.push(data); else entries = entries.map(e => e.id === activeId ? data : e);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
