@@ -769,7 +769,32 @@ function toast(msg) {
     if (window.firebaseAuth?.currentUser) {
       const db = window.firebaseDb;
       try {
-        await setDoc(doc(db, "entries", data.id), { ...data, userId: window.firebaseAuth.currentUser.uid }, { merge: true });
+        // Replace your Cloud Sync block with this safer version:
+if (window.firebaseAuth && window.firebaseAuth.currentUser) {
+  const db = window.firebaseDb;
+  const user = window.firebaseAuth.currentUser;
+  
+  try {
+    // 1. Sync the journal entry
+    await setDoc(doc(db, "entries", data.id), { 
+      ...data, 
+      userId: user.uid 
+    }, { merge: true });
+    
+    // 2. Sync global stats
+    const stats = {
+      whiteboard: Number(localStorage.getItem("petal_whiteboard_count")) || 0,
+      well: Number(localStorage.getItem("petal_well_count")) || 0,
+      tokens: Number(localStorage.getItem("petal_tokens")) || 0,
+      updatedAt: Date.now()
+    };
+    await setDoc(doc(db, "users", user.uid, "stats", "zen"), stats, { merge: true });
+    console.log("Cloud Sync Successful");
+  } catch (err) { 
+    console.error("Cloud Sync Error:", err); 
+  }
+}
+
         const stats = {
           whiteboard: Number(localStorage.getItem("petal_whiteboard_count")) || 0,
           well: Number(localStorage.getItem("petal_well_count")) || 0,
