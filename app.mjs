@@ -1155,118 +1155,59 @@ function toast(msg) {
     "‘True art is an explosion!’ What was the most exciting or 'explosive' moment of your week?"
   ];
 
-  function initPrompts() {
-    const btn = document.getElementById("btnPrompt");
-    const card = document.getElementById("promptCard");
-
-    if (!btn || !card) {
-      console.error("Prompt elements not found!");
-      return;
-    }
-
-    // Load saved prompt
-    const saved = localStorage.getItem("petal_prompt");
-    if (saved) card.textContent = saved;
-
-    // Attach click event
-    btn.onclick = () => {
-      let next;
-      // Loop to prevent the same prompt appearing twice
-      do {
-        next = allPrompts[Math.floor(Math.random() * allPrompts.length)];
-      } while (next === card.textContent && allPrompts.length > 1);
-
-      card.textContent = next;
-      localStorage.setItem("petal_prompt", next);
-      
-      // Visual feedback "Pop"
-      card.style.transform = "scale(1.05)";
-      setTimeout(() => card.style.transform = "scale(1)", 100);
-    };
-  }
-
-  // Ensure initialization runs regardless of when script loads
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initPrompts);
-  } else {
-    initPrompts();
-  }
-})();
-
 document.addEventListener("DOMContentLoaded", () => {
   const card = document.getElementById("promptCard");
   if (card) {
       card.textContent = localStorage.getItem("petal_prompt") || promptsList[0];
       document.getElementById("btnPrompt")?.addEventListener("click", () => {
           const next = promptsList[Math.floor(Math.random() * promptsList.length)];
-          card.textContent = next; localStorage.setItem("petal_prompt", next);
+          card.textContent = next; 
+          localStorage.setItem("petal_prompt", next);
       });
   }
-  // 2. IMAGE UPLOAD LOGIC
-  const picker = document.getElementById("imgPicker");
-  document.getElementById("btnAddImage")?.addEventListener("click", () => { 
-    if (!window.firebaseAuth?.currentUser) { 
-      alert("Login required to upload images!"); 
-      return; 
-    } 
-    picker?.click(); 
-  });
 
+  const picker = document.getElementById("imgPicker");
+  document.getElementById("btnAddImage")?.addEventListener("click", () => picker?.click());
+  
   picker?.addEventListener("change", async (e) => {
     const file = e.target.files?.[0]; 
     if (!file || !window.firebaseAuth?.currentUser) return;
-    
     try { 
       toast("Uploading..."); 
       const path = `entry_images/${window.firebaseAuth.currentUser.uid}/${Date.now()}_image`; 
       const fileRef = storageRef(window.firebaseStorage, path); 
       await uploadBytes(fileRef, file, { contentType: file.type }); 
       const url = await getDownloadURL(fileRef); 
-      
       const img = document.createElement("img"); 
-      img.src = url; 
-      img.className = "sticker"; 
+      img.src = url; img.className = "sticker"; 
       document.getElementById("content").appendChild(img); 
       toast("Added!"); 
-    } catch (err) { 
-      alert("Upload failed. Check your rules."); 
-    }
+    } catch (err) { console.error(err); }
   });
 
-      // 3. SHOP STICKER SYNC (Custom mapping for .gif files)
+  // Shop Sticker Sync
   const ownedItems = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
-  const stickerBar = document.querySelector(".sticker-panel"); 
+  const stickerBar = document.querySelector(".sticker-panel");
+  const stickerMap = {
+    "sticker_kunai": { name: "Kunai", file: "kunai.gif" },
+    "sticker_curse": { name: "Cursed Mark", file: "cursedmark.gif" },
+    "sticker_joyboy": { name: "Sun God", file: "sungod.gif" }
+  };
   
   if (stickerBar) {
-    // This tells the code which GIF to load for each Shop ID
-    const stickerMap = {
-      "sticker_kunai": { name: "Kunai", file: "kunai.gif" },
-      "sticker_curse": { name: "Cursed Mark", file: "cursedmark.gif" },
-      "sticker_joyboy": { name: "Sun God", file: "sungod.gif" }
-    };
-
     ownedItems.forEach(itemId => {
-      const stickerInfo = stickerMap[itemId];
-      
-      if (stickerInfo) {
-        const fullPath = `assets/${stickerInfo.file}`;
-        
-        // Only create the button if it doesn't already exist on the page
-        if (!document.querySelector(`[data-sticker="${fullPath}"]`)) {
-          const btn = document.createElement("button");
-          btn.className = "chip";
-          btn.type = "button";
-          btn.dataset.sticker = fullPath;
-          btn.textContent = `✨ ${stickerInfo.name}`;
-          
-          stickerBar.appendChild(btn);
-        }
+      const info = stickerMap[itemId];
+      if (info && !document.querySelector(`[data-sticker="assets/${info.file}"]`)) {
+        const btn = document.createElement("button");
+        btn.className = "chip"; btn.type = "button";
+        btn.dataset.sticker = `assets/${info.file}`;
+        btn.textContent = `✨ ${info.name}`;
+        stickerBar.appendChild(btn);
       }
     });
   }
+}); // Ends DOMContentLoaded for Stickers
 
-
-// 4. GLOBAL STICKER CLICK HANDLER
 document.addEventListener("click", (e) => {
   const btn = e.target.closest("button[data-sticker]");
   if (btn) { 
@@ -1276,6 +1217,7 @@ document.addEventListener("click", (e) => {
     document.getElementById("content").appendChild(img); 
   }
 });
+
 
 /* ------------------- Initial Setup (Robust Version) ------------------- */
 document.addEventListener("DOMContentLoaded", async () => {
