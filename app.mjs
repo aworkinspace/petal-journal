@@ -697,51 +697,68 @@ function toast(msg) {
     row.querySelectorAll('.chip.tag').forEach(btn => btn.onclick = () => { activeTag = activeTag === btn.dataset.tag ? null : btn.dataset.tag; renderTagChips(); renderList(); });
   }
 
-   $("btnSave")?.addEventListener('click', async () => {
+     // 4. Save & Sync
+  $("btnSave")?.addEventListener('click', async () => {
+    const contentHtml = $("content").innerHTML || "";
+    const titleText = $("title").value || "";
+    const dateValue = $("date").value || new Date().toISOString().split('T')[0];
+
     const data = { 
       id: activeId || Date.now().toString(), 
-      date: $("date").value, 
+      date: dateValue, 
       mood: $("mood").value, 
-      title: $("title").value, 
-      content: $("content").innerHTML, 
+      title: titleText, 
+      content: contentHtml, 
       tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), 
       updatedAt: Date.now() 
     };
 
-    // --- NEW: TOKEN CALCULATION ---
-    // Earn 5 tokens per entry + 1 token for every 50 words
+    // --- TOKEN CALCULATION ---
     const wordCount = (data.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
     const tokensEarned = 5 + Math.floor(wordCount / 50);
     let currentTokens = Number(localStorage.getItem("petal_tokens")) || 0;
     localStorage.setItem("petal_tokens", currentTokens + tokensEarned);
-    // ------------------------------
     
-    if (!activeId) entries.push(data); else entries = entries.map(e => e.id === activeId ? data : e);
+    // --- LOCAL SAVE ---
+    if (!activeId) {
+      entries.push(data); 
+    } else {
+      entries = entries.map(e => e.id === activeId ? data : e);
+    }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
 
-    // Cloud Sync
+    // --- CLOUD SYNC ---
     if (window.firebaseAuth?.currentUser) {
       const db = window.firebaseDb;
       try {
+        // 1. Sync the journal entry
         await setDoc(doc(db, "entries", data.id), { ...data, userId: window.firebaseAuth.currentUser.uid }, { merge: true });
         
-        // NEW: Sync Tokens to Cloud Stats too
+        // 2. Sync global stats (including the new tokens)
         const stats = {
           whiteboard: Number(localStorage.getItem("petal_whiteboard_count")) || 0,
           well: Number(localStorage.getItem("petal_well_count")) || 0,
-          tokens: Number(localStorage.getItem("petal_tokens")) || 0, // Syncing tokens
+          tokens: Number(localStorage.getItem("petal_tokens")) || 0,
           updatedAt: Date.now()
         };
         await setDoc(doc(db, "users", window.firebaseAuth.currentUser.uid, "stats", "zen"), stats, { merge: true });
-      } catch (err) { console.error("Sync Error", err); }
+      } catch (err) { 
+        console.error("Cloud Sync Error:", err); 
+      }
     }
 
-    renderList(); renderTagChips(); checkUnlocks(); 
+    // --- UI REFRESH & FEEDBACK ---
+    renderList(); 
+    renderTagChips(); 
+    if (typeof checkUnlocks === "function") checkUnlocks(); 
     
-    // Updated toast to show tokens
     toast(`Saved! +${tokensEarned} Petal Tokens earned! 🪙`);
     
-    $("saveSfx")?.play();
+    const sfx = document.getElementById("saveSfx");
+    if (sfx) {
+      sfx.currentTime = 0;
+      sfx.play().catch(() => {});
+    }
   });
 
     
