@@ -1233,7 +1233,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-    // 3. SHOP STICKER SYNC (Custom mapping for .gif files)
+      // 3. SHOP STICKER SYNC (Custom mapping for .gif files)
   const ownedItems = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
   const stickerBar = document.querySelector(".sticker-panel"); 
   
@@ -1263,6 +1263,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     });
+  }
+
 
 // 4. GLOBAL STICKER CLICK HANDLER
 document.addEventListener("click", (e) => {
