@@ -593,7 +593,7 @@ flower_archeologist: {
         <h2 style="margin: 0 0 24px">Your Profile</h2>
         
         <div class="profile-pic-container">
-          <img id="profilePic" class="profile-pic" src="assets/default-profile.png" />
+          <img id="profilePic" class="profile-pic" src="assets/default.png" />
           <div class="profile-pic-upload" style="margin-top:10px;">
             <input type="file" id="picUpload" accept="image/*" hidden />
             <button class="btn" id="btnUploadPic" type="button">Change Photo</button>
@@ -734,20 +734,29 @@ flower_archeologist: {
     }
   });
 
-  onAuthStateChanged(auth, async (user) => {
+    onAuthStateChanged(auth, async (user) => {
     if (user) {
       currentUser = user;
       $("displayName").value = user.displayName || "";
-      if (user.photoURL) $("profilePic").src = user.photoURL;
+      
+      // --- CHANGE THIS SECTION ---
+      if (user.photoURL) {
+        $("profilePic").src = user.photoURL;
+      } else {
+        // Set your new default image here!
+        $("profilePic").src = "assets/default.png"; 
+      }
+      // ---------------------------
+
       const userDoc = await getDoc(doc(db, "users", user.uid));
       if (userDoc.exists()) $("userBirthday").value = userDoc.data().birthday || "";
       
-      // Update progress bar
       updateZenProgress();
     } else { 
       window.location.href = "login.html"; 
     }
   });
+
 
   $("btnUpdateProfile")?.addEventListener("click", async () => {
     if (!currentUser) return;
