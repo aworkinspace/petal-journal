@@ -867,12 +867,37 @@ flower_archeologist: {
     const sfx = document.getElementById("clearSfx"); if (sfx) { sfx.currentTime = 0; sfx.play().catch(()=>{}); }
   });
 
-  saveBtn.addEventListener("click", () => {
+    saveBtn.addEventListener("click", async () => { // Added 'async' here
     const a = document.createElement("a");
-    a.download = "whiteboard.png"; a.href = canvas.toDataURL("image/png"); a.click();
+    a.download = "whiteboard.png"; 
+    a.href = canvas.toDataURL("image/png"); 
+    a.click();
+
+    // 1. Update Whiteboard Count (for Zen Level XP)
     let count = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
     localStorage.setItem("petal_whiteboard_count", count + 1);
+
+    // 2. NEW: Add Petal Tokens
+    let currentTokens = Number(localStorage.getItem("petal_tokens")) || 0;
+    localStorage.setItem("petal_tokens", currentTokens + 10); // +10 Tokens per art piece
+
+    // 3. Optional: Sync to Firebase immediately
+    if (window.firebaseAuth?.currentUser) {
+      const db = window.firebaseDb;
+      const user = window.firebaseAuth.currentUser;
+      try {
+        await setDoc(doc(db, "users", user.uid, "stats", "zen"), {
+          whiteboard: count + 1,
+          tokens: currentTokens + 10,
+          updatedAt: Date.now()
+        }, { merge: true });
+        console.log("Art rewards synced to cloud! ✨");
+      } catch (err) { console.error("Sync failed", err); }
+    }
+
+    alert("Masterpiece Saved! +10 Petal Tokens earned. 🪙");
   });
+
 
   canvas.addEventListener("mousedown", down);
   canvas.addEventListener("mousemove", move);
