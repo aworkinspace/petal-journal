@@ -5,10 +5,11 @@ const msg = document.getElementById("summonMsg");
 
 // 1. Updated list of your Cards
 const cards = [
-  { name: "Sage Mode Naruto", img: "assets/naruto_vmax.png" },
-  { name: "Susanoo Sasuke", img: "assets/sasuke_vmax.png" },
-  { name: "Chidori Kakashi", img: "assets/kakashichidori_vmax.png" }, // Add first one
-  { name: "Kamui Kakashi", img: "assets/kakashikamui_vmax.png" }      // Add second one
+  { name: "Sage Mode Naruto", img: "assets/naruto_vmax.png" }, // Sage Mode Naruto
+  { name: "Susanoo Sasuke", img: "assets/sasuke_vmax.png" }, // Susanoo Sasuke
+  { name: "Chidori Kakashi", img: "assets/kakashichidori_vmax.png" }, // Kakashi Chidori
+  { name: "Kamui Kakashi", img: "assets/kakashikamui_vmax.png" },      // Kakashi Kamui
+  { name: "Byakugo Sakura", img: "assets/sakurabyakugo_vmax.png" }, // Sakura Byakugo
 ];
 
 
