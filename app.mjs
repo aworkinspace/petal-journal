@@ -1219,41 +1219,27 @@ document.addEventListener("click", (e) => {
 });
 
 
-/* ------------------- Initial Setup (Robust Version) ------------------- */
+/* ------------------- Initial Setup ------------------- */
 document.addEventListener("DOMContentLoaded", async () => {
-  const $ = (id) => document.getElementById(id);
-  
-  // 1. Get saved settings
   const savedTheme = localStorage.getItem("petal_theme") || "petal";
   const savedSkin = localStorage.getItem("petal_skin") || "ruled";
 
-  // 2. Apply Theme and Skin safely
   try {
-    // We use await because our new applyTheme calculates XP from the database
     await applyTheme(savedTheme); 
     applySkin(savedSkin);
-  } catch (e) {
-    console.error("Theme/Skin load failed:", e);
-    // Fallback to default if everything breaks
-    applyTheme("petal");
-  }
+  } catch (e) { console.log("Init fail:", e); }
 
-  // 3. Link the Dropdown Menus
-  const tSel = $("themeSelect"); 
-  const sSel = $("skinSelect");
+  const tSel = document.getElementById("themeSelect"); 
+  const sSel = document.getElementById("skinSelect");
 
   if (tSel) {
     tSel.value = savedTheme;
     tSel.onchange = (e) => applyTheme(e.target.value);
   }
-
   if (sSel) {
     sSel.value = savedSkin;
     sSel.onchange = (e) => applySkin(e.target.value);
   }
 
-  // 4. Final Unlock Check (Ensures Level 10/15/20 rewards show up on load)
-  if (typeof checkUnlocks === "function") {
-    checkUnlocks();
-  }
-});
+  if (typeof checkUnlocks === "function") checkUnlocks();
+}); // <--- THIS MUST BE THE LAST LINE
