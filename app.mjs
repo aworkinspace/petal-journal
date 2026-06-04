@@ -1204,18 +1204,68 @@ document.addEventListener("DOMContentLoaded", () => {
           card.textContent = next; localStorage.setItem("petal_prompt", next);
       });
   }
-
+  // 2. IMAGE UPLOAD LOGIC
   const picker = document.getElementById("imgPicker");
-  document.getElementById("btnAddImage")?.addEventListener("click", () => picker?.click());
-  picker?.addEventListener("change", async (e) => {
-    const file = e.target.files?.[0]; if (!file || !window.firebaseAuth?.currentUser) return;
-    try { toast("Uploading..."); const path = `entry_images/${window.firebaseAuth.currentUser.uid}/${Date.now()}_image`; const fileRef = storageRef(window.firebaseStorage, path); await uploadBytes(fileRef, file, { contentType: file.type }); const url = await getDownloadURL(fileRef); const img = document.createElement("img"); img.src = url; img.className = "sticker"; document.getElementById("content").appendChild(img); toast("Added!"); } catch (err) { alert("Failed"); }
+  document.getElementById("btnAddImage")?.addEventListener("click", () => { 
+    if (!window.firebaseAuth?.currentUser) { 
+      alert("Login required to upload images!"); 
+      return; 
+    } 
+    picker?.click(); 
   });
+
+  picker?.addEventListener("change", async (e) => {
+    const file = e.target.files?.[0]; 
+    if (!file || !window.firebaseAuth?.currentUser) return;
+    
+    try { 
+      toast("Uploading..."); 
+      const path = `entry_images/${window.firebaseAuth.currentUser.uid}/${Date.now()}_image`; 
+      const fileRef = storageRef(window.firebaseStorage, path); 
+      await uploadBytes(fileRef, file, { contentType: file.type }); 
+      const url = await getDownloadURL(fileRef); 
+      
+      const img = document.createElement("img"); 
+      img.src = url; 
+      img.className = "sticker"; 
+      document.getElementById("content").appendChild(img); 
+      toast("Added!"); 
+    } catch (err) { 
+      alert("Upload failed. Check your rules."); 
+    }
+  });
+
+  // 3. SHOP STICKER SYNC
+  // This looks at what you bought in the shop and adds them to your journal menu
+  const ownedItems = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
+  const stickerBar = document.querySelector(".sticker-panel"); // Make sure this class matches your HTML
+  
+  if (stickerBar) {
+    ownedItems.forEach(itemId => {
+      if (itemId.startsWith("sticker_")) {
+        // Simple logic to add a new button for the bought sticker
+        const btn = document.createElement("button");
+        btn.className = "chip";
+        btn.type = "button";
+        // We guess the name from the ID (e.g. sticker_kunai -> kunai)
+        const name = itemId.replace("sticker_", "");
+        btn.dataset.sticker = `assets/${name}.png`;
+        btn.textContent = name.charAt(0).toUpperCase() + name.slice(1);
+        stickerBar.appendChild(btn);
+      }
+    });
+  }
 });
 
+// 4. GLOBAL STICKER CLICK HANDLER
 document.addEventListener("click", (e) => {
   const btn = e.target.closest("button[data-sticker]");
-  if (btn) { const img = document.createElement("img"); img.src = btn.dataset.sticker; img.className = "sticker"; document.getElementById("content").appendChild(img); }
+  if (btn) { 
+    const img = document.createElement("img"); 
+    img.src = btn.dataset.sticker; 
+    img.className = "sticker"; 
+    document.getElementById("content").appendChild(img); 
+  }
 });
 
 /* ------------------- Initial Setup ------------------- */
