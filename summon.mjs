@@ -3,10 +3,10 @@ const container = document.getElementById("cardContainer");
 const cardFront = document.getElementById("cardFront");
 const msg = document.getElementById("summonMsg");
 
-// 1. List of your Cards (Save your Naruto card as 'naruto_vmax.png')
+// 1. Updated list of your Cards
 const cards = [
   { name: "Sage Mode Naruto", img: "assets/naruto_vmax.png" },
-  // Add more here as you find/make them!
+  { name: "Susanoo Sasuke", img: "assets/sasuke_vmax.png" } // <-- ADDED SASUKE HERE
 ];
 
 function checkCooldown() {
