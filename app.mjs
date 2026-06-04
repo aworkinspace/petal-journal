@@ -1217,8 +1217,6 @@ document.addEventListener("click", (e) => {
     document.getElementById("content").appendChild(img); 
   }
 });
-
-
 /* ------------------- Initial Setup ------------------- */
 document.addEventListener("DOMContentLoaded", async () => {
   const savedTheme = localStorage.getItem("petal_theme") || "petal";
