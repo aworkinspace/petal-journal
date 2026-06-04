@@ -6,8 +6,11 @@ const msg = document.getElementById("summonMsg");
 // 1. Updated list of your Cards
 const cards = [
   { name: "Sage Mode Naruto", img: "assets/naruto_vmax.png" },
-  { name: "Susanoo Sasuke", img: "assets/sasuke_vmax.png" } // <-- ADDED SASUKE HERE
+  { name: "Susanoo Sasuke", img: "assets/sasuke_vmax.png" },
+  { name: "Chidori Kakashi", img: "assets/kakashichidori_vmax.png" }, // Add first one
+  { name: "Kamui Kakashi", img: "assets/kakashikamui_vmax.png" }      // Add second one
 ];
+
 
 function checkCooldown() {
   const lastSummon = localStorage.getItem("petal_last_summon");
