@@ -1156,6 +1156,7 @@ function toast(msg) {
   ];
 
 document.addEventListener("DOMContentLoaded", () => {
+  // 1. Prompt Logic
   const card = document.getElementById("promptCard");
   if (card) {
       card.textContent = localStorage.getItem("petal_prompt") || promptsList[0];
@@ -1166,6 +1167,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
+  // 2. Image Picker
   const picker = document.getElementById("imgPicker");
   document.getElementById("btnAddImage")?.addEventListener("click", () => picker?.click());
   
@@ -1185,7 +1187,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (err) { console.error(err); }
   });
 
-  // Shop Sticker Sync
+  // 3. Shop Sticker Sync
   const ownedItems = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
   const stickerBar = document.querySelector(".sticker-panel");
   const stickerMap = {
@@ -1206,8 +1208,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-}); // Ends DOMContentLoaded for Stickers
+});
 
+// 4. Global Click for Stickers
 document.addEventListener("click", (e) => {
   const btn = e.target.closest("button[data-sticker]");
   if (btn) { 
@@ -1217,6 +1220,8 @@ document.addEventListener("click", (e) => {
     document.getElementById("content").appendChild(img); 
   }
 });
+
+
 /* ------------------- Initial Setup ------------------- */
 document.addEventListener("DOMContentLoaded", async () => {
   const savedTheme = localStorage.getItem("petal_theme") || "petal";
@@ -1240,4 +1245,4 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   if (typeof checkUnlocks === "function") checkUnlocks();
-}); // <--- THIS MUST BE THE LAST LINE
+});
