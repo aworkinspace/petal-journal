@@ -1233,27 +1233,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 3. SHOP STICKER SYNC
-  // This looks at what you bought in the shop and adds them to your journal menu
+    // 3. SHOP STICKER SYNC (Custom mapping for .gif files)
   const ownedItems = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
-  const stickerBar = document.querySelector(".sticker-panel"); // Make sure this class matches your HTML
+  const stickerBar = document.querySelector(".sticker-panel"); 
   
   if (stickerBar) {
+    // This tells the code which GIF to load for each Shop ID
+    const stickerMap = {
+      "sticker_kunai": { name: "Kunai", file: "kunai.gif" },
+      "sticker_curse": { name: "Cursed Mark", file: "cursedmark.gif" },
+      "sticker_joyboy": { name: "Sun God", file: "sungod.gif" }
+    };
+
     ownedItems.forEach(itemId => {
-      if (itemId.startsWith("sticker_")) {
-        // Simple logic to add a new button for the bought sticker
-        const btn = document.createElement("button");
-        btn.className = "chip";
-        btn.type = "button";
-        // We guess the name from the ID (e.g. sticker_kunai -> kunai)
-        const name = itemId.replace("sticker_", "");
-        btn.dataset.sticker = `assets/${name}.png`;
-        btn.textContent = name.charAt(0).toUpperCase() + name.slice(1);
-        stickerBar.appendChild(btn);
+      const stickerInfo = stickerMap[itemId];
+      
+      if (stickerInfo) {
+        const fullPath = `assets/${stickerInfo.file}`;
+        
+        // Only create the button if it doesn't already exist on the page
+        if (!document.querySelector(`[data-sticker="${fullPath}"]`)) {
+          const btn = document.createElement("button");
+          btn.className = "chip";
+          btn.type = "button";
+          btn.dataset.sticker = fullPath;
+          btn.textContent = `✨ ${stickerInfo.name}`;
+          
+          stickerBar.appendChild(btn);
+        }
       }
     });
-  }
-});
 
 // 4. GLOBAL STICKER CLICK HANDLER
 document.addEventListener("click", (e) => {
