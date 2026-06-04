@@ -3,9 +3,9 @@ const balanceEl = document.getElementById("shopBalance");
 
 // 1. SHOP INVENTORY
 const shopItems = [
-  { id: "sticker_kunai", name: "Steel Kunai", type: "sticker", price: 50, icon: "assets/kunai.png" },
-  { id: "sticker_curse", name: "Cursed Mark", type: "sticker", price: 75, icon: "assets/cursed_mark.png" },
-  { id: "sticker_joyboy", name: "Nika Sun", type: "sticker", price: 100, icon: "assets/sun_icon.png" }
+  { id: "sticker_kunai", name: "Steel Kunai", type: "sticker", price: 50, icon: "assets/kunai.gif" },
+  { id: "sticker_curse", name: "Cursed Mark", type: "sticker", price: 75, icon: "assets/cursedmark.gif" },
+  { id: "sticker_joyboy", name: "Nika Sun", type: "sticker", price: 100, icon: "assets/sungod.gif" }
 ];
 
 function getTokens() { return Number(localStorage.getItem("petal_tokens")) || 0; }
