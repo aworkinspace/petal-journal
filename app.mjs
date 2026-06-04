@@ -698,6 +698,7 @@ function toast(msg) {
   }
 
      // 4. Save & Sync
+  // 4. Save & Sync
   $("btnSave")?.addEventListener('click', async () => {
     const contentHtml = $("content").innerHTML || "";
     const titleText = $("title").value || "";
@@ -730,9 +731,10 @@ function toast(msg) {
     // --- CLOUD SYNC ---
     if (window.firebaseAuth?.currentUser) {
       const db = window.firebaseDb;
+      const user = window.firebaseAuth.currentUser;
       try {
         // 1. Sync the journal entry
-        await setDoc(doc(db, "entries", data.id), { ...data, userId: window.firebaseAuth.currentUser.uid }, { merge: true });
+        await setDoc(doc(db, "entries", data.id), { ...data, userId: user.uid }, { merge: true });
         
         // 2. Sync global stats (including the new tokens)
         const stats = {
@@ -741,7 +743,8 @@ function toast(msg) {
           tokens: Number(localStorage.getItem("petal_tokens")) || 0,
           updatedAt: Date.now()
         };
-        await setDoc(doc(db, "users", window.firebaseAuth.currentUser.uid, "stats", "zen"), stats, { merge: true });
+        await setDoc(doc(db, "users", user.uid, "stats", "zen"), stats, { merge: true });
+        console.log("Cloud Sync Successful");
       } catch (err) { 
         console.error("Cloud Sync Error:", err); 
       }
@@ -752,61 +755,14 @@ function toast(msg) {
     renderTagChips(); 
     if (typeof checkUnlocks === "function") checkUnlocks(); 
     
-    toast(`Saved! +${tokensEarned} Petal Tokens earned! 🪙`);
+    toast(`Saved & Synced! +${tokensEarned} Tokens earned! ✨🪙`);
     
     const sfx = document.getElementById("saveSfx");
     if (sfx) {
       sfx.currentTime = 0;
       sfx.play().catch(() => {});
     }
-  });
-
-    
-    if (!activeId) entries.push(data); else entries = entries.map(e => e.id === activeId ? data : e);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-
-    // Cloud Sync
-    if (window.firebaseAuth?.currentUser) {
-      const db = window.firebaseDb;
-      try {
-        // Replace your Cloud Sync block with this safer version:
-if (window.firebaseAuth && window.firebaseAuth.currentUser) {
-  const db = window.firebaseDb;
-  const user = window.firebaseAuth.currentUser;
-  
-  try {
-    // 1. Sync the journal entry
-    await setDoc(doc(db, "entries", data.id), { 
-      ...data, 
-      userId: user.uid 
-    }, { merge: true });
-    
-    // 2. Sync global stats
-    const stats = {
-      whiteboard: Number(localStorage.getItem("petal_whiteboard_count")) || 0,
-      well: Number(localStorage.getItem("petal_well_count")) || 0,
-      tokens: Number(localStorage.getItem("petal_tokens")) || 0,
-      updatedAt: Date.now()
-    };
-    await setDoc(doc(db, "users", user.uid, "stats", "zen"), stats, { merge: true });
-    console.log("Cloud Sync Successful");
-  } catch (err) { 
-    console.error("Cloud Sync Error:", err); 
-  }
-}
-
-        const stats = {
-          whiteboard: Number(localStorage.getItem("petal_whiteboard_count")) || 0,
-          well: Number(localStorage.getItem("petal_well_count")) || 0,
-          updatedAt: Date.now()
-        };
-        await setDoc(doc(db, "users", window.firebaseAuth.currentUser.uid, "stats", "zen"), stats, { merge: true });
-      } catch (err) { console.error("Sync Error", err); }
-    }
-
-    renderList(); renderTagChips(); checkUnlocks(); toast("Saved & Synced! ✨");
-    $("saveSfx")?.play();
-  });
+  }); // <--- THIS IS THE ONLY ENDING YOU NEED
 
   $("btnDelete")?.addEventListener('click', () => {
     if (!activeId || !confirm("Delete?")) return;
