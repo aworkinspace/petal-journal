@@ -563,19 +563,6 @@ async function applyTheme(themeName) {
   applyVars(theme);
   localStorage.setItem("petal_theme", themeName);
 
-  // 3. Apply Animated Shop Skins
-  const notebook = document.getElementById("notebook");
-  const owned = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
-  if (notebook) {
-    notebook.classList.remove("skin-rainy-paper", "skin-glitch-paper", "skin-holo-paper");
-    if (themeName === "hidden_rain" && owned.includes("layout_rainy")) notebook.classList.add("skin-rainy-paper");
-    if ((themeName === "cyberpunk_neo" || themeName === "forbidden_lab") && owned.includes("layout_matrix")) notebook.classList.add("skin-glitch-paper");
-    if ((themeName === "infinite_zen" || themeName === "six_paths_sage") && owned.includes("layout_hologram")) notebook.classList.add("skin-holo-paper");
-  }
-
-  document.dispatchEvent(new CustomEvent('themeChanged'));
-}
-
 function applySkin(skinName) {
   const notebook = document.getElementById("notebook");
   if (!notebook) return;
@@ -648,13 +635,69 @@ function toast(msg) {
     return Math.floor(totalXP / 200) + 1;
   }
 
-  function checkUnlocks() {
+    function checkUnlocks() {
     const lvl = getZenLevel();
+    console.log("Checking Unlocks for Level:", lvl);
+
+    // 1. Level 5: Stickers & Golden Petal
     document.querySelectorAll(".level-5-reward").forEach(el => el.style.display = lvl >= 5 ? "inline-flex" : "none");
-    const optG = document.querySelector('option[value="golden_petal"]'); if (optG) { optG.disabled = lvl < 5; optG.textContent = lvl >= 5 ? "✨ Golden Petal" : "🔒 Level 5"; }
-    const opt6 = document.querySelector('option[value="six_paths_sage"]'); if (opt6) { opt6.disabled = lvl < 10; opt6.textContent = lvl >= 10 ? "☀️ Six Paths" : "🔒 Level 10"; if (lvl >= 10) document.querySelectorAll(".panel").forEach(p => p.classList.add("kage-aura")); }
-    const optC = document.querySelector('option[value="celestial_sovereignty"]'); if (optC) { optC.disabled = lvl < 15; optC.textContent = lvl >= 15 ? "🌌 Celestial" : "🔒 Level 15"; if (lvl >= 15) document.querySelectorAll(".panel").forEach(p => p.classList.add("celestial-border")); }
-    const optZ = document.querySelector('option[value="infinite_zen"]'); if (optZ) { optZ.disabled = lvl < 20; optZ.textContent = lvl >= 20 ? "💎 Infinite Zen" : "🔒 Level 20"; if (lvl >= 20) document.querySelectorAll(".panel").forEach(p => p.classList.add("hologram-panel")); }
+    const optG = document.querySelector('option[value="golden_petal"]'); 
+    if (optG) { 
+        optG.disabled = lvl < 5; 
+        optG.textContent = lvl >= 5 ? "✨ Golden Petal" : "🔒 Level 5"; 
+    }
+
+    // 2. Level 10: Six Paths Sage + Aura
+    const opt6 = document.querySelector('option[value="six_paths_sage"]'); 
+    if (opt6) { 
+        opt6.disabled = lvl < 10; 
+        opt6.textContent = lvl >= 10 ? "☀️ Six Paths" : "🔒 Level 10"; 
+        if (lvl >= 10) document.querySelectorAll(".panel").forEach(p => p.classList.add("kage-aura")); 
+    }
+
+    // 3. Level 15: Celestial Sovereignty + Rainbow Border
+    const optC = document.querySelector('option[value="celestial_sovereignty"]'); 
+    if (optC) { 
+        optC.disabled = lvl < 15; 
+        optC.textContent = lvl >= 15 ? "🌌 Celestial" : "🔒 Level 15"; 
+        if (lvl >= 15) document.querySelectorAll(".panel").forEach(p => p.classList.add("celestial-border")); 
+    }
+
+    // 4. Level 20: Infinite Zen + Hologram UI
+    const optZ = document.querySelector('option[value="infinite_zen"]'); 
+    if (optZ) { 
+        optZ.disabled = lvl < 20; 
+        optZ.textContent = lvl >= 20 ? "💎 Infinite Zen" : "🔒 Level 20"; 
+        if (lvl >= 20) {
+            document.querySelectorAll(".panel").forEach(p => {
+                p.classList.remove("kage-aura", "celestial-border");
+                p.classList.add("hologram-panel");
+            });
+        }
+    }
+
+    // --- NEW: SHOP ITEM UNLOCKS (Skins) ---
+    const owned = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
+    
+    // Map IDs in HTML to IDs in Shop
+    const shopSkins = [
+      { id: "optRainy", shopId: "layout_rainy", name: "🌧️ Rainy Paper" },
+      { id: "optGlitch", shopId: "layout_matrix", name: "👾 Glitch Paper" },
+      { id: "optHolo", shopId: "layout_hologram", name: "💎 Holo Paper" }
+    ];
+
+    shopSkins.forEach(skin => {
+      const el = document.getElementById(skin.id);
+      if (el) {
+        if (owned.includes(skin.shopId)) {
+          el.disabled = false;
+          el.textContent = skin.name;
+        } else {
+          el.disabled = true;
+          el.textContent = "🔒 Shop Item";
+        }
+      }
+    });
   }
 
   function renderList() {
