@@ -580,10 +580,14 @@ function applySkin(skinName) {
   const notebook = document.getElementById("notebook");
   if (!notebook) return;
   
-  // Remove all possible paper textures
-  notebook.classList.remove("skin-ruled", "skin-grid", "skin-dots", "skin-dark-ruled", "skin-dark-grid", "skin-dark-dots");
+  // 1. Clear ALL possible skins (Standard + Animated)
+  notebook.classList.remove(
+    "skin-ruled", "skin-grid", "skin-dots", 
+    "skin-dark-ruled", "skin-dark-grid", "skin-dark-dots",
+    "skin-rainy-paper", "skin-glitch-paper", "skin-holo-paper"
+  );
 
-  // Add the selected texture
+  // 2. Add the new one (convert underscores to dashes)
   const formattedName = String(skinName).replace("_", "-");
   notebook.classList.add(`skin-${formattedName}`);
   
