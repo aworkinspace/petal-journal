@@ -534,6 +534,7 @@ function applyVars(vars) {
 }
 
 async function applyTheme(themeName) {
+  // 1. XP Threshold Checks (Level 5, 10, 15, 20)
   if (themeName === "golden_petal" || themeName === "six_paths_sage" || themeName === "celestial_sovereignty" || themeName === "infinite_zen") {
     const wb = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
     const vs = parseInt(localStorage.getItem("petal_vision_count") || "0");
@@ -551,15 +552,40 @@ async function applyTheme(themeName) {
     if (themeName === "infinite_zen" && totalXP < 4000) { themeName = "petal"; toast("Lvl 20 required!"); }
   }
 
+  // 2. Apply the Basic Theme Colors
   const theme = THEMES[themeName] || THEMES.petal;
   applyVars(theme);
   localStorage.setItem("petal_theme", themeName);
+
+  // 3. NEW: Apply Animated Notebook Skins if Owned
+  const notebook = document.getElementById("notebook");
+  const owned = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
+  if (notebook) {
+    // Clear existing animations first
+    notebook.classList.remove("skin-rainy-paper", "skin-glitch-paper", "skin-holo-paper");
+
+    // Apply specific animations if the theme matches and the user bought it
+    if (themeName === "hidden_rain" && owned.includes("layout_rainy")) {
+      notebook.classList.add("skin-rainy-paper");
+    }
+    if ((themeName === "cyberpunk_neo" || themeName === "forbidden_lab") && owned.includes("layout_matrix")) {
+      notebook.classList.add("skin-glitch-paper");
+    }
+    if ((themeName === "infinite_zen" || themeName === "six_paths_sage") && owned.includes("layout_hologram")) {
+      notebook.classList.add("skin-holo-paper");
+    }
+  }
+
   document.dispatchEvent(new CustomEvent('themeChanged'));
 }
 
 function applySkin(skinName) {
   const notebook = document.getElementById("notebook");
-  if (notebook) notebook.className = `panel panel-pad notebook skin-${skinName.replace("_", "-")}`;
+  if (!notebook) return;
+  
+  // We use classList.remove instead of overwriting className so we don't break the animations
+  notebook.classList.remove("skin-ruled", "skin-grid", "skin-dots", "skin-dark-ruled", "skin-dark-grid", "skin-dark-dots");
+  notebook.classList.add(`skin-${skinName.replace("_", "-")}`);
   localStorage.setItem("petal_skin", skinName);
 }
 
@@ -569,6 +595,7 @@ function toast(msg) {
   t.textContent = msg; t.classList.add("show");
   clearTimeout(toast._id); toast._id = setTimeout(() => t.classList.remove("show"), 2200);
 }
+
 
 /* ------------------- Firebase ------------------- */
 (() => {
