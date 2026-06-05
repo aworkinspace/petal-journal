@@ -814,17 +814,17 @@ function toast(msg) {
       const p = document.createElement("div");
       const startX = Math.random() * window.innerWidth;
       
-      // BASIC SEASONS
+            // 1. BASIC SEASONS
       if (type === "meteors") { p.className = "meteor"; p.style.left = (startX + 400) + "px"; p.style.top = "-50px"; p.style.animationDuration = (Math.random() * 1 + 0.5) + "s"; }
       else if (type === "leaves") { p.className = "leaf"; p.style.left = startX + "px"; p.style.top = "-50px"; p.style.animationDuration = (Math.random() * 3 + 4) + "s"; }
       else if (type === "blossoms") { p.className = "blossom"; p.style.left = startX + "px"; p.style.top = "-50px"; p.style.animationDuration = (Math.random() * 4 + 5) + "s"; }
       else if (type === "sunbeams") { p.className = "sunbeam"; p.style.left = startX + "px"; p.style.top = "-150px"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; }
       else if (type === "snow") { p.className = "snowflake"; p.style.left = startX + "px"; p.style.top = "-10px"; const size = Math.random() * 4 + 2 + "px"; p.style.width = size; p.style.height = size; p.style.animationDuration = (Math.random() * 3 + 5) + "s"; }
       
-      // NINJA THEMES
+      // 2. NARUTO THEMES
       else if (type === "aura") { p.className = Math.random() > 0.3 ? "aura-flame" : "aura-flame aura-orange"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-100px"; p.style.animationDuration = (Math.random() * 1.5 + 1.5) + "s"; }
       else if (type === "teleport") { p.className = "flash-spark"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; const rot = Math.random() * 360; p.style.setProperty('--rot', `${rot}deg`); p.style.animationDuration = "0.25s"; }
-      else if (type === "pearls") { p.className = "pearl"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; const size = Math.floor(Math.random() * 12 + 10) + "px"; p.style.width = size; p.style.height = size; p.style.animationDelay = (Math.random() * 5) + "s"; }
+      else if (type === "pearls") { p.className = "pearl"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; const s = Math.floor(Math.random() * 12 + 10) + "px"; p.style.width = s; p.style.height = s; p.style.animationDelay = (Math.random() * 5) + "s"; }
       else if (type === "sage_history") { const isL = Math.random() > 0.3; p.className = isL ? "sage-leaf" : "ink-blot"; p.style.left = Math.random() * 100 + "vw"; p.style.top = isL ? "-20px" : (Math.random() * 100 + "vh"); p.style.animationDuration = isL ? (Math.random() * 4 + 6) + "s" : "4s"; }
       else if (type === "snakes") { p.className = "snake-line"; p.style.left = "-50px"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = (Math.random() * 4 + 6) + "s"; } 
       else if (type === "tomoe") { p.className = "tomoe"; p.textContent = "©"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "4s"; } 
@@ -843,7 +843,19 @@ function toast(msg) {
       else if (type === "love_sand") { p.className = "love-kanji"; p.textContent = "愛"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-40px"; p.style.animationDuration = (Math.random() * 3 + 4) + "s"; }
       else if (type === "shadows") { const edge = Math.random(); if (edge > 0.5) { p.style.bottom = "-50px"; p.style.left = Math.random() * 100 + "vw"; p.style.setProperty('--rot', `${(Math.random() * 40) - 20}deg`); } else { p.style.top = Math.random() * 100 + "vh"; p.style.left = edge > 0.25 ? "-50px" : "100vw"; p.style.setProperty('--rot', edge > 0.25 ? "90deg" : "-90deg"); } p.className = "shadow-tendril"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; }
       
-      // JJK THEMES
+      // RESTORED: AKATSUKI & AME TRIO
+      else if (type === "jashin") { p.className = "jashin-seal"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.transform = `rotate(${Math.random() * 360}deg)`; p.style.animationDuration = "5s"; }
+      else if (type === "clouds") { p.className = "red-cloud"; p.style.left = "-60px"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = (Math.random() * 10 + 15) + "s"; }
+      else if (type === "threads") { p.className = "stitch-thread"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-70px"; p.style.animationDuration = (Math.random() * 3 + 4) + "s"; }
+      else if (type === "explosive_birds") { p.className = "clay-bird"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-20px"; p.style.animationDuration = "3s"; }
+      else if (type === "puppet_strings") { p.className = "puppet-string"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "0"; }
+      else if (type === "paper") { p.className = "paper-sheet"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-30px"; p.style.animationDuration = (Math.random() * 3 + 4) + "s"; }
+      else if (type === "gravity") { p.className = "gravity-ring"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; }
+      else if (type === "tobi_swirl") { p.className = "tobi-spiral"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; }
+      else if (type === "rain") { p.className = "rain-drop"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-20px"; p.style.animationDuration = (Math.random() * 0.4 + 0.6) + "s"; }
+      else if (type === "seals") { const k = ["蝦", "蛞", "蛇"]; p.className = "kanji-seal"; p.textContent = k[Math.floor(Math.random() * k.length)]; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "5s"; }
+
+      // 3. JJK THEMES
       else if (type === "infinity") { p.className = "infinity-ring"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "4s"; }
       else if (type === "slashes") { p.className = "sukuna-slash"; p.style.left = Math.random() * 80 + 10 + "vw"; p.style.top = Math.random() * 80 + 10 + "vh"; const rR = Math.random() * 360; p.style.setProperty('--rot', `${rR}deg`); p.style.animationDuration = "0.3s"; }
       else if (type === "shikigami") { p.className = "shadow-wolf"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "10vh"; }
@@ -854,13 +866,13 @@ function toast(msg) {
       else if (type === "clock_ticks") { p.className = "clock-hand"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; p.style.animationDuration = (Math.random() * 2 + 4) + "s"; }
       else if (type === "summer_clouds") { p.className = "summer-cloud"; p.style.top = Math.random() * 40 + "vh"; p.style.left = "-150px"; p.style.width = (Math.random() * 100 + 100) + "px"; p.style.animationDuration = (Math.random() * 10 + 15) + "s"; }
       
-      // ONE PIECE THEMES
+      // 4. ONE PIECE THEMES
       else if (type === "air_cracks") { p.className = "air-crack"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.setProperty('--rot', `${Math.random() * 360}deg`); p.style.animationDuration = "0.4s"; }
       else if (type === "room_scan") { p.className = "room-circle"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; }
       else if (type === "drum_beats") { p.className = "drum-beat"; p.textContent = "DUM!"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; }
       else if (type === "hearts") { p.className = "snowflake"; p.style.backgroundColor = "#F43F5E"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-10px"; }
       
-      // VIBE THEMES
+      // 5. VIBE THEMES
       else if (type === "glitch") { p.className = "glitch-box"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.backgroundColor = Math.random() > 0.5 ? "#FF007A" : "#00F3FF"; }
       else if (type === "plankton") { p.className = "plankton"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDelay = (Math.random() * 10) + "s"; }
       else if (type === "fireflies") { p.className = "firefly"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDelay = (Math.random() * 4) + "s"; }
@@ -875,7 +887,8 @@ function toast(msg) {
       else if (type === "star_shards") { p.className = "star-shard"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDelay = (Math.random() * 3) + "s"; } 
       else if (type === "dream_waves") { const isR = Math.random() > 0.4; if (isR) { p.className = "tsukuyomi-ripple"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; } else { p.className = "soul-cocoon"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-30px"; } } 
       else if (type === "divine_aura") { p.className = "zen-shard"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDelay = (Math.random() * 5) + "s"; }
-      else if (type === "seals") { const k = ["蝦", "蛞", "蛇"]; p.className = "kanji-seal"; p.textContent = k[Math.floor(Math.random() * k.length)]; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "5s"; }
+      else if (type === "embers") { p.className = "ember"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; }
+      else if (type === "sand") { p.className = "sand-grain"; p.style.left = "-10px"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = (Math.random() * 1 + 2) + "s"; }
 
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
