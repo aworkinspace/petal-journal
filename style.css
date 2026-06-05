@@ -2260,3 +2260,43 @@ header, .top-actions { overflow: visible; }
   0%, 100% { transform: translate(0, 0) scale(1); filter: hue-rotate(0deg); }
   50% { transform: translate(50px, -50px) scale(1.5); filter: hue-rotate(360deg); }
 }
+/* 1. RAINY WINDOW SKIN (For Hidden Rain / Suiton) */
+.skin-rainy-paper {
+  position: relative;
+}
+.skin-rainy-paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('https://www.transparenttextures.com/patterns/stardust.png');
+  opacity: 0.2;
+  animation: rain-blur 2s infinite linear;
+  pointer-events: none;
+}
+@keyframes rain-blur {
+  0% { filter: blur(0px); transform: translateY(0); }
+  50% { filter: blur(1px); }
+  100% { filter: blur(0px); transform: translateY(10px); }
+}
+
+/* 2. GLITCH CIRCUITRY (For Cyberpunk / Orochimaru) */
+.skin-glitch-paper {
+  border: 4px solid var(--primary) !important;
+  animation: border-flicker 0.2s infinite alternate;
+}
+@keyframes border-flicker {
+  0% { border-color: var(--primary); opacity: 1; }
+  100% { border-color: var(--surface-2); opacity: 0.9; }
+}
+
+/* 3. HOLO-PRISM (For Six Paths / Infinite Zen) */
+.skin-holo-paper {
+  background: linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 50%, var(--surface) 100%) !important;
+  background-size: 200% 200% !important;
+  animation: holo-flow 5s ease infinite;
+}
+@keyframes holo-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
