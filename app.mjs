@@ -18,90 +18,6 @@ const THEMES = {
   midnight: { "--bg": "#0F0D14", "--surface": "#14121A", "--surface-2": "#1C1824", "--border": "rgba(255,255,255,.14)", "--primary": "#8EA2FF", "--primary-soft": "rgba(142,162,255,.35)", "--accent": "#FFA5D6", "--text": "#F2F0F7", "--text-muted": "rgba(242,240,247,.75)", "--bg-spot-1": "rgba(142,162,255,.18)", "--bg-spot-2": "rgba(255,165,214,.12)" },
   strawberry_matcha: { "--bg": "#F7FFF6", "--surface": "#F7FFF6", "--surface-2": "#E8F7E6", "--border": "#CFE6CC", "--primary": "#7FBF9B", "--primary-soft": "#CFEBDD", "--accent": "#FF8FB8", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(127,191,155,.28)", "--bg-spot-2": "rgba(255,143,184,.22)" },
   blueberry_yogurt: { "--bg": "#F4F6FF", "--surface": "#F4F6FF", "--surface-2": "#E2E7FF", "--border": "#CAD3FF", "--primary": "#7F8CFF", "--primary-soft": "#C9D0FF", "--accent": "#FFA5D6", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(127,140,255,.30)", "--bg-spot-2": "rgba(255,165,214,.20)" },
-    cyberpunk_neo: {
-    "--bg": "#050505",
-    "--surface": "#0D0D0D",
-    "--surface-2": "#FF007A", // Neon Pink
-    "--border": "rgba(0, 243, 255, 0.3)", // Neon Teal
-    "--primary": "#00F3FF",
-    "--primary-soft": "rgba(0, 243, 255, 0.1)",
-    "--accent": "#FF007A",
-    "--text": "#E0E0E0",
-    "--text-muted": "rgba(224, 224, 224, 0.5)",
-    "animation": "glitch"
-  },
-  deep_sea_abyss: {
-    "--bg": "#02080D",
-    "--surface": "#04121A",
-    "--surface-2": "#00FFC2", // Bio-Green
-    "--border": "rgba(0, 255, 194, 0.15)",
-    "--primary": "#00FFC2",
-    "--primary-soft": "rgba(0, 255, 194, 0.05)",
-    "--accent": "#0077B6", // Deep Water Blue
-    "--text": "#CAF0F8",
-    "--text-muted": "rgba(202, 240, 248, 0.4)",
-    "animation": "plankton"
-  },
-  fairy_forest: {
-    "--bg": "#0B120E",
-    "--surface": "#141D17",
-    "--surface-2": "#EAB308", // Glow Yellow
-    "--border": "rgba(34, 197, 94, 0.2)",
-    "--primary": "#22C55E", // Moss Green
-    "--primary-soft": "rgba(34, 197, 94, 0.1)",
-    "--accent": "#FEF08A",
-    "--text": "#ECFDF5",
-    "--text-muted": "rgba(236, 253, 245, 0.4)",
-    "animation": "fireflies"
-  },
-  retro_handheld: {
-    "--bg": "#E0E0E0", // Classic Gameboy Grey
-    "--surface": "#F5F5F5",
-    "--surface-2": "#A0A0A0", 
-    "--border": "#4A4A4A",
-    "--primary": "#4A4A4A", 
-    "--primary-soft": "rgba(74, 74, 74, 0.1)",
-    "--accent": "#FF0000", // Action Button Red
-    "--text": "#1A1A1A",
-    "--text-muted": "#4A4A4A",
-    "animation": "pixels"
-  },
-    classic_desktop: {
-    "--bg": "#008080", // That specific 90s Teal
-    "--surface": "#C0C0C0", // Windows Grey
-    "--surface-2": "#FFFFFF",
-    "--border": "#000000",
-    "--primary": "#000080", // Taskbar Blue
-    "--primary-soft": "rgba(0, 0, 128, 0.1)",
-    "--accent": "#C0C0C0",
-    "--text": "#000000",
-    "--text-muted": "#404040",
-    "animation": "cursors"
-  },
-  farm_life: {
-    "--bg": "#78B159", // Grass Green
-    "--surface": "#F4EBD0", // Parchment
-    "--surface-2": "#8B5A2B", // Wood Brown
-    "--border": "#4D331F",
-    "--primary": "#FF8C00", // Carrot Orange
-    "--primary-soft": "rgba(255, 140, 0, 0.1)",
-    "--accent": "#EE4B2B", 
-    "--text": "#2D1B1B",
-    "--text-muted": "#5C4033",
-    "animation": "crops"
-  },
-  cozy_cafe: {
-    "--bg": "#E6CCB2", // Latte
-    "--surface": "#EDE0D4",
-    "--surface-2": "#7F5539", // Espresso
-    "--border": "#9C6644",
-    "--primary": "#B08968", 
-    "--primary-soft": "rgba(176, 137, 104, 0.1)",
-    "--accent": "#DDB892",
-    "--text": "#432818",
-    "--text-muted": "#7F5539",
-    "animation": "steam"
-  },
   cosmic_starfall: { "--bg": "#0D0B1A", "--surface": "#16142E", "--surface-2": "#231F4D", "--border": "rgba(183,166,255,.14)", "--primary": "#B7A6FF", "--primary-soft": "rgba(183,166,255,.25)", "--accent": "#FFD700", "--text": "#F2F0F7", "--text-muted": "rgba(242,240,247,.75)", "--bg-spot-1": "rgba(130,100,255,0.2)", "--bg-spot-2": "rgba(50,200,255,0.1)" },
   autumn_forest: { "--bg": "#FFF9F2", "--surface": "#FCF3E8", "--surface-2": "#F5E6D3", "--border": "#DBC7B5", "--primary": "#A67B5B", "--primary-soft": "#E3D5C4", "--accent": "#D95D39", "--text": "#4A3728", "--text-muted": "#856D5B" },
   spring_blossom: { "--bg": "#FFF5F8", "--surface": "#FEF0F5", "--surface-2": "#FDE2E9", "--border": "#F9C8D9", "--primary": "#FFB7C5", "--primary-soft": "#FFE4E8", "--accent": "#FF69B4", "--text": "#5E3A44", "--text-muted": "#8A6B74" },
@@ -120,23 +36,10 @@ const THEMES = {
   gallant_tale: { "--bg": "#F5E6D3", "--surface": "#FCF8F0", "--surface-2": "#8B0000", "--border": "rgba(139, 0, 0, 0.2)", "--primary": "#B45309", "--accent": "#FACC15", "--text": "#2D1B1B", "--text-muted": "#634832" },
   forbidden_lab: { "--bg": "#0D0B12", "--surface": "#16141F", "--surface-2": "#4B3F72", "--border": "rgba(220, 214, 247, 0.1)", "--primary": "#FFD700", "--accent": "#DCD6F7", "--text": "#DCD6F7", "--text-muted": "rgba(220, 214, 247, 0.5)", "--bg-spot-1": "rgba(75, 63, 114, 0.2)" },
   slug_princess: { "--bg": "#F0F9F6", "--surface": "#E6F2ED", "--surface-2": "#14B8A6", "--border": "rgba(20, 184, 166, 0.2)", "--primary": "#14B8A6", "--accent": "#B45309", "--text": "#0F4C3A", "--text-muted": "#3D7061", "--bg-spot-1": "rgba(20, 184, 166, 0.1)" },
-    legendary_sannin: {
-    "--bg": "#1E1B2E", // Deep Orochimaru Purple
-    "--surface": "#2D2B4A",
-    "--surface-2": "#B45309", // Jiraiya Red
-    "--border": "rgba(20, 184, 166, 0.3)", // Tsunade Teal
-    "--primary": "#14B8A6", 
-    "--primary-soft": "rgba(20, 184, 166, 0.2)",
-    "--accent": "#FACC15", 
-    "--text": "#F2F0F7",
-    "--text-muted": "rgba(242,240,247,.6)",
-    "--bg-spot-1": "#1E1B2E", // Keep it dark
-    "--bg-spot-2": "#1E1B2E", // Keep it dark
-    "animation": "seals"
-  },
+  legendary_sannin: { "--bg": "#1E1B2E", "--surface": "#2D2B4A", "--surface-2": "#B45309", "--border": "rgba(20, 184, 166, 0.3)", "--primary": "#14B8A6", "--accent": "#FACC15", "--text": "#F2F0F7", "--text-muted": "rgba(242,240,247,.6)", "--bg-spot-1": "#1E1B2E", "--bg-spot-2": "#1E1B2E" },
   nine_tails_malice: { "--bg": "#0D0505", "--surface": "#1A0B0B", "--surface-2": "#4A0000", "--border": "rgba(255, 0, 0, 0.2)", "--primary": "#FF0000", "--accent": "#F97316", "--text": "#F2F0F7", "--text-muted": "rgba(242, 240, 247, 0.5)", "--bg-spot-1": "rgba(255, 0, 0, 0.15)" },
   akatsuki_cloud: { "--bg": "#0A0A0C", "--surface": "#121217", "--surface-2": "#3D0000", "--border": "rgba(255, 0, 0, 0.15)", "--primary": "#FF0000", "--accent": "#FFFFFF", "--text": "#E0E0E0", "--text-muted": "rgba(224, 224, 224, 0.5)" },
-  hidan_ritual: { "--bg": "#080808", "--surface": "#121212", "--surface-2": "#4A0000", "--border": "rgba(255, 0, 0, 0.2)", "--primary": "#FF0000", "--accent": "#FFFFFF", "--text": "#E5E5E5", "--text-muted": "rgba(229, 229, 229, 0.5)", "--bg-spot-1": "rgba(74, 0, 0, 0.3)" },
+  hidan_ritual: { "--bg": "#080808", "--surface": "#121212", "--surface-2": "#4A0000", "--border": "rgba(255, 0, 0, 0.2)", "--primary": "#FF0000", "--accent": "#FFFFFF", "--text": "#E5E5E5", "--text-muted": "rgba(229, 229, 229, 0.5)", "--bg-spot-1": "#080808", "--bg-spot-2": "#080808" },
   kakuzu_hearts: { "--bg": "#0F110D", "--surface": "#1A1D17", "--surface-2": "#3E4437", "--border": "rgba(255, 215, 0, 0.15)", "--primary": "#FFD700", "--accent": "#B22222", "--text": "#D1D5DB", "--text-muted": "rgba(209, 213, 223, 0.5)", "--bg-spot-1": "rgba(62, 68, 55, 0.2)" },
   art_explosion: { "--bg": "#FFFDF0", "--surface": "#FEF3C7", "--surface-2": "#FBBF24", "--border": "rgba(0, 168, 232, 0.2)", "--primary": "#00A8E8", "--accent": "#FF4500", "--text": "#451A03", "--text-muted": "#92400E" },
   ultimate_masterpiece: { "--bg": "#FFFFFF", "--surface": "#FAFAFA", "--surface-2": "#FFD700", "--border": "rgba(255, 215, 0, 0.3)", "--primary": "#FFD700", "--accent": "#000000", "--text": "#1A1A1A", "--text-muted": "#666666", "--bg-spot-1": "rgba(255, 255, 255, 1)" },
@@ -148,409 +51,52 @@ const THEMES = {
   monster_mist: { "--bg": "#051622", "--surface": "#0B2435", "--surface-2": "#1A759F", "--border": "rgba(160, 233, 255, 0.2)", "--primary": "#52B69A", "--accent": "#184E77", "--text": "#D9EDF7", "--text-muted": "rgba(217, 237, 247, 0.5)" },
   stinky_aloe: { "--bg": "#0D110D", "--surface": "#1A1F1A", "--surface-2": "#4D7C0F", "--border": "rgba(255, 255, 255, 0.1)", "--primary": "#FFFFFF", "--accent": "#000000", "--text": "#E2E8F0", "--text-muted": "rgba(226, 232, 240, 0.4)", "--bg-spot-1": "rgba(77, 124, 15, 0.15)" },
   god_of_shinobi: { "--bg": "#E9F5DB", "--surface": "#CFE1B9", "--surface-2": "#718355", "--border": "#4F772D", "--primary": "#B56576", "--accent": "#31572C", "--text": "#132A13", "--text-muted": "#31572C", "--bg-spot-1": "rgba(49, 87, 44, 0.15)", "--bg-spot-2": "rgba(113, 131, 85, 0.2)" },
-    tactical_suiton: {
-    "--bg": "#050B1A", // Deep Abyss Blue
-    "--surface": "#0A1426",
-    "--surface-2": "#1E3A8A", 
-    "--border": "rgba(100, 255, 218, 0.1)",
-    "--primary": "#64FFDA", 
-    "--primary-soft": "rgba(100, 255, 218, 0.1)",
-    "--accent": "#F0F8FF", 
-    "--text": "#CCD6F6",
-    "--text-muted": "#8892B0",
-    "--bg-spot-1": "#050B1A", // Force dark spot
-    "--bg-spot-2": "#050B1A", // Force dark spot
-    "animation": "bubbles"
-  },
-  ghost_uchiha: {
-    "--bg": "#050505", // Eternal Night Black
-    "--surface": "#0D0D0D",
-    "--surface-2": "#3B1E54", // Susanoo Purple
-    "--border": "rgba(255, 76, 76, 0.15)",
-    "--primary": "#FF4C4C", 
-    "--primary-soft": "rgba(255, 76, 76, 0.1)",
-    "--accent": "#FACC15", 
-    "--text": "#E2E8F0",
-    "--text-muted": "rgba(226, 232, 240, 0.5)",
-    "--bg-spot-1": "#050505", // Force dark spot
-    "--bg-spot-2": "#050505", // Force dark spot
-    "animation": "tomoe"
-  },
-  kamui_dimension: {
-    "--bg": "#080808", // Void Black
-    "--surface": "#121212",
-    "--surface-2": "#F97316", // Obito Mask Orange
-    "--border": "rgba(249, 115, 22, 0.2)",
-    "--primary": "#F97316", 
-    "--primary-soft": "rgba(249, 115, 22, 0.1)",
-    "--accent": "#FF0000", 
-    "--text": "#D1D5DB",
-    "--text-muted": "rgba(209, 213, 219, 0.5)",
-    "--bg-spot-1": "#080808", // Force dark spot
-    "--bg-spot-2": "#080808", // Force dark spot
-    "animation": "warps"
-  },
-  crow_illusion: {
-    "--bg": "#08080A", // Uchiha Shadow
-    "--surface": "#121217",
-    "--surface-2": "#2D0A0A", // Crow Crimson
-    "--border": "rgba(255, 0, 0, 0.1)",
-    "--primary": "#FF3E3E", 
-    "--primary-soft": "rgba(255, 62, 62, 0.1)",
-    "--accent": "#4A4A4A", 
-    "--text": "#E0E0E0",
-    "--text-muted": "rgba(224, 224, 224, 0.5)",
-    "--bg-spot-1": "#08080A", // Force dark
-    "--bg-spot-2": "#08080A", // Force dark
-    "animation": "feathers"
-  },
-  yellow_flash: {
-    "--bg": "#FFFFFF", // Minato Cloak White
-    "--surface": "#FFFDF0",
-    "--surface-2": "#FFD700", // Flash Gold
-    "--border": "rgba(0, 168, 232, 0.2)",
-    "--primary": "#00A8E8", 
-    "--primary-soft": "rgba(0, 168, 232, 0.1)",
-    "--accent": "#FF4500", 
-    "--text": "#1A1A1A",
-    "--text-muted": "#555555",
-    "--bg-spot-1": "rgba(255, 215, 0, 0.2)", // Golden Glow
-    "--bg-spot-2": "rgba(255, 255, 255, 0.5)",
-    "animation": "teleport"
-  },
-  lavender_pearl: {
-    "--bg": "#F3E8FF", // Hyuga Lavender
-    "--surface": "#FAF5FF",
-    "--surface-2": "#E9D5FF",
-    "--border": "rgba(168, 85, 247, 0.2)",
-    "--primary": "#A855F7", 
-    "--primary-soft": "rgba(168, 85, 247, 0.1)",
-    "--accent": "#FFFFFF", 
-    "--text": "#44337A",
-    "--text-muted": "#6B46C1",
-    "--bg-spot-1": "rgba(168, 85, 247, 0.15)", // Soft Lavender Glow
-    "--bg-spot-2": "rgba(255, 255, 255, 0.4)",
-    "animation": "pearls"
-  },
-  springtime_youth: {
-    "--bg": "#0B1A0E", // Deep Jumpsuit Green
-    "--surface": "#162B1A",
-    "--surface-2": "#FFD700", // Gold energy
-    "--border": "#FF4500", 
-    "--primary": "#32CD32", 
-    "--primary-soft": "rgba(50, 205, 50, 0.2)",
-    "--accent": "#FF0000", 
-    "--text": "#F2F0F7",
-    "--text-muted": "rgba(242,240,247,.6)",
-    "--bg-spot-1": "#0B1A0E", // Force dark
-    "--bg-spot-2": "#0B1A0E", // Force dark
-    "animation": "aura"
-  },
-  eternal_amaterasu: {
-    "--bg": "#050505", // Absolute Black
-    "--surface": "#0D0D0D",
-    "--surface-2": "#1A1A1A",
-    "--border": "rgba(138, 43, 226, 0.3)", // Violet heat border
-    "--primary": "#000000", 
-    "--primary-soft": "rgba(0, 0, 0, 0.8)",
-    "--accent": "#8A2BE2", // Bright Violet highlight
-    "--text": "#E0E0E0",
-    "--text-muted": "rgba(224, 224, 224, 0.4)",
-    "--bg-spot-1": "#050505", // Matching bg to keep it dark
-    "--bg-spot-2": "#050505", // Matching bg to keep it dark
-    "animation": "black_fire"
-  },
-  hidden_rain: {
-    "--bg": "#111418", // Dark Stormy Grey
-    "--surface": "#1B2026",
-    "--surface-2": "#2C343D",
-    "--border": "rgba(100, 149, 237, 0.2)",
-    "--primary": "#6495ED", // Steel Blue
-    "--primary-soft": "rgba(100, 149, 237, 0.1)",
-    "--accent": "#87CEEB", // Sky Chakra
-    "--text": "#D1D9E0",
-    "--text-muted": "rgba(209, 217, 224, 0.5)",
-    "--bg-spot-1": "#111418", // Keep it dark
-    "--bg-spot-2": "#111418", // Keep it dark
-    "animation": "rain"
-  },
-  kurama_sage: {
-    "--bg": "#FFFBEB", // Pale Gold Cream
-    "--surface": "#FEF3C7",
-    "--surface-2": "#FDE68A",
-    "--border": "rgba(245, 158, 11, 0.2)", 
-    "--primary": "#F59E0B", // Golden Orange
-    "--primary-soft": "rgba(245, 158, 11, 0.15)",
-    "--accent": "#D97706", // Deep Amber
-    "--text": "#451A03",
-    "--text-muted": "#92400E",
-    "--bg-spot-1": "rgba(255, 215, 0, 0.2)", // Golden Sun Glow
-    "--bg-spot-2": "rgba(255, 255, 255, 0.5)",
-    "animation": "embers"
-  },
-  hidden_sand: {
-    "--bg": "#F5F5DC", // Light Beige Sand
-    "--surface": "#EFEBD8",
-    "--surface-2": "#D2B48C", // Tan
-    "--border": "rgba(153, 27, 27, 0.15)", // Gourd Red tint
-    "--primary": "#991B1B", // Desert Crimson
-    "--primary-soft": "rgba(153, 27, 27, 0.1)",
-    "--accent": "#B45309", // Warm Brown
-    "--text": "#451A03",
-    "--text-muted": "#78350F",
-    "--bg-spot-1": "rgba(210, 180, 140, 0.2)", // Sandy Dust Glow
-    "--bg-spot-2": "rgba(245, 245, 220, 0.4)",
-    "animation": "sand"
-  },
   desert_love: { "--bg": "#F2E8CF", "--surface": "#EAD7B1", "--surface-2": "#D4A373", "--border": "rgba(188, 71, 73, 0.2)", "--primary": "#BC4749", "--accent": "#6A994E", "--text": "#386641", "--text-muted": "#6A994E", "--bg-spot-1": "rgba(188, 71, 73, 0.05)", "--bg-spot-2": "rgba(255, 255, 255, 0.3)" },
-    infinite_tsukuyomi: {
-    "--bg": "#0D0000", // Deepest Crimson Black
-    "--surface": "#1A0505",
-    "--surface-2": "#7F1D1D", // Blood Moon Red
-    "--border": "rgba(220, 38, 38, 0.3)",
-    "--primary": "#DC2626", // Rinne-Sharingan Red
-    "--primary-soft": "rgba(220, 38, 38, 0.1)",
-    "--accent": "#FFFFFF", // Trapped Soul White
-    "--text": "#FEE2E2",
-    "--text-muted": "rgba(254, 226, 226, 0.5)",
-    "--bg-spot-1": "rgba(220, 38, 38, 0.2)", // Red Moonlight
-    "--bg-spot-2": "#0D0000",
-    "animation": "dream_waves"
-  },
-    infinite_zen: {
-    "--bg": "#FFFFFF", 
-    "--surface": "rgba(255, 255, 255, 0.8)",
-    "--surface-2": "#F3E8FF",
-    "--border": "#FFD700",
-    "--primary": "#A855F7", 
-    "--primary-soft": "rgba(168, 85, 247, 0.2)",
-    "--accent": "#00D2FF", 
-    "--text": "#1A1A1A",
-    "--text-muted": "#555555",
-    "animation": "divine_aura"
-  },
-  infinite_void: {
-    "--bg": "#0A0B14", // Deep Space Navy
-    "--surface": "#121421",
-    "--surface-2": "#00D2FF", // Limitless Blue
-    "--border": "rgba(0, 210, 255, 0.2)",
-    "--primary": "#00D2FF", 
-    "--primary-soft": "rgba(0, 210, 255, 0.1)",
-    "--accent": "#FFFFFF", // Six Eyes White
-    "--text": "#E0E7FF",
-    "--text-muted": "rgba(224, 231, 255, 0.5)",
-    "--bg-spot-1": "rgba(0, 210, 255, 0.15)",
-    "animation": "infinity"
-  },
-  malevolent_shrine: {
-    "--bg": "#0D0000", // Shrine Shadow
-    "--surface": "#1A0505",
-    "--surface-2": "#FF003C", // Cursed Energy Red
-    "--border": "rgba(255, 0, 60, 0.2)",
-    "--primary": "#FF003C", 
-    "--primary-soft": "rgba(255, 0, 60, 0.1)",
-    "--accent": "#FACC15", // King of Curses Gold
-    "--text": "#FFE4E6",
-    "--text-muted": "rgba(255, 228, 230, 0.5)",
-    "--bg-spot-1": "rgba(255, 0, 60, 0.15)",
-    "animation": "slashes"
-  },
-    ten_shadows: {
-    "--bg": "#05080A", // Shadow Abyss
-    "--surface": "#0D1117",
-    "--surface-2": "#1A202C", 
-    "--border": "rgba(45, 55, 72, 0.3)",
-    "--primary": "#4FD1C5", // Divine Dog Teal
-    "--primary-soft": "rgba(79, 209, 197, 0.1)",
-    "--accent": "#000000", // Shadow Black
-    "--text": "#E2E8F0",
-    "--text-muted": "rgba(226, 232, 240, 0.5)",
-    "animation": "shikigami"
-  },
-  cursed_manipulation: {
-    "--bg": "#121212", // Monk Robe Black
-    "--surface": "#1E1E1E",
-    "--surface-2": "#B7791F", // Robe Gold
-    "--border": "rgba(183, 121, 31, 0.2)",
-    "--primary": "#9F7AEA", // Spirit Purple
-    "--primary-soft": "rgba(159, 122, 234, 0.1)",
-    "--accent": "#ECC94B", 
-    "--text": "#F7FAFC",
-    "--text-muted": "rgba(247, 250, 252, 0.5)",
-    "animation": "cursed_orbs"
-  },
-  death_painting: {
-    "--bg": "#1A0505", // Blood Plum
-    "--surface": "#2D0A0A",
-    "--surface-2": "#742A2A", 
-    "--border": "rgba(229, 62, 62, 0.2)",
-    "--primary": "#E53E3E", // Piercing Blood Red
-    "--primary-soft": "rgba(229, 62, 62, 0.1)",
-    "--accent": "#FFFFFF", // Mask White
-    "--text": "#FFF5F5",
-    "--text-muted": "rgba(255, 245, 245, 0.5)",
-    "animation": "blood_streaks"
-  },
-  divergent_fist: {
-    "--bg": "#FFF5F7", // Itadori Pink
-    "--surface": "#FFEDF1",
-    "--surface-2": "#3182CE", // Cursed Energy Blue
-    "--border": "rgba(49, 130, 206, 0.2)",
-    "--primary": "#3182CE", 
-    "--primary-soft": "rgba(49, 130, 206, 0.1)",
-    "--accent": "#E53E3E", // Tiger Red
-    "--text": "#2D3748",
-    "--text-muted": "#718096",
-    "animation": "impacts"
-  },
-  blood_brother: {
-    "--bg": "#120A10", // Deepest Plum Black
-    "--surface": "#1A0F17",
-    "--surface-2": "#8B5CF6", // Lavender Markings
-    "--border": "rgba(229, 62, 62, 0.2)",
-    "--primary": "#E53E3E", // Blood Red
-    "--primary-soft": "rgba(229, 62, 62, 0.15)",
-    "--accent": "#F5E6D3", // Scarf Cream
-    "--text": "#F5E6D3",
-    "--text-muted": "rgba(245, 230, 211, 0.5)",
-    "--bg-spot-1": "rgba(139, 92, 246, 0.1)", // Lavender Glow
-    "animation": "supernova"
-  },
-  ratio_sorcerer: {
-    "--bg": "#FAF7F0", // Clean Stationery White
-    "--surface": "#F2EAD3",
-    "--surface-2": "#3D5A80", // Nanami Tie Blue
-    "--border": "rgba(61, 90, 128, 0.2)",
-    "--primary": "#EE6C4D", // 7:3 Strike Orange
-    "--primary-soft": "rgba(238, 108, 77, 0.1)",
-    "--accent": "#98C1D9", // Clear Sky Blue
-    "--text": "#293241", // Deep Professional Navy
-    "--text-muted": "#3D5A80",
-    "animation": "clock_ticks"
-  },
-  blue_spring: {
-    "--bg": "#E0F2FE", // Nostalgic Sky Blue
-    "--surface": "#F0F9FF",
-    "--surface-2": "#BAE6FD", 
-    "--border": "rgba(14, 165, 233, 0.2)",
-    "--primary": "#0EA5E9", // Youthful Blue
-    "--primary-soft": "rgba(14, 165, 233, 0.1)",
-    "--accent": "#FFFFFF", // Summer Cloud White
-    "--text": "#0369A1",
-    "--text-muted": "#0EA5E9",
-    "animation": "summer_clouds"
-  },
-  strongest_man: {
-    "--bg": "#1A1A1A", // Whitebeard Coat Grey
-    "--surface": "#262626",
-    "--surface-2": "#B45309", // Captain's Mark Gold
-    "--border": "rgba(255, 255, 255, 0.2)",
-    "--primary": "#FFFFFF", // The Great Moustache White
-    "--primary-soft": "rgba(255, 255, 255, 0.1)",
-    "--accent": "#7C3AED", // Gura Gura Purple
-    "--text": "#F9FAFB",
-    "--text-muted": "#9CA3AF",
-    "animation": "air_cracks"
-  },
-  surgeon_death: {
-    "--bg": "#0D1117", // Law's Hoodie Navy
-    "--surface": "#161B22",
-    "--surface-2": "#FACC15", // Law's Hat Yellow
-    "--border": "rgba(56, 189, 248, 0.3)", // Room Blue
-    "--primary": "#38BDF8", // Gamma Knife Blue
-    "--primary-soft": "rgba(56, 189, 248, 0.1)",
-    "--accent": "#000000", // Heart Tattoo Black
-    "--text": "#E2E8F0",
-    "--text-muted": "rgba(226, 232, 240, 0.5)",
-    "animation": "room_scan"
-  },
-  sun_god: {
-    "--bg": "#FFFFFF", // Gear 5 White
-    "--surface": "#F8FAFC",
-    "--surface-2": "#DDD6FE", // Nika Purple
-    "--border": "rgba(167, 139, 250, 0.2)",
-    "--primary": "#C084FC", // Joyboy Purple
-    "--primary-soft": "rgba(192, 132, 252, 0.1)",
-    "--accent": "#FACC15", // Sun Gold
-    "--text": "#1E293B",
-    "--text-muted": "#64748B",
-    "animation": "drum_beats"
-  },
-  silent_heart: {
-    "--bg": "#FFF1F2", // Corazon Pink
-    "--surface": "#FFE4E6",
-    "--surface-2": "#111827", // Feather Coat Black
-    "--border": "rgba(244, 63, 94, 0.2)",
-    "--primary": "#F43F5E", // Love Red
-    "--primary-soft": "rgba(244, 63, 94, 0.1)",
-    "--accent": "#FB7185", 
-    "--text": "#4C0519",
-    "--text-muted": "#9F1239",
-    "animation": "hearts"
-  },
-flower_archeologist: {
-    "--bg": "#FAF5FF", // Robin Lilac
-    "--surface": "#FFFFFF",
-    "--surface-2": "#E9D5FF", 
-    "--border": "rgba(107, 70, 193, 0.2)",
-    "--primary": "#9F7AEA", 
-    "--primary-soft": "rgba(159, 122, 234, 0.1)",
-    "--accent": "#553C9A", 
-    "--text": "#2D2159",
-    "--text-muted": "#553C9A",
-    "animation": "arms"
-  },
-  legendary_merchant: {
-    "--bg": "#F0FAF0", // Urahara Hat Green
-    "--surface": "#FFFFFF",
-    "--surface-2": "#2D4F1E", // Darker Coat Green
-    "--border": "rgba(45, 79, 30, 0.2)",
-    "--primary": "#81C784", 
-    "--primary-soft": "rgba(129, 199, 132, 0.1)",
-    "--accent": "#388E3C", 
-    "--text": "#1B3012",
-    "--text-muted": "#4A7031",
-    "animation": "fans"
-  },
-    celestial_sovereignty: {
-    "--bg": "#020205", 
-    "--surface": "#08080C",
-    "--surface-2": "#1A1A2E",
-    "--border": "#E2E8F0", // Silver
-    "--primary": "#E2E8F0", 
-    "--primary-soft": "rgba(226, 232, 240, 0.1)",
-    "--accent": "#A855F7", // Dimensional Purple
-    "--text": "#F8FAFC",
-    "--text-muted": "rgba(248, 250, 252, 0.5)",
-    "--bg-spot-1": "rgba(168, 85, 247, 0.1)",
-    "animation": "star_shards"
-  },
-
+  infinite_tsukuyomi: { "--bg": "#0D0000", "--surface": "#1A0505", "--surface-2": "#7F1D1D", "--border": "rgba(220, 38, 38, 0.3)", "--primary": "#DC2626", "--accent": "#FFFFFF", "--text": "#FEE2E2", "--text-muted": "rgba(254, 226, 226, 0.5)", "--bg-spot-1": "rgba(220, 38, 38, 0.2)", "--bg-spot-2": "#0D0000" },
+  infinite_zen: { "--bg": "#FFFFFF", "--surface": "rgba(255, 255, 255, 0.8)", "--surface-2": "#F3E8FF", "--border": "#FFD700", "--primary": "#A855F7", "--accent": "#00D2FF", "--text": "#1A1A1A", "--text-muted": "#555555" },
+  infinite_void: { "--bg": "#0A0B14", "--surface": "#121421", "--surface-2": "#00D2FF", "--border": "rgba(0, 210, 255, 0.2)", "--primary": "#00D2FF", "--accent": "#FFFFFF", "--text": "#E0E7FF", "--text-muted": "rgba(224, 231, 255, 0.5)", "--bg-spot-1": "rgba(0, 210, 255, 0.15)" },
+  malevolent_shrine: { "--bg": "#0D0000", "--surface": "#1A0505", "--surface-2": "#FF003C", "--border": "rgba(255, 0, 60, 0.2)", "--primary": "#FF003C", "--accent": "#FACC15", "--text": "#FFE4E6", "--text-muted": "rgba(255, 228, 230, 0.5)", "--bg-spot-1": "rgba(255, 0, 60, 0.15)" },
+  ten_shadows: { "--bg": "#05080A", "--surface": "#0D1117", "--surface-2": "#1A202C", "--border": "rgba(45, 55, 72, 0.3)", "--primary": "#4FD1C5", "--accent": "#000000", "--text": "#E2E8F0", "--text-muted": "rgba(226, 232, 240, 0.5)" },
+  cursed_manipulation: { "--bg": "#121212", "--surface": "#1E1E1E", "--surface-2": "#B7791F", "--border": "rgba(183, 121, 31, 0.2)", "--primary": "#9F7AEA", "--accent": "#ECC94B", "--text": "#F7FAFC", "--text-muted": "rgba(247, 250, 252, 0.5)" },
+  death_painting: { "--bg": "#1A0505", "--surface": "#2D0A0A", "--surface-2": "#742A2A", "--border": "rgba(229, 62, 62, 0.2)", "--primary": "#E53E3E", "--accent": "#FFFFFF", "--text": "#FFF5F5", "--text-muted": "rgba(255, 245, 245, 0.5)" },
+  divergent_fist: { "--bg": "#FFF5F7", "--surface": "#FFEDF1", "--surface-2": "#3182CE", "--border": "rgba(49, 130, 206, 0.2)", "--primary": "#3182CE", "--accent": "#E53E3E", "--text": "#2D3748", "--text-muted": "#718096" },
+  blood_brother: { "--bg": "#120A10", "--surface": "#1A0F17", "--surface-2": "#8B5CF6", "--border": "rgba(229, 62, 62, 0.2)", "--primary": "#E53E3E", "--accent": "#F5E6D3", "--text": "#F5E6D3", "--text-muted": "rgba(245, 230, 211, 0.5)", "--bg-spot-1": "rgba(139, 92, 246, 0.1)" },
+  ratio_sorcerer: { "--bg": "#FAF7F0", "--surface": "#F2EAD3", "--surface-2": "#3D5A80", "--border": "rgba(61, 90, 128, 0.2)", "--primary": "#EE6C4D", "--accent": "#98C1D9", "--text": "#293241", "--text-muted": "#3D5A80" },
+  blue_spring: { "--bg": "#E0F2FE", "--surface": "#F0F9FF", "--surface-2": "#BAE6FD", "--border": "rgba(14, 165, 233, 0.2)", "--primary": "#0EA5E9", "--accent": "#FFFFFF", "--text": "#0369A1", "--text-muted": "#0EA5E9" },
+  strongest_man: { "--bg": "#1A1A1A", "--surface": "#262626", "--surface-2": "#B45309", "--border": "rgba(255, 255, 255, 0.2)", "--primary": "#FFFFFF", "--accent": "#7C3AED", "--text": "#F9FAFB", "--text-muted": "#9CA3AF" },
+  surgeon_death: { "--bg": "#0D1117", "--surface": "#161B22", "--surface-2": "#FACC15", "--border": "rgba(56, 189, 248, 0.3)", "--primary": "#38BDF8", "--accent": "#000000", "--text": "#E2E8F0", "--text-muted": "rgba(226, 232, 240, 0.5)" },
+  sun_god: { "--bg": "#FFFFFF", "--surface": "#F8FAFC", "--surface-2": "#DDD6FE", "--border": "rgba(167, 139, 250, 0.2)", "--primary": "#C084FC", "--accent": "#FACC15", "--text": "#1E293B", "--text-muted": "#64748B" },
+  silent_heart: { "--bg": "#FFF1F2", "--surface": "#FFE4E6", "--surface-2": "#111827", "--border": "rgba(244, 63, 94, 0.2)", "--primary": "#F43F5E", "--accent": "#FB7185", "--text": "#4C0519", "--text-muted": "#9F1239" },
+  flower_archeologist: { "--bg": "#FAF5FF", "--surface": "#FFFFFF", "--surface-2": "#E9D5FF", "--border": "rgba(107, 70, 193, 0.2)", "--primary": "#9F7AEA", "--accent": "#553C9A", "--text": "#2D2159", "--text-muted": "#553C9A" },
+  legendary_merchant: { "--bg": "#F0FAF0", "--surface": "#FFFFFF", "--surface-2": "#2D4F1E", "--border": "rgba(45, 79, 30, 0.2)", "--primary": "#81C784", "--accent": "#388E3C", "--text": "#1B3012", "--text-muted": "#4A7031" },
+  celestial_sovereignty: { "--bg": "#020205", "--surface": "#08080C", "--surface-2": "#1A1A2E", "--border": "#E2E8F0", "--primary": "#E2E8F0", "--accent": "#A855F7", "--text": "#F8FAFC", "--text-muted": "rgba(248, 250, 252, 0.5)", "--bg-spot-1": "rgba(168, 85, 247, 0.1)", "--bg-spot-2": "#020205" },
+  classic_desktop: { "--bg": "#008080", "--surface": "#C0C0C0", "--surface-2": "#FFFFFF", "--border": "#000000", "--primary": "#000080", "--accent": "#C0C0C0", "--text": "#000000", "--text-muted": "#404040" },
+  farm_life: { "--bg": "#78B159", "--surface": "#F4EBD0", "--surface-2": "#8B5A2B", "--border": "#4D331F", "--primary": "#FF8C00", "--accent": "#EE4B2B", "--text": "#2D1B1B", "--text-muted": "#5C4033" },
+  cozy_cafe: { "--bg": "#E6CCB2", "--surface": "#EDE0D4", "--surface-2": "#7F5539", "--border": "#9C6644", "--primary": "#B08968", "--accent": "#DDB892", "--text": "#432818", "--text-muted": "#7F5539" },
 };
 
-/* ------------------- Theme Helpers ------------------- */
+/* ------------------- Helpers ------------------- */
 function applyVars(vars) {
   if (!vars) return;
-  for (const [k, v] of Object.entries(vars)) {
-    document.documentElement.style.setProperty(k, v);
-  }
+  for (const [k, v] of Object.entries(vars)) document.documentElement.style.setProperty(k, v);
 }
 
-function applyTheme(themeName) {
-  if (themeName === "golden_petal" || themeName === "six_paths_sage") {
+async function applyTheme(themeName) {
+  if (themeName === "golden_petal" || themeName === "six_paths_sage" || themeName === "celestial_sovereignty" || themeName === "infinite_zen") {
     const wb = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
     const vs = parseInt(localStorage.getItem("petal_vision_count") || "0");
     const cp = parseInt(localStorage.getItem("petal_capsule_count") || "0");
     const wl = parseInt(localStorage.getItem("petal_well_count") || "0");
+    const dj = parseInt(localStorage.getItem("petal_dojo_xp") || "0");
+    const sm = parseInt(localStorage.getItem("petal_summon_xp") || "0");
     const entries = JSON.parse(localStorage.getItem("petal_entries_v1") || "[]");
-    let totalXP = (entries.length * 50) + (wb * 20) + (vs * 30) + (cp * 100) + (wl * 30);
-    entries.forEach(e => {
-       const words = (e.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
-       totalXP += words;
-    });
+    let totalXP = (entries.length * 50) + (wb * 20) + (vs * 30) + (cp * 100) + (wl * 30) + dj + sm;
+    entries.forEach(e => totalXP += (e.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length);
 
-    if (themeName === "golden_petal" && totalXP < 800) { themeName = "petal"; toast("Level 5 required!"); }
-    if (themeName === "six_paths_sage" && totalXP < 1800) { themeName = "petal"; toast("Level 10 required!"); }
+    if (themeName === "golden_petal" && totalXP < 800) { themeName = "petal"; toast("Lvl 5 required!"); }
+    if (themeName === "six_paths_sage" && totalXP < 1800) { themeName = "petal"; toast("Lvl 10 required!"); }
+    if (themeName === "celestial_sovereignty" && totalXP < 3000) { themeName = "petal"; toast("Lvl 15 required!"); }
+    if (themeName === "infinite_zen" && totalXP < 4000) { themeName = "petal"; toast("Lvl 20 required!"); }
   }
 
   const theme = THEMES[themeName] || THEMES.petal;
@@ -572,7 +118,7 @@ function toast(msg) {
   clearTimeout(toast._id); toast._id = setTimeout(() => t.classList.remove("show"), 2200);
 }
 
-/* ------------------- Firebase Logic ------------------- */
+/* ------------------- Firebase ------------------- */
 (() => {
   const auth = window.firebaseAuth;
   if (!auth) return;
@@ -591,14 +137,13 @@ function toast(msg) {
           if (profBtn) profBtn.style.display = "none";
           if (outBtn) outBtn.style.display = "none";
         }
-      }, 2500);
+      }, 2000);
     }
   });
-  const signBtn = document.getElementById("btnSignOut");
-  if(signBtn) signBtn.onclick = () => signOut(auth).then(() => location.reload());
+  document.getElementById("btnSignOut")?.addEventListener("click", () => signOut(auth).then(() => location.reload()));
 })();
 
-/* ------------------- Journal Logic (Levels 5-20 + Sync) ------------------- */
+/* ------------------- Journal ------------------- */
 (() => {
   const $ = (id) => document.getElementById(id);
   const STORAGE_KEY = "petal_entries_v1";
@@ -606,7 +151,6 @@ function toast(msg) {
   let activeId = null;
   let activeTag = null;
 
-  // 1. Level Calculation (Syncs all your hard work)
   function getZenLevel() {
     const wb = Number(localStorage.getItem("petal_whiteboard_count")) || 0;
     const vs = Number(localStorage.getItem("petal_vision_count")) || 0;
@@ -614,77 +158,32 @@ function toast(msg) {
     const wl = Number(localStorage.getItem("petal_well_count")) || 0;
     const dj = Number(localStorage.getItem("petal_dojo_xp")) || 0;
     const sm = Number(localStorage.getItem("petal_summon_xp")) || 0;
-    
     let totalXP = (entries.length * 50) + (wb * 20) + (vs * 30) + (cp * 100) + (wl * 30) + dj + sm;
-    entries.forEach(e => {
-       const words = (e.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
-       totalXP += words;
-    });
+    entries.forEach(e => totalXP += (e.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length);
     return Math.floor(totalXP / 200) + 1;
   }
 
-  // 2. Unlock Logic (Levels 5, 10, 15, 20)
   function checkUnlocks() {
     const lvl = getZenLevel();
-    console.log("Current Zen Level:", lvl);
-
-    // Level 5: Stickers + Golden Petal
     document.querySelectorAll(".level-5-reward").forEach(el => el.style.display = lvl >= 5 ? "inline-flex" : "none");
-    const opt5 = document.querySelector('option[value="golden_petal"]');
-    if (opt5) {
-      opt5.disabled = lvl < 5;
-      opt5.textContent = lvl >= 5 ? "✨ Golden Petal" : "🔒 Level 5";
-    }
-
-    // Level 10: Six Paths Sage + Aura
-    const opt10 = document.querySelector('option[value="six_paths_sage"]');
-    if (opt10) {
-      opt10.disabled = lvl < 10;
-      opt10.textContent = lvl >= 10 ? "☀️ Six Paths Sage" : "🔒 Level 10";
-      if (lvl >= 10) document.querySelectorAll(".panel").forEach(p => p.classList.add("kage-aura"));
-    }
-
-    // Level 15: Celestial Border
-    const opt15 = document.querySelector('option[value="celestial_sovereignty"]');
-    if (opt15) {
-      opt15.disabled = lvl < 15;
-      opt15.textContent = lvl >= 15 ? "🌌 Celestial Sovereignty" : "🔒 Level 15";
-      if (lvl >= 15) document.querySelectorAll(".panel").forEach(p => p.classList.add("celestial-border"));
-    }
-
-    // Level 20: Hologram UI
-    const opt20 = document.querySelector('option[value="infinite_zen"]');
-    if (opt20) {
-      opt20.disabled = lvl < 20;
-      opt20.textContent = lvl >= 20 ? "💎 Infinite Zen" : "🔒 Level 20";
-      if (lvl >= 20) {
-        document.querySelectorAll(".panel").forEach(p => {
-          p.classList.remove("kage-aura", "celestial-border");
-          p.classList.add("hologram-panel");
-        });
-      }
-    }
+    const optG = document.querySelector('option[value="golden_petal"]'); if (optG) { optG.disabled = lvl < 5; optG.textContent = lvl >= 5 ? "✨ Golden Petal" : "🔒 Level 5"; }
+    const opt6 = document.querySelector('option[value="six_paths_sage"]'); if (opt6) { opt6.disabled = lvl < 10; opt6.textContent = lvl >= 10 ? "☀️ Six Paths" : "🔒 Level 10"; if (lvl >= 10) document.querySelectorAll(".panel").forEach(p => p.classList.add("kage-aura")); }
+    const optC = document.querySelector('option[value="celestial_sovereignty"]'); if (optC) { optC.disabled = lvl < 15; optC.textContent = lvl >= 15 ? "🌌 Celestial" : "🔒 Level 15"; if (lvl >= 15) document.querySelectorAll(".panel").forEach(p => p.classList.add("celestial-border")); }
+    const optZ = document.querySelector('option[value="infinite_zen"]'); if (optZ) { optZ.disabled = lvl < 20; optZ.textContent = lvl >= 20 ? "💎 Infinite Zen" : "🔒 Level 20"; if (lvl >= 20) document.querySelectorAll(".panel").forEach(p => p.classList.add("hologram-panel")); }
   }
 
-  // 3. UI Rendering
   function renderList() {
     const list = $("entryList"); if (!list) return;
     const q = ($("search")?.value || "").toLowerCase();
     const filtered = entries.filter(e => {
-      const matchTag = activeTag ? (e.tags || []).includes(activeTag) : true;
-      const matchSearch = ((e.title||"") + (e.content||"")).toLowerCase().includes(q);
-      return matchTag && matchSearch;
+        const matchTag = activeTag ? (e.tags || []).includes(activeTag) : true;
+        const matchSearch = ((e.title||"") + (e.content||"")).toLowerCase().includes(q);
+        return matchTag && matchSearch;
     }).sort((a,b) => b.updatedAt - a.updatedAt);
-
     list.innerHTML = filtered.map(e => `<div class="entry-card" data-id="${e.id}"><h4>${e.title || '(Untitled)'}</h4><p>${e.date} • ${e.mood}</p></div>`).join('');
     list.querySelectorAll('.entry-card').forEach(card => card.onclick = () => {
         const e = entries.find(ent => ent.id === card.dataset.id);
-        activeId = e.id; 
-        if($("date")) $("date").value = e.date; 
-        if($("mood")) $("mood").value = e.mood; 
-        if($("title")) $("title").value = e.title; 
-        if($("tagsInput")) $("tagsInput").value = (e.tags || []).join(', '); 
-        if($("content")) $("content").innerHTML = e.content;
+        activeId = e.id; $("date").value = e.date; $("mood").value = e.mood; $("title").value = e.title; $("tagsInput").value = (e.tags || []).join(', '); $("content").innerHTML = e.content;
     });
     if ($("count")) $("count").textContent = filtered.length;
   }
@@ -697,89 +196,38 @@ function toast(msg) {
     row.querySelectorAll('.chip.tag').forEach(btn => btn.onclick = () => { activeTag = activeTag === btn.dataset.tag ? null : btn.dataset.tag; renderTagChips(); renderList(); });
   }
 
-     // 4. Save & Sync
-  // 4. Save & Sync
   $("btnSave")?.addEventListener('click', async () => {
     const contentHtml = $("content").innerHTML || "";
-    const titleText = $("title").value || "";
-    const dateValue = $("date").value || new Date().toISOString().split('T')[0];
-
-    const data = { 
-      id: activeId || Date.now().toString(), 
-      date: dateValue, 
-      mood: $("mood").value, 
-      title: titleText, 
-      content: contentHtml, 
-      tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), 
-      updatedAt: Date.now() 
-    };
-
-    // --- TOKEN CALCULATION ---
+    const data = { id: activeId || Date.now().toString(), date: $("date").value, mood: $("mood").value, title: $("title").value, content: contentHtml, tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), updatedAt: Date.now() };
     const wordCount = (data.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
-    const tokensEarned = 5 + Math.floor(wordCount / 50);
-    let currentTokens = Number(localStorage.getItem("petal_tokens")) || 0;
-    localStorage.setItem("petal_tokens", currentTokens + tokensEarned);
-    
-    // --- LOCAL SAVE ---
-    if (!activeId) {
-      entries.push(data); 
-    } else {
-      entries = entries.map(e => e.id === activeId ? data : e);
-    }
+    localStorage.setItem("petal_tokens", (Number(localStorage.getItem("petal_tokens")) || 0) + 5 + Math.floor(wordCount / 50));
+    if (!activeId) entries.push(data); else entries = entries.map(e => e.id === activeId ? data : e);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-
-    // --- CLOUD SYNC ---
     if (window.firebaseAuth?.currentUser) {
-      const db = window.firebaseDb;
-      const user = window.firebaseAuth.currentUser;
       try {
-        // 1. Sync the journal entry
-        await setDoc(doc(db, "entries", data.id), { ...data, userId: user.uid }, { merge: true });
-        
-        // 2. Sync global stats (including the new tokens)
-        const stats = {
-          whiteboard: Number(localStorage.getItem("petal_whiteboard_count")) || 0,
-          well: Number(localStorage.getItem("petal_well_count")) || 0,
-          tokens: Number(localStorage.getItem("petal_tokens")) || 0,
-          updatedAt: Date.now()
-        };
-        await setDoc(doc(db, "users", user.uid, "stats", "zen"), stats, { merge: true });
-        console.log("Cloud Sync Successful");
-      } catch (err) { 
-        console.error("Cloud Sync Error:", err); 
-      }
+        await setDoc(doc(window.firebaseDb, "entries", data.id), { ...data, userId: window.firebaseAuth.currentUser.uid }, { merge: true });
+        await setDoc(doc(window.firebaseDb, "users", window.firebaseAuth.currentUser.uid, "stats", "zen"), { whiteboard: Number(localStorage.getItem("petal_whiteboard_count")) || 0, well: Number(localStorage.getItem("petal_well_count")) || 0, tokens: Number(localStorage.getItem("petal_tokens")) || 0, updatedAt: Date.now() }, { merge: true });
+      } catch (err) { console.error(err); }
     }
-
-    // --- UI REFRESH & FEEDBACK ---
-    renderList(); 
-    renderTagChips(); 
-    if (typeof checkUnlocks === "function") checkUnlocks(); 
-    
-    toast(`Saved & Synced! +${tokensEarned} Tokens earned! ✨🪙`);
-    
-    const sfx = document.getElementById("saveSfx");
-    if (sfx) {
-      sfx.currentTime = 0;
-      sfx.play().catch(() => {});
-    }
-  }); // <--- THIS IS THE ONLY ENDING YOU NEED
+    renderList(); renderTagChips(); checkUnlocks(); toast("Saved!");
+    $("saveSfx")?.play();
+  });
 
   $("btnDelete")?.addEventListener('click', () => {
     if (!activeId || !confirm("Delete?")) return;
     entries = entries.filter(e => e.id !== activeId);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); 
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
     renderList(); renderTagChips(); checkUnlocks();
     activeId = null; $("title").value = ""; $("content").innerHTML = ""; toast("Deleted.");
     $("deleteSfx")?.play();
   });
 
-  // 5. Initial Load
   document.addEventListener("DOMContentLoaded", () => {
     try { entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); } catch { entries = []; }
     renderList(); renderTagChips(); checkUnlocks();
     $("search")?.addEventListener('input', renderList);
   });
-})(); 
+})();
 
 /* ------------------- Music & Spotify ------------------- */
 (() => {
@@ -789,9 +237,9 @@ function toast(msg) {
 
   function renderSpotify(base) {
     const host = $("spotifyEmbed"); if (!host || !base) return;
-    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" , "butterfly_mode" , "hidan_ritual" , "kakuzu_hearts" , "eternal_beauty" , "monster_mist" , "stinky_aloe" , "uchiha_avenger" , "eternal_amaterasu" , "six_paths_pain" , "ten_shadows" , "cursed_manipulation" , "death_painting" , "blood_brother" , "strongest_man" , "surgeon_death" , ]);
+    const darks = new Set(["midnight", "cosmic_starfall", "dusky_rose", "mauve_night", "deep_sage", "blueberry_dusk", "cocoa_lilac", "midnight_snowfall", "ninja_rivalry", "copy_ninja", "ghost_uchiha", "akatsuki_cloud", "hidden_rain", "legendary_sannin" , "springtime_youth" , "forbidden_lab" , "kamui_dimension" , "tactical_suiton" , "shadow_possession" , "butterfly_mode" , "hidan_ritual" , "kakuzu_hearts" , "eternal_beauty" , "monster_mist" , "stinky_aloe" , "uchiha_avenger" , "eternal_amaterasu" , "six_paths_pain", "ten_shadows", "cursed_manipulation", "death_painting", "blood_brother", "infinite_tsukuyomi"]);
     const theme = darks.has(localStorage.getItem("petal_theme")) ? "dark" : "light";
-    host.innerHTML = `<iframe class="spotify-iframe" style="width:100%; height:352px; border:0; border-radius:16px;" src="${base}?theme=${theme}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+    host.innerHTML = `<iframe class="spotify-iframe" style="width:100%; height:352px; border:0; border-radius:16px;" src="${base}?theme=${theme}" loading="lazy"></iframe>`;
   }
 
   document.addEventListener("DOMContentLoaded", () => {
@@ -812,17 +260,13 @@ function toast(msg) {
             localStorage.setItem("petal_spotify_embed", base); renderSpotify(base);
         }
     });
-    const clrBtn = $("btnClearSpotify");
-    if(clrBtn) clrBtn.onclick = () => { localStorage.removeItem("petal_spotify_embed"); $("spotifyEmbed").innerHTML = ""; };
+    $("btnClearSpotify")?.addEventListener("click", () => { localStorage.removeItem("petal_spotify_embed"); $("spotifyEmbed").innerHTML = ""; });
   });
 
-  document.addEventListener('themeChanged', () => { 
-    const saved = localStorage.getItem("petal_spotify_embed");
-    if(saved) renderSpotify(saved); 
-  });
+  document.addEventListener('themeChanged', () => { renderSpotify(localStorage.getItem("petal_spotify_embed")); });
 })();
 
-/* ------------------- Seasonal Animations ------------------- */
+/* ------------------- Seasonal Animations (The Master Spawner) ------------------- */
 (() => {
   const overlay = document.createElement("div");
   overlay.id = "animation-overlay";
@@ -838,11 +282,14 @@ function toast(msg) {
       const p = document.createElement("div");
       const startX = Math.random() * window.innerWidth;
       
+      // BASIC SEASONS
       if (type === "meteors") { p.className = "meteor"; p.style.left = (startX + 400) + "px"; p.style.top = "-50px"; p.style.animationDuration = (Math.random() * 1 + 0.5) + "s"; }
       else if (type === "leaves") { p.className = "leaf"; p.style.left = startX + "px"; p.style.top = "-50px"; p.style.animationDuration = (Math.random() * 3 + 4) + "s"; }
       else if (type === "blossoms") { p.className = "blossom"; p.style.left = startX + "px"; p.style.top = "-50px"; p.style.animationDuration = (Math.random() * 4 + 5) + "s"; }
       else if (type === "sunbeams") { p.className = "sunbeam"; p.style.left = startX + "px"; p.style.top = "-150px"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; }
       else if (type === "snow") { p.className = "snowflake"; p.style.left = startX + "px"; p.style.top = "-10px"; const size = Math.random() * 4 + 2 + "px"; p.style.width = size; p.style.height = size; p.style.animationDuration = (Math.random() * 3 + 5) + "s"; }
+      
+      // NINJA THEMES
       else if (type === "aura") { p.className = Math.random() > 0.3 ? "aura-flame" : "aura-flame aura-orange"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-100px"; p.style.animationDuration = (Math.random() * 1.5 + 1.5) + "s"; }
       else if (type === "teleport") { p.className = "flash-spark"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; const rot = Math.random() * 360; p.style.setProperty('--rot', `${rot}deg`); p.style.animationDuration = "0.25s"; }
       else if (type === "pearls") { p.className = "pearl"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; const size = Math.floor(Math.random() * 12 + 10) + "px"; p.style.width = size; p.style.height = size; p.style.animationDelay = (Math.random() * 5) + "s"; }
@@ -855,248 +302,57 @@ function toast(msg) {
       else if (type === "truth_orbs") { p.className = "truth-orb"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDelay = (Math.random() * 5) + "s"; }
       else if (type === "hundred_seals") { p.className = "diamond-seal"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "4s"; } 
       else if (type === "malice") { p.className = "malice-orb"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; if (Math.random() > 0.8) { p.style.background = "#F97316"; p.style.boxShadow = "0 0 20px 4px #F97316"; } } 
-            else if (type === "wood_style") {
-        const rand = Math.random();
-        
-        if (rand > 0.9) { // 10% chance for a Sage Mark
-          p.className = "sage-mark";
-          p.style.left = "50vw"; // Center of screen
-          p.style.top = "50vh";
-          p.style.transform = "translate(-50%, -50%)";
-          p.style.animationDuration = "5s";
-        } 
-        else if (rand > 0.6) { // 30% chance for a Vine
-          p.className = "wood-vine";
-          p.style.left = Math.random() * 100 + "vw";
-          p.style.bottom = "-50px"; 
-          const randomRot = Math.random() * 360;
-          p.style.setProperty('--rot', `${randomRot}deg`);
-          p.style.animationDuration = "6s";
-        } 
-        else { // 60% chance for Leaves
-          p.className = "wood-petal";
-          p.style.left = Math.random() * 100 + "vw";
-          p.style.top = "-20px";
-          p.style.animationDuration = (Math.random() * 3 + 4) + "s";
-        }
-      }
-      else if (type === "bubbles") {
-        if (Math.random() > 0.6) { p.className = "water-ripple"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; } 
-        else { p.className = "water-drop"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; }
-        p.style.animationDuration = "4s";
-      }
-              else if (type === "rain") {
-        p.className = "rain-drop";
-        p.style.left = Math.random() * 100 + "vw";
-        p.style.top = "-20px";
-        p.style.animationDuration = (Math.random() * 0.4 + 0.6) + "s"; // Fast falling
-      }
-      else if (type === "embers") {
-        p.className = "ember";
-        p.style.left = Math.random() * 100 + "vw";
-        p.style.bottom = "-20px";
-        // Golden embers rise from the bottom
-        p.style.animationDuration = (Math.random() * 2 + 3) + "s";
-      }
-      else if (type === "sand") {
-        p.className = "sand-grain";
-        p.style.left = "-10px"; // Blow in from the left
-        p.style.top = Math.random() * 100 + "vh";
-        p.style.animationDuration = (Math.random() * 1 + 2) + "s";
-      }
-
-              else if (type === "jashin") {
-        p.className = "jashin-seal";
-        p.style.left = Math.random() * 100 + "vw";
-        p.style.top = Math.random() * 100 + "vh";
-        // Random rotation for the symbols
-        p.style.transform = `rotate(${Math.random() * 360}deg)`;
-        p.style.animationDuration = "5s";
-      }
-                    else if (type === "seals") {
-        const kanji = ["蝦", "蛞", "蛇"]; 
-        p.className = "kanji-seal"; // Changed 'particle' to 'p'
-        p.textContent = kanji[Math.floor(Math.random() * kanji.length)];
-        p.style.left = Math.random() * 100 + "vw";
-        p.style.top = Math.random() * 100 + "vh";
-        p.style.animationDuration = "5s";
-      }
+      else if (type === "wood_style") { if (Math.random() > 0.7) { p.className = "wood-vine"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-50px"; const rot = Math.random() * 360; p.style.setProperty('--rot', `${rot}deg`); p.style.animationDuration = (Math.random() * 2 + 4) + "s"; } else { p.className = "wood-petal"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-20px"; p.style.animationDuration = (Math.random() * 3 + 4) + "s"; } }
+      else if (type === "bubbles") { if (Math.random() > 0.6) { p.className = "water-ripple"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; } else { p.className = "water-drop"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; } p.style.animationDuration = "4s"; }
       else if (type === "spirals") { p.className = "uzumaki-spiral"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "5s"; } 
       else if (type === "bolts") { p.className = "chidori-bolt"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.transform = `rotate(${Math.random() * 360}deg)`; p.style.animationDuration = "0.3s"; }
       else if (type === "sharks") { p.className = "shark-fin"; p.style.left = "-40px"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; } 
       else if (type === "flytraps") { p.className = "flytrap-spike"; p.style.left = Math.random() * 100 + "vw"; const isT = Math.random() > 0.5; p.style[isT ? 'top' : 'bottom'] = "-10px"; if (isT) p.style.transform = "rotate(180deg)"; p.style.animationDuration = "3s"; }
       else if (type === "love_sand") { p.className = "love-kanji"; p.textContent = "愛"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-40px"; p.style.animationDuration = (Math.random() * 3 + 4) + "s"; }
-      else if (type === "shadows") {
-        const edge = Math.random();
-        if (edge > 0.5) { p.style.bottom = "-50px"; p.style.left = Math.random() * 100 + "vw"; p.style.setProperty('--rot', `${(Math.random() * 40) - 20}deg`); } 
-        else { p.style.top = Math.random() * 100 + "vh"; p.style.left = edge > 0.25 ? "-50px" : "100vw"; p.style.setProperty('--rot', edge > 0.25 ? "90deg" : "-90deg"); }
-        p.className = "shadow-tendril"; p.style.animationDuration = (Math.random() * 2 + 3) + "s";
-      }
-      else if (type === "infinity") {
-        p.className = "infinity-ring";
-        p.style.left = Math.random() * 100 + "vw";
-        p.style.top = Math.random() * 100 + "vh";
-        p.style.animationDuration = "4s";
-      }
-      else if (type === "slashes") {
-        p.className = "sukuna-slash";
-        p.style.left = Math.random() * 80 + 10 + "vw";
-        p.style.top = Math.random() * 80 + 10 + "vh";
-        const randomRot = Math.random() * 360;
-        p.style.setProperty('--rot', `${randomRot}deg`);
-        p.style.animationDuration = "0.3s";
-          } else if (type === "shikigami") {
-      p.className = "shadow-wolf";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.bottom = "10vh";
-    } else if (type === "cursed_orbs") {
-      p.className = "cursed-orb";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.top = Math.random() * 100 + "vh";
-    } else if (type === "blood_streaks") {
-      p.className = "blood-streak";
-      p.style.left = "-100px";
-      p.style.top = Math.random() * 100 + "vh";
-      p.style.transform = `rotate(${(Math.random() * 20) - 10}deg)`;
-    } else if (type === "impacts") {
-      p.className = "impact-ring";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.top = Math.random() * 100 + "vh";
-        } else if (type === "supernova") {
-      p.className = "blood-orb";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.top = Math.random() * 100 + "vh";
-      p.style.animationDuration = "3s";
-      // Randomly offset the delay so they don't all pop at once
-      p.style.animationDelay = (Math.random() * 2) + "s";
-    } else if (type === "clock_ticks") {
-      p.className = "clock-hand";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.bottom = "-20px";
-      p.style.animationDuration = (Math.random() * 2 + 4) + "s";
-    } else if (type === "summer_clouds") {
-      p.className = "summer-cloud";
-      p.style.top = Math.random() * 40 + "vh"; // Clouds stay in the top half
-      p.style.left = "-150px";
-      p.style.width = (Math.random() * 100 + 100) + "px";
-      p.style.animationDuration = (Math.random() * 10 + 15) + "s"; // Very slow movement
-        } else if (type === "air_cracks") {
-      p.className = "air-crack";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.top = Math.random() * 100 + "vh";
-      p.style.setProperty('--rot', `${Math.random() * 360}deg`);
-      p.style.animationDuration = "0.4s";
-    } else if (type === "room_scan") {
-      p.className = "room-circle";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.top = Math.random() * 100 + "vh";
-    } else if (type === "drum_beats") {
-      p.className = "drum-beat";
-      p.textContent = "DUM!";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.top = Math.random() * 100 + "vh";
-    } else if (type === "hearts") {
-      p.className = "snowflake"; // Re-uses the snow logic but we change color in CSS
-      p.style.backgroundColor = "#F43F5E";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.top = "-10px";
-    }
-      else if (type === "glitch") {
-        p.className = "glitch-box";
-        p.style.left = Math.random() * 100 + "vw";
-        p.style.top = Math.random() * 100 + "vh";
-        p.style.backgroundColor = Math.random() > 0.5 ? "#FF007A" : "#00F3FF";
-      }
-      else if (type === "plankton") {
-        p.className = "plankton";
-        p.style.left = Math.random() * 100 + "vw";
-        p.style.top = Math.random() * 100 + "vh";
-        p.style.animationDelay = (Math.random() * 10) + "s";
-      }
-      else if (type === "fireflies") {
-        p.className = "firefly";
-        p.style.left = Math.random() * 100 + "vw";
-        p.style.top = Math.random() * 100 + "vh";
-        p.style.animationDelay = (Math.random() * 4) + "s";
-    } else if (type === "fans") {
-      p.className = "paper-fan";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.top = "-20px";
-      p.style.animationDuration = (Math.random() * 4 + 6) + "s";
-    } else if (type === "arms") {
-      p.className = "flower-arm";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.top = Math.random() * 100 + "vh";
-    } else if (type === "pixels") {
-      p.className = "pixel-heart";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.top = Math.random() * 100 + "vh";
-    }
-      else if (type === "cursors") {
-        p.className = "pixel-cursor";
-        p.style.left = Math.random() * 100 + "vw";
-        p.style.top = Math.random() * 100 + "vh";
-        p.style.animationDelay = (Math.random() * 5) + "s";
-      }
-      else if (type === "crops") {
-        p.className = "pixel-crop";
-        p.style.left = Math.random() * 100 + "vw";
-        p.style.top = "-20px";
-        p.style.backgroundColor = Math.random() > 0.5 ? "#FF8C00" : "#78B159";
-      }
-      else if (type === "steam") {
-        p.className = "pixel-steam";
-        p.style.left = Math.random() * 100 + "vw";
-        p.style.bottom = "10vh";
-        p.style.animationDuration = (Math.random() * 2 + 2) + "s";
-      }
-      else if (type === "lightning") {
-        p.className = "lightning";
-        p.style.left = Math.random() * 100 + "vw";
-        p.style.top = "0";
-        // Lightning is very fast and sharp
-        p.style.animationDuration = "0.4s";
-      }
-      else if (type === "paper") {
-        p.className = "paper-sheet";
-        p.style.left = Math.random() * 100 + "vw";
-        p.style.top = "-30px";
-        // Vary the speed so some sheets fall faster than others
-        p.style.animationDuration = (Math.random() * 3 + 4) + "s";
-      }
-            else if (type === "star_shards") {
-        p.className = "star-shard";
-        p.style.left = Math.random() * 100 + "vw";
-        p.style.top = Math.random() * 100 + "vh";
-        p.style.animationDelay = (Math.random() * 3) + "s";
-      } 
-      else if (type === "dream_waves") {
-        const isRipple = Math.random() > 0.4;
-        if (isRipple) {
-          p.className = "tsukuyomi-ripple";
-          p.style.left = Math.random() * 100 + "vw";
-          p.style.top = Math.random() * 100 + "vh";
-        } else {
-          p.className = "soul-cocoon";
-          p.style.left = Math.random() * 100 + "vw";
-          p.style.top = "-30px";
-        }
-      } // <--- Correctly closes the dream_waves block
-      else if (type === "divine_aura") {
-        p.className = "zen-shard";
-        p.style.left = Math.random() * 100 + "vw";
-        p.style.top = Math.random() * 100 + "vh";
-        p.style.animationDelay = (Math.random() * 5) + "s";
-      }
+      else if (type === "shadows") { const edge = Math.random(); if (edge > 0.5) { p.style.bottom = "-50px"; p.style.left = Math.random() * 100 + "vw"; p.style.setProperty('--rot', `${(Math.random() * 40) - 20}deg`); } else { p.style.top = Math.random() * 100 + "vh"; p.style.left = edge > 0.25 ? "-50px" : "100vw"; p.style.setProperty('--rot', edge > 0.25 ? "90deg" : "-90deg"); } p.className = "shadow-tendril"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; }
+      
+      // JJK THEMES
+      else if (type === "infinity") { p.className = "infinity-ring"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "4s"; }
+      else if (type === "slashes") { p.className = "sukuna-slash"; p.style.left = Math.random() * 80 + 10 + "vw"; p.style.top = Math.random() * 80 + 10 + "vh"; const rR = Math.random() * 360; p.style.setProperty('--rot', `${rR}deg`); p.style.animationDuration = "0.3s"; }
+      else if (type === "shikigami") { p.className = "shadow-wolf"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "10vh"; }
+      else if (type === "cursed_orbs") { p.className = "cursed-orb"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; }
+      else if (type === "blood_streaks") { p.className = "blood-streak"; p.style.left = "-100px"; p.style.top = Math.random() * 100 + "vh"; p.style.transform = `rotate(${(Math.random() * 20) - 10}deg)`; }
+      else if (type === "impacts") { p.className = "impact-ring"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; }
+      else if (type === "supernova") { p.className = "blood-orb"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "3s"; p.style.animationDelay = (Math.random() * 2) + "s"; }
+      else if (type === "clock_ticks") { p.className = "clock-hand"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; p.style.animationDuration = (Math.random() * 2 + 4) + "s"; }
+      else if (type === "summer_clouds") { p.className = "summer-cloud"; p.style.top = Math.random() * 40 + "vh"; p.style.left = "-150px"; p.style.width = (Math.random() * 100 + 100) + "px"; p.style.animationDuration = (Math.random() * 10 + 15) + "s"; }
+      
+      // ONE PIECE THEMES
+      else if (type === "air_cracks") { p.className = "air-crack"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.setProperty('--rot', `${Math.random() * 360}deg`); p.style.animationDuration = "0.4s"; }
+      else if (type === "room_scan") { p.className = "room-circle"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; }
+      else if (type === "drum_beats") { p.className = "drum-beat"; p.textContent = "DUM!"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; }
+      else if (type === "hearts") { p.className = "snowflake"; p.style.backgroundColor = "#F43F5E"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-10px"; }
+      
+      // VIBE THEMES
+      else if (type === "glitch") { p.className = "glitch-box"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.backgroundColor = Math.random() > 0.5 ? "#FF007A" : "#00F3FF"; }
+      else if (type === "plankton") { p.className = "plankton"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDelay = (Math.random() * 10) + "s"; }
+      else if (type === "fireflies") { p.className = "firefly"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDelay = (Math.random() * 4) + "s"; }
+      else if (type === "fans") { p.className = "paper-fan"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-20px"; p.style.animationDuration = (Math.random() * 4 + 6) + "s"; }
+      else if (type === "arms") { p.className = "flower-arm"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; }
+      else if (type === "pixels") { p.className = "pixel-heart"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; }
+      else if (type === "cursors") { p.className = "pixel-cursor"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDelay = (Math.random() * 5) + "s"; }
+      else if (type === "crops") { p.className = "pixel-crop"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-20px"; p.style.backgroundColor = Math.random() > 0.5 ? "#FF8C00" : "#78B159"; }
+      else if (type === "steam") { p.className = "pixel-steam"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "10vh"; p.style.animationDuration = (Math.random() * 2 + 2) + "s"; }
+      else if (type === "lightning") { p.className = "lightning"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "0"; p.style.animationDuration = "0.4s"; }
+      else if (type === "paper") { p.className = "paper-sheet"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-30px"; p.style.animationDuration = (Math.random() * 3 + 4) + "s"; }
+      else if (type === "star_shards") { p.className = "star-shard"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDelay = (Math.random() * 3) + "s"; } 
+      else if (type === "dream_waves") { const isR = Math.random() > 0.4; if (isR) { p.className = "tsukuyomi-ripple"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; } else { p.className = "soul-cocoon"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-30px"; } } 
+      else if (type === "divine_aura") { p.className = "zen-shard"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDelay = (Math.random() * 5) + "s"; }
+      else if (type === "seals") { const k = ["蝦", "蛞", "蛇"]; p.className = "kanji-seal"; p.textContent = k[Math.floor(Math.random() * k.length)]; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "5s"; }
 
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
-    }, (type === "teleport" || type === "bolts" || type === "air_cracks" || type === "glitch" || type === "lightning") ? 80 : 800);
+    }, (type === "teleport" || type === "bolts" || type === "slashes" || type === "air_cracks" || type === "glitch" || type === "lightning") ? 80 : 800);
   }
 
   document.addEventListener("themeChanged", () => {
     const theme = localStorage.getItem("petal_theme");
-        const map = { 
+    const map = { 
       cosmic_starfall: "meteors", autumn_forest: "leaves", spring_blossom: "blossoms", summer_shimmer: "sunbeams", midnight_snowfall: "snow", 
       ninja_rivalry: "sparks", copy_ninja: "lightning", medical_kunoichi: "healing", legendary_sannin: "seals", desert_love: "love_sand", 
       god_of_shinobi: "wood_style", tactical_suiton: "bubbles", ghost_uchiha: "tomoe", crow_illusion: "feathers", yellow_flash: "teleport", 
@@ -1104,24 +360,19 @@ function toast(msg) {
       springtime_youth: "aura", eternal_amaterasu: "black_fire", kamui_dimension: "warps", six_paths_sage: "truth_orbs", shadow_possession: "shadows", 
       mind_transfer: "mind_waves", butterfly_mode: "butterflies", hidan_ritual: "jashin", kakuzu_hearts: "threads", art_explosion: "explosive_birds", 
       eternal_beauty: "puppet_strings", paper_angel: "paper", six_paths_pain: "gravity", original_hope: "rain", tobi_good_boy: "tobi_swirl", 
-      monster_mist: "sharks", stinky_aloe: "flytraps", ultimate_masterpiece: "c0_explosion", hokage_dream: "spirals", uchiha_avenger: "bolts", hidden_rain: "rain", kurama_sage: "embers",
-      hidden_sand: "sand", infinite_void: "infinity", malevolent_shrine: "slashes", ten_shadows: "shikigami",
-      cursed_manipulation: "cursed_orbs", death_painting: "blood_streaks", divergent_fist: "impacts", blood_brother: "supernova", ratio_sorcerer: "clock_ticks",
-      blue_spring: "summer_clouds", strongest_man: "air_cracks",
-      surgeon_death: "room_scan",
-      sun_god: "drum_beats",
-      silent_heart: "hearts", legendary_merchant: "fans",
-      flower_archeologist: "arms",
-      retro_handheld: "pixels", classic_desktop: "cursors", farm_life: "crops", cozy_cafe: "steam", infinite_tsukuyomi: "dream_waves" ,
+      monster_mist: "sharks", stinky_aloe: "flytraps", ultimate_masterpiece: "c0_explosion", hokage_dream: "spirals", uchiha_avenger: "bolts",
+      infinite_void: "infinity", malevolent_shrine: "slashes", ten_shadows: "shikigami", cursed_manipulation: "cursed_orbs", death_painting: "blood_streaks",
+      divergent_fist: "impacts", blood_brother: "supernova", ratio_sorcerer: "clock_ticks", blue_spring: "summer_clouds", strongest_man: "air_cracks",
+      surgeon_death: "room_scan", sun_god: "drum_beats", silent_heart: "hearts", legendary_merchant: "fans", flower_archeologist: "arms",
+      retro_handheld: "pixels", classic_desktop: "cursors", farm_life: "crops", cozy_cafe: "steam", infinite_tsukuyomi: "dream_waves", 
+      infinite_zen: "divine_aura", celestial_sovereignty: "star_shards"
     };
     startAnimation(map[theme] || null);
   });
 })();
 
-/* ------------------- Stickers & Prompts ------------------- */
-/* ------------------------ Prompts Logic (Naruto & JJK Edition) ------------------------ */
-(() => {
-  const allPrompts = [
+/* ------------------- Stickers & Prompts Logic ------------------- */
+  const promptsList = [
     // --- JJK / Sorcerer Prompts ---
     "Nanami says 'Overtime is a drag.' What is one task you need to finish *now* so you can truly rest?",
     "‘Are you the strongest because you’re you?’ What is one unique trait that defines you at your core?",
@@ -1156,93 +407,39 @@ function toast(msg) {
   ];
 
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. Prompt Logic
   const card = document.getElementById("promptCard");
   if (card) {
       card.textContent = localStorage.getItem("petal_prompt") || promptsList[0];
       document.getElementById("btnPrompt")?.addEventListener("click", () => {
           const next = promptsList[Math.floor(Math.random() * promptsList.length)];
-          card.textContent = next; 
-          localStorage.setItem("petal_prompt", next);
+          card.textContent = next; localStorage.setItem("petal_prompt", next);
       });
   }
 
-  // 2. Image Picker
   const picker = document.getElementById("imgPicker");
   document.getElementById("btnAddImage")?.addEventListener("click", () => picker?.click());
-  
   picker?.addEventListener("change", async (e) => {
-    const file = e.target.files?.[0]; 
-    if (!file || !window.firebaseAuth?.currentUser) return;
-    try { 
-      toast("Uploading..."); 
-      const path = `entry_images/${window.firebaseAuth.currentUser.uid}/${Date.now()}_image`; 
-      const fileRef = storageRef(window.firebaseStorage, path); 
-      await uploadBytes(fileRef, file, { contentType: file.type }); 
-      const url = await getDownloadURL(fileRef); 
-      const img = document.createElement("img"); 
-      img.src = url; img.className = "sticker"; 
-      document.getElementById("content").appendChild(img); 
-      toast("Added!"); 
-    } catch (err) { console.error(err); }
+    const file = e.target.files?.[0]; if (!file || !window.firebaseAuth?.currentUser) return;
+    try { toast("Uploading..."); const path = `entry_images/${window.firebaseAuth.currentUser.uid}/${Date.now()}_image`; const fileRef = storageRef(window.firebaseStorage, path); await uploadBytes(fileRef, file, { contentType: file.type }); const url = await getDownloadURL(fileRef); const img = document.createElement("img"); img.src = url; img.className = "sticker"; document.getElementById("content").appendChild(img); toast("Added!"); } catch (err) { alert("Failed"); }
   });
 
-  // 3. Shop Sticker Sync
   const ownedItems = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
-  const stickerBar = document.querySelector(".sticker-panel");
-  const stickerMap = {
-    "sticker_kunai": { name: "Kunai", file: "kunai.gif" },
-    "sticker_curse": { name: "Cursed Mark", file: "cursedmark.gif" },
-    "sticker_joyboy": { name: "Sun God", file: "sungod.gif" }
-  };
-  
-  if (stickerBar) {
-    ownedItems.forEach(itemId => {
-      const info = stickerMap[itemId];
-      if (info && !document.querySelector(`[data-sticker="assets/${info.file}"]`)) {
-        const btn = document.createElement("button");
-        btn.className = "chip"; btn.type = "button";
-        btn.dataset.sticker = `assets/${info.file}`;
-        btn.textContent = `✨ ${info.name}`;
-        stickerBar.appendChild(btn);
-      }
-    });
-  }
+  const sBar = document.querySelector(".sticker-panel");
+  const sMap = { "sticker_kunai": { name: "Kunai", file: "kunai.gif" }, "sticker_curse": { name: "Cursed Mark", file: "cursedmark.gif" }, "sticker_joyboy": { name: "Sun God", file: "sungod.gif" } };
+  if (sBar) { ownedItems.forEach(id => { const i = sMap[id]; if (i && !document.querySelector(`[data-sticker="assets/${i.file}"]`)) { const b = document.createElement("button"); b.className = "chip"; b.type = "button"; b.dataset.sticker = `assets/${i.file}`; b.textContent = `✨ ${i.name}`; sBar.appendChild(b); } }); }
 });
 
-// 4. Global Click for Stickers
 document.addEventListener("click", (e) => {
   const btn = e.target.closest("button[data-sticker]");
-  if (btn) { 
-    const img = document.createElement("img"); 
-    img.src = btn.dataset.sticker; 
-    img.className = "sticker"; 
-    document.getElementById("content").appendChild(img); 
-  }
+  if (btn) { const img = document.createElement("img"); img.src = btn.dataset.sticker; img.className = "sticker"; document.getElementById("content").appendChild(img); }
 });
-
 
 /* ------------------- Initial Setup ------------------- */
 document.addEventListener("DOMContentLoaded", async () => {
-  const savedTheme = localStorage.getItem("petal_theme") || "petal";
-  const savedSkin = localStorage.getItem("petal_skin") || "ruled";
-
-  try {
-    await applyTheme(savedTheme); 
-    applySkin(savedSkin);
-  } catch (e) { console.log("Init fail:", e); }
-
-  const tSel = document.getElementById("themeSelect"); 
-  const sSel = document.getElementById("skinSelect");
-
-  if (tSel) {
-    tSel.value = savedTheme;
-    tSel.onchange = (e) => applyTheme(e.target.value);
-  }
-  if (sSel) {
-    sSel.value = savedSkin;
-    sSel.onchange = (e) => applySkin(e.target.value);
-  }
-
-  if (typeof checkUnlocks === "function") checkUnlocks();
+  const theme = localStorage.getItem("petal_theme") || "petal";
+  applyTheme(theme); applySkin(localStorage.getItem("petal_skin") || "ruled");
+  if (document.getElementById("themeSelect")) document.getElementById("themeSelect").value = theme;
+  if (document.getElementById("skinSelect")) document.getElementById("skinSelect").value = localStorage.getItem("petal_skin") || "ruled";
+  document.getElementById("themeSelect") && (document.getElementById("themeSelect").onchange = (e) => applyTheme(e.target.value));
+  document.getElementById("skinSelect") && (document.getElementById("skinSelect").onchange = (e) => applySkin(e.target.value));
 });
