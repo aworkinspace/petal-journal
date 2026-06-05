@@ -556,6 +556,29 @@ async function applyTheme(themeName) {
   const theme = THEMES[themeName] || THEMES.petal;
   applyVars(theme);
   localStorage.setItem("petal_theme", themeName);
+function applySkin(skinName) {
+  const notebook = document.getElementById("notebook");
+  if (!notebook) return;
+  
+  // 1. Remove all possible paper textures
+  notebook.classList.remove(
+    "skin-ruled", 
+    "skin-grid", 
+    "skin-dots", 
+    "skin-dark-ruled", 
+    "skin-dark-grid", 
+    "skin-dark-dots"
+  );
+
+  // 2. Add the selected texture (ensures underscores become dashes for CSS)
+  const formattedName = String(skinName).replace("_", "-");
+  notebook.classList.add(`skin-${formattedName}`);
+  
+  // 3. Save to memory
+  localStorage.setItem("petal_skin", skinName);
+  
+  console.log("Paper style applied:", formattedName);
+}
 
   // 3. NEW: Apply Animated Notebook Skins if Owned
   const notebook = document.getElementById("notebook");
