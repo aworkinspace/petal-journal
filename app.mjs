@@ -527,15 +527,17 @@ flower_archeologist: {
   },
 
 };
-/* ------------------- Helpers ------------------- */
+/* ------------------- Helpers (Fixed & Cleaned) ------------------- */
 function applyVars(vars) {
   if (!vars) return;
-  for (const [k, v] of Object.entries(vars)) document.documentElement.style.setProperty(k, v);
+  for (const [k, v] of Object.entries(vars)) {
+    document.documentElement.style.setProperty(k, v);
+  }
 }
 
 async function applyTheme(themeName) {
   // 1. XP Threshold Checks (Level 5, 10, 15, 20)
-  if (themeName === "golden_petal" || themeName === "six_paths_sage" || themeName === "celestial_sovereignty" || themeName === "infinite_zen") {
+  if (["golden_petal", "six_paths_sage", "celestial_sovereignty", "infinite_zen"].includes(themeName)) {
     const wb = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
     const vs = parseInt(localStorage.getItem("petal_vision_count") || "0");
     const cp = parseInt(localStorage.getItem("petal_capsule_count") || "0");
@@ -543,8 +545,12 @@ async function applyTheme(themeName) {
     const dj = parseInt(localStorage.getItem("petal_dojo_xp") || "0");
     const sm = parseInt(localStorage.getItem("petal_summon_xp") || "0");
     const entries = JSON.parse(localStorage.getItem("petal_entries_v1") || "[]");
+    
     let totalXP = (entries.length * 50) + (wb * 20) + (vs * 30) + (cp * 100) + (wl * 30) + dj + sm;
-    entries.forEach(e => totalXP += (e.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length);
+    entries.forEach(e => {
+       const words = (e.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
+       totalXP += words;
+    });
 
     if (themeName === "golden_petal" && totalXP < 800) { themeName = "petal"; toast("Lvl 5 required!"); }
     if (themeName === "six_paths_sage" && totalXP < 1800) { themeName = "petal"; toast("Lvl 10 required!"); }
@@ -552,51 +558,19 @@ async function applyTheme(themeName) {
     if (themeName === "infinite_zen" && totalXP < 4000) { themeName = "petal"; toast("Lvl 20 required!"); }
   }
 
-  // 2. Apply the Basic Theme Colors
+  // 2. Apply Basic Theme Colors
   const theme = THEMES[themeName] || THEMES.petal;
   applyVars(theme);
   localStorage.setItem("petal_theme", themeName);
-function applySkin(skinName) {
-  const notebook = document.getElementById("notebook");
-  if (!notebook) return;
-  
-  // 1. Remove all possible paper textures
-  notebook.classList.remove(
-    "skin-ruled", 
-    "skin-grid", 
-    "skin-dots", 
-    "skin-dark-ruled", 
-    "skin-dark-grid", 
-    "skin-dark-dots"
-  );
 
-  // 2. Add the selected texture (ensures underscores become dashes for CSS)
-  const formattedName = String(skinName).replace("_", "-");
-  notebook.classList.add(`skin-${formattedName}`);
-  
-  // 3. Save to memory
-  localStorage.setItem("petal_skin", skinName);
-  
-  console.log("Paper style applied:", formattedName);
-}
-
-  // 3. NEW: Apply Animated Notebook Skins if Owned
+  // 3. Apply Animated Shop Skins
   const notebook = document.getElementById("notebook");
   const owned = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
   if (notebook) {
-    // Clear existing animations first
     notebook.classList.remove("skin-rainy-paper", "skin-glitch-paper", "skin-holo-paper");
-
-    // Apply specific animations if the theme matches and the user bought it
-    if (themeName === "hidden_rain" && owned.includes("layout_rainy")) {
-      notebook.classList.add("skin-rainy-paper");
-    }
-    if ((themeName === "cyberpunk_neo" || themeName === "forbidden_lab") && owned.includes("layout_matrix")) {
-      notebook.classList.add("skin-glitch-paper");
-    }
-    if ((themeName === "infinite_zen" || themeName === "six_paths_sage") && owned.includes("layout_hologram")) {
-      notebook.classList.add("skin-holo-paper");
-    }
+    if (themeName === "hidden_rain" && owned.includes("layout_rainy")) notebook.classList.add("skin-rainy-paper");
+    if ((themeName === "cyberpunk_neo" || themeName === "forbidden_lab") && owned.includes("layout_matrix")) notebook.classList.add("skin-glitch-paper");
+    if ((themeName === "infinite_zen" || themeName === "six_paths_sage") && owned.includes("layout_hologram")) notebook.classList.add("skin-holo-paper");
   }
 
   document.dispatchEvent(new CustomEvent('themeChanged'));
@@ -606,19 +580,24 @@ function applySkin(skinName) {
   const notebook = document.getElementById("notebook");
   if (!notebook) return;
   
-  // We use classList.remove instead of overwriting className so we don't break the animations
+  // Remove all possible paper textures
   notebook.classList.remove("skin-ruled", "skin-grid", "skin-dots", "skin-dark-ruled", "skin-dark-grid", "skin-dark-dots");
-  notebook.classList.add(`skin-${skinName.replace("_", "-")}`);
+
+  // Add the selected texture
+  const formattedName = String(skinName).replace("_", "-");
+  notebook.classList.add(`skin-${formattedName}`);
+  
   localStorage.setItem("petal_skin", skinName);
 }
 
 function toast(msg) {
   const t = document.getElementById("toast");
   if (!t) return;
-  t.textContent = msg; t.classList.add("show");
-  clearTimeout(toast._id); toast._id = setTimeout(() => t.classList.remove("show"), 2200);
+  t.textContent = msg; 
+  t.classList.add("show");
+  clearTimeout(toast._id); 
+  toast._id = setTimeout(() => t.classList.remove("show"), 2200);
 }
-
 
 /* ------------------- Firebase ------------------- */
 (() => {
