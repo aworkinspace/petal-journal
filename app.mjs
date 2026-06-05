@@ -527,7 +527,7 @@ flower_archeologist: {
   },
 
 };
-/* ------------------- Helpers (Fixed & Cleaned) ------------------- */
+/* ------------------- Helpers (Fixed & Balanced) ------------------- */
 function applyVars(vars) {
   if (!vars) return;
   for (const [k, v] of Object.entries(vars)) {
@@ -562,6 +562,10 @@ async function applyTheme(themeName) {
   const theme = THEMES[themeName] || THEMES.petal;
   applyVars(theme);
   localStorage.setItem("petal_theme", themeName);
+  
+  // 3. Notify other parts of the site
+  document.dispatchEvent(new CustomEvent('themeChanged'));
+} // <--- THIS BRACE WAS MISSING
 
 function applySkin(skinName) {
   const notebook = document.getElementById("notebook");
