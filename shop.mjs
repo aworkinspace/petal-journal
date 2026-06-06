@@ -14,7 +14,8 @@ const shopItems = [
   { id: "sfx_chidori", name: "SFX: Chidori", type: "sfx", price: 75, icon: "assets/kakashi_nendo.png" },
   { id: "sfx_dattebayo", name: "SFX: Dattebayo!", type: "sfx", price: 75, icon: "assets/naruto_nendo.png" },
   { id: "sfx_yowaimo", name: "SFX: Yowaimo (Gojo)", type: "sfx", price: 75, icon: "assets/gojo_nendo.png" },
-  { id: "sfx_usuratonkachi", name: "SFX: Usuratonkachi", type: "sfx", price: 75, icon: "assets/sasuke_nendo.png" }
+  { id: "sfx_usuratonkachi", name: "SFX: Usuratonkachi", type: "sfx", price: 75, icon: "assets/sasuke_nendo.png" },
+  { id: "sfx_notazenin", name: "SFX: Not A Zenin", type: "sfx", price: 75, icon: "assets/toji_nendo.png" },
 ];
 
 function getTokens() { return Number(localStorage.getItem("petal_tokens")) || 0; }
