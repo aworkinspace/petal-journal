@@ -541,6 +541,18 @@ flower_archeologist: {
   lesbian_sunset: { "--bg": "#FFF5F2", "--surface": "#FFFDFB", "--surface-2": "#D62800", "--border": "#FF9BFB", "--primary": "#FF9BFB", "--accent": "#D62800", "--text": "#4A1A1A", "--text-muted": "#9F4D4D", "animation": "pride_sunset" },
   bisexual_galaxy: { "--bg": "#050510", "--surface": "#0F0F1F", "--surface-2": "#D60087", "--border": "#0063B1", "--primary": "#9B4F96", "--accent": "#D60087", "--text": "#F8FAFC", "--text-muted": "rgba(248, 250, 252, 0.5)", "animation": "pride_bi" },
   trans_serenity: { "--bg": "#F0F9FF", "--surface": "#FFFFFF", "--surface-2": "#F7A8B8", "--border": "#55CDFC", "--primary": "#55CDFC", "--accent": "#F7A8B8", "--text": "#1E3A8A", "--text-muted": "#60A5FA", "animation": "pride_trans" },
+  gay_ocean: { 
+    "--bg": "#F0FFF4", 
+    "--surface": "#FFFFFF", 
+    "--surface-2": "#078D70", 
+    "--border": "rgba(38, 206, 170, 0.2)", 
+    "--primary": "#26CEAA", 
+    "--primary-soft": "rgba(38, 206, 170, 0.1)",
+    "--accent": "#98E8C1", 
+    "--text": "#0B3028", 
+    "--text-muted": "#078D70", 
+    "animation": "pride_gay" 
+  },
 
 };
 /* ------------------- Helpers (Fixed & Balanced) ------------------- */
@@ -919,6 +931,19 @@ function toast(msg) {
       else if (type === "embers") { p.className = "ember"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; }
       else if (type === "sand") { p.className = "sand-grain"; p.style.left = "-10px"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = (Math.random() * 1 + 2) + "s"; }
 
+      // PRIDE
+          if (type.startsWith("pride_")) {
+      p.className = "pride-sparkle";
+      if (type === "pride_rainbow") p.classList.add("rainbow-cycle");
+      else if (type === "pride_sunset") p.classList.add("sunset-cycle");
+      else if (type === "pride_bi") p.classList.add("bi-cycle");
+      else if (type === "pride_trans") p.classList.add("trans-cycle");
+      else if (type === "pride_gay") p.classList.add("gay-cycle");
+
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.bottom = "-10px";
+    }
+
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
     }, (type === "teleport" || type === "bolts" || type === "slashes" || type === "air_cracks" || type === "glitch" || type === "lightning") ? 80 : 800);
@@ -939,7 +964,12 @@ function toast(msg) {
       divergent_fist: "impacts", blood_brother: "supernova", ratio_sorcerer: "clock_ticks", blue_spring: "summer_clouds", strongest_man: "air_cracks",
       surgeon_death: "room_scan", sun_god: "drum_beats", silent_heart: "hearts", legendary_merchant: "fans", flower_archeologist: "arms",
       retro_handheld: "pixels", classic_desktop: "cursors", farm_life: "crops", cozy_cafe: "steam", infinite_tsukuyomi: "dream_waves", 
-      infinite_zen: "divine_aura", celestial_sovereignty: "star_shards"
+      infinite_zen: "divine_aura", celestial_sovereignty: "star_shards", progress_pride: "pride_rainbow",
+gay_ocean: "pride_gay",
+lesbian_sunset: "pride_sunset",
+bisexual_galaxy: "pride_bi",
+trans_serenity: "pride_trans"
+
     };
     startAnimation(map[theme] || null);
   });
