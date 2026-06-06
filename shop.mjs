@@ -11,6 +11,9 @@ const shopItems = [
   { id: "layout_rainy", name: "Rain-Dashed Paper", type: "layout", price: 300, icon: "assets/rain_icon.png" },
   { id: "layout_matrix", name: "Glitch Circuitry", type: "layout", price: 300, icon: "assets/glitch_icon.png" },
   { id: "layout_hologram", name: "Holo-Prism", type: "layout", price: 400, icon: "assets/holo_icon.png" },
+  { id: "sfx_chidori", name: "SFX: Chidori", type: "sfx", price: 100, icon: "assets/kakashi_nendo.png" },
+  { id: "sfx_dattebayo", name: "SFX: Dattebayo!", type: "sfx", price: 100, icon: "assets/naruto_nendo.png" },
+  { id: "sfx_yawimo", name: "SFX: Yowaimo (Gojo)", type: "sfx", price: 100, icon: "assets/gojo_nendo.png" }
 ];
 
 function getTokens() { return Number(localStorage.getItem("petal_tokens")) || 0; }
