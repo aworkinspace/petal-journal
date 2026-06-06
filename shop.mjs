@@ -7,6 +7,7 @@ const shopItems = [
   { id: "sticker_curse", name: "Cursed Mark", type: "sticker", price: 50, icon: "assets/cursedmark.gif" },
   { id: "sticker_joyboy", name: "Nika Sun", type: "sticker", price: 50, icon: "assets/sungod.gif" },
   { id: "sticker_chibigojo", name: "Chibi Gojo", type: "sticker", price: 50, icon: "assets/gojo_chibi.gif" },
+  { id: "sticker_cukootoji", name: "Cukoo Toji", type: "sticker", price: 50, icon: "assets/cukoo_toji.gif" },
   { id: "layout_rainy", name: "Rain-Dashed Paper", type: "layout", price: 300, icon: "assets/rain_icon.png" },
   { id: "layout_matrix", name: "Glitch Circuitry", type: "layout", price: 300, icon: "assets/glitch_icon.png" },
   { id: "layout_hologram", name: "Holo-Prism", type: "layout", price: 400, icon: "assets/holo_icon.png" },
