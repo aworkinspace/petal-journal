@@ -932,7 +932,7 @@ function toast(msg) {
       else if (type === "sand") { p.className = "sand-grain"; p.style.left = "-10px"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = (Math.random() * 1 + 2) + "s"; }
 
       // PRIDE
-               f (type.startsWith("pride_")) {
+               if (type.startsWith("pride_")) {
       p.className = "pride-sparkle";
       if (type === "pride_rainbow") p.classList.add("rainbow-cycle");
            else if (type === "pride_rainbow") {
