@@ -537,6 +537,11 @@ flower_archeologist: {
     "--text-muted": "rgba(255, 255, 255, 0.6)",
     "animation": "dimensional_tears"
   },
+    progress_pride: { "--bg": "#0D0D0D", "--surface": "#1A1A1A", "--surface-2": "#FFFFFF", "--border": "#FFD700", "--primary": "#FFD700", "--accent": "#6366F1", "--text": "#F8FAFC", "--text-muted": "rgba(248, 250, 252, 0.5)", "animation": "pride_rainbow" },
+  lesbian_sunset: { "--bg": "#FFF5F2", "--surface": "#FFFDFB", "--surface-2": "#D62800", "--border": "#FF9BFB", "--primary": "#FF9BFB", "--accent": "#D62800", "--text": "#4A1A1A", "--text-muted": "#9F4D4D", "animation": "pride_sunset" },
+  bisexual_galaxy: { "--bg": "#050510", "--surface": "#0F0F1F", "--surface-2": "#D60087", "--border": "#0063B1", "--primary": "#9B4F96", "--accent": "#D60087", "--text": "#F8FAFC", "--text-muted": "rgba(248, 250, 252, 0.5)", "animation": "pride_bi" },
+  trans_serenity: { "--bg": "#F0F9FF", "--surface": "#FFFFFF", "--surface-2": "#F7A8B8", "--border": "#55CDFC", "--primary": "#55CDFC", "--accent": "#F7A8B8", "--text": "#1E3A8A", "--text-muted": "#60A5FA", "animation": "pride_trans" },
+
 };
 /* ------------------- Helpers (Fixed & Balanced) ------------------- */
 function applyVars(vars) {
