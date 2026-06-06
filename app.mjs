@@ -959,9 +959,7 @@ function toast(msg) {
         const size = Math.random() * 15 + 10 + "px";
         p.style.width = size; p.style.height = size;
       }
-
     }
-
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
     }, (type === "teleport" || type === "bolts" || type === "slashes" || type === "air_cracks" || type === "glitch" || type === "lightning") ? 80 : 800);
