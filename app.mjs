@@ -837,32 +837,55 @@ function toast(msg) {
   });
 
 
-    $("btnDelete")?.addEventListener('click', () => {
-    if (!activeId || !confirm("Delete this entry?")) return;
-    
-    // ... your existing delete logic (entries.filter, localStorage.setItem, etc.) ...
-
-    renderList(); renderTagChips(); if (typeof checkUnlocks === "function") checkUnlocks();
-    resetEditor(); 
-    toast("Deleted.");
-
-    // --- NEW: DYNAMIC DELETE SFX ---
-    const equipped = localStorage.getItem("petal_equipped_delete_sfx") || "default";
-    let audioToPlay;
-
-    if (equipped === "default") {
-      audioToPlay = document.getElementById("deleteSfx");
-    } else {
-      const fileName = equipped.replace("sfx_", "");
-      audioToPlay = new Audio(`assets/${fileName}.mp3`);
+      /* ------------------- Delete Logic (Fixed) ------------------- */
+  document.getElementById("btnDelete")?.addEventListener('click', () => {
+    // 1. Check if an entry is actually selected
+    if (!activeId) {
+      alert("Please select an entry from the list first!");
+      return;
     }
 
-    if (audioToPlay) {
-      audioToPlay.currentTime = 0;
-      audioToPlay.play().catch(() => {});
+    // 2. Confirmation
+    if (!confirm("Are you sure you want to delete this entry?")) return;
+
+    // 3. Remove from the local array
+    entries = entries.filter(e => e.id !== activeId);
+    
+    // 4. Save the updated list to browser memory
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+
+    // 5. Update UI
+    renderList();
+    renderTagChips();
+    if (typeof checkUnlocks === "function") checkUnlocks();
+    
+    // 6. Reset the editor screen
+    activeId = null;
+    if ($("date")) $("date").value = new Date().toISOString().split('T')[0];
+    if ($("mood")) $("mood").value = "Calm";
+    if ($("title")) $("title").value = "";
+    if ($("content")) $("content").innerHTML = "";
+    if ($("tagsInput")) $("tagsInput").value = "";
+
+    toast("Deleted successfully.");
+
+    // 7. DYNAMIC DELETE SFX
+    const equippedDeleteSfx = localStorage.getItem("petal_equipped_delete_sfx") || "default";
+    let deleteAudio;
+
+    if (equippedDeleteSfx === "default") {
+      deleteAudio = document.getElementById("deleteSfx");
+    } else {
+      // Maps sfx_chidori -> assets/chidori.mp3
+      const file = equippedDeleteSfx.replace("sfx_", "");
+      deleteAudio = new Audio(`assets/${file}.mp3`);
+    }
+
+    if (deleteAudio) {
+      deleteAudio.currentTime = 0;
+      deleteAudio.play().catch(e => console.log("Audio play blocked."));
     }
   });
-
 
   document.addEventListener("DOMContentLoaded", () => {
     try { entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); } catch { entries = []; }
