@@ -759,26 +759,83 @@ function toast(msg) {
     row.querySelectorAll('.chip.tag').forEach(btn => btn.onclick = () => { activeTag = activeTag === btn.dataset.tag ? null : btn.dataset.tag; renderTagChips(); renderList(); });
   }
 
+   // 4. Save & Sync
   $("btnSave")?.addEventListener('click', async () => {
     const contentHtml = $("content").innerHTML || "";
-    const data = { id: activeId || Date.now().toString(), date: $("date").value, mood: $("mood").value, title: $("title").value, content: contentHtml, tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), updatedAt: Date.now() };
-    
+    const titleText = $("title").value || "";
+    const dateValue = $("date").value || new Date().toISOString().split('T')[0];
+
+    const data = { 
+      id: activeId || Date.now().toString(), 
+      date: dateValue, 
+      mood: $("mood").value, 
+      title: titleText, 
+      content: contentHtml, 
+      tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), 
+      updatedAt: Date.now() 
+    };
+
+    // --- 1. TOKEN CALCULATION ---
     const wordCount = (data.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
-    let tokens = (Number(localStorage.getItem("petal_tokens")) || 0) + 5 + Math.floor(wordCount / 50);
-    localStorage.setItem("petal_tokens", tokens);
+    const tokensEarned = 5 + Math.floor(wordCount / 50);
+    let totalTokens = (Number(localStorage.getItem("petal_tokens")) || 0) + tokensEarned;
+    localStorage.setItem("petal_tokens", totalTokens);
     
-    if (!activeId) entries.push(data); else entries = entries.map(e => e.id === activeId ? data : e);
+    // --- 2. LOCAL SAVE ---
+    if (!activeId) {
+      entries.push(data); 
+    } else {
+      entries = entries.map(e => e.id === activeId ? data : e);
+    }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
 
+    // --- 3. CLOUD SYNC (For Phone Support) ---
     if (window.firebaseAuth?.currentUser) {
+      const db = window.firebaseDb;
+      const uid = window.firebaseAuth.currentUser.uid;
       try {
-        await setDoc(doc(window.firebaseDb, "entries", data.id), { ...data, userId: window.firebaseAuth.currentUser.uid }, { merge: true });
-        await setDoc(doc(window.firebaseDb, "users", window.firebaseAuth.currentUser.uid, "stats", "zen"), { whiteboard: Number(localStorage.getItem("petal_whiteboard_count")) || 0, well: Number(localStorage.getItem("petal_well_count")) || 0, tokens: tokens, updatedAt: Date.now() }, { merge: true });
-      } catch (err) { console.error(err); }
+        // Sync the journal entry
+        await setDoc(doc(db, "entries", data.id), { ...data, userId: uid }, { merge: true });
+        
+        // Sync global stats (including the new tokens)
+        const stats = {
+          whiteboard: Number(localStorage.getItem("petal_whiteboard_count")) || 0,
+          well: Number(localStorage.getItem("petal_well_count")) || 0,
+          tokens: totalTokens,
+          updatedAt: Date.now()
+        };
+        await setDoc(doc(db, "users", uid, "stats", "zen"), stats, { merge: true });
+        console.log("Cloud Sync Successful");
+      } catch (err) { 
+        console.error("Cloud Sync Error:", err); 
+      }
     }
-    renderList(); renderTagChips(); checkUnlocks(); toast("Saved!");
-    $("saveSfx")?.play();
+
+    // --- 4. UI REFRESH ---
+    renderList(); 
+    renderTagChips(); 
+    if (typeof checkUnlocks === "function") checkUnlocks(); 
+    
+    toast(`Saved! +${tokensEarned} Petal Tokens earned! 🪙`);
+
+    // --- 5. DYNAMIC JUTSU SFX ---
+    const equipped = localStorage.getItem("petal_equipped_sfx") || "default";
+    let audioToPlay;
+
+    if (equipped === "default") {
+      audioToPlay = document.getElementById("saveSfx");
+    } else {
+      // Maps sfx_chidori -> assets/chidori.mp3
+      const fileName = equipped.replace("sfx_", "");
+      audioToPlay = new Audio(`assets/${fileName}.mp3`);
+    }
+
+    if (audioToPlay) {
+      audioToPlay.currentTime = 0;
+      audioToPlay.play().catch(e => console.log("Audio play blocked. Click anywhere on page first!"));
+    }
   });
+
 
   $("btnDelete")?.addEventListener('click', () => {
     if (!activeId || !confirm("Delete?")) return;
