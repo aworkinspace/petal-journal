@@ -2411,3 +2411,24 @@ header, .top-actions { overflow: visible; }
   20% { opacity: 0.5; }
   100% { transform: translateY(-10vh) translateX(30px); opacity: 0; }
 }
+.footer-copyright {
+  position: fixed;
+  bottom: 10px;
+  left: 15px;
+  font-family: 'VT323', monospace;
+  font-size: 16px;
+  color: var(--text-muted); /* Automatically matches theme color */
+  opacity: 0.5; /* Makes it very subtle */
+  pointer-events: none; /* Ensures it doesn't block clicks on buttons */
+  z-index: 9999;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Optional: Hide it on very small mobile screens if it gets in the way */
+@media (max-width: 480px) {
+  .footer-copyright {
+    font-size: 12px;
+    bottom: 5px;
+  }
+}
