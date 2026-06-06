@@ -2300,3 +2300,42 @@ header, .top-actions { overflow: visible; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+/* LEVEL 30: LIQUID REALITY UI */
+.liquid-border {
+  position: relative;
+  border: none !important;
+  background: var(--surface) !important;
+  box-shadow: 0 0 25px rgba(0, 243, 255, 0.3) !important;
+}
+
+.liquid-border::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  background: linear-gradient(90deg, #00f3ff, #ff007a, #00f3ff);
+  background-size: 400% 400%;
+  z-index: -1;
+  animation: flow-border 3s linear infinite;
+  border-radius: calc(var(--radius) + 2px);
+}
+
+@keyframes flow-border {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* DIMENSIONAL TEARS ANIMATION */
+.tear {
+  position: absolute;
+  width: 1px; height: 100px;
+  background: white;
+  box-shadow: 0 0 20px #00F3FF;
+  pointer-events: none;
+  animation: reality-tear 2s ease-out forwards;
+}
+
+@keyframes reality-tear {
+  0% { transform: scaleY(0) opacity: 0; }
+  20% { opacity: 1; transform: scaleY(1); }
+  100% { transform: scaleY(0) translateY(100px); opacity: 0; }
+}
