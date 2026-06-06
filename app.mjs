@@ -759,7 +759,6 @@ function toast(msg) {
       }
     });
   }
- }
   function renderList() {
     const list = $("entryList"); if (!list) return;
     const q = ($("search")?.value || "").toLowerCase();
