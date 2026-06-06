@@ -746,6 +746,13 @@ function toast(msg) {
       { id: "optHolo", shopId: "layout_hologram", name: "💎 Holo Paper" }
     ];
 
+        // --- SHOP ITEM UNLOCKS (Paper Skins) ---
+    const shopSkins = [
+      { id: "optRainy", shopId: "layout_rainy", name: "🌧️ Rainy Paper" },
+      { id: "optGlitch", shopId: "layout_matrix", name: "👾 Glitch Paper" },
+      { id: "optHolo", shopId: "layout_hologram", name: "💎 Holo Paper" }
+    ];
+
     shopSkins.forEach(skin => {
       const el = document.getElementById(skin.id);
       if (el) {
@@ -758,22 +765,43 @@ function toast(msg) {
         }
       }
     });
-  }
+  } // <--- This officially closes checkUnlocks
+
   function renderList() {
-    const list = $("entryList"); if (!list) return;
-    const q = ($("search")?.value || "").toLowerCase();
+    const list = document.getElementById("entryList"); 
+    if (!list) return;
+    const q = (document.getElementById("search")?.value || "").toLowerCase();
+    
     const filtered = entries.filter(e => {
         const matchTag = activeTag ? (e.tags || []).includes(activeTag) : true;
         const matchSearch = ((e.title||"") + (e.content||"")).toLowerCase().includes(q);
         return matchTag && matchSearch;
     }).sort((a,b) => b.updatedAt - a.updatedAt);
-    list.innerHTML = filtered.map(e => `<div class="entry-card" data-id="${e.id}"><h4>${e.title || '(Untitled)'}</h4><p>${e.date} • ${e.mood}</p></div>`).join('');
-    list.querySelectorAll('.entry-card').forEach(card => card.onclick = () => {
+
+    list.innerHTML = filtered.map(e => `
+      <div class="entry-card" data-id="${e.id}">
+        <h4>${e.title || '(Untitled)'}</h4>
+        <p>${e.date} • ${e.mood}</p>
+      </div>
+    `).join('');
+
+    list.querySelectorAll('.entry-card').forEach(card => {
+      card.onclick = () => {
         const e = entries.find(ent => ent.id === card.dataset.id);
-        activeId = e.id; $("date").value = e.date; $("mood").value = e.mood; $("title").value = e.title; $("tagsInput").value = (e.tags || []).join(', '); $("content").innerHTML = e.content;
+        if (!e) return;
+        activeId = e.id; 
+        if(document.getElementById("date")) document.getElementById("date").value = e.date; 
+        if(document.getElementById("mood")) document.getElementById("mood").value = e.mood; 
+        if(document.getElementById("title")) document.getElementById("title").value = e.title; 
+        if(document.getElementById("tagsInput")) document.getElementById("tagsInput").value = (e.tags || []).join(', '); 
+        if(document.getElementById("content")) document.getElementById("content").innerHTML = e.content;
+      };
     });
-    if ($("count")) $("count").textContent = filtered.length;
-  }
+
+    if (document.getElementById("count")) {
+      document.getElementById("count").textContent = filtered.length;
+    }
+  } // <--- This officially closes renderList
 
   function renderTagChips() {
     const row = $("tagRow"); if (!row) return;
