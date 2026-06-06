@@ -932,16 +932,34 @@ function toast(msg) {
       else if (type === "sand") { p.className = "sand-grain"; p.style.left = "-10px"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = (Math.random() * 1 + 2) + "s"; }
 
       // PRIDE
-          if (type.startsWith("pride_")) {
-      p.className = "pride-sparkle";
-      if (type === "pride_rainbow") p.classList.add("rainbow-cycle");
-      else if (type === "pride_sunset") p.classList.add("sunset-cycle");
-      else if (type === "pride_bi") p.classList.add("bi-cycle");
-      else if (type === "pride_trans") p.classList.add("trans-cycle");
-      else if (type === "pride_gay") p.classList.add("gay-cycle");
+               else if (type === "pride_rainbow") {
+        p.className = "rainbow-trail";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.left = "-50px";
+      }
+      else if (type === "pride_sunset") {
+        p.className = "sunset-ray";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.bottom = "-60px";
+      }
+      else if (type === "pride_gay") {
+        p.className = "ocean-drop";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = "-20px";
+      }
+      else if (type === "pride_bi") {
+        p.className = "bi-star";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+      }
+      else if (type === "pride_trans") {
+        p.className = "trans-bubble";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.bottom = "-20px";
+        const size = Math.random() * 15 + 10 + "px";
+        p.style.width = size; p.style.height = size;
+      }
 
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.bottom = "-10px";
     }
 
       overlay.appendChild(p);
