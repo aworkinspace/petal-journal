@@ -2339,44 +2339,75 @@ header, .top-actions { overflow: visible; }
   20% { opacity: 1; transform: scaleY(1); }
   100% { transform: scaleY(0) translateY(100px); opacity: 0; }
 }
-/* PRIDE PARTICLE BASE */
-.pride-sparkle {
+/* 1. PROGRESS PRIDE: PRISMATIC TRAILS */
+.rainbow-trail {
   position: absolute;
-  width: 8px; height: 8px;
+  width: 40px; height: 2px;
+  background: white;
+  pointer-events: none;
+  animation: rainbow-zip 2s linear forwards, cycle-rainbow 1s infinite;
+}
+@keyframes rainbow-zip {
+  0% { transform: translateX(-50px) scaleX(0); opacity: 0; }
+  20% { opacity: 1; transform: translateX(20vw) scaleX(2); }
+  100% { transform: translateX(110vw) scaleX(1); opacity: 0; }
+}
+
+/* 2. LESBIAN: SUNSET RAYS */
+.sunset-ray {
+  position: absolute;
+  width: 4px; height: 60px;
+  background: #D62800;
+  filter: blur(2px);
+  pointer-events: none;
+  animation: sunset-rise 5s ease-in-out forwards, cycle-sunset 2s infinite;
+}
+@keyframes sunset-rise {
+  0% { transform: translateY(0) scaleY(0.5); opacity: 0; }
+  20% { opacity: 0.6; }
+  100% { transform: translateY(-110vh) scaleY(1.5); opacity: 0; }
+}
+
+/* 3. GAY: OCEAN RIPPLES */
+.ocean-drop {
+  position: absolute;
+  width: 10px; height: 10px;
+  border: 2px solid #26CEAA;
   border-radius: 50%;
   pointer-events: none;
-  z-index: 5;
-  animation: pride-float 4s linear forwards;
+  animation: ocean-wavy 4s ease-out forwards, cycle-gay 2s infinite;
 }
-
-@keyframes pride-float {
-  0% { transform: translateY(0) scale(0.5); opacity: 0; }
+@keyframes ocean-wavy {
+  0% { transform: translateY(-20px) translateX(0); opacity: 0; }
   20% { opacity: 0.8; }
-  100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+  100% { transform: translateY(110vh) translateX(100px); opacity: 0; }
 }
 
-/* COLOR CYCLES */
-.rainbow-cycle { animation: pride-float 4s linear forwards, cycle-rainbow 2s infinite; }
-.sunset-cycle { animation: pride-float 4s linear forwards, cycle-sunset 2s infinite; }
-.bi-cycle { animation: pride-float 4s linear forwards, cycle-bi 2s infinite; }
-.trans-cycle { animation: pride-float 4s linear forwards, cycle-trans 2s infinite; }
-
-@keyframes cycle-rainbow {
-  0% { background: #FF0000; box-shadow: 0 0 10px #FF0000; }
-  20% { background: #FF9900; box-shadow: 0 0 10px #FF9900; }
-  40% { background: #FFFF00; box-shadow: 0 0 10px #FFFF00; }
-  60% { background: #33CC33; box-shadow: 0 0 10px #33CC33; }
-  80% { background: #3333FF; box-shadow: 0 0 10px #3333FF; }
-  100% { background: #800080; box-shadow: 0 0 10px #800080; }
+/* 4. BISEXUAL: NEBULA STARS */
+.bi-star {
+  position: absolute;
+  width: 6px; height: 6px;
+  background: white;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  pointer-events: none;
+  animation: bi-twinkle 4s infinite ease-in-out, cycle-bi 3s infinite;
+}
+@keyframes bi-twinkle {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.8); opacity: 1; }
 }
 
-@keyframes cycle-sunset {
-  0% { background: #D62800; box-shadow: 0 0 10px #D6280
-.gay-cycle { animation: pride-float 4s linear forwards, cycle-gay 2s infinite; }
-
-@keyframes cycle-gay {
-  0% { background: #078D70; box-shadow: 0 0 10px #078D70; }
-  33% { background: #26CEAA; box-shadow: 0 0 10px #26CEAA; }
-  66% { background: #98E8C1; box-shadow: 0 0 10px #98E8C1; }
-  100% { background: #3EABB7; box-shadow: 0 0 10px #3EABB7; }
+/* 5. TRANS: SERENE BUBBLES */
+.trans-bubble {
+  position: absolute;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 2px solid white;
+  pointer-events: none;
+  animation: trans-float 6s infinite ease-in-out, cycle-trans 4s infinite;
+}
+@keyframes trans-float {
+  0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+  20% { opacity: 0.5; }
+  100% { transform: translateY(-10vh) translateX(30px); opacity: 0; }
 }
