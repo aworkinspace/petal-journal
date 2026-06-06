@@ -2372,3 +2372,11 @@ header, .top-actions { overflow: visible; }
 
 @keyframes cycle-sunset {
   0% { background: #D62800; box-shadow: 0 0 10px #D6280
+.gay-cycle { animation: pride-float 4s linear forwards, cycle-gay 2s infinite; }
+
+@keyframes cycle-gay {
+  0% { background: #078D70; box-shadow: 0 0 10px #078D70; }
+  33% { background: #26CEAA; box-shadow: 0 0 10px #26CEAA; }
+  66% { background: #98E8C1; box-shadow: 0 0 10px #98E8C1; }
+  100% { background: #3EABB7; box-shadow: 0 0 10px #3EABB7; }
+}
