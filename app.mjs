@@ -630,7 +630,7 @@ function toast(msg) {
   document.getElementById("btnSignOut")?.addEventListener("click", () => signOut(auth).then(() => location.reload()));
 })();
 
-/* ------------------- Journal ------------------- */
+/* ------------------- Journal (Balanced & Fixed) ------------------- */
 (() => {
   const $ = (id) => document.getElementById(id);
   const STORAGE_KEY = "petal_entries_v1";
@@ -650,103 +650,49 @@ function toast(msg) {
     return Math.floor(totalXP / 200) + 1;
   }
 
-    function checkUnlocks() {
-  const lvl = getZenLevel();
-  const owned = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
-  console.log("Checking Unlocks for Level:", lvl);
-
-  // 1. Level 5: Stickers & Golden Petal
-  document.querySelectorAll(".level-5-reward").forEach(el => {
-    el.style.display = lvl >= 5 ? "inline-flex" : "none";
-  });
-  const optG = document.querySelector('option[value="golden_petal"]');
-  if (optG) {
-    optG.disabled = lvl < 5;
-    optG.textContent = lvl >= 5 ? "✨ Golden Petal" : "🔒 Level 5";
-  }
-
-  // 2. Level 10: Six Paths Sage + Aura
-  const opt10 = document.querySelector('option[value="six_paths_sage"]');
-  if (opt10) {
-    opt10.disabled = lvl < 10;
-    opt10.textContent = lvl >= 10 ? "☀️ Six Paths Sage" : "🔒 Level 10";
-  }
-
-  // 3. Level 15: Celestial Sovereignty
-  const opt15 = document.querySelector('option[value="celestial_sovereignty"]');
-  if (opt15) {
-    opt15.disabled = lvl < 15;
-    opt15.textContent = lvl >= 15 ? "🌌 Celestial Sovereignty" : "🔒 Level 15";
-  }
-
-  // 4. Level 20: Infinite Zen
-  const opt20 = document.querySelector('option[value="infinite_zen"]');
-  if (opt20) {
-    opt20.disabled = lvl < 20;
-    opt20.textContent = lvl >= 20 ? "💎 Infinite Zen" : "🔒 Level 20";
-  }
-
-  // 5. Level 30: Omniscient Origin
-  const opt30 = document.querySelector('option[value="omniscient_origin"]');
-  if (opt30) {
-    opt30.disabled = lvl < 30;
-    opt30.textContent = lvl >= 30 ? "👁️ Omniscient Origin" : "🔒 Level 30";
-  }
-
-  // --- UI TRANSFORMATIONS (Rank-based visuals) ---
-  const panels = document.querySelectorAll(".panel");
-  panels.forEach(p => {
-    // Clear all special rank classes first
-    p.classList.remove("kage-aura", "celestial-border", "hologram-panel", "liquid-border");
-    
-    // Apply the best one you've earned
-    if (lvl >= 30) p.classList.add("liquid-border");
-    else if (lvl >= 20) p.classList.add("hologram-panel");
-    else if (lvl >= 15) p.classList.add("celestial-border");
-    else if (lvl >= 10) p.classList.add("kage-aura");
-  });
-
-  // --- NINJA RANK TEXT ---
-  let rank = "Genin";
-  if (lvl >= 5) rank = "Jonin";
-  if (lvl >= 10) rank = "Kage";
-  if (lvl >= 15) rank = "Celestial Sage";
-  if (lvl >= 20) rank = "Transcendent One";
-  if (lvl >= 30) rank = "Omniscient Sage 👁️";
-  if (document.getElementById("ninjaRank")) document.getElementById("ninjaRank").textContent = `Rank: ${rank}`;
-
-  // --- SHOP ITEM UNLOCKS (Paper Skins) ---
-  const shopSkins = [
-    { id: "optRainy", shopId: "layout_rainy", name: "🌧️ Rainy Paper" },
-    { id: "optGlitch", shopId: "layout_matrix", name: "👾 Glitch Paper" },
-    { id: "optHolo", shopId: "layout_hologram", name: "💎 Holo Paper" }
-  ];
-
-  shopSkins.forEach(skin => {
-    const el = document.getElementById(skin.id);
-    if (el) {
-      if (owned.includes(skin.shopId)) {
-        el.disabled = false;
-        el.textContent = skin.name;
-      } else {
-        el.disabled = true;
-        el.textContent = "🔒 Shop Item";
-      }
-    }
-  });
-}
-
-    // --- NEW: SHOP ITEM UNLOCKS (Skins) ---
+  function checkUnlocks() {
+    const lvl = getZenLevel();
     const owned = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
-    
-    // Map IDs in HTML to IDs in Shop
-    const shopSkins = [
-      { id: "optRainy", shopId: "layout_rainy", name: "🌧️ Rainy Paper" },
-      { id: "optGlitch", shopId: "layout_matrix", name: "👾 Glitch Paper" },
-      { id: "optHolo", shopId: "layout_hologram", name: "💎 Holo Paper" }
-    ];
+    console.log("Checking Unlocks for Level:", lvl);
 
-        // --- SHOP ITEM UNLOCKS (Paper Skins) ---
+    // 1. Theme Dropdown Unlocks (Levels 5 - 30)
+    const optG = document.querySelector('option[value="golden_petal"]');
+    if (optG) { optG.disabled = lvl < 5; optG.textContent = lvl >= 5 ? "✨ Golden Petal" : "🔒 Level 5"; }
+
+    const opt10 = document.querySelector('option[value="six_paths_sage"]');
+    if (opt10) { opt10.disabled = lvl < 10; opt10.textContent = lvl >= 10 ? "☀️ Six Paths" : "🔒 Level 10"; }
+
+    const opt15 = document.querySelector('option[value="celestial_sovereignty"]');
+    if (opt15) { opt15.disabled = lvl < 15; opt15.textContent = lvl >= 15 ? "🌌 Celestial" : "🔒 Level 15"; }
+
+    const opt20 = document.querySelector('option[value="infinite_zen"]');
+    if (opt20) { opt20.disabled = lvl < 20; opt20.textContent = lvl >= 20 ? "💎 Infinite Zen" : "🔒 Level 20"; }
+
+    const opt30 = document.querySelector('option[value="omniscient_origin"]');
+    if (opt30) { opt30.disabled = lvl < 30; opt30.textContent = lvl >= 30 ? "👁️ Omniscient Origin" : "🔒 Level 30"; }
+
+    // 2. Stickers
+    document.querySelectorAll(".level-5-reward").forEach(el => el.style.display = lvl >= 5 ? "inline-flex" : "none");
+
+    // 3. UI Transformations (Rank Glows)
+    document.querySelectorAll(".panel").forEach(p => {
+      p.classList.remove("kage-aura", "celestial-border", "hologram-panel", "liquid-border");
+      if (lvl >= 30) p.classList.add("liquid-border");
+      else if (lvl >= 20) p.classList.add("hologram-panel");
+      else if (lvl >= 15) p.classList.add("celestial-border");
+      else if (lvl >= 10) p.classList.add("kage-aura");
+    });
+
+    // 4. Ninja Rank Text
+    let rank = "Genin";
+    if (lvl >= 5) rank = "Jonin";
+    if (lvl >= 10) rank = "Kage";
+    if (lvl >= 15) rank = "Celestial Sage";
+    if (lvl >= 20) rank = "Transcendent One";
+    if (lvl >= 30) rank = "Omniscient Sage 👁️";
+    if ($("ninjaRank")) $("ninjaRank").textContent = `Rank: ${rank}`;
+
+    // 5. SHOP ITEM UNLOCKS (Paper Skins) - DEFINED ONLY ONCE
     const shopSkins = [
       { id: "optRainy", shopId: "layout_rainy", name: "🌧️ Rainy Paper" },
       { id: "optGlitch", shopId: "layout_matrix", name: "👾 Glitch Paper" },
@@ -754,7 +700,7 @@ function toast(msg) {
     ];
 
     shopSkins.forEach(skin => {
-      const el = document.getElementById(skin.id);
+      const el = $(skin.id);
       if (el) {
         if (owned.includes(skin.shopId)) {
           el.disabled = false;
@@ -765,43 +711,28 @@ function toast(msg) {
         }
       }
     });
-  } // <--- This officially closes checkUnlocks
+  }
 
   function renderList() {
-    const list = document.getElementById("entryList"); 
-    if (!list) return;
-    const q = (document.getElementById("search")?.value || "").toLowerCase();
-    
+    const list = $("entryList"); if (!list) return;
+    const q = ($("search")?.value || "").toLowerCase();
     const filtered = entries.filter(e => {
         const matchTag = activeTag ? (e.tags || []).includes(activeTag) : true;
         const matchSearch = ((e.title||"") + (e.content||"")).toLowerCase().includes(q);
         return matchTag && matchSearch;
     }).sort((a,b) => b.updatedAt - a.updatedAt);
-
-    list.innerHTML = filtered.map(e => `
-      <div class="entry-card" data-id="${e.id}">
-        <h4>${e.title || '(Untitled)'}</h4>
-        <p>${e.date} • ${e.mood}</p>
-      </div>
-    `).join('');
-
-    list.querySelectorAll('.entry-card').forEach(card => {
-      card.onclick = () => {
+    list.innerHTML = filtered.map(e => `<div class="entry-card" data-id="${e.id}"><h4>${e.title || '(Untitled)'}</h4><p>${e.date} • ${e.mood}</p></div>`).join('');
+    list.querySelectorAll('.entry-card').forEach(card => card.onclick = () => {
         const e = entries.find(ent => ent.id === card.dataset.id);
-        if (!e) return;
         activeId = e.id; 
-        if(document.getElementById("date")) document.getElementById("date").value = e.date; 
-        if(document.getElementById("mood")) document.getElementById("mood").value = e.mood; 
-        if(document.getElementById("title")) document.getElementById("title").value = e.title; 
-        if(document.getElementById("tagsInput")) document.getElementById("tagsInput").value = (e.tags || []).join(', '); 
-        if(document.getElementById("content")) document.getElementById("content").innerHTML = e.content;
-      };
+        if($("date")) $("date").value = e.date; 
+        if($("mood")) $("mood").value = e.mood; 
+        if($("title")) $("title").value = e.title; 
+        if($("tagsInput")) $("tagsInput").value = (e.tags || []).join(', '); 
+        if($("content")) $("content").innerHTML = e.content;
     });
-
-    if (document.getElementById("count")) {
-      document.getElementById("count").textContent = filtered.length;
-    }
-  } // <--- This officially closes renderList
+    if ($("count")) $("count").textContent = filtered.length;
+  }
 
   function renderTagChips() {
     const row = $("tagRow"); if (!row) return;
@@ -814,14 +745,18 @@ function toast(msg) {
   $("btnSave")?.addEventListener('click', async () => {
     const contentHtml = $("content").innerHTML || "";
     const data = { id: activeId || Date.now().toString(), date: $("date").value, mood: $("mood").value, title: $("title").value, content: contentHtml, tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), updatedAt: Date.now() };
+    
     const wordCount = (data.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
-    localStorage.setItem("petal_tokens", (Number(localStorage.getItem("petal_tokens")) || 0) + 5 + Math.floor(wordCount / 50));
+    let tokens = (Number(localStorage.getItem("petal_tokens")) || 0) + 5 + Math.floor(wordCount / 50);
+    localStorage.setItem("petal_tokens", tokens);
+    
     if (!activeId) entries.push(data); else entries = entries.map(e => e.id === activeId ? data : e);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+
     if (window.firebaseAuth?.currentUser) {
       try {
         await setDoc(doc(window.firebaseDb, "entries", data.id), { ...data, userId: window.firebaseAuth.currentUser.uid }, { merge: true });
-        await setDoc(doc(window.firebaseDb, "users", window.firebaseAuth.currentUser.uid, "stats", "zen"), { whiteboard: Number(localStorage.getItem("petal_whiteboard_count")) || 0, well: Number(localStorage.getItem("petal_well_count")) || 0, tokens: Number(localStorage.getItem("petal_tokens")) || 0, updatedAt: Date.now() }, { merge: true });
+        await setDoc(doc(window.firebaseDb, "users", window.firebaseAuth.currentUser.uid, "stats", "zen"), { whiteboard: Number(localStorage.getItem("petal_whiteboard_count")) || 0, well: Number(localStorage.getItem("petal_well_count")) || 0, tokens: tokens, updatedAt: Date.now() }, { merge: true });
       } catch (err) { console.error(err); }
     }
     renderList(); renderTagChips(); checkUnlocks(); toast("Saved!");
