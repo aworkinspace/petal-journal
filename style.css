@@ -2339,3 +2339,36 @@ header, .top-actions { overflow: visible; }
   20% { opacity: 1; transform: scaleY(1); }
   100% { transform: scaleY(0) translateY(100px); opacity: 0; }
 }
+/* PRIDE PARTICLE BASE */
+.pride-sparkle {
+  position: absolute;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 5;
+  animation: pride-float 4s linear forwards;
+}
+
+@keyframes pride-float {
+  0% { transform: translateY(0) scale(0.5); opacity: 0; }
+  20% { opacity: 0.8; }
+  100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+}
+
+/* COLOR CYCLES */
+.rainbow-cycle { animation: pride-float 4s linear forwards, cycle-rainbow 2s infinite; }
+.sunset-cycle { animation: pride-float 4s linear forwards, cycle-sunset 2s infinite; }
+.bi-cycle { animation: pride-float 4s linear forwards, cycle-bi 2s infinite; }
+.trans-cycle { animation: pride-float 4s linear forwards, cycle-trans 2s infinite; }
+
+@keyframes cycle-rainbow {
+  0% { background: #FF0000; box-shadow: 0 0 10px #FF0000; }
+  20% { background: #FF9900; box-shadow: 0 0 10px #FF9900; }
+  40% { background: #FFFF00; box-shadow: 0 0 10px #FFFF00; }
+  60% { background: #33CC33; box-shadow: 0 0 10px #33CC33; }
+  80% { background: #3333FF; box-shadow: 0 0 10px #3333FF; }
+  100% { background: #800080; box-shadow: 0 0 10px #800080; }
+}
+
+@keyframes cycle-sunset {
+  0% { background: #D62800; box-shadow: 0 0 10px #D6280
