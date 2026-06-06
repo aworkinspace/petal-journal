@@ -837,14 +837,32 @@ function toast(msg) {
   });
 
 
-  $("btnDelete")?.addEventListener('click', () => {
-    if (!activeId || !confirm("Delete?")) return;
-    entries = entries.filter(e => e.id !== activeId);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-    renderList(); renderTagChips(); checkUnlocks();
-    activeId = null; $("title").value = ""; $("content").innerHTML = ""; toast("Deleted.");
-    $("deleteSfx")?.play();
+    $("btnDelete")?.addEventListener('click', () => {
+    if (!activeId || !confirm("Delete this entry?")) return;
+    
+    // ... your existing delete logic (entries.filter, localStorage.setItem, etc.) ...
+
+    renderList(); renderTagChips(); if (typeof checkUnlocks === "function") checkUnlocks();
+    resetEditor(); 
+    toast("Deleted.");
+
+    // --- NEW: DYNAMIC DELETE SFX ---
+    const equipped = localStorage.getItem("petal_equipped_delete_sfx") || "default";
+    let audioToPlay;
+
+    if (equipped === "default") {
+      audioToPlay = document.getElementById("deleteSfx");
+    } else {
+      const fileName = equipped.replace("sfx_", "");
+      audioToPlay = new Audio(`assets/${fileName}.mp3`);
+    }
+
+    if (audioToPlay) {
+      audioToPlay.currentTime = 0;
+      audioToPlay.play().catch(() => {});
+    }
   });
+
 
   document.addEventListener("DOMContentLoaded", () => {
     try { entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); } catch { entries = []; }
