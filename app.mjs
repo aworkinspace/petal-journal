@@ -931,42 +931,34 @@ function toast(msg) {
       else if (type === "embers") { p.className = "ember"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; }
       else if (type === "sand") { p.className = "sand-grain"; p.style.left = "-10px"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = (Math.random() * 1 + 2) + "s"; }
 
-      // PRIDE
-               if (type.startsWith("pride_")) {
-      p.className = "pride-sparkle";
-      if (type === "pride_rainbow") p.classList.add("rainbow-cycle");
-           else if (type === "pride_rainbow") {
+            // --- PRIDE THEMES (Custom Movements) ---
+      else if (type === "pride_rainbow") {
         p.className = "rainbow-trail";
         p.style.top = Math.random() * 100 + "vh";
-        p.style.left = "-50px";
+        p.style.left = "-50px"; // Starts off-screen left
       }
       else if (type === "pride_sunset") {
         p.className = "sunset-ray";
         p.style.left = Math.random() * 100 + "vw";
-        p.style.bottom = "-60px";
+        p.style.bottom = "-60px"; // Starts off-screen bottom
       }
       else if (type === "pride_gay") {
         p.className = "ocean-drop";
         p.style.left = Math.random() * 100 + "vw";
-        p.style.top = "-20px";
+        p.style.top = "-20px"; // Starts off-screen top
       }
       else if (type === "pride_bi") {
         p.className = "bi-star";
         p.style.left = Math.random() * 100 + "vw";
-        p.style.top = Math.random() * 100 + "vh";
+        p.style.top = Math.random() * 100 + "vh"; // Appears anywhere
       }
       else if (type === "pride_trans") {
         p.className = "trans-bubble";
         p.style.left = Math.random() * 100 + "vw";
-        p.style.bottom = "-20px";
+        p.style.bottom = "-20px"; // Drifts up from bottom
         const size = Math.random() * 15 + 10 + "px";
         p.style.width = size; p.style.height = size;
       }
-
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.bottom = "-10px";
-    }
-    }
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
     }, (type === "teleport" || type === "bolts" || type === "slashes" || type === "air_cracks" || type === "glitch" || type === "lightning") ? 80 : 800);
