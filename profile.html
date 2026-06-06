@@ -772,37 +772,50 @@ if (currentUser) {
    localStorage.setItem("petal_tokens", tokens);
 }
 if ($("tokenBalance")) $("tokenBalance").textContent = tokens;
-        // --- JUTSU SFX SYNC ---
-  const sfxSelect = document.getElementById("sfxSelect");
+         // --- JUTSU SFX SYNC (Fixed Save & Delete) ---
+  const saveSelect = document.getElementById("sfxSelect");
+  const deleteSelect = document.getElementById("deleteSfxSelect");
   const ownedItems = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
 
-  if (sfxSelect) {
-    // Reset the list
-    sfxSelect.innerHTML = '<option value="default">Default Save Sound</option>';
-    
-    // Map IDs to pretty names
-    const sfxNames = {
-  "sfx_chidori": "Chidori ⚡",
-  "sfx_dattebayo": "Dattebayo! 🍥",
-  "sfx_yowaimo": "Yowaimo Six Eyes 👁️",
-  "sfx_usuratonkachi": "Usuratonkachi ✨",
-  "sfx_notazenin": "Not a Zenin, Huh? 🤍",
-  "sfx_sukunalaugh": "Sukuna's Laugh 👹",
-};
+  const sfxNames = {
+    "sfx_chidori": "Chidori ⚡",
+    "sfx_dattebayo": "Dattebayo! 🍥",
+    "sfx_yowaimo": "Yowaimo Six Eyes 👁️",
+    "sfx_usuratonkachi": "Usuratonkachi ✨",
+    "sfx_notazenin": "Not a Zenin, Huh? 🤍",
+    "sfx_sukunalaugh": "Sukuna's Laugh 👹",
+  };
 
+  // Loop through both dropdowns to set them up
+  [saveSelect, deleteSelect].forEach(select => {
+    if (!select) return;
+    
+    // 1. Reset the list with the correct default
+    const isSave = select.id === "sfxSelect";
+    select.innerHTML = `<option value="default">Default ${isSave ? 'Save' : 'Delete'} Sound</option>`;
+    
+    // 2. Add only the sounds the user has bought
     ownedItems.forEach(itemId => {
       if (itemId.startsWith("sfx_")) {
         const opt = document.createElement("option");
         opt.value = itemId;
         opt.textContent = sfxNames[itemId] || "Unknown Jutsu";
-        sfxSelect.appendChild(opt);
+        select.appendChild(opt);
       }
     });
 
-    // Load and save preference
-    sfxSelect.value = localStorage.getItem("petal_equipped_sfx") || "default";
-    sfxSelect.onchange = (e) => localStorage.setItem("petal_equipped_sfx", e.target.value);
-  }
+    // 3. Load the saved choice from memory
+    const storageKey = isSave ? "petal_equipped_sfx" : "petal_equipped_delete_sfx";
+    const savedChoice = localStorage.getItem(storageKey) || "default";
+    select.value = savedChoice;
+
+    // 4. Save the new choice when the user changes the dropdown
+    select.onchange = (e) => {
+      localStorage.setItem(storageKey, e.target.value);
+      console.log(`${isSave ? 'Save' : 'Delete'} sound set to: ${e.target.value}`);
+    };
+  });
+
 
 
   /* ------------------- Profile Actions ------------------- */
