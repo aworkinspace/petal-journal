@@ -645,6 +645,14 @@ flower_archeologist: {
   <div class="chip" style="font-size: 20px; background: #FFF9E6; border: 2px solid #FACC15;">
     🪙 <span id="tokenBalance">0</span> Petal Tokens
   </div>
+  <div class="profile-field">
+  <div class="section-title">Equipped Jutsu Sound</div>
+  <select id="sfxSelect" class="input" style="font-family: 'VT323'; font-size: 18px;">
+    <option value="default">Default Save Sound</option>
+    <!-- Bought sounds will appear here -->
+  </select>
+  <small class="muted">This sound plays when you save a journal entry.</small>
+</div>
 </div>
         <div class="zen-container">
           <div class="zen-info">
@@ -764,6 +772,35 @@ if (currentUser) {
    localStorage.setItem("petal_tokens", tokens);
 }
 if ($("tokenBalance")) $("tokenBalance").textContent = tokens;
+        // --- JUTSU SFX SYNC ---
+  const sfxSelect = document.getElementById("sfxSelect");
+  const ownedItems = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
+
+  if (sfxSelect) {
+    // Reset the list
+    sfxSelect.innerHTML = '<option value="default">Default Save Sound</option>';
+    
+    // Map IDs to pretty names
+    const sfxNames = {
+      "sfx_chidori": "Chidori ⚡",
+      "sfx_dattebayo": "Dattebayo! 🍥",
+      "sfx_yawimo": "Yowaimo Six Eyes 👁️"
+    };
+
+    ownedItems.forEach(itemId => {
+      if (itemId.startsWith("sfx_")) {
+        const opt = document.createElement("option");
+        opt.value = itemId;
+        opt.textContent = sfxNames[itemId] || "Unknown Jutsu";
+        sfxSelect.appendChild(opt);
+      }
+    });
+
+    // Load and save preference
+    sfxSelect.value = localStorage.getItem("petal_equipped_sfx") || "default";
+    sfxSelect.onchange = (e) => localStorage.setItem("petal_equipped_sfx", e.target.value);
+  }
+
 
   /* ------------------- Profile Actions ------------------- */
 
