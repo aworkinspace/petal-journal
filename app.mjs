@@ -525,7 +525,18 @@ flower_archeologist: {
     "--bg-spot-1": "rgba(168, 85, 247, 0.1)",
     "animation": "star_shards"
   },
-
+  omniscient_origin: {
+    "--bg": "#020205", 
+    "--surface": "rgba(10, 10, 20, 0.9)",
+    "--surface-2": "#FFFFFF",
+    "--border": "#00F3FF", // Neon Cyan
+    "--primary": "#00F3FF", 
+    "--primary-soft": "rgba(0, 243, 255, 0.1)",
+    "--accent": "#FF007A", // Neon Pink
+    "--text": "#FFFFFF",
+    "--text-muted": "rgba(255, 255, 255, 0.6)",
+    "animation": "dimensional_tears"
+  },
 };
 /* ------------------- Helpers (Fixed & Balanced) ------------------- */
 function applyVars(vars) {
@@ -640,45 +651,90 @@ function toast(msg) {
   }
 
     function checkUnlocks() {
-    const lvl = getZenLevel();
-    console.log("Checking Unlocks for Level:", lvl);
+  const lvl = getZenLevel();
+  const owned = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
+  console.log("Checking Unlocks for Level:", lvl);
 
-    // 1. Level 5: Stickers & Golden Petal
-    document.querySelectorAll(".level-5-reward").forEach(el => el.style.display = lvl >= 5 ? "inline-flex" : "none");
-    const optG = document.querySelector('option[value="golden_petal"]'); 
-    if (optG) { 
-        optG.disabled = lvl < 5; 
-        optG.textContent = lvl >= 5 ? "✨ Golden Petal" : "🔒 Level 5"; 
-    }
+  // 1. Level 5: Stickers & Golden Petal
+  document.querySelectorAll(".level-5-reward").forEach(el => {
+    el.style.display = lvl >= 5 ? "inline-flex" : "none";
+  });
+  const optG = document.querySelector('option[value="golden_petal"]');
+  if (optG) {
+    optG.disabled = lvl < 5;
+    optG.textContent = lvl >= 5 ? "✨ Golden Petal" : "🔒 Level 5";
+  }
 
-    // 2. Level 10: Six Paths Sage + Aura
-    const opt6 = document.querySelector('option[value="six_paths_sage"]'); 
-    if (opt6) { 
-        opt6.disabled = lvl < 10; 
-        opt6.textContent = lvl >= 10 ? "☀️ Six Paths" : "🔒 Level 10"; 
-        if (lvl >= 10) document.querySelectorAll(".panel").forEach(p => p.classList.add("kage-aura")); 
-    }
+  // 2. Level 10: Six Paths Sage + Aura
+  const opt10 = document.querySelector('option[value="six_paths_sage"]');
+  if (opt10) {
+    opt10.disabled = lvl < 10;
+    opt10.textContent = lvl >= 10 ? "☀️ Six Paths Sage" : "🔒 Level 10";
+  }
 
-    // 3. Level 15: Celestial Sovereignty + Rainbow Border
-    const optC = document.querySelector('option[value="celestial_sovereignty"]'); 
-    if (optC) { 
-        optC.disabled = lvl < 15; 
-        optC.textContent = lvl >= 15 ? "🌌 Celestial" : "🔒 Level 15"; 
-        if (lvl >= 15) document.querySelectorAll(".panel").forEach(p => p.classList.add("celestial-border")); 
-    }
+  // 3. Level 15: Celestial Sovereignty
+  const opt15 = document.querySelector('option[value="celestial_sovereignty"]');
+  if (opt15) {
+    opt15.disabled = lvl < 15;
+    opt15.textContent = lvl >= 15 ? "🌌 Celestial Sovereignty" : "🔒 Level 15";
+  }
 
-    // 4. Level 20: Infinite Zen + Hologram UI
-    const optZ = document.querySelector('option[value="infinite_zen"]'); 
-    if (optZ) { 
-        optZ.disabled = lvl < 20; 
-        optZ.textContent = lvl >= 20 ? "💎 Infinite Zen" : "🔒 Level 20"; 
-        if (lvl >= 20) {
-            document.querySelectorAll(".panel").forEach(p => {
-                p.classList.remove("kage-aura", "celestial-border");
-                p.classList.add("hologram-panel");
-            });
-        }
+  // 4. Level 20: Infinite Zen
+  const opt20 = document.querySelector('option[value="infinite_zen"]');
+  if (opt20) {
+    opt20.disabled = lvl < 20;
+    opt20.textContent = lvl >= 20 ? "💎 Infinite Zen" : "🔒 Level 20";
+  }
+
+  // 5. Level 30: Omniscient Origin
+  const opt30 = document.querySelector('option[value="omniscient_origin"]');
+  if (opt30) {
+    opt30.disabled = lvl < 30;
+    opt30.textContent = lvl >= 30 ? "👁️ Omniscient Origin" : "🔒 Level 30";
+  }
+
+  // --- UI TRANSFORMATIONS (Rank-based visuals) ---
+  const panels = document.querySelectorAll(".panel");
+  panels.forEach(p => {
+    // Clear all special rank classes first
+    p.classList.remove("kage-aura", "celestial-border", "hologram-panel", "liquid-border");
+    
+    // Apply the best one you've earned
+    if (lvl >= 30) p.classList.add("liquid-border");
+    else if (lvl >= 20) p.classList.add("hologram-panel");
+    else if (lvl >= 15) p.classList.add("celestial-border");
+    else if (lvl >= 10) p.classList.add("kage-aura");
+  });
+
+  // --- NINJA RANK TEXT ---
+  let rank = "Genin";
+  if (lvl >= 5) rank = "Jonin";
+  if (lvl >= 10) rank = "Kage";
+  if (lvl >= 15) rank = "Celestial Sage";
+  if (lvl >= 20) rank = "Transcendent One";
+  if (lvl >= 30) rank = "Omniscient Sage 👁️";
+  if (document.getElementById("ninjaRank")) document.getElementById("ninjaRank").textContent = `Rank: ${rank}`;
+
+  // --- SHOP ITEM UNLOCKS (Paper Skins) ---
+  const shopSkins = [
+    { id: "optRainy", shopId: "layout_rainy", name: "🌧️ Rainy Paper" },
+    { id: "optGlitch", shopId: "layout_matrix", name: "👾 Glitch Paper" },
+    { id: "optHolo", shopId: "layout_hologram", name: "💎 Holo Paper" }
+  ];
+
+  shopSkins.forEach(skin => {
+    const el = document.getElementById(skin.id);
+    if (el) {
+      if (owned.includes(skin.shopId)) {
+        el.disabled = false;
+        el.textContent = skin.name;
+      } else {
+        el.disabled = true;
+        el.textContent = "🔒 Shop Item";
+      }
     }
+  });
+}
 
     // --- NEW: SHOP ITEM UNLOCKS (Skins) ---
     const owned = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
@@ -865,7 +921,13 @@ function toast(msg) {
       else if (type === "supernova") { p.className = "blood-orb"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "3s"; p.style.animationDelay = (Math.random() * 2) + "s"; }
       else if (type === "clock_ticks") { p.className = "clock-hand"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; p.style.animationDuration = (Math.random() * 2 + 4) + "s"; }
       else if (type === "summer_clouds") { p.className = "summer-cloud"; p.style.top = Math.random() * 40 + "vh"; p.style.left = "-150px"; p.style.width = (Math.random() * 100 + 100) + "px"; p.style.animationDuration = (Math.random() * 10 + 15) + "s"; }
-      
+      else if (type === "dimensional_tears") {
+      p.className = "tear";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.top = Math.random() * 100 + "vh";
+      p.style.animationDuration = "2s";
+    }
+
       // 4. ONE PIECE THEMES
       else if (type === "air_cracks") { p.className = "air-crack"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.setProperty('--rot', `${Math.random() * 360}deg`); p.style.animationDuration = "0.4s"; }
       else if (type === "room_scan") { p.className = "room-circle"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; }
