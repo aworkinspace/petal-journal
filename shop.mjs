@@ -3,20 +3,20 @@ const balanceEl = document.getElementById("shopBalance");
 
 // 1. SHOP INVENTORY
 const shopItems = [
-  { id: "sticker_kunai", name: "Steel Kunai", type: "sticker", price: 50, icon: "assets/kunai.gif" },
-  { id: "sticker_curse", name: "Cursed Mark", type: "sticker", price: 50, icon: "assets/cursedmark.gif" },
-  { id: "sticker_joyboy", name: "Nika Sun", type: "sticker", price: 50, icon: "assets/sungod.gif" },
-  { id: "sticker_chibigojo", name: "Chibi Gojo", type: "sticker", price: 50, icon: "assets/gojo_chibi.gif" },
-  { id: "sticker_cukootoji", name: "Cukoo Toji", type: "sticker", price: 50, icon: "assets/cukoo_toji.gif" },
+  { id: "sticker_kunai", name: "Steel Kunai", type: "sticker", price: 25, icon: "assets/kunai.gif" },
+  { id: "sticker_curse", name: "Cursed Mark", type: "sticker", price: 25, icon: "assets/cursedmark.gif" },
+  { id: "sticker_joyboy", name: "Nika Sun", type: "sticker", price: 25, icon: "assets/sungod.gif" },
+  { id: "sticker_chibigojo", name: "Chibi Gojo", type: "sticker", price: 25, icon: "assets/gojo_chibi.gif" },
+  { id: "sticker_cukootoji", name: "Cukoo Toji", type: "sticker", price: 25, icon: "assets/cukoo_toji.gif" },
   { id: "layout_rainy", name: "Rain-Dashed Paper", type: "layout", price: 100, icon: "assets/rain_icon.png" },
   { id: "layout_matrix", name: "Glitch Circuitry", type: "layout", price: 100, icon: "assets/glitch_icon.png" },
   { id: "layout_hologram", name: "Holo-Prism", type: "layout", price: 100, icon: "assets/holo_icon.png" },
-  { id: "sfx_chidori", name: "SFX: Chidori", type: "sfx", price: 75, icon: "assets/kakashi_nendo.png" },
-  { id: "sfx_dattebayo", name: "SFX: Dattebayo!", type: "sfx", price: 75, icon: "assets/naruto_nendo.png" },
-  { id: "sfx_yowaimo", name: "SFX: Yowaimo (Gojo)", type: "sfx", price: 75, icon: "assets/gojo_nendo.png" },
-  { id: "sfx_usuratonkachi", name: "SFX: Usuratonkachi", type: "sfx", price: 75, icon: "assets/sasuke_nendo.png" },
-  { id: "sfx_notazenin", name: "SFX: Not A Zenin", type: "sfx", price: 75, icon: "assets/toji_nendo.png" },
-  { id: "sfx_sukunalaugh", name: "SFX: Sukuna's Laugh", type: "sfx", price: 75, icon: "assets/sukuna_nendo.png" },
+  { id: "sfx_chidori", name: "SFX: Chidori", type: "sfx", price: 50, icon: "assets/kakashi_nendo.png" },
+  { id: "sfx_dattebayo", name: "SFX: Dattebayo!", type: "sfx", price: 50, icon: "assets/naruto_nendo.png" },
+  { id: "sfx_yowaimo", name: "SFX: Yowaimo (Gojo)", type: "sfx", price: 50, icon: "assets/gojo_nendo.png" },
+  { id: "sfx_usuratonkachi", name: "SFX: Usuratonkachi", type: "sfx", price: 50, icon: "assets/sasuke_nendo.png" },
+  { id: "sfx_notazenin", name: "SFX: Not A Zenin", type: "sfx", price: 50, icon: "assets/toji_nendo.png" },
+  { id: "sfx_sukunalaugh", name: "SFX: Sukuna's Laugh", type: "sfx", price: 50, icon: "assets/sukuna_nendo.png" },
 ];
 
 function getTokens() { return Number(localStorage.getItem("petal_tokens")) || 0; }
