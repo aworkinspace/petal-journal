@@ -13,7 +13,7 @@ const shopItems = [
   { id: "layout_hologram", name: "Holo-Prism", type: "layout", price: 100, icon: "assets/holo_icon.png" },
   { id: "sfx_chidori", name: "SFX: Chidori", type: "sfx", price: 75, icon: "assets/kakashi_nendo.png" },
   { id: "sfx_dattebayo", name: "SFX: Dattebayo!", type: "sfx", price: 75, icon: "assets/naruto_nendo.png" },
-  { id: "sfx_yowaimo", name: "SFX: Yowaimo (Gojo)", type: "sfx", price: 75, icon: "assets/gojo_nendo.png" }
+  { id: "sfx_yowaimo", name: "SFX: Yowaimo (Gojo)", type: "sfx", price: 75, icon: "assets/gojo_nendo.png" },
   { id: "sfx_usuratonkachi", name: "SFX: Usuratonkachi", type: "sfx", price: 75, icon: "assets/sasuke_nendo.png" }
 ];
 
