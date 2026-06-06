@@ -932,7 +932,10 @@ function toast(msg) {
       else if (type === "sand") { p.className = "sand-grain"; p.style.left = "-10px"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = (Math.random() * 1 + 2) + "s"; }
 
       // PRIDE
-               else if (type === "pride_rainbow") {
+               f (type.startsWith("pride_")) {
+      p.className = "pride-sparkle";
+      if (type === "pride_rainbow") p.classList.add("rainbow-cycle");
+           else if (type === "pride_rainbow") {
         p.className = "rainbow-trail";
         p.style.top = Math.random() * 100 + "vh";
         p.style.left = "-50px";
@@ -959,6 +962,10 @@ function toast(msg) {
         const size = Math.random() * 15 + 10 + "px";
         p.style.width = size; p.style.height = size;
       }
+
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.bottom = "-10px";
+    }
     }
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
