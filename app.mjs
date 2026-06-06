@@ -983,10 +983,10 @@ function toast(msg) {
       surgeon_death: "room_scan", sun_god: "drum_beats", silent_heart: "hearts", legendary_merchant: "fans", flower_archeologist: "arms",
       retro_handheld: "pixels", classic_desktop: "cursors", farm_life: "crops", cozy_cafe: "steam", infinite_tsukuyomi: "dream_waves", 
       infinite_zen: "divine_aura", celestial_sovereignty: "star_shards", progress_pride: "pride_rainbow",
-gay_ocean: "pride_gay",
 lesbian_sunset: "pride_sunset",
+gay_ocean: "pride_gay",
 bisexual_galaxy: "pride_bi",
-trans_serenity: "pride_trans"
+trans_serenity: "pride_trans",
 
     };
     startAnimation(map[theme] || null);
