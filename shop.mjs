@@ -23,6 +23,7 @@ const shopItems = [
   { id: "sfx_dattebayo", name: "SFX: Dattebayo!", type: "sfx", price: 50, icon: "assets/naruto_nendo.png" },
   { id: "sfx_yowaimo", name: "SFX: Yowaimo", type: "sfx", price: 50, icon: "assets/gojo_nendo.png" },
   { id: "sfx_usuratonkachi", name: "SFX: Usuratonkachi", type: "sfx", price: 50, icon: "assets/sasuke_nendo.png" },
+  { id: "sfx_hashirama", name: "SFX: Tsuna?", type: "sfx", price: 50, icon: "assets/hashirama_nendo.png" },
   { id: "sfx_notazenin", name: "SFX: Not A Zenin", type: "sfx", price: 50, icon: "assets/toji_nendo.png" },
   { id: "sfx_sukunalaugh", name: "SFX: Sukuna's Laugh", type: "sfx", price: 50, icon: "assets/sukuna_nendo.png" },
   { id: "cursor_kunai", name: "Kunai Pointer", type: "cursor", price: 25, icon: "assets/kunai_cursor.png" },
@@ -36,6 +37,7 @@ const shopItems = [
   { id: "pet_nendo_gojo", name: "Nendo Gojo", type: "pet", price: 400, icon: "assets/nendo_gojo.png" },
   { id: "pet_nendo_law", name: "Nendo Law", type: "pet", price: 400, icon: "assets/nendo_law.png" },
   { id: "pet_nendo_madara", name: "Nendo Madara", type: "pet", price: 400, icon: "assets/nendo_madara.png" },
+  { id: "pet_nendo_hashirama", name: "Nendo Hashirama", type: "pet", price: 400, icon: "assets/nendo_hashirama.png" },
   { id: "pet_nendo_obito", name: "Nendo Obito", type: "pet", price: 400, icon: "assets/nendo_obito.png" },
   { id: "title_sannin", name: "Sannin Title", type: "title", price: 300, icon: "assets/title_scroll.png" },
   { id: "title_uchiha", name: "Uchiha Title", type: "title", price: 300, icon: "assets/title_fan.png" }
