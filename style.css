@@ -2677,3 +2677,19 @@ header, .top-actions { overflow: visible; }
   0%, 100% { filter: brightness(1); }
   50% { filter: brightness(1.1) saturate(1.2); }
 }
+/* GLOBAL WHITE GLOW FOR ALL COMPANIONS */
+.desk-pet img[src*="narusasu"] {
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9));
+  /* This ensures the glow is sharp and doesn't get blurry */
+  image-rendering: pixelated; 
+}
+
+/* Optional: Make the glow "pulsate" with their float animation */
+.desk-pet img[src*="narusasu"] {
+  animation: pet-float 3s ease-in-out infinite, chakra-glow 2s infinite alternate;
+}
+
+@keyframes chakra-glow {
+  from { filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.6)); }
+  to { filter: drop-shadow(0 0 15px rgba(255, 255, 255, 1)); }
+}
