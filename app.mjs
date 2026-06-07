@@ -629,11 +629,10 @@ function applySkin(skinName) {
   
   // 1. Clear ALL possible skins (Standard + Animated)
  notebook.classList.remove(
-    "skin-ruled", "skin-grid", "skin-dots", 
-    "skin-dark-ruled", "skin-dark-grid", "skin-dark-dots",
-    "skin-rainy-paper", "skin-glitch-paper", "skin-holo-paper",
-    "skin-hokage-scroll", "skin-prison-realm" // ADDED THESE
-  );
+  "skin-ruled", "skin-grid", "skin-dots", 
+  "skin-rainy-paper", "skin-glitch-paper", "skin-holo-paper",
+  "skin-hokage-scroll", "skin-prison-realm", "skin-toji-arsenal" // Added
+);
 
   // 2. Add the new one (convert underscores to dashes)
   const formattedName = String(skinName).replace("_", "-");
@@ -745,7 +744,8 @@ function toast(msg) {
       { id: "optHolo", shopId: "layout_hologram", name: "💎 Holo Paper" },
       // NEW ULTIMATE LAYOUTS
       { id: "optHokage", shopId: "layout_hokage", name: "📜 Hokage Scroll" },
-      { id: "optPrison", shopId: "layout_prison", name: "👁️ Prison Realm" }
+      { id: "optPrison", shopId: "layout_prison", name: "👁️ Prison Realm" },
+      { id: "optToji", shopId: "layout_toji", name: "⛓️ Heavenly Restriction" }
     ];
 
 
