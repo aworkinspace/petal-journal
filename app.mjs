@@ -669,17 +669,42 @@ function toast(msg) {
   toast._id = setTimeout(() => t.classList.remove("show"), 2200);
 }
 
-/* ------------------- Firebase ------------------- */
+/* ------------------- Firebase Logic (With Title Sync) ------------------- */
 (() => {
   const auth = window.firebaseAuth;
   if (!auth) return;
+
   onAuthStateChanged(auth, (user) => {
     const loginBtn = document.getElementById("authButton");
     const profBtn = document.getElementById("profileButton");
     const outBtn = document.getElementById("btnSignOut");
+
     if (user) {
       if (loginBtn) loginBtn.style.display = "none";
-      if (profBtn) { profBtn.style.display = "inline-flex"; profBtn.textContent = user.displayName || "My Profile"; }
+      if (profBtn) {
+        profBtn.style.display = "inline-flex";
+        
+        // --- NEW: TITLE SYNC ---
+        // Get the equipped title from memory
+        const equippedTitle = localStorage.getItem("petal_equipped_title") || "none";
+        const titleNames = {
+          "title_sannin": "Legendary Sannin",
+          "title_uchiha": "Ghost of the Uchiha",
+          "title_honored": "The Honored One",
+          "title_kage": "Shadow of the Leaf",
+          "title_yonko": "The Strongest Man"
+        };
+
+        let displayName = user.displayName || "My Profile";
+        
+        // If a title is equipped, add it to the button text
+        if (equippedTitle !== "none" && titleNames[equippedTitle]) {
+          profBtn.textContent = `[${titleNames[equippedTitle]}] ${displayName}`;
+        } else {
+          profBtn.textContent = displayName;
+        }
+        // ------------------------
+      }
       if (outBtn) outBtn.style.display = "inline-flex";
     } else {
       setTimeout(() => {
@@ -691,8 +716,15 @@ function toast(msg) {
       }, 2000);
     }
   });
-  document.getElementById("btnSignOut")?.addEventListener("click", () => signOut(auth).then(() => location.reload()));
+
+  document.getElementById("btnSignOut")?.addEventListener("click", () => {
+    signOut(auth).then(() => {
+      // Clear session-specific data but keep tokens/owned items
+      location.reload();
+    });
+  });
 })();
+
 
 /* ------------------- Journal (Balanced & Fixed) ------------------- */
 (() => {
