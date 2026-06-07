@@ -2637,3 +2637,13 @@ header, .top-actions { overflow: visible; }
   from { box-shadow: 0 0 5px var(--accent); }
   to { box-shadow: 0 0 20px var(--accent); }
 }
+/* Special class just for the Madara pet */
+.desk-pet img[src*="madara"] {
+  filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.4)); /* Red Sharingan glow */
+  animation: madara-float 4s ease-in-out infinite;
+}
+
+@keyframes madara-float {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+}
