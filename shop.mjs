@@ -55,7 +55,10 @@ const shopItems = [
   { id: "layout_prison", name: "Prison Realm Case", type: "layout", price: 500, icon: "assets/prison_icon.png" },
   { id: "layout_toji", name: "Heavenly Restriction", type: "layout", price: 500, icon: "assets/toji_icon.png" },
   { id: "layout_bond", name: "Eternal Bond", type: "layout", price: 600, icon: "assets/bond_icon.png" },
-
+  { id: "pet_nendo_kakashi", name: "Nendo Kakashi", type: "pet", price: 400, icon: "assets/nendo_kakashi.png" },
+  { id: "pet_nendo_gojo", name: "Nendo Gojo", type: "pet", price: 400, icon: "assets/nendo_gojo.png" },
+  { id: "pet_nendo_law", name: "Nendo Law", type: "pet", price: 400, icon: "assets/nendo_law.png" },
+  { id: "pet_nendo_sakura", name: "Nendo Sakura", type: "pet", price: 400, icon: "assets/nendo_sakura.png" }
 
 ];
 
