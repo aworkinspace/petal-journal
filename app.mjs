@@ -694,7 +694,8 @@ function toast(msg) {
           "title_uchiha": "Ghost of the Uchiha",
           "title_honored": "The Honored One",
           "title_kage": "Shadow of the Leaf",
-          "title_yonko": "The Strongest Man"
+          "title_yonko": "The Strongest Man",
+          "title_mednin": "Medical-Nin" // <--- ADD THIS LINE
         };
 
         let displayName = user.displayName || "My Profile";
