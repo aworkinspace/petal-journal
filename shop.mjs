@@ -1,6 +1,34 @@
 const grid = document.getElementById("shopGrid");
 const balanceEl = document.getElementById("shopBalance");
+function applyGlobalCursor(cursorId) {
+  if (!cursorId || cursorId === "default") {
+    document.documentElement.style.cursor = "auto";
+    // Also reset buttons
+    const style = document.getElementById("dynamic-cursor-style");
+    if (style) style.remove();
+    return;
+  }
 
+  const fileName = cursorId.replace("cursor_", "");
+  const url = `assets/${fileName}_cursor.png`;
+
+  // We create a style tag to override EVERYTHING (buttons, links, etc)
+  let style = document.getElementById("dynamic-cursor-style");
+  if (!style) {
+    style = document.createElement("style");
+    style.id = "dynamic-cursor-style";
+    document.head.appendChild(style);
+  }
+
+  // Cursors need to be 32x32 or smaller to work in all browsers
+  style.innerHTML = `
+    * { cursor: url('${url}'), auto !important; }
+    a, button, summary, .btn, .chip { cursor: url('${url}'), pointer !important; }
+  `;
+}
+
+// Initial check on page load
+applyGlobalCursor(localStorage.getItem("petal_equipped_cursor"));
 // 1. SHOP INVENTORY
 const shopItems = [
   { id: "sticker_kunai", name: "Steel Kunai", type: "sticker", price: 25, icon: "assets/kunai.gif" },
