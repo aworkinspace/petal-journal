@@ -2432,3 +2432,32 @@ header, .top-actions { overflow: visible; }
     bottom: 5px;
   }
 }
+/* 1. HOKAGE SCROLL LAYOUT */
+.skin-hokage-scroll {
+  background: #f4e4bc !important; /* Aged paper color */
+  border: 15px solid #8b4513 !important; /* Wooden scroll handles */
+  border-left-width: 30px !important;
+  border-right-width: 30px !important;
+  border-radius: 40px !important;
+  box-shadow: 10px 10px 0px rgba(0,0,0,0.2), inset 0 0 50px rgba(139, 69, 19, 0.2) !important;
+  color: #4a3728 !important;
+}
+/* Change the notebook lines to look like ink on a scroll */
+.skin-hokage-scroll::before {
+  background: rgba(139, 69, 19, 0.1) !important;
+}
+
+/* 2. PRISON REALM GRID (Gojo's Box) */
+.skin-prison-realm {
+  background: #1a1a1a !important;
+  border: 6px double #4a4a4a !important;
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.4) !important;
+  color: #e2e8f0 !important;
+}
+/* Glowing purple cubic lines */
+.skin-prison-realm {
+  background-image: 
+    linear-gradient(rgba(168, 85, 247, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168, 85, 247, 0.2) 1px, transparent 1px) !important;
+  background-size: 40px 40px !important;
+}
