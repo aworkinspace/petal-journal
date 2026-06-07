@@ -942,15 +942,14 @@ if ($("tokenBalance")) $("tokenBalance").textContent = tokens;
     petSelect.innerHTML = '<option value="none">No Companion</option>';
     
     ownedItems.forEach(itemId => {
-      if (itemId.startsWith("pet_")) {
-        // Clean up the ID for the display name
-        const name = itemId.replace("pet_nendo_", "").replace("pet_", "").toUpperCase();
-        const opt = document.createElement("option");
-        opt.value = itemId;
-        opt.textContent = `${name} Nendoroid`; 
-        petSelect.appendChild(opt);
-      } // <--- THIS WAS THE MISSING BRACE!
-    });
+  if (itemId.startsWith("pet_")) {
+    const name = itemId.replace("pet_nendo_", "").replace("pet_", "").toUpperCase();
+    const opt = document.createElement("option");
+    opt.value = itemId;
+    opt.textContent = `${name} Nendoroid`; 
+    petSelect.appendChild(opt);
+  }
+});
 
     petSelect.value = localStorage.getItem("petal_equipped_pet") || "none";
     
