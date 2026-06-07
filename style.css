@@ -2657,3 +2657,14 @@ header, .top-actions { overflow: visible; }
   0%, 100% { transform: translateY(0) scale(1); }
   50% { transform: translateY(-10px) scale(1.02); }
 }
+
+.desk-pet img[src*="hashirama"] {
+  /* Changed from (255, 0, 0) red to (79, 119, 45) green */
+  filter: drop-shadow(0 0 8px rgba(79, 119, 45, 0.8)); 
+  animation: hashirama-float 4s ease-in-out infinite;
+}
+
+@keyframes hashirama-float {
+  0%, 100% { transform: translateY(0); filter: drop-shadow(0 0 5px rgba(79, 119, 45, 0.6)) brightness(1); }
+  50% { transform: translateY(-8px); filter: drop-shadow(0 0 15px rgba(79, 119, 45, 1)) brightness(1.2); }
+}
