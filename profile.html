@@ -685,6 +685,15 @@ flower_archeologist: {
     <!-- Bought cursors will appear here -->
   </select>
   <small class="muted">Change your mouse pointer to a pixel art item.</small>
+    <div class="profile-field" style="margin-top:15px;">
+  <div class="section-title">Equipped Companion</div>
+  <select id="petSelect" class="input" style="font-family: 'VT323'; font-size: 18px;">
+    <option value="none">No Companion</option>
+    <!-- Bought pets will appear here -->
+  </select>
+  <small class="muted">A tiny friend to watch over your journal.</small>
+</div>
+
 </div>
 
 </div>
@@ -877,6 +886,22 @@ if ($("tokenBalance")) $("tokenBalance").textContent = tokens;
       console.log(`${isSave ? 'Save' : 'Delete'} sound set to: ${e.target.value}`);
     };
   });
+  // --- COMPANION SYNC ---
+  const petSelect = document.getElementById("petSelect");
+  if (petSelect) {
+    petSelect.innerHTML = '<option value="none">No Companion</option>';
+    ownedItems.forEach(itemId => {
+      if (itemId.startsWith("pet_")) {
+        const name = itemId.replace("pet_nendo_", "").toUpperCase();
+        const opt = document.createElement("option");
+        opt.value = itemId;
+        opt.textContent = `${name} Nendoroid`;
+        petSelect.appendChild(opt);
+      }
+    });
+    petSelect.value = localStorage.getItem("petal_equipped_pet") || "none";
+    petSelect.onchange = (e) => localStorage.setItem("petal_equipped_pet", e.target.value);
+  }
 
 
 
