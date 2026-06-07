@@ -50,7 +50,10 @@ const shopItems = [
   { id: "cursor_kunai", name: "Kunai Pointer", type: "cursor", price: 25, icon: "assets/kunai_cursor.png" },
   { id: "cursor_scythe", name: "Hidan's Scythe", type: "cursor", price: 25, icon: "assets/scythe_cursor.png" },
   { id: "cursor_heart", name: "Ope Ope Heart", type: "cursor", price: 25, icon: "assets/heart_cursor.png" },
-  { id: "cursor_cat", name: "Cat", type: "cursor", price: 25, icon: "assets/cat_cursor.png" }
+  { id: "cursor_cat", name: "Cat", type: "cursor", price: 25, icon: "assets/cat_cursor.png" },
+  { id: "layout_hokage", name: "Scroll of the First", type: "layout", price: 500, icon: "assets/scroll_icon.png" },
+  { id: "layout_prison", name: "Prison Realm Case", type: "layout", price: 500, icon: "assets/prison_icon.png" },
+
 ];
 
 function getTokens() { return Number(localStorage.getItem("petal_tokens")) || 0; }
