@@ -595,8 +595,11 @@ flower_archeologist: {
     "--bg": "#FFFFFF", "--surface": "#FDFDFD", "--surface-2": "#E2E8F0", "--border": "#CBD5E0",
     "--primary": "#A855F7", "--primary-soft": "rgba(168, 85, 247, 0.1)", "--accent": "#00D2FF",
     "--text": "#1A202C", "--text-muted": "#718096", "animation": "light_petals"
-  }
-
+  },
+  empty_throne: { "--bg": "#0A0A0A", "--surface": "#141414", "--surface-2": "#722F37", "--border": "#FFD700", "--primary": "#FFD700", "--accent": "#722F37", "--text": "#FFFFFF", "animation": "shadow_figures" },
+  honored_one: { "--bg": "#F0F9FF", "--surface": "#FFFFFF", "--surface-2": "#00D2FF", "--border": "#00D2FF", "--primary": "#00D2FF", "--accent": "#FFFFFF", "--text": "#0369A1", "animation": "atomic_shards" },
+  reapers_moon: { "--bg": "#0D0B12", "--surface": "#1A1621", "--surface-2": "#4A0E0E", "--border": "#E2E8F0", "--primary": "#E2E8F0", "--accent": "#FF0000", "--text": "#F8FAFC", "animation": "blood_petals" },
+  the_origin: { "--bg": "#000000", "--surface": "rgba(0,0,0,0.5)", "--surface-2": "#FFFFFF", "--border": "#00F3FF", "--primary": "#00F3FF", "--accent": "#FF007A", "--text": "#FFFFFF", "animation": "reality_strings" },
 };
 /* ------------------- Helpers (Fixed & Balanced) ------------------- */
 function applyVars(vars) {
@@ -711,75 +714,86 @@ function toast(msg) {
     return Math.floor(totalXP / 200) + 1;
   }
 
-  function checkUnlocks() {
+   function checkUnlocks() {
     const lvl = getZenLevel();
     const owned = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
+    const $ = (id) => document.getElementById(id);
     console.log("Checking Unlocks for Level:", lvl);
 
-    // 1. Theme Dropdown Unlocks (Levels 5 - 30)
-    const optG = document.querySelector('option[value="golden_petal"]');
-    if (optG) { optG.disabled = lvl < 5; optG.textContent = lvl >= 5 ? "✨ Golden Petal" : "🔒 Level 5"; }
+    // 1. THEME DROPDOWN UNLOCKS (Levels 5 - 100)
+    const tiers = [
+      { lvl: 5, val: "golden_petal", name: "✨ Golden Petal" },
+      { lvl: 10, val: "six_paths_sage", name: "☀️ Six Paths Sage" },
+      { lvl: 15, val: "celestial_sovereignty", name: "🌌 Celestial" },
+      { lvl: 20, val: "infinite_zen", name: "💎 Infinite Zen" },
+      { lvl: 30, val: "omniscient_origin", name: "👁️ Omniscient Origin" },
+      { lvl: 40, val: "reanimated_legend", name: "📜 Reanimated Legend" },
+      { lvl: 50, val: "threads_of_fate", name: "🧶 Threads of Fate" },
+      { lvl: 60, val: "eternal_nirvana", name: "🧘‍♂️ Eternal Nirvana" },
+      { lvl: 70, val: "empty_throne", name: "👑 Empty Throne" },
+      { lvl: 80, val: "honored_one", name: "👁️ The Honored One" },
+      { lvl: 90, val: "reapers_moon", name: "🌙 Reaper's Moon" },
+      { lvl: 100, val: "the_origin", name: "💠 THE ORIGIN" }
+    ];
 
-    const opt10 = document.querySelector('option[value="six_paths_sage"]');
-    if (opt10) { opt10.disabled = lvl < 10; opt10.textContent = lvl >= 10 ? "☀️ Six Paths" : "🔒 Level 10"; }
+    tiers.forEach(tier => {
+      const opt = document.querySelector(`option[value="${tier.val}"]`);
+      if (opt) {
+        if (lvl >= tier.lvl) {
+          opt.disabled = false;
+          opt.textContent = tier.name;
+        } else {
+          opt.disabled = true;
+          opt.textContent = `🔒 Level ${tier.lvl}`;
+        }
+      }
+    });
 
-    const opt15 = document.querySelector('option[value="celestial_sovereignty"]');
-    if (opt15) { opt15.disabled = lvl < 15; opt15.textContent = lvl >= 15 ? "🌌 Celestial" : "🔒 Level 15"; }
+    // 2. STICKERS (Level 5)
+    document.querySelectorAll(".level-5-reward").forEach(el => {
+      el.style.display = lvl >= 5 ? "inline-flex" : "none";
+    });
 
-    const opt20 = document.querySelector('option[value="infinite_zen"]');
-    if (opt20) { opt20.disabled = lvl < 20; opt20.textContent = lvl >= 20 ? "💎 Infinite Zen" : "🔒 Level 20"; }
-
-    const opt30 = document.querySelector('option[value="omniscient_origin"]');
-    if (opt30) { opt30.disabled = lvl < 30; opt30.textContent = lvl >= 30 ? "👁️ Omniscient Origin" : "🔒 Level 30"; }
-
-    const opt40 = document.querySelector('option[value="reanimated_legend"]');
-    if (opt40) { opt40.disabled = lvl < 40; opt40.textContent = lvl >= 40 ? "📜 Reanimated Legend" : "🔒 Level 40"; }
-    
-    const opt50 = document.querySelector('option[value="threads_of_fate"]');
-    if (opt50) { opt50.disabled = lvl < 50; opt50.textContent = lvl >= 50 ? "🧶 Threads of Fate" : "🔒 Level 50"; }
-
-    const opt60 = document.querySelector('option[value="eternal_nirvana"]');
-    if (opt60) { opt60.disabled = lvl < 60; opt60.textContent = lvl >= 60 ? "🧘‍♂️ Eternal Nirvana" : "🔒 Level 60"; }
-
-    // 2. Stickers
-    document.querySelectorAll(".level-5-reward").forEach(el => el.style.display = lvl >= 5 ? "inline-flex" : "none");
-
-    // 3. UI Transformations (Rank Glows)
+    // 3. UI TRANSFORMATIONS (The "Aura" around the boxes)
     document.querySelectorAll(".panel").forEach(p => {
-      p.classList.remove("kage-aura", "celestial-border", "hologram-panel", "liquid-border", "cracked-stone", "floating-panel");
-      if (lvl >= 30) p.classList.add("liquid-border");
+      // Clear all possible rank classes first
+      p.classList.remove("kage-aura", "celestial-border", "hologram-panel", "liquid-border", "cracked-stone", "floating-panel", "king-shadow", "origin-ui");
+      
+      // Apply the highest tier earned
+      if (lvl >= 100) p.classList.add("origin-ui");
+      else if (lvl >= 70) p.classList.add("king-shadow");
+      else if (lvl >= 60) p.classList.add("floating-panel");
+      else if (lvl >= 40) p.classList.add("cracked-stone");
+      else if (lvl >= 30) p.classList.add("liquid-border");
       else if (lvl >= 20) p.classList.add("hologram-panel");
       else if (lvl >= 15) p.classList.add("celestial-border");
       else if (lvl >= 10) p.classList.add("kage-aura");
-      if (lvl >= 60) p.classList.add("floating-panel");
-        else if (lvl >= 40) p.classList.add("cracked-stone");
-        else if (lvl >= 30) p.classList.add("liquid-border");
     });
 
-    // 4. Ninja Rank Text
-     // Update the Rank Logic
+    // 4. NINJA RANK TEXT
     let rank = "Genin";
     if (lvl >= 5) rank = "Jonin";
     if (lvl >= 10) rank = "Kage";
     if (lvl >= 15) rank = "Celestial Sage";
     if (lvl >= 20) rank = "Transcendent One";
-    if (lvl >= 40) rank = "Immortal Legend 📜";
-    if (lvl >= 50) rank = "Fate Weaver 🧶";
-    if (lvl >= 60) rank = "The Eternal 🧘‍♂️";
+    if (lvl >= 40) rank = "Immortal Legend";
+    if (lvl >= 60) rank = "The Eternal";
+    if (lvl >= 70) rank = "King of the World 👑";
+    if (lvl >= 80) rank = "The Honored One 👁️";
+    if (lvl >= 90) rank = "Soul Reaper 🌙";
+    if (lvl >= 100) rank = "💠 The Architect";
     if ($("ninjaRank")) $("ninjaRank").textContent = `Rank: ${rank}`;
 
-    // 5. SHOP ITEM UNLOCKS (Paper Skins) - DEFINED ONLY ONCE
-        const shopSkins = [
+    // 5. SHOP ITEM UNLOCKS (Paper Skins)
+    const shopSkins = [
       { id: "optRainy", shopId: "layout_rainy", name: "🌧️ Rainy Paper" },
       { id: "optGlitch", shopId: "layout_matrix", name: "👾 Glitch Paper" },
       { id: "optHolo", shopId: "layout_hologram", name: "💎 Holo Paper" },
-      // NEW ULTIMATE LAYOUTS
       { id: "optHokage", shopId: "layout_hokage", name: "📜 Hokage Scroll" },
-      { id: "optBond", shopId: "layout_bond", name: "🍥 Eternal Bond 🦅" },
       { id: "optPrison", shopId: "layout_prison", name: "👁️ Prison Realm" },
-      { id: "optToji", shopId: "layout_toji", name: "⛓️ Heavenly Restriction" }
+      { id: "optToji", shopId: "layout_toji", name: "⛓️ Heavenly Restriction" },
+      { id: "optBond", shopId: "layout_bond", name: "🍥 Eternal Bond 🦅" }
     ];
-
 
     shopSkins.forEach(skin => {
       const el = $(skin.id);
@@ -794,6 +808,7 @@ function toast(msg) {
       }
     });
   }
+
 
   function renderList() {
     const list = $("entryList"); if (!list) return;
@@ -1077,6 +1092,13 @@ function toast(msg) {
       p.style.left = Math.random() * 100 + "vw";
       p.style.top = Math.random() * 100 + "vh";
       p.style.animationDuration = "2s";
+    }
+    else if (type === "reality_strings") {
+      p.className = "zen-shard"; // Re-use shard look
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.top = Math.random() * 100 + "vh";
+      // This logic will be slow and eerie
+      p.style.animationDuration = "10s";
     }
 
       // 4. ONE PIECE THEMES
