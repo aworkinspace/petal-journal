@@ -581,6 +581,21 @@ flower_archeologist: {
     "--text-muted": "#078D70", 
     "animation": "pride_gay" 
   },
+  reanimated_legend: {
+    "--bg": "#1C1C1C", "--surface": "#262626", "--surface-2": "#4A5568", "--border": "#63B3ED",
+    "--primary": "#63B3ED", "--primary-soft": "rgba(99, 179, 237, 0.1)", "--accent": "#A0AEC0",
+    "--text": "#E2E8F0", "--text-muted": "#A0AEC0", "animation": "edo_shards"
+  },
+  threads_of_fate: {
+    "--bg": "#050508", "--surface": "#0F0F14", "--surface-2": "#FF0000", "--border": "#FF0000",
+    "--primary": "#FF0000", "--primary-soft": "rgba(255, 0, 0, 0.1)", "--accent": "#FFFFFF",
+    "--text": "#FFFFFF", "--text-muted": "rgba(255, 255, 255, 0.5)", "animation": "fate_lines"
+  },
+  eternal_nirvana: {
+    "--bg": "#FFFFFF", "--surface": "#FDFDFD", "--surface-2": "#E2E8F0", "--border": "#CBD5E0",
+    "--primary": "#A855F7", "--primary-soft": "rgba(168, 85, 247, 0.1)", "--accent": "#00D2FF",
+    "--text": "#1A202C", "--text-muted": "#718096", "animation": "light_petals"
+  }
 
 };
 /* ------------------- Helpers (Fixed & Balanced) ------------------- */
@@ -717,25 +732,40 @@ function toast(msg) {
     const opt30 = document.querySelector('option[value="omniscient_origin"]');
     if (opt30) { opt30.disabled = lvl < 30; opt30.textContent = lvl >= 30 ? "👁️ Omniscient Origin" : "🔒 Level 30"; }
 
+    const opt40 = document.querySelector('option[value="reanimated_legend"]');
+    if (opt40) { opt40.disabled = lvl < 40; opt40.textContent = lvl >= 40 ? "📜 Reanimated Legend" : "🔒 Level 40"; }
+    
+    const opt50 = document.querySelector('option[value="threads_of_fate"]');
+    if (opt50) { opt50.disabled = lvl < 50; opt50.textContent = lvl >= 50 ? "🧶 Threads of Fate" : "🔒 Level 50"; }
+
+    const opt60 = document.querySelector('option[value="eternal_nirvana"]');
+    if (opt60) { opt60.disabled = lvl < 60; opt60.textContent = lvl >= 60 ? "🧘‍♂️ Eternal Nirvana" : "🔒 Level 60"; }
+
     // 2. Stickers
     document.querySelectorAll(".level-5-reward").forEach(el => el.style.display = lvl >= 5 ? "inline-flex" : "none");
 
     // 3. UI Transformations (Rank Glows)
     document.querySelectorAll(".panel").forEach(p => {
-      p.classList.remove("kage-aura", "celestial-border", "hologram-panel", "liquid-border");
+      p.classList.remove("kage-aura", "celestial-border", "hologram-panel", "liquid-border", "cracked-stone", "floating-panel");
       if (lvl >= 30) p.classList.add("liquid-border");
       else if (lvl >= 20) p.classList.add("hologram-panel");
       else if (lvl >= 15) p.classList.add("celestial-border");
       else if (lvl >= 10) p.classList.add("kage-aura");
+      if (lvl >= 60) p.classList.add("floating-panel");
+        else if (lvl >= 40) p.classList.add("cracked-stone");
+        else if (lvl >= 30) p.classList.add("liquid-border");
     });
 
     // 4. Ninja Rank Text
+     // Update the Rank Logic
     let rank = "Genin";
     if (lvl >= 5) rank = "Jonin";
     if (lvl >= 10) rank = "Kage";
     if (lvl >= 15) rank = "Celestial Sage";
     if (lvl >= 20) rank = "Transcendent One";
-    if (lvl >= 30) rank = "Omniscient Sage 👁️";
+    if (lvl >= 40) rank = "Immortal Legend 📜";
+    if (lvl >= 50) rank = "Fate Weaver 🧶";
+    if (lvl >= 60) rank = "The Eternal 🧘‍♂️";
     if ($("ninjaRank")) $("ninjaRank").textContent = `Rank: ${rank}`;
 
     // 5. SHOP ITEM UNLOCKS (Paper Skins) - DEFINED ONLY ONCE
@@ -1010,7 +1040,16 @@ function toast(msg) {
       else if (type === "flytraps") { p.className = "flytrap-spike"; p.style.left = Math.random() * 100 + "vw"; const isT = Math.random() > 0.5; p.style[isT ? 'top' : 'bottom'] = "-10px"; if (isT) p.style.transform = "rotate(180deg)"; p.style.animationDuration = "3s"; }
       else if (type === "love_sand") { p.className = "love-kanji"; p.textContent = "愛"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-40px"; p.style.animationDuration = (Math.random() * 3 + 4) + "s"; }
       else if (type === "shadows") { const edge = Math.random(); if (edge > 0.5) { p.style.bottom = "-50px"; p.style.left = Math.random() * 100 + "vw"; p.style.setProperty('--rot', `${(Math.random() * 40) - 20}deg`); } else { p.style.top = Math.random() * 100 + "vh"; p.style.left = edge > 0.25 ? "-50px" : "100vw"; p.style.setProperty('--rot', edge > 0.25 ? "90deg" : "-90deg"); } p.className = "shadow-tendril"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; }
-      
+          else if (type === "edo_shards") {
+      p.className = "paper-sheet"; // Re-uses Konan's paper code
+      p.style.backgroundColor = "#262626";
+      p.style.boxShadow = "0 0 10px #63B3ED";
+    }
+    else if (type === "fate_lines") {
+      p.className = "fate-line";
+      p.style.top = Math.random() * 100 + "vh";
+    }
+
       // RESTORED: AKATSUKI & AME TRIO
       else if (type === "jashin") { p.className = "jashin-seal"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.transform = `rotate(${Math.random() * 360}deg)`; p.style.animationDuration = "5s"; }
       else if (type === "clouds") { p.className = "red-cloud"; p.style.left = "-60px"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = (Math.random() * 10 + 15) + "s"; }
