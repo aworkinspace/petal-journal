@@ -1,138 +1,67 @@
+import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+
+// 1. SELECT ELEMENTS
 const grid = document.getElementById("shopGrid");
 const balanceEl = document.getElementById("shopBalance");
-function applyGlobalCursor(cursorId) {
-  if (!cursorId || cursorId === "default") {
-    document.documentElement.style.cursor = "auto";
-    // Also reset buttons
-    const style = document.getElementById("dynamic-cursor-style");
-    if (style) style.remove();
-    return;
-  }
+const tabButtons = document.querySelectorAll(".tab-btn");
 
-  const fileName = cursorId.replace("cursor_", "");
-  const url = `assets/${fileName}_cursor.png`;
+// 2. STATE
+let currentFilter = "all";
+let currentUser = null;
 
-  // We create a style tag to override EVERYTHING (buttons, links, etc)
-  let style = document.getElementById("dynamic-cursor-style");
-  if (!style) {
-    style = document.createElement("style");
-    style.id = "dynamic-cursor-style";
-    document.head.appendChild(style);
-  }
-
-  // Cursors need to be 32x32 or smaller to work in all browsers
-  style.innerHTML = `
-    * { cursor: url('${url}'), auto !important; }
-    a, button, summary, .btn, .chip { cursor: url('${url}'), pointer !important; }
-  `;
-}
-
-// Initial check on page load
-applyGlobalCursor(localStorage.getItem("petal_equipped_cursor"));
-let currentFilter = "all"; // NEW: Track the active tab
-
-// 1. ADD TAB LISTENERS
-document.querySelectorAll(".tab-btn").forEach(btn => {
-  btn.onclick = () => {
-    // UI Update
-    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    
-    // Set filter and refresh grid
-    currentFilter = btn.dataset.type;
-    updateUI();
-  };
-});
-
-// 2. UPDATED UI RENDERER
-function updateUI() {
-  balanceEl.textContent = getTokens();
-  const owned = getOwned();
-
-  grid.innerHTML = "";
-
-  // NEW: Filter the items based on the active tab
-  const filteredItems = currentFilter === "all" 
-    ? shopItems 
-    : shopItems.filter(item => item.type === currentFilter);
-
-  filteredItems.forEach(item => {
-    const isOwned = owned.includes(item.id);
-    const card = document.createElement("div");
-    card.className = `shop-item ${isOwned ? 'owned' : ''}`;
-    
-    card.innerHTML = `
-      <img src="${item.icon}">
-      <strong>${item.name}</strong>
-      <div class="price">🪙 ${item.price}</div>
-      <button class="btn btn-primary" ${isOwned ? 'disabled' : ''}>
-        ${isOwned ? 'Purchased' : 'Buy Now'}
-      </button>
-    `;
-
-    if (!isOwned) {
-      card.querySelector("button").onclick = () => buyItem(item);
-    }
-    grid.appendChild(card);
-  });
-}
-
-// 1. SHOP INVENTORY
+// 3. SHOP INVENTORY (Defined at top so functions can see it)
 const shopItems = [
   { id: "sticker_kunai", name: "Steel Kunai", type: "sticker", price: 25, icon: "assets/kunai.gif" },
   { id: "sticker_curse", name: "Cursed Mark", type: "sticker", price: 25, icon: "assets/cursedmark.gif" },
   { id: "sticker_joyboy", name: "Nika Sun", type: "sticker", price: 25, icon: "assets/sungod.gif" },
   { id: "sticker_chibigojo", name: "Chibi Gojo", type: "sticker", price: 25, icon: "assets/gojo_chibi.gif" },
   { id: "sticker_cukootoji", name: "Cukoo Toji", type: "sticker", price: 25, icon: "assets/cukoo_toji.gif" },
-  { id: "layout_rainy", name: "Rain-Dashed Paper", type: "layout", price: 100, icon: "assets/rain_icon.png" },
-  { id: "layout_matrix", name: "Glitch Circuitry", type: "layout", price: 100, icon: "assets/glitch_icon.png" },
+  { id: "layout_rainy", name: "Rainy Paper", type: "layout", price: 100, icon: "assets/rain_icon.png" },
+  { id: "layout_matrix", name: "Glitch Paper", type: "layout", price: 100, icon: "assets/glitch_icon.png" },
   { id: "layout_hologram", name: "Holo-Prism", type: "layout", price: 100, icon: "assets/holo_icon.png" },
   { id: "sfx_chidori", name: "SFX: Chidori", type: "sfx", price: 50, icon: "assets/kakashi_nendo.png" },
   { id: "sfx_dattebayo", name: "SFX: Dattebayo!", type: "sfx", price: 50, icon: "assets/naruto_nendo.png" },
-  { id: "sfx_yowaimo", name: "SFX: Yowaimo (Gojo)", type: "sfx", price: 50, icon: "assets/gojo_nendo.png" },
+  { id: "sfx_yowaimo", name: "SFX: Yowaimo", type: "sfx", price: 50, icon: "assets/gojo_nendo.png" },
   { id: "sfx_usuratonkachi", name: "SFX: Usuratonkachi", type: "sfx", price: 50, icon: "assets/sasuke_nendo.png" },
   { id: "sfx_notazenin", name: "SFX: Not A Zenin", type: "sfx", price: 50, icon: "assets/toji_nendo.png" },
   { id: "sfx_sukunalaugh", name: "SFX: Sukuna's Laugh", type: "sfx", price: 50, icon: "assets/sukuna_nendo.png" },
-  { id: "sfx_sasukesayingnaruto", name: "SFX: NARUTOOOOO!", type: "sfx", price: 50, icon: "assets/sasuke_nendo.png" },
-  { id: "sfx_narutosayingsasuke", name: "SFX: SASUKEEEE!", type: "sfx", price: 50, icon: "assets/naruto_nendo.png" },
   { id: "cursor_kunai", name: "Kunai Pointer", type: "cursor", price: 25, icon: "assets/kunai_cursor.png" },
   { id: "cursor_scythe", name: "Hidan's Scythe", type: "cursor", price: 25, icon: "assets/scythe_cursor.png" },
   { id: "cursor_mangekyo", name: "Eternal Mangekyo", type: "cursor", price: 25, icon: "assets/mangekyo_cursor.png" },
-  { id: "cursor_gunbai", name: "Madara's Gunbai", type: "cursor", price: 25, icon: "assets/gunbai_cursor.png" },
-  { id: "cursor_heart", name: "Ope Ope Heart", type: "cursor", price: 25, icon: "assets/heart_cursor.png" },
-  { id: "cursor_cat", name: "Cat", type: "cursor", price: 25, icon: "assets/cat_cursor.png" },
-  { id: "layout_hokage", name: "Scroll of the First", type: "layout", price: 500, icon: "assets/scroll_icon.png" },
-  { id: "layout_prison", name: "Prison Realm Case", type: "layout", price: 500, icon: "assets/prison_icon.png" },
-  { id: "layout_toji", name: "Heavenly Restriction", type: "layout", price: 500, icon: "assets/toji_icon.png" },
+  { id: "layout_hokage", name: "Hokage Scroll", type: "layout", price: 500, icon: "assets/scroll_icon.png" },
+  { id: "layout_prison", name: "Prison Realm", type: "layout", price: 500, icon: "assets/prison_icon.png" },
+  { id: "layout_toji", name: "Toji Arsenal", type: "layout", price: 500, icon: "assets/toji_icon.png" },
   { id: "layout_bond", name: "Eternal Bond", type: "layout", price: 600, icon: "assets/bond_icon.png" },
-  { id: "pet_nendo_kakashi", name: "Nendo Kakashi", type: "pet", price: 50, icon: "assets/nendo_kakashi.png" },
-  { id: "pet_nendo_gojo", name: "Nendo Gojo", type: "pet", price: 50, icon: "assets/nendo_gojo.png" },
-  { id: "pet_nendo_law", name: "Nendo Law", type: "pet", price: 50, icon: "assets/nendo_law.png" },
-  { id: "pet_nendo_sakura", name: "Nendo Sakura", type: "pet", price: 50, icon: "assets/nendo_sakura.png" },
-  { id: "pet_nendo_madara", name: "Nendo Madara", type: "pet", price: 50, icon: "assets/nendo_madara.png" },
-  { id: "title_sannin", name: "The Legendary Sannin", type: "title", price: 300, icon: "assets/title_scroll.png" },
-  { id: "title_uchiha", name: "Ghost of the Uchiha", type: "title", price: 300, icon: "assets/title_fan.png" },
-  { id: "title_honored", name: "The Honored One", type: "title", price: 300, icon: "assets/title_eye.png" },
-  { id: "title_kage", name: "Shadow of the Leaf", type: "title", price: 300, icon: "assets/title_fire.png" },
-  { id: "title_yonko", name: "Strongest in the World", type: "title", price: 400, icon: "assets/title_beard.png" },
-
+  { id: "pet_nendo_kakashi", name: "Nendo Kakashi", type: "pet", price: 400, icon: "assets/nendo_kakashi.png" },
+  { id: "pet_nendo_gojo", name: "Nendo Gojo", type: "pet", price: 400, icon: "assets/nendo_gojo.png" },
+  { id: "pet_nendo_law", name: "Nendo Law", type: "pet", price: 400, icon: "assets/nendo_law.png" },
+  { id: "pet_nendo_madara", name: "Nendo Madara", type: "pet", price: 400, icon: "assets/nendo_madara.png" },
+  { id: "title_sannin", name: "Sannin Title", type: "title", price: 300, icon: "assets/title_scroll.png" },
+  { id: "title_uchiha", name: "Uchiha Title", type: "title", price: 300, icon: "assets/title_fan.png" }
 ];
 
+// 4. HELPERS
 function getTokens() { return Number(localStorage.getItem("petal_tokens")) || 0; }
 function getOwned() { return JSON.parse(localStorage.getItem("petal_owned_items") || "[]"); }
 
+// 5. UI RENDERER
 function updateUI() {
+  if (!grid || !balanceEl) return;
+  
   balanceEl.textContent = getTokens();
   const owned = getOwned();
-
   grid.innerHTML = "";
-  shopItems.forEach(item => {
+
+  // Filter based on active tab
+  const filtered = currentFilter === "all" ? shopItems : shopItems.filter(i => i.type === currentFilter);
+
+  filtered.forEach(item => {
     const isOwned = owned.includes(item.id);
     const card = document.createElement("div");
     card.className = `shop-item ${isOwned ? 'owned' : ''}`;
     
     card.innerHTML = `
-      <img src="${item.icon}">
+      <img src="${item.icon}" onerror="this.src='assets/placeholder.png'">
       <strong>${item.name}</strong>
       <div class="price">🪙 ${item.price}</div>
       <button class="btn btn-primary" ${isOwned ? 'disabled' : ''}>
@@ -147,34 +76,58 @@ function updateUI() {
   });
 }
 
+// 6. BUY LOGIC
 async function buyItem(item) {
   let tokens = getTokens();
   if (tokens < item.price) {
-    alert("Not enough tokens! Keep journaling to earn more.");
+    alert("Not enough tokens! Write more in your journal!");
     return;
   }
 
-  if (confirm(`Spend ${item.price} tokens on ${item.name}?`)) {
-    // 1. Deduct tokens
+  if (confirm(`Purchase ${item.name} for ${item.price} tokens?`)) {
     tokens -= item.price;
     localStorage.setItem("petal_tokens", tokens);
 
-    // 2. Add to owned list
     const owned = getOwned();
     owned.push(item.id);
     localStorage.setItem("petal_owned_items", JSON.stringify(owned));
 
-    // 3. Update UI
     updateUI();
-    alert("Purchase successful! Check your collection.");
 
-    // 4. SYNC TO CLOUD (If logged in)
+    // Sync to Cloud
     if (window.firebaseAuth?.currentUser) {
-      const statsRef = doc(window.firebaseDb, "users", window.firebaseAuth.currentUser.uid, "stats", "zen");
-      await setDoc(statsRef, { tokens: tokens, ownedItems: owned }, { merge: true });
+      const db = window.firebaseDb;
+      const uid = window.firebaseAuth.currentUser.uid;
+      try {
+        await setDoc(doc(db, "users", uid, "stats", "zen"), { 
+          tokens: tokens, 
+          ownedItems: owned 
+        }, { merge: true });
+        console.log("Cloud synced successfully");
+      } catch (e) { console.error("Cloud error:", e); }
     }
+    alert("Success! Check your profile or stickers.");
   }
 }
 
-// Initial Load
+// 7. TAB LOGIC
+tabButtons.forEach(btn => {
+  btn.onclick = () => {
+    tabButtons.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentFilter = btn.dataset.type;
+    updateUI();
+  };
+});
+
+// 8. INITIAL LOAD
 updateUI();
+
+// 9. GLOBAL CURSOR (Matches other pages)
+if (localStorage.getItem("petal_equipped_cursor")) {
+    const cursor = localStorage.getItem("petal_equipped_cursor").replace("cursor_", "");
+    const url = `assets/${cursor}_cursor.png`;
+    const style = document.createElement("style");
+    style.innerHTML = `* { cursor: url('${url}'), auto !important; }`;
+    document.head.appendChild(style);
+}
