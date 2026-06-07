@@ -39,6 +39,9 @@ const cards = [
   { name: "Kamui Kakashi", img: "assets/kakashikamui_vmax.png" },      // Kakashi Kamui
   { name: "Byakugo Sakura", img: "assets/sakurabyakugo_vmax.png" }, // Sakura Byakugo
   { name: "Valley of the End", img: "assets/valleyoftheend_vmax.png" }, // Valley of the End
+  { name: "Ten Tails Madara", img: "assets/madara_vmax.png" }, // Ten Tails Madara Uchiha
+  { name: "Sage Mode Hashirama", img: "assets/hashirama_vmax.png" }, // Sage Mode Hashirama
+  { name: "Tobirama Senju", img: "assets/tobirama_vmax.png" }, // Tobirama Senju
 ];
 
 
