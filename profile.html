@@ -935,25 +935,30 @@ if ($("tokenBalance")) $("tokenBalance").textContent = tokens;
       console.log(`${isSave ? 'Save' : 'Delete'} sound set to: ${e.target.value}`);
     };
   });
-  // --- COMPANION SYNC ---
+    // --- COMPANION SYNC (Fixed) ---
   const petSelect = document.getElementById("petSelect");
   if (petSelect) {
     petSelect.innerHTML = '<option value="none">No Companion</option>';
+    
     ownedItems.forEach(itemId => {
-  if (itemId.startsWith("pet_")) {
-    const name = itemId.replace("pet_nendo_", "").toUpperCase();
-    const opt = document.createElement("option");
-    opt.value = itemId;
-    // This will now show "MADARA Nendoroid"
-    opt.textContent = `${name} Nendoroid`; 
-    petSelect.appendChild(opt);
+      if (itemId.startsWith("pet_")) {
+        // Clean up the ID for the display name
+        const name = itemId.replace("pet_nendo_", "").replace("pet_", "").toUpperCase();
+        const opt = document.createElement("option");
+        opt.value = itemId;
+        opt.textContent = `${name} Nendoroid`; 
+        petSelect.appendChild(opt);
+      } // <--- THIS WAS THE MISSING BRACE!
     });
+
     petSelect.value = localStorage.getItem("petal_equipped_pet") || "none";
-    petSelect.onchange = (e) => localStorage.setItem("petal_equipped_pet", e.target.value);
+    
+    petSelect.onchange = (e) => {
+      localStorage.setItem("petal_equipped_pet", e.target.value);
+      // Optional: Alert the user or reload to see the pet immediately
+      alert("Companion Equipped! Return to your journal to see them.");
+    };
   }
-
-
-
   /* ------------------- Profile Actions ------------------- */
 
   $("btnUploadPic")?.addEventListener("click", () => $("picUpload")?.click());
