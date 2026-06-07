@@ -628,10 +628,11 @@ function applySkin(skinName) {
   if (!notebook) return;
   
   // 1. Clear ALL possible skins (Standard + Animated)
-  notebook.classList.remove(
+ notebook.classList.remove(
     "skin-ruled", "skin-grid", "skin-dots", 
     "skin-dark-ruled", "skin-dark-grid", "skin-dark-dots",
-    "skin-rainy-paper", "skin-glitch-paper", "skin-holo-paper"
+    "skin-rainy-paper", "skin-glitch-paper", "skin-holo-paper",
+    "skin-hokage-scroll", "skin-prison-realm" // ADDED THESE
   );
 
   // 2. Add the new one (convert underscores to dashes)
