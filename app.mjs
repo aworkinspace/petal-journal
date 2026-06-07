@@ -2,7 +2,35 @@
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
+function applyGlobalCursor(cursorId) {
+  if (!cursorId || cursorId === "default") {
+    document.documentElement.style.cursor = "auto";
+    // Also reset buttons
+    const style = document.getElementById("dynamic-cursor-style");
+    if (style) style.remove();
+    return;
+  }
 
+  const fileName = cursorId.replace("cursor_", "");
+  const url = `assets/${fileName}_cursor.png`;
+
+  // We create a style tag to override EVERYTHING (buttons, links, etc)
+  let style = document.getElementById("dynamic-cursor-style");
+  if (!style) {
+    style = document.createElement("style");
+    style.id = "dynamic-cursor-style";
+    document.head.appendChild(style);
+  }
+
+  // Cursors need to be 32x32 or smaller to work in all browsers
+  style.innerHTML = `
+    * { cursor: url('${url}'), auto !important; }
+    a, button, summary, .btn, .chip { cursor: url('${url}'), pointer !important; }
+  `;
+}
+
+// Initial check on page load
+applyGlobalCursor(localStorage.getItem("petal_equipped_cursor"));
 /* ----------------------------- Theme Data ----------------------------- */
 const THEMES = {
   petal: { "--bg": "var(--rose-50)", "--surface": "var(--rose-50)", "--surface-2": "var(--pink-200)", "--border": "var(--mauve-200)", "--primary": "var(--periwinkle-400)", "--primary-soft": "var(--periwinkle-200)", "--accent": "var(--pink-500)", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(167,171,222,.45)", "--bg-spot-2": "rgba(255,165,214,.35)" },
