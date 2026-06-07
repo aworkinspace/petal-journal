@@ -692,6 +692,16 @@ flower_archeologist: {
     <!-- Bought pets will appear here -->
   </select>
   <small class="muted">A tiny friend to watch over your journal.</small>
+      <div class="profile-field">
+  <div class="section-title">Equipped Title</div>
+  <div id="activeTitleDisplay" class="title-badge">No Title Equipped</div>
+  
+  <select id="titleSelect" class="input" style="margin-top: 10px; font-family: 'VT323';">
+    <option value="none">No Title</option>
+    <!-- Owned titles added here -->
+  </select>
+</div>
+
 </div>
 
 </div>
@@ -870,6 +880,46 @@ if ($("tokenBalance")) $("tokenBalance").textContent = tokens;
       localStorage.setItem("petal_equipped_cursor", e.target.value);
       // Apply immediately so you can see it
       applyGlobalCursor(e.target.value);
+    };
+  }
+  // --- TITLE SYNC LOGIC ---
+  const titleSelect = document.getElementById("titleSelect");
+  const display = document.getElementById("activeTitleDisplay");
+  
+  if (titleSelect) {
+    titleSelect.innerHTML = '<option value="none">No Title</option>';
+    
+    // Map IDs to pretty names
+    const titleNames = {
+      "title_sannin": "Legendary Sannin",
+      "title_uchiha": "Ghost of the Uchiha",
+      "title_honored": "The Honored One",
+      "title_kage": "Shadow of the Leaf",
+      "title_yonko": "The Strongest Man"
+    };
+
+    ownedItems.forEach(itemId => {
+      if (itemId.startsWith("title_")) {
+        const opt = document.createElement("option");
+        opt.value = itemId;
+        opt.textContent = titleNames[itemId] || "Elite Shinobi";
+        titleSelect.appendChild(opt);
+      }
+    });
+
+    const equipped = localStorage.getItem("petal_equipped_title") || "none";
+    titleSelect.value = equipped;
+    
+    if (equipped !== "none") {
+      display.textContent = titleNames[equipped];
+      display.style.display = "inline-block";
+    } else {
+      display.style.display = "none";
+    }
+
+    titleSelect.onchange = (e) => {
+      localStorage.setItem("petal_equipped_title", e.target.value);
+      updateZenProgress(); // Refresh visual
     };
   }
 
