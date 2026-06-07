@@ -4,7 +4,35 @@ import {
   enableNetwork, disableNetwork 
 } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
+function applyGlobalCursor(cursorId) {
+  if (!cursorId || cursorId === "default") {
+    document.documentElement.style.cursor = "auto";
+    // Also reset buttons
+    const style = document.getElementById("dynamic-cursor-style");
+    if (style) style.remove();
+    return;
+  }
 
+  const fileName = cursorId.replace("cursor_", "");
+  const url = `assets/${fileName}_cursor.png`;
+
+  // We create a style tag to override EVERYTHING (buttons, links, etc)
+  let style = document.getElementById("dynamic-cursor-style");
+  if (!style) {
+    style = document.createElement("style");
+    style.id = "dynamic-cursor-style";
+    document.head.appendChild(style);
+  }
+
+  // Cursors need to be 32x32 or smaller to work in all browsers
+  style.innerHTML = `
+    * { cursor: url('${url}'), auto !important; }
+    a, button, summary, .btn, .chip { cursor: url('${url}'), pointer !important; }
+  `;
+}
+
+// Initial check on page load
+applyGlobalCursor(localStorage.getItem("petal_equipped_cursor"));
 // 1. GLOBAL VARIABLES (Defined at the top to avoid ReferenceErrors)
 const board = document.getElementById("board");
 const btnAdd = document.getElementById("btnAddVision");
