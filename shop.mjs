@@ -29,6 +29,54 @@ function applyGlobalCursor(cursorId) {
 
 // Initial check on page load
 applyGlobalCursor(localStorage.getItem("petal_equipped_cursor"));
+let currentFilter = "all"; // NEW: Track the active tab
+
+// 1. ADD TAB LISTENERS
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.onclick = () => {
+    // UI Update
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    
+    // Set filter and refresh grid
+    currentFilter = btn.dataset.type;
+    updateUI();
+  };
+});
+
+// 2. UPDATED UI RENDERER
+function updateUI() {
+  balanceEl.textContent = getTokens();
+  const owned = getOwned();
+
+  grid.innerHTML = "";
+
+  // NEW: Filter the items based on the active tab
+  const filteredItems = currentFilter === "all" 
+    ? shopItems 
+    : shopItems.filter(item => item.type === currentFilter);
+
+  filteredItems.forEach(item => {
+    const isOwned = owned.includes(item.id);
+    const card = document.createElement("div");
+    card.className = `shop-item ${isOwned ? 'owned' : ''}`;
+    
+    card.innerHTML = `
+      <img src="${item.icon}">
+      <strong>${item.name}</strong>
+      <div class="price">🪙 ${item.price}</div>
+      <button class="btn btn-primary" ${isOwned ? 'disabled' : ''}>
+        ${isOwned ? 'Purchased' : 'Buy Now'}
+      </button>
+    `;
+
+    if (!isOwned) {
+      card.querySelector("button").onclick = () => buyItem(item);
+    }
+    grid.appendChild(card);
+  });
+}
+
 // 1. SHOP INVENTORY
 const shopItems = [
   { id: "sticker_kunai", name: "Steel Kunai", type: "sticker", price: 25, icon: "assets/kunai.gif" },
