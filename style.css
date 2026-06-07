@@ -2647,3 +2647,13 @@ header, .top-actions { overflow: visible; }
   0%, 100% { transform: translateY(0) rotate(-1deg); }
   50% { transform: translateY(-8px) rotate(1deg); }
 }
+/* OBITO: RINNEGAN CHAKRA GLOW */
+.desk-pet img[src*="obito"] {
+  filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.8)); /* Glowing Purple */
+  animation: obito-float 4s ease-in-out infinite;
+}
+
+@keyframes obito-float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.02); }
+}
