@@ -865,14 +865,15 @@ if ($("tokenBalance")) $("tokenBalance").textContent = tokens;
     cursorSelect.innerHTML = '<option value="default">Default Pointer</option>';
     
     ownedItems.forEach(itemId => {
-      if (itemId.startsWith("cursor_")) {
-        const name = itemId.replace("cursor_", "").charAt(0).toUpperCase() + itemId.replace("cursor_", "").slice(1);
-        const opt = document.createElement("option");
-        opt.value = itemId;
-        opt.textContent = `${name} Cursor`;
-        cursorSelect.appendChild(opt);
-      }
-    });
+  if (itemId.startsWith("cursor_")) {
+    const name = itemId.replace("cursor_", "").replace("_", " ").toUpperCase();
+    const opt = document.createElement("option");
+    opt.value = itemId;
+    // This will now show "SHARINGAN Cursor"
+    opt.textContent = `${name} Cursor`; 
+    cursorSelect.appendChild(opt);
+  }
+});
 
     cursorSelect.value = localStorage.getItem("petal_equipped_cursor") || "default";
     cursorSelect.onchange = (e) => {
