@@ -54,6 +54,8 @@ const shopItems = [
   { id: "layout_hokage", name: "Scroll of the First", type: "layout", price: 500, icon: "assets/scroll_icon.png" },
   { id: "layout_prison", name: "Prison Realm Case", type: "layout", price: 500, icon: "assets/prison_icon.png" },
   { id: "layout_toji", name: "Heavenly Restriction", type: "layout", price: 500, icon: "assets/toji_icon.png" },
+  { id: "layout_bond", name: "Eternal Bond", type: "layout", price: 600, icon: "assets/bond_icon.png" },
+
 
 ];
 
