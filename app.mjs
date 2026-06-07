@@ -738,11 +738,15 @@ function toast(msg) {
     if ($("ninjaRank")) $("ninjaRank").textContent = `Rank: ${rank}`;
 
     // 5. SHOP ITEM UNLOCKS (Paper Skins) - DEFINED ONLY ONCE
-    const shopSkins = [
+        const shopSkins = [
       { id: "optRainy", shopId: "layout_rainy", name: "🌧️ Rainy Paper" },
       { id: "optGlitch", shopId: "layout_matrix", name: "👾 Glitch Paper" },
-      { id: "optHolo", shopId: "layout_hologram", name: "💎 Holo Paper" }
+      { id: "optHolo", shopId: "layout_hologram", name: "💎 Holo Paper" },
+      // NEW ULTIMATE LAYOUTS
+      { id: "optHokage", shopId: "layout_hokage", name: "📜 Hokage Scroll" },
+      { id: "optPrison", shopId: "layout_prison", name: "👁️ Prison Realm" }
     ];
+
 
     shopSkins.forEach(skin => {
       const el = $(skin.id);
