@@ -19,6 +19,10 @@ const shopItems = [
   { id: "sfx_sukunalaugh", name: "SFX: Sukuna's Laugh", type: "sfx", price: 50, icon: "assets/sukuna_nendo.png" },
   { id: "sfx_sasukesayingnaruto", name: "SFX: NARUTOOOOO!", type: "sfx", price: 50, icon: "assets/sasuke_nendo.png" },
   { id: "sfx_narutosayingsasuke", name: "SFX: SASUKEEEE!", type: "sfx", price: 50, icon: "assets/naruto_nendo.png" },
+  { id: "cursor_kunai", name: "Kunai Pointer", type: "cursor", price: 25, icon: "assets/kunai_cursor.png" },
+  { id: "cursor_scythe", name: "Hidan's Scythe", type: "cursor", price: 25, icon: "assets/scythe_cursor.png" },
+  { id: "cursor_heart", name: "Ope Ope Heart", type: "cursor", price: 25, icon: "assets/heart_cursor.gif" },
+  { id: "cursor_cat", name: "Cat", type: "cursor", price: 25, icon: "assets/cat_cursor.gif" }
 ];
 
 function getTokens() { return Number(localStorage.getItem("petal_tokens")) || 0; }
