@@ -175,7 +175,9 @@ const THEMES = {
   tobi_good_boy: { "--bg": "#FFF7ED", "--surface": "#FFEDD5", "--surface-2": "#FB923C", "--border": "rgba(34, 197, 94, 0.2)", "--primary": "#22C55E", "--accent": "#EA580C", "--text": "#431407", "--text-muted": "#7C2D12" },
   monster_mist: { "--bg": "#051622", "--surface": "#0B2435", "--surface-2": "#1A759F", "--border": "rgba(160, 233, 255, 0.2)", "--primary": "#52B69A", "--accent": "#184E77", "--text": "#D9EDF7", "--text-muted": "rgba(217, 237, 247, 0.5)" },
   stinky_aloe: { "--bg": "#0D110D", "--surface": "#1A1F1A", "--surface-2": "#4D7C0F", "--border": "rgba(255, 255, 255, 0.1)", "--primary": "#FFFFFF", "--accent": "#000000", "--text": "#E2E8F0", "--text-muted": "rgba(226, 232, 240, 0.4)", "--bg-spot-1": "rgba(77, 124, 15, 0.15)" },
-  god_of_shinobi: { "--bg": "#E9F5DB", "--surface": "#CFE1B9", "--surface-2": "#718355", "--border": "#4F772D", "--primary": "#B56576", "--accent": "#31572C", "--text": "#132A13", "--text-muted": "#31572C", "--bg-spot-1": "rgba(49, 87, 44, 0.15)", "--bg-spot-2": "rgba(113, 131, 85, 0.2)" },
+  god_of_shinobi: { "--bg": "#E9F5DB", "--surface": "#CFE1B9", "--surface-2": "#718355", "--border": "#4F772D", "--primary": "#B56576", "--accent": "#31572C", "--text": "#132A13", "--text-muted": "#31572C",     "--bg-spot-1": "rgba(49, 87, 44, 0.2)",
+    "--bg-spot-2": "rgba(113, 131, 85, 0.25)",
+    "animation": "wood_style" },
     tactical_suiton: {
     "--bg": "#050B1A", // Deep Abyss Blue
     "--surface": "#0A1426",
