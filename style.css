@@ -2461,3 +2461,35 @@ header, .top-actions { overflow: visible; }
     linear-gradient(90deg, rgba(168, 85, 247, 0.2) 1px, transparent 1px) !important;
   background-size: 40px 40px !important;
 }
+/* TOJI: HEAVILY RESTRICTED LAYOUT */
+.skin-toji-arsenal {
+  background-color: #1a1a1a !important; /* Dark charcoal */
+  background-image: 
+    linear-gradient(rgba(255, 0, 60, 0.05) 1px, transparent 1px), /* Faint red lines */
+    radial-gradient(#262626 1px, transparent 0) !important; /* Concrete texture */
+  background-size: 40px 40px, 4px 4px !important;
+  
+  border: 8px solid #333333 !important; /* Gunmetal border */
+  border-left: 20px solid #111111 !important; /* Tactical grip side */
+  
+  box-shadow: 10px 10px 0px #000, 0 0 20px rgba(255, 0, 60, 0.2) !important;
+  color: #e5e7eb !important;
+  position: relative;
+}
+
+/* The "Scar" across the corner */
+.skin-toji-arsenal::after {
+  content: "";
+  position: absolute;
+  top: 0; right: 0;
+  width: 100px; height: 100px;
+  background: linear-gradient(135deg, transparent 45%, rgba(255, 0, 60, 0.2) 50%, transparent 55%);
+  pointer-events: none;
+}
+
+/* Update the textarea for the Toji look */
+.skin-toji-arsenal .textarea {
+  background: transparent !important;
+  color: #ffffff !important;
+  caret-color: #FF003C; /* Red cursor like the Inverted Spear */
+}
