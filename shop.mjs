@@ -43,7 +43,8 @@ const shopItems = [
   { id: "pet_nendo_hashirama", name: "Nendo Hashirama", type: "pet", price: 400, icon: "assets/nendo_hashirama.png" },
   { id: "pet_nendo_obito", name: "Nendo Obito", type: "pet", price: 400, icon: "assets/nendo_obito.png" },
   { id: "title_sannin", name: "Sannin Title", type: "title", price: 300, icon: "assets/title_scroll.png" },
-  { id: "title_uchiha", name: "Uchiha Title", type: "title", price: 300, icon: "assets/title_fan.png" }
+  { id: "title_uchiha", name: "Uchiha Title", type: "title", price: 300, icon: "assets/title_fan.png" },
+  { id: "title_mednin", name: "The Medical-Nin", type: "title", price: 300, icon: "assets/title_health.png" }
 ];
 
 // 4. HELPERS
