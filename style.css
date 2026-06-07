@@ -2493,3 +2493,42 @@ header, .top-actions { overflow: visible; }
   color: #ffffff !important;
   caret-color: #FF003C; /* Red cursor like the Inverted Spear */
 }
+/* NARUTO + SASUKE: ETERNAL BOND LAYOUT */
+.skin-eternal-bond {
+  /* Half Orange, Half Purple split */
+  background: linear-gradient(90deg, 
+    #F97316 0%, #F97316 50%, 
+    #6D28D9 50%, #6D28D9 100%
+  ) !important;
+  
+  border: 8px solid #FFFFFF !important;
+  box-shadow: 0 0 25px rgba(59, 130, 246, 0.5) !important;
+  position: relative;
+  color: #FFFFFF !important;
+}
+
+/* The "Chakra Divide" - A glowing line down the middle */
+.skin-eternal-bond::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; left: 50%;
+  width: 4px;
+  background: #3B82F6; /* Rasengan/Chidori Blue */
+  box-shadow: 0 0 15px 5px #3B82F6;
+  transform: translateX(-50%);
+  z-index: 1;
+  animation: chakra-pulse 2s infinite alternate;
+}
+
+/* Make sure text is readable over both dark and bright halves */
+.skin-eternal-bond .textarea {
+  background: rgba(0, 0, 0, 0.2) !important;
+  color: #ffffff !important;
+  text-shadow: 1px 1px 2px #000;
+  border: none !important;
+}
+
+@keyframes chakra-pulse {
+  0% { opacity: 0.6; box-shadow: 0 0 10px #3B82F6; }
+  100% { opacity: 1; box-shadow: 0 0 25px 8px #A0E9FF; }
+}
