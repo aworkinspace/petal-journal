@@ -59,7 +59,7 @@ const shopItems = [
   { id: "pet_nendo_gojo", name: "Nendo Gojo", type: "pet", price: 50, icon: "assets/nendo_gojo.png" },
   { id: "pet_nendo_law", name: "Nendo Law", type: "pet", price: 50, icon: "assets/nendo_law.png" },
   { id: "pet_nendo_sakura", name: "Nendo Sakura", type: "pet", price: 50, icon: "assets/nendo_sakura.png" },
-  { id: "pet_nendo_madara", name: "Nendo Madara", type: "pet", price: 50, icon: "assets/nendo_madara.png" }.
+  { id: "pet_nendo_madara", name: "Nendo Madara", type: "pet", price: 50, icon: "assets/nendo_madara.png" },
   { id: "title_sannin", name: "The Legendary Sannin", type: "title", price: 300, icon: "assets/title_scroll.png" },
   { id: "title_uchiha", name: "Ghost of the Uchiha", type: "title", price: 300, icon: "assets/title_fan.png" },
   { id: "title_honored", name: "The Honored One", type: "title", price: 300, icon: "assets/title_eye.png" },
