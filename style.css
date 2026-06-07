@@ -2567,3 +2567,26 @@ header, .top-actions { overflow: visible; }
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-15px); }
 }
+/* LEVEL 70: NEGATIVE SHADOW */
+.king-shadow {
+  box-shadow: 0 0 0 100vmax rgba(0,0,0,0.8), var(--shadow) !important;
+  z-index: 10;
+}
+
+/* LEVEL 80: CHAKRA TEXT */
+.honored-text {
+  text-shadow: 0 0 8px rgba(0, 210, 255, 0.6);
+}
+
+/* LEVEL 100: REALITY BREAK */
+.origin-ui {
+  border: 1px solid white !important;
+  backdrop-filter: invert(1) brightness(0.5) !important;
+  animation: reality-glitch 10s infinite;
+}
+@keyframes reality-glitch {
+  0%, 100% { transform: skew(0); }
+  1% { transform: skew(10deg); }
+  2% { transform: skew(-10deg); }
+  3% { transform: skew(0); }
+}
