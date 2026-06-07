@@ -823,6 +823,29 @@ if ($("tokenBalance")) $("tokenBalance").textContent = tokens;
         opt.textContent = sfxNames[itemId] || "Unknown Jutsu";
         select.appendChild(opt);
       }
+        // --- CURSOR SYNC ---
+  const cursorSelect = document.getElementById("cursorSelect");
+  if (cursorSelect) {
+    cursorSelect.innerHTML = '<option value="default">Default Pointer</option>';
+    
+    ownedItems.forEach(itemId => {
+      if (itemId.startsWith("cursor_")) {
+        const name = itemId.replace("cursor_", "").charAt(0).toUpperCase() + itemId.replace("cursor_", "").slice(1);
+        const opt = document.createElement("option");
+        opt.value = itemId;
+        opt.textContent = `${name} Cursor`;
+        cursorSelect.appendChild(opt);
+      }
+    });
+
+    cursorSelect.value = localStorage.getItem("petal_equipped_cursor") || "default";
+    cursorSelect.onchange = (e) => {
+      localStorage.setItem("petal_equipped_cursor", e.target.value);
+      // Apply immediately so you can see it
+      applyGlobalCursor(e.target.value);
+    };
+  }
+
     });
 
     // 3. Load the saved choice from memory
