@@ -49,6 +49,7 @@ const shopItems = [
   { id: "sfx_narutosayingsasuke", name: "SFX: SASUKEEEE!", type: "sfx", price: 50, icon: "assets/naruto_nendo.png" },
   { id: "cursor_kunai", name: "Kunai Pointer", type: "cursor", price: 25, icon: "assets/kunai_cursor.png" },
   { id: "cursor_scythe", name: "Hidan's Scythe", type: "cursor", price: 25, icon: "assets/scythe_cursor.png" },
+  { id: "cursor_mangekyo", name: "Eternal Mangekyo", type: "cursor", price: 25, icon: "assets/mangekyo_cursor.png" },
   { id: "cursor_heart", name: "Ope Ope Heart", type: "cursor", price: 25, icon: "assets/heart_cursor.png" },
   { id: "cursor_cat", name: "Cat", type: "cursor", price: 25, icon: "assets/cat_cursor.png" },
   { id: "layout_hokage", name: "Scroll of the First", type: "layout", price: 500, icon: "assets/scroll_icon.png" },
