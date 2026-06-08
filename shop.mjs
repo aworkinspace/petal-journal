@@ -47,6 +47,7 @@ const shopItems = [
   { id: "title_uchiha", name: "Uchiha Title", type: "title", price: 300, icon: "assets/title_fan.png" },
   { id: "title_mednin", name: "The Medical-Nin", type: "title", price: 300, icon: "assets/title_health.png" }
 ];
+window.shopItems = shopItems; 
 
 // 4. HELPERS
 function getTokens() { return Number(localStorage.getItem("petal_tokens")) || 0; }
