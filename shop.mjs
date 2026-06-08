@@ -47,11 +47,11 @@ const shopItems = [
   { id: "title_uchiha", name: "Uchiha Title", type: "title", price: 300, icon: "assets/title_fan.png" },
   { id: "title_mednin", name: "The Medical-Nin", type: "title", price: 300, icon: "assets/title_health.png" }
 ];
-window.shopItems = shopItems; 
-
 // 4. HELPERS
 function getTokens() { return Number(localStorage.getItem("petal_tokens")) || 0; }
 function getOwned() { return JSON.parse(localStorage.getItem("petal_owned_items") || "[]"); }
+
+window.shopItems = shopItems; 
 
 // 5. UI RENDERER
 function updateUI() {
