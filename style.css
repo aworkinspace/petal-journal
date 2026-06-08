@@ -2693,3 +2693,13 @@ header, .top-actions { overflow: visible; }
   from { filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.6)); }
   to { filter: drop-shadow(0 0 15px rgba(255, 255, 255, 1)); }
 }
+/* Unified white glow for the main squad */
+.desk-pet img {
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+  transition: filter 0.3s ease;
+}
+
+/* On hover, their individual chakra colors flare up */
+.desk-pet img[src*="sakura"]:hover { filter: drop-shadow(0 0 15px #10B981); }
+.desk-pet img[src*="naruto"]:hover { filter: drop-shadow(0 0 15px #F97316); }
+.desk-pet img[src*="sasuke"]:hover { filter: drop-shadow(0 0 15px #8B5CF6); }
