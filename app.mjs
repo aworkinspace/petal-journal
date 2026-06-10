@@ -688,6 +688,32 @@ flower_archeologist: {
     "--bg-spot-2": "#0A0A0C",
     "animation": "ash_decay"
   },
+    one_for_all: {
+    "--bg": "#F0FFF4", // Hero Emerald Tint
+    "--surface": "#FFFFFF",
+    "--surface-2": "#10B981", // Deku Green
+    "--border": "rgba(244, 63, 94, 0.3)", // Full Cowl Pink Glow
+    "--primary": "#10B981", 
+    "--primary-soft": "rgba(16, 185, 129, 0.1)",
+    "--accent": "#F43F5E", // Power Pink
+    "--text": "#064E3B",
+    "--text-muted": "#10B981",
+    "animation": "full_cowl"
+  },
+  explosion_murder: {
+    "--bg": "#0D0D0D", // Ash Black
+    "--surface": "#1A1A1A",
+    "--surface-2": "#F97316", // Explosion Orange
+    "--border": "rgba(250, 204, 21, 0.3)", // Spark Yellow
+    "--primary": "#FACC15", // Nitro Gold
+    "--primary-soft": "rgba(250, 204, 21, 0.1)",
+    "--accent": "#EF4444", // Grenade Red
+    "--text": "#F9FAFB",
+    "--text-muted": "rgba(249, 115, 22, 0.5)",
+    "--bg-spot-1": "rgba(249, 115, 22, 0.1)",
+    "animation": "nitros"
+  },
+
   empty_throne: { "--bg": "#0A0A0A", "--surface": "#141414", "--surface-2": "#722F37", "--border": "#FFD700", "--primary": "#FFD700", "--accent": "#722F37", "--text": "#FFFFFF", "animation": "shadow_figures" },
   honored_one: { "--bg": "#F0F9FF", "--surface": "#FFFFFF", "--surface-2": "#00D2FF", "--border": "#00D2FF", "--primary": "#00D2FF", "--accent": "#FFFFFF", "--text": "#0369A1", "animation": "atomic_shards" },
   reapers_moon: { "--bg": "#0D0B12", "--surface": "#1A1621", "--surface-2": "#4A0E0E", "--border": "#E2E8F0", "--primary": "#E2E8F0", "--accent": "#FF0000", "--text": "#F8FAFC", "animation": "blood_petals" },
@@ -1324,6 +1350,18 @@ function toast(msg) {
       p.style.top = "-30px";
       p.style.animationDuration = (Math.random() * 5 + 5) + "s";
     }
+    else if (type === "full_cowl") {
+      p.className = "cowl-spark";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.top = Math.random() * 100 + "vh";
+      p.style.backgroundColor = Math.random() > 0.7 ? "#F43F5E" : "#10B981"; // Mix green and pink
+      p.style.setProperty('--rot', `${Math.random() * 360}deg`);
+    }
+    else if (type === "nitros") {
+      p.className = "nitro-pop";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.top = Math.random() * 100 + "vh";
+    }
 
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
@@ -1351,7 +1389,9 @@ gay_ocean: "pride_gay",
 bisexual_galaxy: "pride_bi",
 trans_serenity: "pride_trans", symbol_of_peace: "ofa_sparks",
 blue_cremation: "blue_fire", fierce_wings: "red_feathers", symbol_of_fear: "void_tendrils",
-decay_master: "ash_decay", hellflame_sovereign: "hell_flame",
+decay_master: "ash_decay", hellflame_sovereign: "hell_flame", one_for_all: "full_cowl",
+explosion_murder: "nitros",
+
 
     };
     startAnimation(map[theme] || null);
