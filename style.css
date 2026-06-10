@@ -2795,3 +2795,28 @@ header, .top-actions { overflow: visible; }
   backdrop-filter: sepia(0.8) contrast(0.9) !important;
   -webkit-backdrop-filter: sepia(0.8) contrast(0.9) !important;
 }
+/* ALL MIGHT: ONE FOR ALL SPARKS */
+.ofa-spark {
+  position: absolute;
+  width: 4px; height: 12px;
+  background: #FACC15;
+  box-shadow: 0 0 10px #FFFFFF;
+  pointer-events: none;
+  animation: spark-jump 0.4s ease-out forwards;
+}
+@keyframes spark-jump {
+  0% { transform: scale(0); opacity: 1; }
+  100% { transform: scale(1.5) translateY(-50px) rotate(45deg); opacity: 0; }
+}
+
+/* DABI: BLUE CREMATION FLAMES */
+.blue-flame {
+  position: absolute;
+  width: 10px; height: 10px;
+  background: #00BFFF;
+  border-radius: 50% 50% 20% 80%;
+  box-shadow: 0 0 15px 2px #1E40AF, 0 0 25px 5px rgba(0, 191, 255, 0.4);
+  filter: blur(1px);
+  z-index: 5;
+  animation: amaterasu-rise linear forwards; /* Re-uses the flame movement logic! */
+}
