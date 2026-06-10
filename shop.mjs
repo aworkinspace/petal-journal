@@ -16,6 +16,7 @@ const shopItems = [
   { id: "sticker_joyboy", name: "Nika Sun", type: "sticker", price: 25, icon: "assets/sungod.gif" },
   { id: "sticker_chibigojo", name: "Chibi Gojo", type: "sticker", price: 25, icon: "assets/gojo_chibi.gif" },
   { id: "sticker_cukootoji", name: "Cukoo Toji", type: "sticker", price: 25, icon: "assets/cukoo_toji.gif" },
+  { id: "sticker_sharingan_eye", name: "Active Sharingan", type: "sticker", price: 75, icon: "assets/sharingan_eye.gif" },
   { id: "layout_rainy", name: "Rainy Paper", type: "layout", price: 100, icon: "assets/rain_icon.png" },
   { id: "layout_matrix", name: "Glitch Paper", type: "layout", price: 100, icon: "assets/glitch_icon.png" },
   { id: "layout_hologram", name: "Holo-Prism", type: "layout", price: 100, icon: "assets/holo_icon.png" },
@@ -53,9 +54,12 @@ const shopItems = [
   { id: "title_sannin", name: "Sannin Title", type: "title", price: 300, icon: "assets/title_scroll.png" },
   { id: "title_uchiha", name: "Uchiha Title", type: "title", price: 300, icon: "assets/title_fan.png" },
   { id: "title_mednin", name: "The Medical-Nin", type: "title", price: 300, icon: "assets/title_health.png" },
+  { id: "title_joyboy", name: "The Warrior of Liberation", type: "title", price: 500, icon: "assets/title_sun.png" },
+  { id: "title_curse_king", name: "King of Curses", type: "title", price: 500, icon: "assets/title_mask.png" },
   { id: "filter_crt", name: "Retro CRT Scanlines", type: "filter", price: 400, icon: "assets/crt_icon.png" },
   { id: "filter_dust", name: "Warm Library Dust", type: "filter", price: 400, icon: "assets/dust_icon.png" },
   { id: "filter_vignette", name: "Cinematic Focus", type: "filter", price: 400, icon: "assets/vignette_icon.png" },
+  { id: "filter_sepia", name: "Nostalgic Sepia", type: "filter", price: 300, icon: "assets/sepia_icon.png" },
 ];
 // 4. HELPERS
 function getTokens() { return Number(localStorage.getItem("petal_tokens")) || 0; }
