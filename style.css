@@ -2906,3 +2906,35 @@ header, .top-actions { overflow: visible; }
   background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
   box-shadow: inset 0 0 10px rgba(249, 115, 22, 0.1);
 }
+/* LEVEL 500: GHOSTLY UI */
+.ghost-ui {
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 0 40px rgba(180, 137, 36, 0.2) !important;
+  backdrop-filter: blur(20px) !important;
+}
+
+/* LEVEL 1000: THE SINGULARITY */
+.singularity-ui {
+  border: none !important;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.15)) !important;
+  box-shadow: 0 0 100px rgba(255,255,255,0.1) !important;
+  animation: reality-throb 10s infinite alternate;
+}
+
+@keyframes reality-throb {
+  from { filter: hue-rotate(0deg) brightness(1); }
+  to { filter: hue-rotate(360deg) brightness(1.2); }
+}
+
+/* PONEGLYPH ANIMATION */
+.poneglyph {
+  position: absolute;
+  font-family: serif; font-size: 20px; color: #B48924;
+  opacity: 0; pointer-events: none;
+  animation: pone-drift 8s linear forwards;
+}
+@keyframes pone-drift {
+  0% { transform: translateY(-20px); opacity: 0; }
+  20% { opacity: 0.5; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
