@@ -692,6 +692,11 @@ flower_archeologist: {
   honored_one: { "--bg": "#F0F9FF", "--surface": "#FFFFFF", "--surface-2": "#00D2FF", "--border": "#00D2FF", "--primary": "#00D2FF", "--accent": "#FFFFFF", "--text": "#0369A1", "animation": "atomic_shards" },
   reapers_moon: { "--bg": "#0D0B12", "--surface": "#1A1621", "--surface-2": "#4A0E0E", "--border": "#E2E8F0", "--primary": "#E2E8F0", "--accent": "#FF0000", "--text": "#F8FAFC", "animation": "blood_petals" },
   the_origin: { "--bg": "#000000", "--surface": "rgba(0,0,0,0.5)", "--surface-2": "#FFFFFF", "--border": "#00F3FF", "--primary": "#00F3FF", "--accent": "#FF007A", "--text": "#FFFFFF", "animation": "reality_strings" },
+    void_century: { "--bg": "#050A10", "--surface": "#0D141D", "--surface-2": "#B48924", "--border": "#B48924", "--primary": "#B48924", "--accent": "#00D2FF", "--text": "#F8FAFC", "animation": "poneglyphs" },
+  pure_zen: { "--bg": "#FFFFFF", "--surface": "rgba(255,255,255,0.9)", "--surface-2": "#F3E8FF", "--border": "#A855F7", "--primary": "#00D2FF", "--accent": "#FF007A", "--text": "#1A1A1A", "animation": "chakra_ribbons" },
+  the_akashic_record: { "--bg": "#120D0A", "--surface": "#1E1612", "--surface-2": "#D4AF37", "--border": "#D4AF37", "--primary": "#D4AF37", "--accent": "#FF4500", "--text": "#F5E6D3", "animation": "flying_pages" },
+  true_transcendence: { "--bg": "#000000", "--surface": "rgba(0,0,0,0.8)", "--surface-2": "#FFFFFF", "--border": "transparent", "--primary": "#FFFFFF", "--accent": "#FFFFFF", "--text": "#FFFFFF", "animation": "reality_tears" }
+
 };
 window.allThemes = THEMES; 
 /* ------------------- Helpers (Robust & Balanced) ------------------- */
@@ -873,7 +878,7 @@ function toast(msg) {
     console.log("Checking Unlocks for Level:", lvl);
 
     // 1. THEME DROPDOWN UNLOCKS
-    const tiers = [
+       const tiers = [
       { lvl: 5, val: "golden_petal", name: "✨ Golden Petal" },
       { lvl: 10, val: "six_paths_sage", name: "☀️ Six Paths Sage" },
       { lvl: 15, val: "celestial_sovereignty", name: "🌌 Celestial" },
@@ -885,8 +890,14 @@ function toast(msg) {
       { lvl: 70, val: "empty_throne", name: "👑 Empty Throne" },
       { lvl: 80, val: "honored_one", name: "👁️ The Honored One" },
       { lvl: 90, val: "reapers_moon", name: "🌙 Reaper's Moon" },
-      { lvl: 100, val: "the_origin", name: "💠 THE ORIGIN" }
+      { lvl: 100, val: "the_origin", name: "💠 THE ORIGIN" },
+      // --- NEW HIGH LEVELS ---
+      { lvl: 500, val: "void_century", name: "📜 Void Century" },
+      { lvl: 600, val: "pure_zen", name: "💎 Pure Zen" },
+      { lvl: 800, val: "the_akashic_record", name: "📚 The Akashic Record" },
+      { lvl: 1000, val: "true_transcendence", name: "💠 THE ZERO POINT" }
     ];
+
 
     tiers.forEach(tier => {
       const opt = document.querySelector(`option[value="${tier.val}"]`);
@@ -919,6 +930,11 @@ function toast(msg) {
     if (lvl >= 15) rank = "Celestial Sage";
     if (lvl >= 20) rank = "Transcendent One";
     if (lvl >= 30) rank = "Omniscient Sage 👁️";
+    if (lvl >= 100) rank = "The Architect";
+    if (lvl >= 500) rank = "Voice of the Void 🌌";
+    if (lvl >= 600) rank = "Eternal Record Keeper 📜";
+    if (lvl >= 800) rank = "Sage of Six Paths ☀️"; // The ultimate level
+    if (lvl >= 1000) rank = "💠 ZERO POINT 💠";
     if ($("ninjaRank")) $("ninjaRank").textContent = `Rank: ${rank}`;
 
     // 5. SHOP ITEM UNLOCKS (Skins)
@@ -1278,6 +1294,14 @@ function toast(msg) {
       // Randomly make some flames more yellow or red
       if (Math.random() > 0.5) p.style.background = "#F59E0B";
       p.style.animationDuration = (Math.random() * 1 + 2) + "s";
+    }
+    else if (type === "poneglyphs") {
+      const symbols = ["𓀀", "𓀁", "𓀂", "𓀃", "𓀄", "𓀅"]; // Egyptian-style placeholders for Poneglyphs
+      p.className = "poneglyph";
+      p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.top = "-30px";
+      p.style.animationDuration = (Math.random() * 5 + 5) + "s";
     }
 
       overlay.appendChild(p);
