@@ -614,6 +614,7 @@ flower_archeologist: {
   reapers_moon: { "--bg": "#0D0B12", "--surface": "#1A1621", "--surface-2": "#4A0E0E", "--border": "#E2E8F0", "--primary": "#E2E8F0", "--accent": "#FF0000", "--text": "#F8FAFC", "animation": "blood_petals" },
   the_origin: { "--bg": "#000000", "--surface": "rgba(0,0,0,0.5)", "--surface-2": "#FFFFFF", "--border": "#00F3FF", "--primary": "#00F3FF", "--accent": "#FF007A", "--text": "#FFFFFF", "animation": "reality_strings" },
 };
+window.allThemes = THEMES; 
 /* ------------------- Helpers (Robust & Balanced) ------------------- */
 function applyVars(vars) {
   if (!vars) return;
