@@ -613,6 +613,19 @@ flower_archeologist: {
     "--bg-spot-1": "rgba(0, 191, 255, 0.15)",
     "animation": "blue_fire"
   },
+    hellflame_sovereign: {
+    "--bg": "#0D0A0A", // Burnt Ash Black
+    "--surface": "#1A1414",
+    "--surface-2": "#F97316", // Hellflame Orange
+    "--border": "rgba(239, 68, 68, 0.3)", // Flame Red
+    "--primary": "#F59E0B", // Flashfire Gold
+    "--primary-soft": "rgba(245, 158, 11, 0.15)",
+    "--accent": "#EF4444", 
+    "--text": "#F2F0F7",
+    "--text-muted": "rgba(242,240,247,.6)",
+    "--bg-spot-1": "rgba(249, 115, 22, 0.1)", // Orange glow
+    "animation": "hell_flame"
+  },
     fierce_wings: {
     "--bg": "#F0F9FF", // Clear Sky Blue
     "--surface": "#FFFFFF",
@@ -626,10 +639,69 @@ flower_archeologist: {
     "--bg-spot-1": "rgba(239, 68, 68, 0.05)", // Soft Red Glow
     "animation": "red_feathers"
   },
+    symbol_of_fear: {
+    "--bg": "#050505", // Absolute Villainy Black
+    "--surface": "#0D0D0D",
+    "--surface-2": "#3B0A45", // Dark Quirk Purple
+    "--border": "rgba(255, 0, 0, 0.2)", // Red Life-Support Glow
+    "--primary": "#7C3AED", // Forbidden Purple
+    "--primary-soft": "rgba(124, 58, 237, 0.1)",
+    "--accent": "#EF4444", // Eye Red
+    "--text": "#E5E7EB",
+    "--text-muted": "rgba(229, 231, 235, 0.4)",
+    "--bg-spot-1": "#050505",
+    "--bg-spot-2": "#050505",
+    "animation": "void_tendrils"
+  },
+  decay_master: {
+    "--bg": "#0A0A0A", // Dust & Ash
+    "--surface": "#121212",
+    "--surface-2": "#4A5568", // Withered Blue-Grey
+    "--border": "rgba(160, 174, 192, 0.2)",
+    "--primary": "#A0AEC0", // Ash Grey
+    "--primary-soft": "rgba(160, 174, 192, 0.1)",
+    "--accent": "#FF4C4C", // Scar Red
+    "--text": "#F7FAFC",
+    "--text-muted": "rgba(247, 250, 252, 0.4)",
+    "--bg-spot-1": "#0A0A0A",
+    "--bg-spot-2": "#0A0A0C",
+    "animation": "ash_decay"
+  },
+    one_for_all: {
+    "--bg": "#F0FFF4", // Hero Emerald Tint
+    "--surface": "#FFFFFF",
+    "--surface-2": "#10B981", // Deku Green
+    "--border": "rgba(244, 63, 94, 0.3)", // Full Cowl Pink Glow
+    "--primary": "#10B981", 
+    "--primary-soft": "rgba(16, 185, 129, 0.1)",
+    "--accent": "#F43F5E", // Power Pink
+    "--text": "#064E3B",
+    "--text-muted": "#10B981",
+    "animation": "full_cowl"
+  },
+  explosion_murder: {
+    "--bg": "#0D0D0D", // Ash Black
+    "--surface": "#1A1A1A",
+    "--surface-2": "#F97316", // Explosion Orange
+    "--border": "rgba(250, 204, 21, 0.3)", // Spark Yellow
+    "--primary": "#FACC15", // Nitro Gold
+    "--primary-soft": "rgba(250, 204, 21, 0.1)",
+    "--accent": "#EF4444", // Grenade Red
+    "--text": "#F9FAFB",
+    "--text-muted": "rgba(249, 115, 22, 0.5)",
+    "--bg-spot-1": "rgba(249, 115, 22, 0.1)",
+    "animation": "nitros"
+  },
+
   empty_throne: { "--bg": "#0A0A0A", "--surface": "#141414", "--surface-2": "#722F37", "--border": "#FFD700", "--primary": "#FFD700", "--accent": "#722F37", "--text": "#FFFFFF", "animation": "shadow_figures" },
   honored_one: { "--bg": "#F0F9FF", "--surface": "#FFFFFF", "--surface-2": "#00D2FF", "--border": "#00D2FF", "--primary": "#00D2FF", "--accent": "#FFFFFF", "--text": "#0369A1", "animation": "atomic_shards" },
   reapers_moon: { "--bg": "#0D0B12", "--surface": "#1A1621", "--surface-2": "#4A0E0E", "--border": "#E2E8F0", "--primary": "#E2E8F0", "--accent": "#FF0000", "--text": "#F8FAFC", "animation": "blood_petals" },
   the_origin: { "--bg": "#000000", "--surface": "rgba(0,0,0,0.5)", "--surface-2": "#FFFFFF", "--border": "#00F3FF", "--primary": "#00F3FF", "--accent": "#FF007A", "--text": "#FFFFFF", "animation": "reality_strings" },
+    void_century: { "--bg": "#050A10", "--surface": "#0D141D", "--surface-2": "#B48924", "--border": "#B48924", "--primary": "#B48924", "--accent": "#00D2FF", "--text": "#F8FAFC", "animation": "poneglyphs" },
+  pure_zen: { "--bg": "#FFFFFF", "--surface": "rgba(255,255,255,0.9)", "--surface-2": "#F3E8FF", "--border": "#A855F7", "--primary": "#00D2FF", "--accent": "#FF007A", "--text": "#1A1A1A", "animation": "chakra_ribbons" },
+  the_akashic_record: { "--bg": "#120D0A", "--surface": "#1E1612", "--surface-2": "#D4AF37", "--border": "#D4AF37", "--primary": "#D4AF37", "--accent": "#FF4500", "--text": "#F5E6D3", "animation": "flying_pages" },
+  true_transcendence: { "--bg": "#000000", "--surface": "rgba(0,0,0,0.8)", "--surface-2": "#FFFFFF", "--border": "transparent", "--primary": "#FFFFFF", "--accent": "#FFFFFF", "--text": "#FFFFFF", "animation": "reality_tears" }
+
 };
     const themeName = localStorage.getItem("petal_theme") || "petal";
     const theme = THEMES[themeName] || THEMES.petal;
