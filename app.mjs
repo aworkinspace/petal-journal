@@ -910,18 +910,39 @@ function toast(msg) {
     // 2. STICKERS (Level 5)
     document.querySelectorAll(".level-5-reward").forEach(el => el.style.display = lvl >= 5 ? "inline-flex" : "none");
 
-    // 3. UI TRANSFORMATIONS
+        // 3. UI TRANSFORMATIONS (Rank-based visuals)
     document.querySelectorAll(".panel").forEach(p => {
-      p.classList.remove("kage-aura", "celestial-border", "hologram-panel", "liquid-border", "cracked-stone", "floating-panel", "king-shadow", "origin-ui");
-      if (lvl >= 100) p.classList.add("origin-ui");
-      else if (lvl >= 70) p.classList.add("king-shadow");
-      else if (lvl >= 60) p.classList.add("floating-panel");
-      else if (lvl >= 40) p.classList.add("cracked-stone");
-      else if (lvl >= 30) p.classList.add("liquid-border");
-      else if (lvl >= 20) p.classList.add("hologram-panel");
-      else if (lvl >= 15) p.classList.add("celestial-border");
-      else if (lvl >= 10) p.classList.add("kage-aura");
+      // 1. Clear ALL special rank classes first (including the new high-level ones)
+      p.classList.remove(
+        "kage-aura", "celestial-border", "hologram-panel", 
+        "liquid-border", "cracked-stone", "floating-panel", 
+        "king-shadow", "origin-ui", "ghost-ui", "singularity-ui"
+      );
+      
+      // 2. Apply the highest tier you have earned
+      if (lvl >= 1000) {
+        p.classList.add("singularity-ui");
+      } else if (lvl >= 500) {
+        p.classList.add("ghost-ui"); // This triggers for your Level 600 status!
+      } else if (lvl >= 100) {
+        p.classList.add("origin-ui");
+      } else if (lvl >= 70) {
+        p.classList.add("king-shadow");
+      } else if (lvl >= 60) {
+        p.classList.add("floating-panel");
+      } else if (lvl >= 40) {
+        p.classList.add("cracked-stone");
+      } else if (lvl >= 30) {
+        p.classList.add("liquid-border");
+      } else if (lvl >= 20) {
+        p.classList.add("hologram-panel");
+      } else if (lvl >= 15) {
+        p.classList.add("celestial-border");
+      } else if (lvl >= 10) {
+        p.classList.add("kage-aura");
+      }
     });
+
 
     // 4. RANK TEXT
     let rank = "Genin";
