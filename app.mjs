@@ -1217,7 +1217,8 @@ function toast(msg) {
 lesbian_sunset: "pride_sunset",
 gay_ocean: "pride_gay",
 bisexual_galaxy: "pride_bi",
-trans_serenity: "pride_trans",
+trans_serenity: "pride_trans", symbol_of_peace: "ofa_sparks",
+blue_cremation: "blue_fire",
 
     };
     startAnimation(map[theme] || null);
