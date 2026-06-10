@@ -2966,3 +2966,37 @@ header, .top-actions { overflow: visible; }
   50% { filter: brightness(2); }
   100% { transform: scale(3); opacity: 0; filter: brightness(3); }
 }
+/* AIZAWA: BINDING SCARVES */
+.eraser-scarf {
+  position: absolute;
+  width: 100px;
+  height: 4px;
+  background: #CBD5E1;
+  border-radius: 10px;
+  opacity: 0;
+  pointer-events: none;
+  animation: scarf-lash 5s ease-in-out forwards;
+}
+
+@keyframes scarf-lash {
+  0% { transform: scaleX(0) rotate(var(--rot)) translateY(0); opacity: 0; }
+  20% { opacity: 0.4; transform: scaleX(1) rotate(var(--rot)); }
+  100% { transform: scaleX(1.5) rotate(calc(var(--rot) + 10deg)) translateY(-100vh); opacity: 0; }
+}
+
+/* LADY NAGANT: CURVING BULLETS */
+.sniper-shot {
+  position: absolute;
+  width: 30px;
+  height: 2px;
+  background: #F97316;
+  box-shadow: 0 0 10px #8B5CF6; /* Purple glow */
+  pointer-events: none;
+  opacity: 0;
+  animation: bullet-curve 0.6s linear forwards;
+}
+
+@keyframes bullet-curve {
+  0% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateX(110vw) translateY(100px) rotate(45deg); opacity: 0; }
+}
