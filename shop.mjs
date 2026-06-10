@@ -55,6 +55,8 @@ const shopItems = [
   { id: "pet_nendo_allmight", name: "Nendo All Might", type: "pet", price: 400, icon: "assets/nendo_allmight.png" },
   { id: "pet_nendo_hawks", name: "Nendo Hawks", type: "pet", price: 400, icon: "assets/nendo_hawks.png" },
   { id: "pet_nendo_dabi", name: "Nendo Dabi", type: "pet", price: 400, icon: "assets/nendo_dabi.png" },
+  { id: "pet_nendo_endeavor", name: "Nendo Endeavor", type: "pet", price: 400, icon: "assets/nendo_endeavor.png" },
+  { id: "pet_nendo_shiggy", name: "Nendo Shigaraki", type: "pet", price: 400, icon: "assets/nendo_shiggy.png" },
   { id: "title_sannin", name: "Sannin Title", type: "title", price: 300, icon: "assets/title_scroll.png" },
   { id: "title_uchiha", name: "Uchiha Title", type: "title", price: 300, icon: "assets/title_fan.png" },
   { id: "title_mednin", name: "The Medical-Nin", type: "title", price: 300, icon: "assets/title_health.png" },
