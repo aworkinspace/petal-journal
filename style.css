@@ -2789,3 +2789,9 @@ header, .top-actions { overflow: visible; }
   20% { opacity: 0.5; }
   100% { transform: translate(-50%, -50%) scale(8); opacity: 0; }
 }
+.filter-sepia {
+  display: block !important;
+  background: rgba(112, 66, 20, 0.15);
+  backdrop-filter: sepia(0.8) contrast(0.9) !important;
+  -webkit-backdrop-filter: sepia(0.8) contrast(0.9) !important;
+}
