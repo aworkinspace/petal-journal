@@ -891,14 +891,15 @@ if ($("tokenBalance")) $("tokenBalance").textContent = tokens;
   if (titleSelect) {
     titleSelect.innerHTML = '<option value="none">No Title</option>';
     
-    // Map IDs to pretty names
-   const titleNames = {
+    const titleNames = {
       "title_sannin": "Legendary Sannin",
       "title_uchiha": "Ghost of the Uchiha",
       "title_honored": "The Honored One",
       "title_kage": "Shadow of the Leaf",
       "title_yonko": "The Strongest Man",
-      "title_mednin": "Medical-Nin" // <--- ADD THIS LINE
+      "title_mednin": "The Medical-Nin",
+      "title_joyboy": "Warrior of Liberation", // NEW
+      "title_curse_king": "King of Curses"       // NEW
     };
 
     ownedItems.forEach(itemId => {
