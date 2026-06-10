@@ -2703,3 +2703,38 @@ header, .top-actions { overflow: visible; }
 .desk-pet img[src*="sakura"]:hover { filter: drop-shadow(0 0 15px #10B981); }
 .desk-pet img[src*="naruto"]:hover { filter: drop-shadow(0 0 15px #F97316); }
 .desk-pet img[src*="sasuke"]:hover { filter: drop-shadow(0 0 15px #8B5CF6); }
+/* THE FILTER OVERLAY CONTAINER */
+#screen-filter-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999; /* Top level */
+  pointer-events: none;
+  display: none;
+}
+
+/* 1. CRT SCANLINES */
+.filter-crt {
+  display: block !important;
+  background: repeating-linear-gradient(
+    rgba(0, 0, 0, 0.05) 0px,
+    rgba(0, 0, 0, 0.05) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+}
+
+/* 2. WARM LIBRARY DUST */
+.filter-dust {
+  display: block !important;
+  background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+  opacity: 0.15;
+  mix-blend-mode: overlay;
+}
+
+/* 3. CINEMATIC VIGNETTE */
+.filter-vignette {
+  display: block !important;
+  background: radial-gradient(circle, transparent 50%, rgba(0,0,0,0.4) 100%);
+}
