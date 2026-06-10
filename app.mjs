@@ -730,7 +730,9 @@ function toast(msg) {
           "title_honored": "The Honored One",
           "title_kage": "Shadow of the Leaf",
           "title_yonko": "The Strongest Man",
-          "title_mednin": "Medical-Nin" // <--- ADD THIS LINE
+          "title_mednin": "The Medical-Nin",
+          "title_joyboy": "Warrior of Liberation", // NEW
+          "title_curse_king": "King of Curses"       // NEW
         };
 
         let displayName = user.displayName || "My Profile";
