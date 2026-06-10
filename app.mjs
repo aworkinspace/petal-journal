@@ -647,6 +647,34 @@ flower_archeologist: {
     "--bg-spot-1": "rgba(239, 68, 68, 0.05)", // Soft Red Glow
     "animation": "red_feathers"
   },
+    symbol_of_fear: {
+    "--bg": "#050505", // Absolute Villainy Black
+    "--surface": "#0D0D0D",
+    "--surface-2": "#3B0A45", // Dark Quirk Purple
+    "--border": "rgba(255, 0, 0, 0.2)", // Red Life-Support Glow
+    "--primary": "#7C3AED", // Forbidden Purple
+    "--primary-soft": "rgba(124, 58, 237, 0.1)",
+    "--accent": "#EF4444", // Eye Red
+    "--text": "#E5E7EB",
+    "--text-muted": "rgba(229, 231, 235, 0.4)",
+    "--bg-spot-1": "#050505",
+    "--bg-spot-2": "#050505",
+    "animation": "void_tendrils"
+  },
+  decay_master: {
+    "--bg": "#0A0A0A", // Dust & Ash
+    "--surface": "#121212",
+    "--surface-2": "#4A5568", // Withered Blue-Grey
+    "--border": "rgba(160, 174, 192, 0.2)",
+    "--primary": "#A0AEC0", // Ash Grey
+    "--primary-soft": "rgba(160, 174, 192, 0.1)",
+    "--accent": "#FF4C4C", // Scar Red
+    "--text": "#F7FAFC",
+    "--text-muted": "rgba(247, 250, 252, 0.4)",
+    "--bg-spot-1": "#0A0A0A",
+    "--bg-spot-2": "#0A0A0C",
+    "animation": "ash_decay"
+  },
   empty_throne: { "--bg": "#0A0A0A", "--surface": "#141414", "--surface-2": "#722F37", "--border": "#FFD700", "--primary": "#FFD700", "--accent": "#722F37", "--text": "#FFFFFF", "animation": "shadow_figures" },
   honored_one: { "--bg": "#F0F9FF", "--surface": "#FFFFFF", "--surface-2": "#00D2FF", "--border": "#00D2FF", "--primary": "#00D2FF", "--accent": "#FFFFFF", "--text": "#0369A1", "animation": "atomic_shards" },
   reapers_moon: { "--bg": "#0D0B12", "--surface": "#1A1621", "--surface-2": "#4A0E0E", "--border": "#E2E8F0", "--primary": "#E2E8F0", "--accent": "#FF0000", "--text": "#F8FAFC", "animation": "blood_petals" },
@@ -1213,7 +1241,22 @@ function toast(msg) {
       // Hawks' feathers are faster than Itachi's
       p.style.animationDuration = (Math.random() * 2 + 3) + "s";
     }
-
+    else if (type === "void_tendrils") {
+      p.className = "void-tendril";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.bottom = "-50px";
+      const randomRot = (Math.random() * 40) - 20; // Slight angle
+      p.style.setProperty('--rot', `${randomRot}deg`);
+      p.style.animationDuration = "4s";
+    }
+    else if (type === "ash_decay") {
+      p.className = "ash-flake";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.top = "-20px";
+      const size = Math.random() * 5 + 2 + "px";
+      p.style.width = size; p.style.height = size;
+      p.style.animationDuration = (Math.random() * 2 + 3) + "s";
+    }
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
     }, (type === "teleport" || type === "bolts" || type === "slashes" || type === "air_cracks" || type === "glitch" || type === "lightning") ? 80 : 800);
@@ -1239,7 +1282,8 @@ lesbian_sunset: "pride_sunset",
 gay_ocean: "pride_gay",
 bisexual_galaxy: "pride_bi",
 trans_serenity: "pride_trans", symbol_of_peace: "ofa_sparks",
-blue_cremation: "blue_fire", fierce_wings: "red_feathers",
+blue_cremation: "blue_fire", fierce_wings: "red_feathers", symbol_of_fear: "void_tendrils",
+decay_master: "ash_decay",
 
     };
     startAnimation(map[theme] || null);
@@ -1300,7 +1344,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const ownedItems = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
   const sBar = document.querySelector(".sticker-panel");
-  const sMap = { "sticker_kunai": { name: "Kunai", file: "kunai.gif" }, "sticker_curse": { name: "Cursed Mark", file: "cursedmark.gif" }, "sticker_joyboy": { name: "Sun God", file: "sungod.gif" }, "sticker_chibigojo": { name: "Chibi Gojo", file: "gojo_chibi.gif" }, "sticker_cukootoji": { name: "Cukoo Toji", file: "cukoo_toji.gif" }, "sticker_sharingan_eye": { name: "Sharingan", file: "sharingan_eye.gif" }, };
+  const sMap = { "sticker_kunai": { name: "Kunai", file: "kunai.gif" }, "sticker_curse": { name: "Cursed Mark", file: "cursedmark.gif" }, "sticker_joyboy": { name: "Sun God", file: "sungod.gif" }, "sticker_chibigojo": { name: "Chibi Gojo", file: "gojo_chibi.gif" }, "sticker_cukootoji": { name: "Cukoo Toji", file: "cukoo_toji.gif" }, "sticker_sharingan_eye": { name: "Sharingan", file: "sharingan_eye.gif" }, "sticker_hawks": { name: "Hawks", file: "hawks.gif" }, };
   if (sBar) { ownedItems.forEach(id => { const i = sMap[id]; if (i && !document.querySelector(`[data-sticker="assets/${i.file}"]`)) { const b = document.createElement("button"); b.className = "chip"; b.type = "button"; b.dataset.sticker = `assets/${i.file}`; b.textContent = `✨ ${i.name}`; sBar.appendChild(b); } }); }
 });
 
