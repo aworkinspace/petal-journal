@@ -2938,3 +2938,31 @@ header, .top-actions { overflow: visible; }
   20% { opacity: 0.5; }
   100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
 }
+/* DEKU: FULL COWL ELECTRICITY */
+.cowl-spark {
+  position: absolute;
+  width: 2px; height: 15px;
+  background: #10B981;
+  box-shadow: 0 0 10px #10B981;
+  pointer-events: none;
+  animation: electricity-flicker 0.3s ease-out forwards;
+}
+@keyframes electricity-flicker {
+  0% { transform: scaleY(0) rotate(var(--rot)); opacity: 1; }
+  100% { transform: scaleY(2) rotate(var(--rot)) translate(10px, -10px); opacity: 0; }
+}
+
+/* BAKUGO: NITRO EXPLOSIONS */
+.nitro-pop {
+  position: absolute;
+  width: 10px; height: 10px;
+  background: #FACC15;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  pointer-events: none;
+  animation: boom-pop 0.5s ease-out forwards;
+}
+@keyframes boom-pop {
+  0% { transform: scale(0); opacity: 1; filter: brightness(1); }
+  50% { filter: brightness(2); }
+  100% { transform: scale(3); opacity: 0; filter: brightness(3); }
+}
