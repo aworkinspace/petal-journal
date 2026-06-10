@@ -713,6 +713,30 @@ flower_archeologist: {
     "--bg-spot-1": "rgba(249, 115, 22, 0.1)",
     "animation": "nitros"
   },
+  eraser_head: {
+    "--bg": "#121214", // Tired Eyes Black
+    "--surface": "#1A1B1E",
+    "--surface-2": "#4A5568", // Scarf Grey
+    "--border": "rgba(250, 204, 21, 0.3)", // Goggle Yellow
+    "--primary": "#FACC15", 
+    "--primary-soft": "rgba(250, 204, 21, 0.1)",
+    "--accent": "#EF4444", // Quirk Red
+    "--text": "#E2E8F0",
+    "--text-muted": "rgba(226, 232, 240, 0.5)",
+    "animation": "binding_scarves"
+  },
+  silent_sniper: {
+    "--bg": "#0D0B12", // Sniper's Nest
+    "--surface": "#16141F",
+    "--surface-2": "#F97316", // Nagant Orange
+    "--border": "rgba(139, 92, 246, 0.3)", // Hair Purple
+    "--primary": "#8B5CF6", // Purple Chakra
+    "--primary-soft": "rgba(139, 92, 246, 0.1)",
+    "--accent": "#F97316", 
+    "--text": "#F3F4F6",
+    "--text-muted": "rgba(243, 244, 246, 0.4)",
+    "animation": "curving_bullets"
+  },
 
   empty_throne: { "--bg": "#0A0A0A", "--surface": "#141414", "--surface-2": "#722F37", "--border": "#FFD700", "--primary": "#FFD700", "--accent": "#722F37", "--text": "#FFFFFF", "animation": "shadow_figures" },
   honored_one: { "--bg": "#F0F9FF", "--surface": "#FFFFFF", "--surface-2": "#00D2FF", "--border": "#00D2FF", "--primary": "#00D2FF", "--accent": "#FFFFFF", "--text": "#0369A1", "animation": "atomic_shards" },
@@ -1362,6 +1386,19 @@ function toast(msg) {
       p.style.left = Math.random() * 100 + "vw";
       p.style.top = Math.random() * 100 + "vh";
     }
+    else if (type === "binding_scarves") {
+      p.className = "eraser-scarf";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.bottom = "-20px";
+      p.style.setProperty('--rot', `${(Math.random() * 60) - 30}deg`);
+      p.style.animationDuration = (Math.random() * 2 + 4) + "s";
+    }
+    else if (type === "curving_bullets") {
+      p.className = "sniper-shot";
+      p.style.left = "-40px";
+      p.style.top = Math.random() * 100 + "vh";
+      p.style.animationDuration = "0.6s";
+    }
 
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
@@ -1390,7 +1427,9 @@ bisexual_galaxy: "pride_bi",
 trans_serenity: "pride_trans", symbol_of_peace: "ofa_sparks",
 blue_cremation: "blue_fire", fierce_wings: "red_feathers", symbol_of_fear: "void_tendrils",
 decay_master: "ash_decay", hellflame_sovereign: "hell_flame", one_for_all: "full_cowl",
-explosion_murder: "nitros",
+explosion_murder: "nitros", eraser_head: "binding_scarves",
+silent_sniper: "curving_bullets"
+
 
 
     };
