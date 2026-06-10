@@ -670,7 +670,22 @@ function toast(msg) {
   clearTimeout(toast._id); 
   toast._id = setTimeout(() => t.classList.remove("show"), 2200);
 }
-
+function applyFilter(filterId) {
+  let filterOverlay = document.getElementById("screen-filter-overlay");
+  if (!filterOverlay) {
+    filterOverlay = document.createElement("div");
+    filterOverlay.id = "screen-filter-overlay";
+    document.body.prepend(filterOverlay);
+  }
+  
+  if (filterId === "none") {
+    filterOverlay.className = "";
+  } else {
+    // Convert 'filter_crt' -> 'filter-crt'
+    filterOverlay.className = filterId.replace("_", "-");
+  }
+  localStorage.setItem("petal_equipped_filter", filterId);
+}
 /* ------------------- Firebase Logic (With Title Sync) ------------------- */
 (() => {
   const auth = window.firebaseAuth;
