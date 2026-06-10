@@ -634,6 +634,19 @@ flower_archeologist: {
     "--bg-spot-1": "rgba(0, 191, 255, 0.15)",
     "animation": "blue_fire"
   },
+    hellflame_sovereign: {
+    "--bg": "#0D0A0A", // Burnt Ash Black
+    "--surface": "#1A1414",
+    "--surface-2": "#F97316", // Hellflame Orange
+    "--border": "rgba(239, 68, 68, 0.3)", // Flame Red
+    "--primary": "#F59E0B", // Flashfire Gold
+    "--primary-soft": "rgba(245, 158, 11, 0.15)",
+    "--accent": "#EF4444", 
+    "--text": "#F2F0F7",
+    "--text-muted": "rgba(242,240,247,.6)",
+    "--bg-spot-1": "rgba(249, 115, 22, 0.1)", // Orange glow
+    "animation": "hell_flame"
+  },
     fierce_wings: {
     "--bg": "#F0F9FF", // Clear Sky Blue
     "--surface": "#FFFFFF",
@@ -1257,6 +1270,15 @@ function toast(msg) {
       p.style.width = size; p.style.height = size;
       p.style.animationDuration = (Math.random() * 2 + 3) + "s";
     }
+          else if (type === "hell_flame") {
+      p.className = "hell-flame";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.bottom = "-30px";
+      // Randomly make some flames more yellow or red
+      if (Math.random() > 0.5) p.style.background = "#F59E0B";
+      p.style.animationDuration = (Math.random() * 1 + 2) + "s";
+    }
+
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
     }, (type === "teleport" || type === "bolts" || type === "slashes" || type === "air_cracks" || type === "glitch" || type === "lightning") ? 80 : 800);
@@ -1283,7 +1305,7 @@ gay_ocean: "pride_gay",
 bisexual_galaxy: "pride_bi",
 trans_serenity: "pride_trans", symbol_of_peace: "ofa_sparks",
 blue_cremation: "blue_fire", fierce_wings: "red_feathers", symbol_of_fear: "void_tendrils",
-decay_master: "ash_decay",
+decay_master: "ash_decay", hellflame_sovereign: "hell_flame",
 
     };
     startAnimation(map[theme] || null);
