@@ -1238,7 +1238,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const ownedItems = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
   const sBar = document.querySelector(".sticker-panel");
-  const sMap = { "sticker_kunai": { name: "Kunai", file: "kunai.gif" }, "sticker_curse": { name: "Cursed Mark", file: "cursedmark.gif" }, "sticker_joyboy": { name: "Sun God", file: "sungod.gif" }, "sticker_chibigojo": { name: "Chibi Gojo", file: "gojo_chibi.gif" }, "sticker_cukootoji": { name: "Cukoo Toji", file: "cukoo_toji.gif" }, };
+  const sMap = { "sticker_kunai": { name: "Kunai", file: "kunai.gif" }, "sticker_curse": { name: "Cursed Mark", file: "cursedmark.gif" }, "sticker_joyboy": { name: "Sun God", file: "sungod.gif" }, "sticker_chibigojo": { name: "Chibi Gojo", file: "gojo_chibi.gif" }, "sticker_cukootoji": { name: "Cukoo Toji", file: "cukoo_toji.gif" }, "sticker_sharingan_eye": { name: "Sharingan", file: "sharingan_eye.gif" }, };
   if (sBar) { ownedItems.forEach(id => { const i = sMap[id]; if (i && !document.querySelector(`[data-sticker="assets/${i.file}"]`)) { const b = document.createElement("button"); b.className = "chip"; b.type = "button"; b.dataset.sticker = `assets/${i.file}`; b.textContent = `✨ ${i.name}`; sBar.appendChild(b); } }); }
 });
 
