@@ -770,7 +770,8 @@ function toast(msg) {
           "title_yonko": "The Strongest Man",
           "title_mednin": "The Medical-Nin",
           "title_joyboy": "Warrior of Liberation", // NEW
-          "title_curse_king": "King of Curses"       // NEW
+          "title_curse_king": "King of Curses",
+          "title_fierce_wings": "Fierce Wings", // NEW
         };
 
         let displayName = user.displayName || "My Profile";
