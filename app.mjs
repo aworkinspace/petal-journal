@@ -175,9 +175,20 @@ const THEMES = {
   tobi_good_boy: { "--bg": "#FFF7ED", "--surface": "#FFEDD5", "--surface-2": "#FB923C", "--border": "rgba(34, 197, 94, 0.2)", "--primary": "#22C55E", "--accent": "#EA580C", "--text": "#431407", "--text-muted": "#7C2D12" },
   monster_mist: { "--bg": "#051622", "--surface": "#0B2435", "--surface-2": "#1A759F", "--border": "rgba(160, 233, 255, 0.2)", "--primary": "#52B69A", "--accent": "#184E77", "--text": "#D9EDF7", "--text-muted": "rgba(217, 237, 247, 0.5)" },
   stinky_aloe: { "--bg": "#0D110D", "--surface": "#1A1F1A", "--surface-2": "#4D7C0F", "--border": "rgba(255, 255, 255, 0.1)", "--primary": "#FFFFFF", "--accent": "#000000", "--text": "#E2E8F0", "--text-muted": "rgba(226, 232, 240, 0.4)", "--bg-spot-1": "rgba(77, 124, 15, 0.15)" },
-  god_of_shinobi: { "--bg": "#E9F5DB", "--surface": "#CFE1B9", "--surface-2": "#718355", "--border": "#4F772D", "--primary": "#B56576", "--accent": "#31572C", "--text": "#132A13", "--text-muted": "#31572C",     "--bg-spot-1": "rgba(49, 87, 44, 0.2)",
+ god_of_shinobi: {
+    "--bg": "#E9F5DB", 
+    "--surface": "#CFE1B9",
+    "--surface-2": "#718355",
+    "--border": "#4F772D",
+    "--primary": "#B56576", 
+    "--primary-soft": "rgba(181, 101, 118, 0.2)",
+    "--accent": "#31572C", 
+    "--text": "#132A13",
+    "--text-muted": "#31572C",
+    "--bg-spot-1": "rgba(49, 87, 44, 0.25)", // Enhanced Forest Glow
     "--bg-spot-2": "rgba(113, 131, 85, 0.25)",
-    "animation": "wood_style" },
+    "animation": "wood_style"
+  },
     tactical_suiton: {
     "--bg": "#050B1A", // Deep Abyss Blue
     "--surface": "#0A1426",
@@ -1127,7 +1138,34 @@ function toast(msg) {
       else if (type === "truth_orbs") { p.className = "truth-orb"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDelay = (Math.random() * 5) + "s"; }
       else if (type === "hundred_seals") { p.className = "diamond-seal"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "4s"; } 
       else if (type === "malice") { p.className = "malice-orb"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; if (Math.random() > 0.8) { p.style.background = "#F97316"; p.style.boxShadow = "0 0 20px 4px #F97316"; } } 
-      else if (type === "wood_style") { if (Math.random() > 0.7) { p.className = "wood-vine"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-50px"; const rot = Math.random() * 360; p.style.setProperty('--rot', `${rot}deg`); p.style.animationDuration = (Math.random() * 2 + 4) + "s"; } else { p.className = "wood-petal"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-20px"; p.style.animationDuration = (Math.random() * 3 + 4) + "s"; } }
+            else if (type === "wood_style") {
+        const rand = Math.random();
+        
+        if (rand > 0.92) { 
+          // 1. SAGE MARK: Forehead circle pulses from center
+          p.className = "sage-mark";
+          p.style.left = "50vw";
+          p.style.top = "50vh";
+          p.style.transform = "translate(-50%, -50%)";
+          p.style.animationDuration = "5s";
+        } 
+        else if (rand > 0.65) { 
+          // 2. CURVED VINES: Grow and twist upward
+          p.className = "wood-vine";
+          p.style.left = Math.random() * 100 + "vw";
+          p.style.bottom = "-50px"; 
+          const randomRot = Math.random() * 360;
+          p.style.setProperty('--rot', `${randomRot}deg`);
+          p.style.animationDuration = "6s";
+        } 
+        else { 
+          // 3. LEAVES: Traditional wood style drift
+          p.className = "wood-petal";
+          p.style.left = Math.random() * 100 + "vw";
+          p.style.top = "-20px";
+          p.style.animationDuration = (Math.random() * 3 + 4) + "s";
+        }
+      }
       else if (type === "bubbles") { if (Math.random() > 0.6) { p.className = "water-ripple"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; } else { p.className = "water-drop"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; } p.style.animationDuration = "4s"; }
       else if (type === "spirals") { p.className = "uzumaki-spiral"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "5s"; } 
       else if (type === "bolts") { p.className = "chidori-bolt"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.transform = `rotate(${Math.random() * 360}deg)`; p.style.animationDuration = "0.3s"; }
