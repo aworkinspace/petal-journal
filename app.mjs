@@ -813,6 +813,7 @@ function toast(msg) {
           "title_joyboy": "Warrior of Liberation", // NEW
           "title_curse_king": "King of Curses",
           "title_fierce_wings": "Fierce Wings", // NEW
+          "title_hellflame_sovereign": "Hellflame Sovereign",
         };
 
         let displayName = user.displayName || "My Profile";
