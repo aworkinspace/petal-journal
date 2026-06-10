@@ -2709,12 +2709,12 @@ header, .top-actions { overflow: visible; }
   inset: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 99999; /* Top level */
+  z-index: 99999;
   pointer-events: none;
-  display: none;
+  display: none; /* Hidden by default */
 }
 
-/* 1. CRT SCANLINES */
+/* 1. CRT SCANLINES (Added a subtle flicker) */
 .filter-crt {
   display: block !important;
   background: repeating-linear-gradient(
@@ -2723,18 +2723,31 @@ header, .top-actions { overflow: visible; }
     transparent 1px,
     transparent 2px
   );
+  animation: crt-flicker 0.15s infinite;
 }
 
-/* 2. WARM LIBRARY DUST */
+/* 2. WARM LIBRARY DUST (Added a slow drift) */
 .filter-dust {
   display: block !important;
   background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
   opacity: 0.15;
   mix-blend-mode: overlay;
+  animation: dust-drift 60s infinite linear;
 }
 
 /* 3. CINEMATIC VIGNETTE */
 .filter-vignette {
   display: block !important;
   background: radial-gradient(circle, transparent 50%, rgba(0,0,0,0.4) 100%);
+}
+
+/* Animations for the filters */
+@keyframes crt-flicker {
+  0% { opacity: 0.95; }
+  100% { opacity: 1; }
+}
+
+@keyframes dust-drift {
+  from { background-position: 0 0; }
+  to { background-position: 500px 1000px; }
 }
