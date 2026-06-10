@@ -261,3 +261,16 @@ if (btnManualSave) btnManualSave.onclick = () => saveBoard();
   const saved = localStorage.getItem("petal_spotify_embed");
   if (saved) render(saved);
 })();
+  // --- GLOBAL FILTER APPLY ---
+  const activeFilter = localStorage.getItem("petal_equipped_filter") || "none";
+  if (activeFilter !== "none") {
+    let filterOverlay = document.getElementById("screen-filter-overlay");
+    if (!filterOverlay) {
+      filterOverlay = document.createElement("div");
+      filterOverlay.id = "screen-filter-overlay";
+      document.body.prepend(filterOverlay);
+    }
+    // Convert 'filter_crt' -> 'filter-crt' for the CSS class
+    const cssClass = activeFilter.replace("_", "-");
+    filterOverlay.className = cssClass;
+  }
