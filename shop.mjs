@@ -63,6 +63,7 @@ const shopItems = [
   { id: "title_joyboy", name: "The Warrior of Liberation", type: "title", price: 500, icon: "assets/title_sun.png" },
   { id: "title_curse_king", name: "King of Curses", type: "title", price: 500, icon: "assets/title_mask.png" },
   { id: "title_fierce_wings", name: "Fierce Wings", type: "title", price: 300, icon: "assets/title_feather.png" },
+  { id: "title_hellflame_sovereign", name: "Hellflame Sovereign", type: "title", price: 300, icon: "assets/title_flame.png" },
   { id: "filter_crt", name: "Retro CRT Scanlines", type: "filter", price: 400, icon: "assets/crt_icon.png" },
   { id: "filter_dust", name: "Warm Library Dust", type: "filter", price: 400, icon: "assets/dust_icon.png" },
   { id: "filter_vignette", name: "Cinematic Focus", type: "filter", price: 400, icon: "assets/vignette_icon.png" },
