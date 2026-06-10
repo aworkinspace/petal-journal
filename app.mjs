@@ -858,7 +858,29 @@ function applyFilter(filterId) {
       }
     });
   }
+    // --- FILTER UNLOCKS ---
+    const filterSelect = document.getElementById("filterSelect");
+    if (filterSelect) {
+      // Keep "None" as the first option
+      filterSelect.innerHTML = '<option value="none">None</option>';
+      
+      const filterNames = {
+        "filter_crt": "📟 CRT Scanlines",
+        "filter_dust": "📜 Library Dust",
+        "filter_vignette": "🎬 Vignette"
+      };
 
+      owned.forEach(itemId => {
+        if (itemId.startsWith("filter_")) {
+          const opt = document.createElement("option");
+          opt.value = itemId;
+          opt.textContent = filterNames[itemId] || "Atmosphere";
+          filterSelect.appendChild(opt);
+        }
+      });
+      // Set the dropdown to your current saved filter
+      filterSelect.value = localStorage.getItem("petal_equipped_filter") || "none";
+    }
 
   function renderList() {
     const list = $("entryList"); if (!list) return;
@@ -1346,16 +1368,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 5. Final Unlock Check (Stickers/Ranks)
   if (typeof checkUnlocks === "function") checkUnlocks();
 });
-  // --- GLOBAL FILTER APPLY ---
-  const activeFilter = localStorage.getItem("petal_equipped_filter") || "none";
-  if (activeFilter !== "none") {
-    let filterOverlay = document.getElementById("screen-filter-overlay");
-    if (!filterOverlay) {
-      filterOverlay = document.createElement("div");
-      filterOverlay.id = "screen-filter-overlay";
-      document.body.prepend(filterOverlay);
-    }
-    // Convert 'filter_crt' -> 'filter-crt' for the CSS class
-    const cssClass = activeFilter.replace("_", "-");
-    filterOverlay.className = cssClass;
+    // --- UPDATED FILTER INITIALIZATION ---
+  const savedFilter = localStorage.getItem("petal_equipped_filter") || "none";
+  
+  // Apply the saved filter immediately
+  applyFilter(savedFilter);
+
+  // Link the dropdown listener
+  const fSel = document.getElementById("filterSelect");
+  if (fSel) {
+    fSel.value = savedFilter;
+    fSel.onchange = (e) => applyFilter(e.target.value);
   }
