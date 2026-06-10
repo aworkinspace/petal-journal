@@ -13,7 +13,7 @@
       (function () {
         const name = localStorage.getItem("petal_theme") || "petal";
         const THEMES = {
-  petal: { "--bg": "var(--rose-50)", "--surface": "var(--rose-50)", "--surface-2": "var(--pink-200)", "--border": "var(--mauve-200)", "--primary": "var(--periwinkle-400)", "--primary-soft": "var(--periwinkle-200)", "--accent": "var(--pink-500)", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(167,171,222,.45)", "--bg-spot-2": "rgba(255,165,214,.35)" },
+  p  petal: { "--bg": "var(--rose-50)", "--surface": "var(--rose-50)", "--surface-2": "var(--pink-200)", "--border": "var(--mauve-200)", "--primary": "var(--periwinkle-400)", "--primary-soft": "var(--periwinkle-200)", "--accent": "var(--pink-500)", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(167,171,222,.45)", "--bg-spot-2": "rgba(255,165,214,.35)" },
   lavender: { "--bg": "#F6F2FF", "--surface": "#F6F2FF", "--surface-2": "#EDE4FF", "--border": "#D8CBF2", "--primary": "#A7ABDE", "--primary-soft": "#CED1F8", "--accent": "#D7A6FF", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(215,166,255,.32)", "--bg-spot-2": "rgba(167,171,222,.28)" },
   sky_sorbet: { "--bg": "#F2FBFF", "--surface": "#F2FBFF", "--surface-2": "#DFF3FF", "--border": "#C7E4F5", "--primary": "#7DB6FF", "--primary-soft": "#CFE4FF", "--accent": "#FFA5D6", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(125,182,255,.30)", "--bg-spot-2": "rgba(255,165,214,.24)" },
   peach_milk: { "--bg": "#FFF6F0", "--surface": "#FFF6F0", "--surface-2": "#FFE3D2", "--border": "#F2CDBB", "--primary": "#A7ABDE", "--primary-soft": "#CED1F8", "--accent": "#FFB38A", "--text": "#2B2B33", "--text-muted": "#5A5A6A", "--bg-spot-1": "rgba(255,179,138,.34)", "--bg-spot-2": "rgba(167,171,222,.24)" },
@@ -155,7 +155,20 @@
   tobi_good_boy: { "--bg": "#FFF7ED", "--surface": "#FFEDD5", "--surface-2": "#FB923C", "--border": "rgba(34, 197, 94, 0.2)", "--primary": "#22C55E", "--accent": "#EA580C", "--text": "#431407", "--text-muted": "#7C2D12" },
   monster_mist: { "--bg": "#051622", "--surface": "#0B2435", "--surface-2": "#1A759F", "--border": "rgba(160, 233, 255, 0.2)", "--primary": "#52B69A", "--accent": "#184E77", "--text": "#D9EDF7", "--text-muted": "rgba(217, 237, 247, 0.5)" },
   stinky_aloe: { "--bg": "#0D110D", "--surface": "#1A1F1A", "--surface-2": "#4D7C0F", "--border": "rgba(255, 255, 255, 0.1)", "--primary": "#FFFFFF", "--accent": "#000000", "--text": "#E2E8F0", "--text-muted": "rgba(226, 232, 240, 0.4)", "--bg-spot-1": "rgba(77, 124, 15, 0.15)" },
-  god_of_shinobi: { "--bg": "#E9F5DB", "--surface": "#CFE1B9", "--surface-2": "#718355", "--border": "#4F772D", "--primary": "#B56576", "--accent": "#31572C", "--text": "#132A13", "--text-muted": "#31572C", "--bg-spot-1": "rgba(49, 87, 44, 0.15)", "--bg-spot-2": "rgba(113, 131, 85, 0.2)" },
+ god_of_shinobi: {
+    "--bg": "#E9F5DB", 
+    "--surface": "#CFE1B9",
+    "--surface-2": "#718355",
+    "--border": "#4F772D",
+    "--primary": "#B56576", 
+    "--primary-soft": "rgba(181, 101, 118, 0.2)",
+    "--accent": "#31572C", 
+    "--text": "#132A13",
+    "--text-muted": "#31572C",
+    "--bg-spot-1": "rgba(49, 87, 44, 0.25)", // Enhanced Forest Glow
+    "--bg-spot-2": "rgba(113, 131, 85, 0.25)",
+    "animation": "wood_style"
+  },
     tactical_suiton: {
     "--bg": "#050B1A", // Deep Abyss Blue
     "--surface": "#0A1426",
@@ -575,6 +588,44 @@ flower_archeologist: {
     "--bg": "#FFFFFF", "--surface": "#FDFDFD", "--surface-2": "#E2E8F0", "--border": "#CBD5E0",
     "--primary": "#A855F7", "--primary-soft": "rgba(168, 85, 247, 0.1)", "--accent": "#00D2FF",
     "--text": "#1A202C", "--text-muted": "#718096", "animation": "light_petals"
+  },
+    symbol_of_peace: {
+    "--bg": "#FFFFFF", 
+    "--surface": "#FDFDFD",
+    "--surface-2": "#3B82F6", // Heroic Blue
+    "--border": "#EF4444", // Heroic Red
+    "--primary": "#FACC15", // All Might Gold
+    "--primary-soft": "rgba(250, 204, 21, 0.2)",
+    "--accent": "#EF4444",
+    "--text": "#1E3A8A",
+    "--text-muted": "#3B82F6",
+    "animation": "ofa_sparks"
+  },
+  blue_cremation: {
+    "--bg": "#0A0A0C", // Cremation Black
+    "--surface": "#121217",
+    "--surface-2": "#1E40AF", // Blue Flame Base
+    "--border": "rgba(0, 191, 255, 0.3)", // Electric Blue
+    "--primary": "#00BFFF", // Hot Blue Flame
+    "--primary-soft": "rgba(0, 191, 255, 0.1)",
+    "--accent": "#9333EA", // Stitched Purple
+    "--text": "#E0E0E0",
+    "--text-muted": "rgba(224, 224, 224, 0.5)",
+    "--bg-spot-1": "rgba(0, 191, 255, 0.15)",
+    "animation": "blue_fire"
+  },
+    fierce_wings: {
+    "--bg": "#F0F9FF", // Clear Sky Blue
+    "--surface": "#FFFFFF",
+    "--surface-2": "#EF4444", // Feather Red
+    "--border": "rgba(234, 179, 8, 0.3)", // Visor Gold
+    "--primary": "#EAB308", // Gold
+    "--primary-soft": "rgba(234, 179, 8, 0.1)",
+    "--accent": "#EF4444", 
+    "--text": "#0C4A6E", // Deep Sky Navy
+    "--text-muted": "#0284C7",
+    "--bg-spot-1": "rgba(239, 68, 68, 0.05)", // Soft Red Glow
+    "animation": "red_feathers"
   },
   empty_throne: { "--bg": "#0A0A0A", "--surface": "#141414", "--surface-2": "#722F37", "--border": "#FFD700", "--primary": "#FFD700", "--accent": "#722F37", "--text": "#FFFFFF", "animation": "shadow_figures" },
   honored_one: { "--bg": "#F0F9FF", "--surface": "#FFFFFF", "--surface-2": "#00D2FF", "--border": "#00D2FF", "--primary": "#00D2FF", "--accent": "#FFFFFF", "--text": "#0369A1", "animation": "atomic_shards" },
