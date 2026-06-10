@@ -1366,24 +1366,30 @@ document.addEventListener("click", (e) => {
   if (btn) { const img = document.createElement("img"); img.src = btn.dataset.sticker; img.className = "sticker"; document.getElementById("content").appendChild(img); }
 });
 
-/* ------------------- Initial Setup (With Desk Pet Sync) ------------------- */
+/* ------------------- Initial Setup (Fully Unified) ------------------- */
 document.addEventListener("DOMContentLoaded", async () => {
   const $ = (id) => document.getElementById(id);
   
-  // 1. Get saved settings
+  // 1. Get all saved settings from memory
   const theme = localStorage.getItem("petal_theme") || "petal";
   const skin = localStorage.getItem("petal_skin") || "ruled";
+  const filter = localStorage.getItem("petal_equipped_filter") || "none";
   const activePet = localStorage.getItem("petal_equipped_pet") || "none";
 
-  // 2. Apply Theme and Skin (using await because XP calculation is async)
+  // 2. Apply Visuals immediately
   try {
+    // Await theme because it does XP calculations
     await applyTheme(theme); 
     applySkin(skin);
-  } catch (e) { console.error("Initial load failed:", e); }
+    applyFilter(filter);
+  } catch (e) { 
+    console.error("Visual application failed:", e); 
+  }
 
-  // 3. Link the Dropdown Menus
+  // 3. Link the Dropdown Menus (Theme, Skin, Filter)
   const tSel = $("themeSelect"); 
   const sSel = $("skinSelect");
+  const fSel = $("filterSelect");
 
   if (tSel) {
     tSel.value = theme;
@@ -1393,11 +1399,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     sSel.value = skin;
     sSel.onchange = (e) => applySkin(e.target.value);
   }
+  if (fSel) {
+    fSel.value = filter;
+    fSel.onchange = (e) => applyFilter(e.target.value);
+  }
 
   // 4. DESK PET SYNC: Summon your Nendoroid companion
   const notebook = $("notebook");
   if (notebook && activePet !== "none") {
-    // Create the pet element
     let petContainer = $("activePet");
     if (!petContainer) {
       petContainer = document.createElement("div");
@@ -1405,25 +1414,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       petContainer.className = "desk-pet";
       notebook.appendChild(petContainer);
     }
-    
-    // Set the image based on the shop ID (e.g., pet_nendo_kakashi -> assets/nendo_kakashi.png)
     const petImgName = activePet.replace("pet_", "");
     petContainer.innerHTML = `<img src="assets/${petImgName}.png" alt="Companion">`;
     petContainer.style.display = "block";
   }
 
-  // 5. Final Unlock Check (Stickers/Ranks)
+  // 5. Final Unlock Check (Stickers/Ranks/Shop Items)
   if (typeof checkUnlocks === "function") checkUnlocks();
-});
-    // --- UPDATED FILTER INITIALIZATION ---
-  const savedFilter = localStorage.getItem("petal_equipped_filter") || "none";
   
-  // Apply the saved filter immediately
-  applyFilter(savedFilter);
-
-  // Link the dropdown listener
-  const fSel = document.getElementById("filterSelect");
-  if (fSel) {
-    fSel.value = savedFilter;
-    fSel.onchange = (e) => applyFilter(e.target.value);
-  }
+  console.log("Initial Setup Complete! Rank and Level verified.");
+});
