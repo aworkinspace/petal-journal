@@ -609,6 +609,31 @@ flower_archeologist: {
     "--primary": "#A855F7", "--primary-soft": "rgba(168, 85, 247, 0.1)", "--accent": "#00D2FF",
     "--text": "#1A202C", "--text-muted": "#718096", "animation": "light_petals"
   },
+    symbol_of_peace: {
+    "--bg": "#FFFFFF", 
+    "--surface": "#FDFDFD",
+    "--surface-2": "#3B82F6", // Heroic Blue
+    "--border": "#EF4444", // Heroic Red
+    "--primary": "#FACC15", // All Might Gold
+    "--primary-soft": "rgba(250, 204, 21, 0.2)",
+    "--accent": "#EF4444",
+    "--text": "#1E3A8A",
+    "--text-muted": "#3B82F6",
+    "animation": "ofa_sparks"
+  },
+  blue_cremation: {
+    "--bg": "#0A0A0C", // Cremation Black
+    "--surface": "#121217",
+    "--surface-2": "#1E40AF", // Blue Flame Base
+    "--border": "rgba(0, 191, 255, 0.3)", // Electric Blue
+    "--primary": "#00BFFF", // Hot Blue Flame
+    "--primary-soft": "rgba(0, 191, 255, 0.1)",
+    "--accent": "#9333EA", // Stitched Purple
+    "--text": "#E0E0E0",
+    "--text-muted": "rgba(224, 224, 224, 0.5)",
+    "--bg-spot-1": "rgba(0, 191, 255, 0.15)",
+    "animation": "blue_fire"
+  },
   empty_throne: { "--bg": "#0A0A0A", "--surface": "#141414", "--surface-2": "#722F37", "--border": "#FFD700", "--primary": "#FFD700", "--accent": "#722F37", "--text": "#FFFFFF", "animation": "shadow_figures" },
   honored_one: { "--bg": "#F0F9FF", "--surface": "#FFFFFF", "--surface-2": "#00D2FF", "--border": "#00D2FF", "--primary": "#00D2FF", "--accent": "#FFFFFF", "--text": "#0369A1", "animation": "atomic_shards" },
   reapers_moon: { "--bg": "#0D0B12", "--surface": "#1A1621", "--surface-2": "#4A0E0E", "--border": "#E2E8F0", "--primary": "#E2E8F0", "--accent": "#FF0000", "--text": "#F8FAFC", "animation": "blood_petals" },
@@ -1155,6 +1180,19 @@ function toast(msg) {
         const size = Math.random() * 15 + 10 + "px";
         p.style.width = size; p.style.height = size;
       }
+      // MHA animations
+          else if (type === "ofa_sparks") {
+      p.className = "ofa-spark";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.top = Math.random() * 100 + "vh";
+    }
+    else if (type === "blue_fire") {
+      p.className = "blue-flame";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.bottom = "-20px";
+      p.style.animationDuration = (Math.random() * 2 + 3) + "s";
+    }
+
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
     }, (type === "teleport" || type === "bolts" || type === "slashes" || type === "air_cracks" || type === "glitch" || type === "lightning") ? 80 : 800);
