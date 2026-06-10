@@ -52,7 +52,10 @@ const shopItems = [
   { id: "pet_nendo_obito", name: "Nendo Obito", type: "pet", price: 400, icon: "assets/nendo_obito.png" },
   { id: "title_sannin", name: "Sannin Title", type: "title", price: 300, icon: "assets/title_scroll.png" },
   { id: "title_uchiha", name: "Uchiha Title", type: "title", price: 300, icon: "assets/title_fan.png" },
-  { id: "title_mednin", name: "The Medical-Nin", type: "title", price: 300, icon: "assets/title_health.png" }
+  { id: "title_mednin", name: "The Medical-Nin", type: "title", price: 300, icon: "assets/title_health.png" },
+  { id: "filter_crt", name: "Retro CRT Scanlines", type: "filter", price: 400, icon: "assets/crt_icon.png" },
+  { id: "filter_dust", name: "Warm Library Dust", type: "filter", price: 400, icon: "assets/dust_icon.png" },
+  { id: "filter_vignette", name: "Cinematic Focus", type: "filter", price: 400, icon: "assets/vignette_icon.png" },
 ];
 // 4. HELPERS
 function getTokens() { return Number(localStorage.getItem("petal_tokens")) || 0; }
