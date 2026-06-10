@@ -634,6 +634,19 @@ flower_archeologist: {
     "--bg-spot-1": "rgba(0, 191, 255, 0.15)",
     "animation": "blue_fire"
   },
+    fierce_wings: {
+    "--bg": "#F0F9FF", // Clear Sky Blue
+    "--surface": "#FFFFFF",
+    "--surface-2": "#EF4444", // Feather Red
+    "--border": "rgba(234, 179, 8, 0.3)", // Visor Gold
+    "--primary": "#EAB308", // Gold
+    "--primary-soft": "rgba(234, 179, 8, 0.1)",
+    "--accent": "#EF4444", 
+    "--text": "#0C4A6E", // Deep Sky Navy
+    "--text-muted": "#0284C7",
+    "--bg-spot-1": "rgba(239, 68, 68, 0.05)", // Soft Red Glow
+    "animation": "red_feathers"
+  },
   empty_throne: { "--bg": "#0A0A0A", "--surface": "#141414", "--surface-2": "#722F37", "--border": "#FFD700", "--primary": "#FFD700", "--accent": "#722F37", "--text": "#FFFFFF", "animation": "shadow_figures" },
   honored_one: { "--bg": "#F0F9FF", "--surface": "#FFFFFF", "--surface-2": "#00D2FF", "--border": "#00D2FF", "--primary": "#00D2FF", "--accent": "#FFFFFF", "--text": "#0369A1", "animation": "atomic_shards" },
   reapers_moon: { "--bg": "#0D0B12", "--surface": "#1A1621", "--surface-2": "#4A0E0E", "--border": "#E2E8F0", "--primary": "#E2E8F0", "--accent": "#FF0000", "--text": "#F8FAFC", "animation": "blood_petals" },
@@ -1192,6 +1205,13 @@ function toast(msg) {
       p.style.bottom = "-20px";
       p.style.animationDuration = (Math.random() * 2 + 3) + "s";
     }
+    else if (type === "red_feathers") {
+      p.className = "red-feather";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.top = "-20px";
+      // Hawks' feathers are faster than Itachi's
+      p.style.animationDuration = (Math.random() * 2 + 3) + "s";
+    }
 
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
@@ -1218,7 +1238,7 @@ lesbian_sunset: "pride_sunset",
 gay_ocean: "pride_gay",
 bisexual_galaxy: "pride_bi",
 trans_serenity: "pride_trans", symbol_of_peace: "ofa_sparks",
-blue_cremation: "blue_fire",
+blue_cremation: "blue_fire", fierce_wings: "red_feathers",
 
     };
     startAnimation(map[theme] || null);
