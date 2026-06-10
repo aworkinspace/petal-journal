@@ -764,7 +764,7 @@ function toast(msg) {
 })();
 
 
-/* ------------------- Journal (Balanced & Fixed) ------------------- */
+/* ------------------- Journal (Balanced & Fully Fixed) ------------------- */
 (() => {
   const $ = (id) => document.getElementById(id);
   const STORAGE_KEY = "petal_entries_v1";
@@ -784,13 +784,12 @@ function toast(msg) {
     return Math.floor(totalXP / 200) + 1;
   }
 
-   function checkUnlocks() {
+  function checkUnlocks() {
     const lvl = getZenLevel();
     const owned = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
-    const $ = (id) => document.getElementById(id);
     console.log("Checking Unlocks for Level:", lvl);
 
-    // 1. THEME DROPDOWN UNLOCKS (Levels 5 - 100)
+    // 1. THEME DROPDOWN UNLOCKS
     const tiers = [
       { lvl: 5, val: "golden_petal", name: "✨ Golden Petal" },
       { lvl: 10, val: "six_paths_sage", name: "☀️ Six Paths Sage" },
@@ -809,27 +808,17 @@ function toast(msg) {
     tiers.forEach(tier => {
       const opt = document.querySelector(`option[value="${tier.val}"]`);
       if (opt) {
-        if (lvl >= tier.lvl) {
-          opt.disabled = false;
-          opt.textContent = tier.name;
-        } else {
-          opt.disabled = true;
-          opt.textContent = `🔒 Level ${tier.lvl}`;
-        }
+        opt.disabled = lvl < tier.lvl;
+        opt.textContent = lvl >= tier.lvl ? tier.name : `🔒 Level ${tier.lvl}`;
       }
     });
 
     // 2. STICKERS (Level 5)
-    document.querySelectorAll(".level-5-reward").forEach(el => {
-      el.style.display = lvl >= 5 ? "inline-flex" : "none";
-    });
+    document.querySelectorAll(".level-5-reward").forEach(el => el.style.display = lvl >= 5 ? "inline-flex" : "none");
 
-    // 3. UI TRANSFORMATIONS (The "Aura" around the boxes)
+    // 3. UI TRANSFORMATIONS
     document.querySelectorAll(".panel").forEach(p => {
-      // Clear all possible rank classes first
       p.classList.remove("kage-aura", "celestial-border", "hologram-panel", "liquid-border", "cracked-stone", "floating-panel", "king-shadow", "origin-ui");
-      
-      // Apply the highest tier earned
       if (lvl >= 100) p.classList.add("origin-ui");
       else if (lvl >= 70) p.classList.add("king-shadow");
       else if (lvl >= 60) p.classList.add("floating-panel");
@@ -840,67 +829,50 @@ function toast(msg) {
       else if (lvl >= 10) p.classList.add("kage-aura");
     });
 
-    // 4. NINJA RANK TEXT
+    // 4. RANK TEXT
     let rank = "Genin";
     if (lvl >= 5) rank = "Jonin";
     if (lvl >= 10) rank = "Kage";
     if (lvl >= 15) rank = "Celestial Sage";
     if (lvl >= 20) rank = "Transcendent One";
-    if (lvl >= 40) rank = "Immortal Legend";
-    if (lvl >= 60) rank = "The Eternal";
-    if (lvl >= 70) rank = "King of the World 👑";
-    if (lvl >= 80) rank = "The Honored One 👁️";
-    if (lvl >= 90) rank = "Soul Reaper 🌙";
-    if (lvl >= 100) rank = "💠 The Architect";
+    if (lvl >= 30) rank = "Omniscient Sage 👁️";
     if ($("ninjaRank")) $("ninjaRank").textContent = `Rank: ${rank}`;
 
-    // 5. SHOP ITEM UNLOCKS (Paper Skins)
+    // 5. SHOP ITEM UNLOCKS (Skins)
     const shopSkins = [
+      { id: "optHokage", shopId: "layout_hokage", name: "📜 Hokage Scroll" },
+      { id: "optBond", shopId: "layout_bond", name: "🍥 Eternal Bond" },
+      { id: "optPrison", shopId: "layout_prison", name: "👁️ Prison Realm" },
       { id: "optRainy", shopId: "layout_rainy", name: "🌧️ Rainy Paper" },
       { id: "optGlitch", shopId: "layout_matrix", name: "👾 Glitch Paper" },
       { id: "optHolo", shopId: "layout_hologram", name: "💎 Holo Paper" },
-      { id: "optHokage", shopId: "layout_hokage", name: "📜 Hokage Scroll" },
-      { id: "optPrison", shopId: "layout_prison", name: "👁️ Prison Realm" },
-      { id: "optToji", shopId: "layout_toji", name: "⛓️ Heavenly Restriction" },
-      { id: "optBond", shopId: "layout_bond", name: "🍥 Eternal Bond 🦅" }
+      { id: "optToji", shopId: "layout_toji", name: "⛓️ Toji Arsenal" }
     ];
 
     shopSkins.forEach(skin => {
       const el = $(skin.id);
       if (el) {
-        if (owned.includes(skin.shopId)) {
-          el.disabled = false;
-          el.textContent = skin.name;
-        } else {
-          el.disabled = true;
-          el.textContent = "🔒 Shop Item";
-        }
+        el.disabled = !owned.includes(skin.shopId);
+        el.textContent = owned.includes(skin.shopId) ? skin.name : "🔒 Shop Item";
       }
     });
-  }
-    // --- FILTER UNLOCKS ---
-    const filterSelect = document.getElementById("filterSelect");
-    if (filterSelect) {
-      // Keep "None" as the first option
-      filterSelect.innerHTML = '<option value="none">None</option>';
-      
-      const filterNames = {
-        "filter_crt": "📟 CRT Scanlines",
-        "filter_dust": "📜 Library Dust",
-        "filter_vignette": "🎬 Vignette"
-      };
 
-      owned.forEach(itemId => {
-        if (itemId.startsWith("filter_")) {
+    // 6. FILTER UNLOCKS (MOVED INSIDE)
+    const filterSelect = $("filterSelect");
+    if (filterSelect) {
+      filterSelect.innerHTML = '<option value="none">None</option>';
+      const filterMap = { "filter_crt": "📟 CRT Filter", "filter_dust": "📜 Dust Filter", "filter_vignette": "🎬 Vignette" };
+      owned.forEach(id => {
+        if (id.startsWith("filter_")) {
           const opt = document.createElement("option");
-          opt.value = itemId;
-          opt.textContent = filterNames[itemId] || "Atmosphere";
+          opt.value = id;
+          opt.textContent = filterMap[id] || "Atmosphere";
           filterSelect.appendChild(opt);
         }
       });
-      // Set the dropdown to your current saved filter
       filterSelect.value = localStorage.getItem("petal_equipped_filter") || "none";
     }
+  }
 
   function renderList() {
     const list = $("entryList"); if (!list) return;
@@ -931,132 +903,41 @@ function toast(msg) {
     row.querySelectorAll('.chip.tag').forEach(btn => btn.onclick = () => { activeTag = activeTag === btn.dataset.tag ? null : btn.dataset.tag; renderTagChips(); renderList(); });
   }
 
-   // 4. Save & Sync
   $("btnSave")?.addEventListener('click', async () => {
-    const contentHtml = $("content").innerHTML || "";
-    const titleText = $("title").value || "";
-    const dateValue = $("date").value || new Date().toISOString().split('T')[0];
-
-    const data = { 
-      id: activeId || Date.now().toString(), 
-      date: dateValue, 
-      mood: $("mood").value, 
-      title: titleText, 
-      content: contentHtml, 
-      tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), 
-      updatedAt: Date.now() 
-    };
-
-    // --- 1. TOKEN CALCULATION ---
+    const html = $("content").innerHTML;
+    const data = { id: activeId || Date.now().toString(), date: $("date").value, mood: $("mood").value, title: $("title").value, content: html, tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), updatedAt: Date.now() };
     const wordCount = (data.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
-    const tokensEarned = 5 + Math.floor(wordCount / 50);
-    let totalTokens = (Number(localStorage.getItem("petal_tokens")) || 0) + tokensEarned;
-    localStorage.setItem("petal_tokens", totalTokens);
+    let tokens = (Number(localStorage.getItem("petal_tokens")) || 0) + 5 + Math.floor(wordCount / 50);
+    localStorage.setItem("petal_tokens", tokens);
     
-    // --- 2. LOCAL SAVE ---
-    if (!activeId) {
-      entries.push(data); 
-    } else {
-      entries = entries.map(e => e.id === activeId ? data : e);
-    }
+    if (!activeId) entries.push(data); else entries = entries.map(e => e.id === activeId ? data : e);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
 
-    // --- 3. CLOUD SYNC (For Phone Support) ---
     if (window.firebaseAuth?.currentUser) {
-      const db = window.firebaseDb;
-      const uid = window.firebaseAuth.currentUser.uid;
       try {
-        // Sync the journal entry
-        await setDoc(doc(db, "entries", data.id), { ...data, userId: uid }, { merge: true });
-        
-        // Sync global stats (including the new tokens)
-        const stats = {
-          whiteboard: Number(localStorage.getItem("petal_whiteboard_count")) || 0,
-          well: Number(localStorage.getItem("petal_well_count")) || 0,
-          tokens: totalTokens,
-          updatedAt: Date.now()
-        };
-        await setDoc(doc(db, "users", uid, "stats", "zen"), stats, { merge: true });
-        console.log("Cloud Sync Successful");
-      } catch (err) { 
-        console.error("Cloud Sync Error:", err); 
-      }
+        await setDoc(doc(window.firebaseDb, "entries", data.id), { ...data, userId: window.firebaseAuth.currentUser.uid }, { merge: true });
+        await setDoc(doc(window.firebaseDb, "users", window.firebaseAuth.currentUser.uid, "stats", "zen"), { whiteboard: Number(localStorage.getItem("petal_whiteboard_count")) || 0, well: Number(localStorage.getItem("petal_well_count")) || 0, tokens: tokens, updatedAt: Date.now() }, { merge: true });
+      } catch (err) { console.error(err); }
     }
-
-    // --- 4. UI REFRESH ---
-    renderList(); 
-    renderTagChips(); 
-    if (typeof checkUnlocks === "function") checkUnlocks(); 
+    renderList(); renderTagChips(); checkUnlocks(); toast("Saved & Synced! ✨🪙");
     
-    toast(`Saved! +${tokensEarned} Petal Tokens earned! 🪙`);
-
-    // --- 5. DYNAMIC JUTSU SFX ---
+    // Dynamic Save Sound
     const equipped = localStorage.getItem("petal_equipped_sfx") || "default";
-    let audioToPlay;
-
-    if (equipped === "default") {
-      audioToPlay = document.getElementById("saveSfx");
-    } else {
-      // Maps sfx_chidori -> assets/chidori.mp3
-      const fileName = equipped.replace("sfx_", "");
-      audioToPlay = new Audio(`assets/${fileName}.mp3`);
-    }
-
-    if (audioToPlay) {
-      audioToPlay.currentTime = 0;
-      audioToPlay.play().catch(e => console.log("Audio play blocked. Click anywhere on page first!"));
-    }
+    let audio = (equipped === "default") ? $("saveSfx") : new Audio(`assets/${equipped.replace("sfx_", "")}.mp3`);
+    if (audio) { audio.currentTime = 0; audio.play().catch(()=>{}); }
   });
 
-
-      /* ------------------- Delete Logic (Fixed) ------------------- */
-  document.getElementById("btnDelete")?.addEventListener('click', () => {
-    // 1. Check if an entry is actually selected
-    if (!activeId) {
-      alert("Please select an entry from the list first!");
-      return;
-    }
-
-    // 2. Confirmation
-    if (!confirm("Are you sure you want to delete this entry?")) return;
-
-    // 3. Remove from the local array
+  $("btnDelete")?.addEventListener('click', () => {
+    if (!activeId || !confirm("Delete?")) return;
     entries = entries.filter(e => e.id !== activeId);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); 
+    renderList(); renderTagChips(); checkUnlocks();
+    activeId = null; if($("title")) $("title").value = ""; if($("content")) $("content").innerHTML = ""; toast("Deleted.");
     
-    // 4. Save the updated list to browser memory
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-
-    // 5. Update UI
-    renderList();
-    renderTagChips();
-    if (typeof checkUnlocks === "function") checkUnlocks();
-    
-    // 6. Reset the editor screen
-    activeId = null;
-    if ($("date")) $("date").value = new Date().toISOString().split('T')[0];
-    if ($("mood")) $("mood").value = "Calm";
-    if ($("title")) $("title").value = "";
-    if ($("content")) $("content").innerHTML = "";
-    if ($("tagsInput")) $("tagsInput").value = "";
-
-    toast("Deleted successfully.");
-
-    // 7. DYNAMIC DELETE SFX
-    const equippedDeleteSfx = localStorage.getItem("petal_equipped_delete_sfx") || "default";
-    let deleteAudio;
-
-    if (equippedDeleteSfx === "default") {
-      deleteAudio = document.getElementById("deleteSfx");
-    } else {
-      // Maps sfx_chidori -> assets/chidori.mp3
-      const file = equippedDeleteSfx.replace("sfx_", "");
-      deleteAudio = new Audio(`assets/${file}.mp3`);
-    }
-
-    if (deleteAudio) {
-      deleteAudio.currentTime = 0;
-      deleteAudio.play().catch(e => console.log("Audio play blocked."));
-    }
+    // Dynamic Delete Sound
+    const equipped = localStorage.getItem("petal_equipped_delete_sfx") || "default";
+    let audio = (equipped === "default") ? $("deleteSfx") : new Audio(`assets/${equipped.replace("sfx_", "")}.mp3`);
+    if (audio) { audio.currentTime = 0; audio.play().catch(()=>{}); }
   });
 
   document.addEventListener("DOMContentLoaded", () => {
