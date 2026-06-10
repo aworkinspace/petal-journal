@@ -603,7 +603,7 @@ flower_archeologist: {
   reapers_moon: { "--bg": "#0D0B12", "--surface": "#1A1621", "--surface-2": "#4A0E0E", "--border": "#E2E8F0", "--primary": "#E2E8F0", "--accent": "#FF0000", "--text": "#F8FAFC", "animation": "blood_petals" },
   the_origin: { "--bg": "#000000", "--surface": "rgba(0,0,0,0.5)", "--surface-2": "#FFFFFF", "--border": "#00F3FF", "--primary": "#00F3FF", "--accent": "#FF007A", "--text": "#FFFFFF", "animation": "reality_strings" },
 };
-/* ------------------- Helpers (Fixed & Balanced) ------------------- */
+/* ------------------- Helpers (Robust & Balanced) ------------------- */
 function applyVars(vars) {
   if (!vars) return;
   for (const [k, v] of Object.entries(vars)) {
@@ -612,54 +612,77 @@ function applyVars(vars) {
 }
 
 async function applyTheme(themeName) {
-  // 1. XP Threshold Checks (Level 5, 10, 15, 20)
-  if (["golden_petal", "six_paths_sage", "celestial_sovereignty", "infinite_zen"].includes(themeName)) {
-    const wb = parseInt(localStorage.getItem("petal_whiteboard_count") || "0");
-    const vs = parseInt(localStorage.getItem("petal_vision_count") || "0");
-    const cp = parseInt(localStorage.getItem("petal_capsule_count") || "0");
-    const wl = parseInt(localStorage.getItem("petal_well_count") || "0");
-    const dj = parseInt(localStorage.getItem("petal_dojo_xp") || "0");
-    const sm = parseInt(localStorage.getItem("petal_summon_xp") || "0");
-    const entries = JSON.parse(localStorage.getItem("petal_entries_v1") || "[]");
+  // 1. XP Threshold Check (Locked Themes)
+  const lockedThemes = ["golden_petal", "six_paths_sage", "celestial_sovereignty", "infinite_zen", "omniscient_origin", "reanimated_legend", "threads_of_fate", "eternal_nirvana", "empty_throne", "honored_one", "reapers_moon", "the_origin"];
+
+  if (lockedThemes.includes(themeName)) {
+    // Safety: use Number() and || 0 to prevent NaN breaking the math
+    const wb = Number(localStorage.getItem("petal_whiteboard_count")) || 0;
+    const vs = Number(localStorage.getItem("petal_vision_count")) || 0;
+    const cp = Number(localStorage.getItem("petal_capsule_count")) || 0;
+    const wl = Number(localStorage.getItem("petal_well_count")) || 0;
+    const dj = Number(localStorage.getItem("petal_dojo_xp")) || 0;
+    const sm = Number(localStorage.getItem("petal_summon_xp")) || 0;
     
+    let entries = [];
+    try { 
+      entries = JSON.parse(localStorage.getItem("petal_entries_v1") || "[]"); 
+    } catch (e) { entries = []; }
+
     let totalXP = (entries.length * 50) + (wb * 20) + (vs * 30) + (cp * 100) + (wl * 30) + dj + sm;
     entries.forEach(e => {
        const words = (e.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
        totalXP += words;
     });
 
-    if (themeName === "golden_petal" && totalXP < 800) { themeName = "petal"; toast("Lvl 5 required!"); }
-    if (themeName === "six_paths_sage" && totalXP < 1800) { themeName = "petal"; toast("Lvl 10 required!"); }
-    if (themeName === "celestial_sovereignty" && totalXP < 3000) { themeName = "petal"; toast("Lvl 15 required!"); }
-    if (themeName === "infinite_zen" && totalXP < 4000) { themeName = "petal"; toast("Lvl 20 required!"); }
+    // Tier validation
+    if (themeName === "golden_petal" && totalXP < 800) { themeName = "petal"; toast("Level 5 Required"); }
+    else if (themeName === "six_paths_sage" && totalXP < 1800) { themeName = "petal"; toast("Level 10 Required"); }
+    else if (themeName === "celestial_sovereignty" && totalXP < 3000) { themeName = "petal"; toast("Level 15 Required"); }
+    else if (themeName === "infinite_zen" && totalXP < 4000) { themeName = "petal"; toast("Level 20 Required"); }
+    else if (themeName === "omniscient_origin" && totalXP < 5800) { themeName = "petal"; toast("Level 30 Required"); }
+    else if (themeName === "reanimated_legend" && totalXP < 7800) { themeName = "petal"; toast("Level 40 Required"); }
+    else if (themeName === "the_origin" && totalXP < 20000) { themeName = "petal"; toast("Level 100 Required"); }
   }
 
-  // 2. Apply Basic Theme Colors
+  // 2. Apply Colors
   const theme = THEMES[themeName] || THEMES.petal;
   applyVars(theme);
   localStorage.setItem("petal_theme", themeName);
-  
-  // 3. Notify other parts of the site
+
+  // 3. Trigger updates (Animations/Spotify)
   document.dispatchEvent(new CustomEvent('themeChanged'));
-} // <--- THIS BRACE WAS MISSING
+  
+  // 4. Update UI ranks/glows immediately
+  if (typeof checkUnlocks === "function") checkUnlocks();
+}
 
 function applySkin(skinName) {
   const notebook = document.getElementById("notebook");
   if (!notebook) return;
   
-  // 1. Clear ALL possible skins (Standard + Animated)
- notebook.classList.remove(
-  "skin-ruled", "skin-grid", "skin-dots", 
-  "skin-rainy-paper", "skin-glitch-paper", "skin-holo-paper",
-  "skin-hokage-scroll", "skin-prison-realm", "skin-toji-arsenal",
-  "skin-eternal-bond" // Added
-);
+  notebook.classList.remove(
+    "skin-ruled", "skin-grid", "skin-dots", 
+    "skin-dark-ruled", "skin-dark-grid", "skin-dark-dots",
+    "skin-rainy-paper", "skin-glitch-paper", "skin-holo-paper",
+    "skin-hokage-scroll", "skin-prison-realm", "skin-toji-arsenal", "skin-eternal-bond"
+  );
 
-  // 2. Add the new one (convert underscores to dashes)
   const formattedName = String(skinName).replace("_", "-");
   notebook.classList.add(`skin-${formattedName}`);
-  
   localStorage.setItem("petal_skin", skinName);
+}
+
+function applyFilter(filterId) {
+  let filterOverlay = document.getElementById("screen-filter-overlay");
+  if (!filterOverlay) {
+    filterOverlay = document.createElement("div");
+    filterOverlay.id = "screen-filter-overlay";
+    document.body.prepend(filterOverlay);
+  }
+  
+  filterOverlay.className = (filterId === "none" || !filterId) ? "" : filterId.replace("_", "-");
+  localStorage.setItem("petal_equipped_filter", filterId || "none");
 }
 
 function toast(msg) {
@@ -670,22 +693,7 @@ function toast(msg) {
   clearTimeout(toast._id); 
   toast._id = setTimeout(() => t.classList.remove("show"), 2200);
 }
-function applyFilter(filterId) {
-  let filterOverlay = document.getElementById("screen-filter-overlay");
-  if (!filterOverlay) {
-    filterOverlay = document.createElement("div");
-    filterOverlay.id = "screen-filter-overlay";
-    document.body.prepend(filterOverlay);
-  }
-  
-  if (filterId === "none") {
-    filterOverlay.className = "";
-  } else {
-    // Convert 'filter_crt' -> 'filter-crt'
-    filterOverlay.className = filterId.replace("_", "-");
-  }
-  localStorage.setItem("petal_equipped_filter", filterId);
-}
+
 /* ------------------- Firebase Logic (With Title Sync) ------------------- */
 (() => {
   const auth = window.firebaseAuth;
