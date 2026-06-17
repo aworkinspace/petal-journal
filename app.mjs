@@ -713,6 +713,20 @@ flower_archeologist: {
     "--bg-spot-1": "rgba(249, 115, 22, 0.1)",
     "animation": "nitros"
   },
+    half_cold_half_hot: {
+    "--bg": "#0A0D14", // Deep Void
+    "--surface": "#141921",
+    "--surface-2": "#3B82F6", // Ice Blue
+    "--border": "#EF4444", // Fire Red
+    "--primary": "#60A5FA", // Frost Blue
+    "--primary-soft": "rgba(96, 165, 250, 0.1)",
+    "--accent": "#F97316", // Ember Orange
+    "--text": "#F8FAFC",
+    "--text-muted": "rgba(248, 250, 252, 0.5)",
+    "--bg-spot-1": "rgba(59, 130, 246, 0.15)", // Cool glow left
+    "--bg-spot-2": "rgba(239, 68, 68, 0.1)",   // Warm glow right
+    "animation": "ice_and_fire"
+  },
   eraser_head: {
     "--bg": "#121214", // Tired Eyes Black
     "--surface": "#1A1B1E",
@@ -737,7 +751,6 @@ flower_archeologist: {
     "--text-muted": "rgba(243, 244, 246, 0.4)",
     "animation": "curving_bullets"
   },
-
   empty_throne: { "--bg": "#0A0A0A", "--surface": "#141414", "--surface-2": "#722F37", "--border": "#FFD700", "--primary": "#FFD700", "--accent": "#722F37", "--text": "#FFFFFF", "animation": "shadow_figures" },
   honored_one: { "--bg": "#F0F9FF", "--surface": "#FFFFFF", "--surface-2": "#00D2FF", "--border": "#00D2FF", "--primary": "#00D2FF", "--accent": "#FFFFFF", "--text": "#0369A1", "animation": "atomic_shards" },
   reapers_moon: { "--bg": "#0D0B12", "--surface": "#1A1621", "--surface-2": "#4A0E0E", "--border": "#E2E8F0", "--primary": "#E2E8F0", "--accent": "#FF0000", "--text": "#F8FAFC", "animation": "blood_petals" },
@@ -1399,7 +1412,20 @@ function toast(msg) {
       p.style.top = Math.random() * 100 + "vh";
       p.style.animationDuration = "0.6s";
     }
-
+    else if (type === "ice_and_fire") {
+      const isIce = Math.random() > 0.5;
+      p.className = isIce ? "ice-shard" : "fire-spark";
+      
+      p.style.left = Math.random() * 100 + "vw";
+      
+      if (isIce) {
+        p.style.top = "-20px"; // Ice falls from top
+        p.style.animationDuration = (Math.random() * 2 + 3) + "s";
+      } else {
+        p.style.bottom = "-20px"; // Fire rises from bottom
+        p.style.animationDuration = (Math.random() * 1 + 2) + "s";
+      }
+    }
       overlay.appendChild(p);
       setTimeout(() => p.remove(), 8000);
     }, (type === "teleport" || type === "bolts" || type === "slashes" || type === "air_cracks" || type === "glitch" || type === "lightning") ? 80 : 800);
@@ -1428,7 +1454,8 @@ trans_serenity: "pride_trans", symbol_of_peace: "ofa_sparks",
 blue_cremation: "blue_fire", fierce_wings: "red_feathers", symbol_of_fear: "void_tendrils",
 decay_master: "ash_decay", hellflame_sovereign: "hell_flame", one_for_all: "full_cowl",
 explosion_murder: "nitros", eraser_head: "binding_scarves",
-silent_sniper: "curving_bullets"
+silent_sniper: "curving_bullets", half_cold_half_hot: "ice_and_fire"
+
 
 
 
