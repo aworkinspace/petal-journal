@@ -3000,3 +3000,40 @@ header, .top-actions { overflow: visible; }
   0% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 1; }
   100% { transform: translateX(110vw) translateY(100px) rotate(45deg); opacity: 0; }
 }
+/* TODOROKI: ICE SHARDS (Falling) */
+.ice-shard {
+  position: absolute;
+  width: 8px;
+  height: 12px;
+  background: #BEE3F8;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); /* Sharp diamond */
+  box-shadow: 0 0 10px #FFFFFF;
+  opacity: 0.6;
+  pointer-events: none;
+  animation: ice-fall 5s linear forwards;
+}
+
+/* TODOROKI: FIRE EMBERS (Rising) */
+.fire-spark {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #F97316;
+  border-radius: 50%;
+  box-shadow: 0 0 12px #EF4444;
+  opacity: 0.8;
+  pointer-events: none;
+  animation: fire-rise-todoroki 3s ease-out forwards;
+}
+
+@keyframes ice-fall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.7; }
+  100% { transform: translateY(110vh) translateX(40px) rotate(360deg); opacity: 0; }
+}
+
+@keyframes fire-rise-todoroki {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(-110vh) scale(0.5) translateX(-30px); opacity: 0; }
+}
