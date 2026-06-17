@@ -59,6 +59,7 @@ const shopItems = [
   { id: "pet_nendo_shiggy", name: "Nendo Shigaraki", type: "pet", price: 400, icon: "assets/nendo_shiggy.png" },
   { id: "pet_nendo_deku", name: "Nendo Izuku", type: "pet", price: 400, icon: "assets/nendo_deku.png" },
   { id: "pet_nendo_baku", name: "Nendo Katsuki", type: "pet", price: 400, icon: "assets/nendo_baku.png" },
+  { id: "pet_nendo_shoto", name: "Nendo Shoto", type: "pet", price: 400, icon: "assets/nendo_shoto.png" },
   { id: "pet_nendo_aizawa", name: "Nendo Aizawa", type: "pet", price: 400, icon: "assets/nendo_aizawa.png" },
   { id: "pet_nendo_nagant", name: "Nendo Nagant", type: "pet", price: 450, icon: "assets/nendo_nagant.png" },
   { id: "title_sannin", name: "Sannin Title", type: "title", price: 300, icon: "assets/title_scroll.png" },
