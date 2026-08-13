@@ -758,7 +758,31 @@ flower_archeologist: {
     void_century: { "--bg": "#050A10", "--surface": "#0D141D", "--surface-2": "#B48924", "--border": "#B48924", "--primary": "#B48924", "--accent": "#00D2FF", "--text": "#F8FAFC", "animation": "poneglyphs" },
   pure_zen: { "--bg": "#FFFFFF", "--surface": "rgba(255,255,255,0.9)", "--surface-2": "#F3E8FF", "--border": "#A855F7", "--primary": "#00D2FF", "--accent": "#FF007A", "--text": "#1A1A1A", "animation": "chakra_ribbons" },
   the_akashic_record: { "--bg": "#120D0A", "--surface": "#1E1612", "--surface-2": "#D4AF37", "--border": "#D4AF37", "--primary": "#D4AF37", "--accent": "#FF4500", "--text": "#F5E6D3", "animation": "flying_pages" },
-  true_transcendence: { "--bg": "#000000", "--surface": "rgba(0,0,0,0.8)", "--surface-2": "#FFFFFF", "--border": "transparent", "--primary": "#FFFFFF", "--accent": "#FFFFFF", "--text": "#FFFFFF", "animation": "reality_tears" }
+  true_transcendence: { "--bg": "#000000", "--surface": "rgba(0,0,0,0.8)", "--surface-2": "#FFFFFF", "--border": "transparent", "--primary": "#FFFFFF", "--accent": "#FFFFFF", "--text": "#FFFFFF", "animation": "reality_tears" },
+icy_heir: {
+  "--bg": "#F8FBFF",                 // crisp white-blue
+  "--surface": "#EEF5FF",            // pale ice
+  "--surface-2": "#D9E7FF",          // stronger panel tint
+  "--border": "rgba(11, 15, 26, 0.16)", // subtle ink border
+  "--primary": "#A9C8FF",            // icy blue
+  "--primary-soft": "rgba(169, 200, 255, 0.18)",
+  "--accent": "#D7DCE6",             // silver
+  "--text": "#0B0F1A",               // near-black ink
+  "--text-muted": "rgba(11, 15, 26, 0.55)",
+  "animation": "cold_flash"          // pick any existing anim, or omit
+},
+steel_ink: {
+  "--bg": "#F2F6FF",
+  "--surface": "#E6EEFF",
+  "--surface-2": "#C7D8FF",
+  "--border": "rgba(25, 32, 48, 0.22)",
+  "--primary": "#7AA7FF",
+  "--primary-soft": "rgba(122, 167, 255, 0.16)",
+  "--accent": "#BFC7D6",
+  "--text": "#111827",
+  "--text-muted": "rgba(17, 24, 39, 0.55)",
+  "animation": "curving_bullets"
+},
 
 };
 window.allThemes = THEMES; 
