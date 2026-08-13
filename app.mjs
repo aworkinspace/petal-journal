@@ -783,6 +783,30 @@ steel_ink: {
   "--text-muted": "rgba(17, 24, 39, 0.55)",
   "animation": "curving_bullets"
 },
+zenin_glint: {
+  "--bg": "#F6FAFF",                 // icy white-blue
+  "--surface": "#EAF2FF",            // card surface
+  "--surface-2": "#D7E6FF",          // elevated / highlights
+  "--border": "rgba(11, 15, 26, 0.18)", // ink border, subtle
+  "--primary": "#A9C8FF",            // pale icy blue
+  "--primary-soft": "rgba(169, 200, 255, 0.18)",
+  "--accent": "#C8CDD8",             // silver
+  "--text": "#0B0F1A",               // near-black
+  "--text-muted": "rgba(11, 15, 26, 0.55)",
+  "animation": "zenin_glint"
+},
+zenin_frame: {
+  "--bg": "#EEF5FF",
+  "--surface": "#DDEAFF",
+  "--surface-2": "#C7DCFF",
+  "--border": "rgba(13, 20, 35, 0.22)",
+  "--primary": "#7FB0FF",
+  "--primary-soft": "rgba(127, 176, 255, 0.16)",
+  "--accent": "#B9C2D3",
+  "--text": "#0A1020",
+  "--text-muted": "rgba(10, 16, 32, 0.6)",
+  "animation": "zenin_frame"
+},
 
 };
 window.allThemes = THEMES; 
