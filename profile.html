@@ -760,6 +760,13 @@ eraser_head: {
       }
       .kage-aura { box-shadow: 0 0 20px 5px rgba(255, 215, 0, 0.4) !important; border: 2px solid #FFD700 !important; }
       @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+      .toggle-row{
+  display:flex; align-items:center; gap:10px;
+  justify-content:center;
+  margin: 12px 0;
+  font-family: inherit;
+}
+
     </style>
 
     <!-- Firebase Config -->
@@ -839,6 +846,10 @@ eraser_head: {
     <!-- Bought pets will appear here -->
   </select>
   <small class="muted">A tiny friend to watch over your journal.</small>
+<label class="toggle-row">
+  <input type="checkbox" id="toggleAnims">
+  <span>Reduce animations</span>
+</label>
 
 </div>
 
@@ -1166,6 +1177,46 @@ if ($("tokenBalance")) $("tokenBalance").textContent = tokens;
       updateZenProgress(); // Refresh bar after saving
     } catch (e) { alert("Error!"); }
   });
+      (function animationPrefs(){
+  const KEY = "prefs.reduceAnimations";
+  const toggle = document.getElementById("toggleAnims");
+  if (!toggle) return;
+
+  // Default: animations ON (so reduceAnimations = false)
+  const saved = localStorage.getItem(KEY);
+  const reduce = saved === "1";
+
+  toggle.checked = reduce;
+  document.documentElement.classList.toggle("reduce-anim", reduce);
+
+  toggle.addEventListener("change", () => {
+    const reduceNow = toggle.checked;
+    localStorage.setItem(KEY, reduceNow ? "1" : "0");
+    document.documentElement.classList.toggle("reduce-anim", reduceNow);
+  });
+
+  // Expose a tiny helper if you want
+  window.animationsEnabled = () => localStorage.getItem(KEY) !== "1";
+})();
+function playLevelMilestoneFX(level){
+  // if user opted to reduce animations, skip (or do a minimal version)
+  if (window.animationsEnabled && !window.animationsEnabled()) {
+    // Minimal alternative (optional): small toast, subtle highlight, etc.
+    // showToast(`Level ${level}!`);
+    return;
+  }
+
+  // Your existing animation code here:
+  // confetti(), shake(), glitter(), etc...
+}
+(function defaultReduceMotion(){
+  const KEY = "prefs.reduceAnimations";
+  if (localStorage.getItem(KEY) != null) return; // user already chose
+
+  const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  if (prefersReduced) localStorage.setItem(KEY, "1");
+})();
+
 </script>
     <div class="footer-copyright">
   &copy; 2026 Kanu Ventures LLC
