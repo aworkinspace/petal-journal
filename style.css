@@ -3258,3 +3258,26 @@ html[data-anim="curving_bullets"] .shop-panel {
 html[data-anim="cold_flash"] .yourSelector::before { ... }
 html[data-anim="curving_bullets"] .yourSelector::before { ... }
 */
+.cold-flash{
+  position: fixed;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(circle,
+      rgba(169,200,255,0.55) 0%,
+      rgba(169,200,255,0.18) 35%,
+      rgba(215,220,230,0.08) 55%,
+      rgba(215,220,230,0.00) 72%);
+  filter: blur(0.2px);
+  animation: coldFlashPop linear forwards;
+}
+
+@keyframes coldFlashPop{
+  0%   { transform: translate(-50%,-50%) scale(0.45); opacity: 0; }
+  10%  { opacity: 1; }
+  65%  { opacity: 0.65; }
+  100% { transform: translate(-50%,-50%) scale(1.35); opacity: 0; }
+}
