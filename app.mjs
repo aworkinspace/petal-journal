@@ -824,7 +824,7 @@ cursed_worm: {
   "--surface": "#0E1218",
   "--surface-2": "#151D25",
   "--border": "rgba(148, 163, 184, 0.18)", 
-  "--primary": "#8B5E3C",              / leather brown /
+  "--primary": "#8B5E3C",              
   "--primary-soft": "rgba(139, 94, 60, 0.18)",
   "--accent": "#9AA6B2",               
   "--text": "#F8FAFC",
@@ -836,9 +836,9 @@ inverted_spear: {
   "--surface": "#121212",
   "--surface-2": "#1A1A1A",
   "--border": "rgba(217, 119, 6, 0.16)",   
-  "--primary": "#D97706",                  / burnished gold /
+  "--primary": "#D97706",                 
   "--primary-soft": "rgba(217, 119, 6, 0.16)",
-  "--accent": "#2DD4BF",                   / subtle cursed-tool teal pop */
+  "--accent": "#2DD4BF",                   
   "--text": "#FAFAFA",
   "--text-muted": "rgba(250, 250, 250, 0.55)",
   "animation": "zenin_glint"
