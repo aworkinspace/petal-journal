@@ -807,7 +807,42 @@ zenin_frame: {
   "--text-muted": "rgba(10, 16, 32, 0.6)",
   "animation": "zenin_frame"
 },
-
+heavenly_restriction: {
+  "--bg": "#0B0D10",                
+  "--surface": "#11151B",             
+  "--surface-2": "#1B2330",           
+  "--border": "rgba(231, 220, 193, 0.18)", 
+  "--primary": "#2F7A6A",             
+  "--primary-soft": "rgba(47, 122, 106, 0.16)",
+  "--accent": "#E7DCC1",              
+  "--text": "#F3F4F6",               
+  "--text-muted": "rgba(243, 244, 246, 0.60)",
+  "animation": "curving_bullets"
+},
+cursed_worm: {
+  "--bg": "#07090B",
+  "--surface": "#0E1218",
+  "--surface-2": "#151D25",
+  "--border": "rgba(148, 163, 184, 0.18)", 
+  "--primary": "#8B5E3C",              / leather brown /
+  "--primary-soft": "rgba(139, 94, 60, 0.18)",
+  "--accent": "#9AA6B2",               
+  "--text": "#F8FAFC",
+  "--text-muted": "rgba(248, 250, 252, 0.58)",
+  "animation": "cold_flash"
+},
+inverted_spear: {
+  "--bg": "#0A0A0A",
+  "--surface": "#121212",
+  "--surface-2": "#1A1A1A",
+  "--border": "rgba(217, 119, 6, 0.16)",   
+  "--primary": "#D97706",                  / burnished gold /
+  "--primary-soft": "rgba(217, 119, 6, 0.16)",
+  "--accent": "#2DD4BF",                   / subtle cursed-tool teal pop */
+  "--text": "#FAFAFA",
+  "--text-muted": "rgba(250, 250, 250, 0.55)",
+  "animation": "zenin_glint"
+},
 };
 window.allThemes = THEMES; 
 /* ------------------- Helpers (Robust & Balanced) ------------------- */
