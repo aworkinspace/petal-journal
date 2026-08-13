@@ -1331,6 +1331,26 @@ function toast(msg) {
       // This logic will be slow and eerie
       p.style.animationDuration = "10s";
     }
+      else if (type === "cold_flash") {
+  p.className = "cold-flake";
+  p.style.left = Math.random() * 100 + "vw";
+  p.style.top  = (-10 - Math.random() * 20) + "vh"; // start slightly above
+  p.style.opacity = (Math.random() * 0.5 + 0.25).toFixed(2);
+  p.style.animationDuration = (Math.random() * 2 + 2.5) + "s";
+  p.style.animationDelay = (Math.random() * 1.5) + "s";
+  p.style.setProperty("--drift", ((Math.random() * 60) - 30) + "px");
+}
+
+else if (type === "curving_bullets") {
+  p.className = "curve-bullet";
+  p.style.left = (-40 - Math.random() * 80) + "px";
+  p.style.top  = (Math.random() * 100) + "vh";
+  p.style.animationDuration = (Math.random() * 1.2 + 1.4) + "s";
+  p.style.animationDelay = (Math.random() * 0.8) + "s";
+  p.style.setProperty("--arc", ((Math.random() * 160) - 80) + "px"); // curve amount
+  p.style.setProperty("--spin", (Math.random() * 240 - 120) + "deg");
+}
+
 
       // 4. ONE PIECE THEMES
       else if (type === "air_cracks") { p.className = "air-crack"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.setProperty('--rot', `${Math.random() * 360}deg`); p.style.animationDuration = "0.4s"; }
@@ -1502,7 +1522,8 @@ trans_serenity: "pride_trans", symbol_of_peace: "ofa_sparks",
 blue_cremation: "blue_fire", fierce_wings: "red_feathers", symbol_of_fear: "void_tendrils",
 decay_master: "ash_decay", hellflame_sovereign: "hell_flame", one_for_all: "full_cowl",
 explosion_murder: "nitros", eraser_head: "binding_scarves",
-silent_sniper: "curving_bullets", half_cold_half_hot: "ice_and_fire"
+silent_sniper: "curving_bullets", half_cold_half_hot: "ice_and_fire", icy_heir: "cold_flash",
+  zenin_glint: "curving_bullets",
 
 
 
