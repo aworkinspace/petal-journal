@@ -3050,30 +3050,6 @@ header, .top-actions { overflow: visible; }
   35%  { opacity: 0; }
   100% { transform: translateX(220%) skewX(-18deg); opacity: 0; }
 }
-
-/* Apply to your panels/cards (adjust selector to match your UI) */
-html[data-anim="zenin_glint"] .panel,
-html[data-anim="zenin_glint"] .card {
-  position: relative;
-  overflow: hidden;
-}
-
-html[data-anim="zenin_glint"] .panel::after,
-html[data-anim="zenin_glint"] .card::after {
-  content: "";
-  position: absolute;
-  inset: -40% -60%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255,255,255,.55) 45%,
-    rgba(255,255,255,.18) 55%,
-    transparent 100%
-  );
-  animation: zeninGlint 5.5s ease-in-out infinite;
-  pointer-events: none;
-  mix-blend-mode: soft-light;
-}
 @keyframes zeninFramePulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(127,176,255,0), 0 0 0 0 rgba(11,15,26,.0); }
   50% { box-shadow: 0 0 0 1px rgba(127,176,255,.35), 0 10px 30px rgba(11,15,26,.10); }
@@ -3097,11 +3073,6 @@ html[data-anim="zenin_icy_drift"] body {
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
 }
-/* ========= Theme animations hook =========
-   Your JS/theme-applier should set:
-   html[data-anim="cold_flash"] or html[data-anim="curving_bullets"]
-   (or apply a class — just match selectors accordingly)
-*/
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
@@ -3115,59 +3086,6 @@ html[data-anim="zenin_icy_drift"] body {
 .card, .panel, .skin-card, .shop-panel {
   position: relative;
   overflow: hidden; /* needed for the overlay effects */
-}
-
-/* ============================================================
-   1) icy_heir → cold_flash
-   - frosty “flash” + subtle drifting sheen across surfaces
-   ============================================================ */
-
-html[data-anim="cold_flash"] .card::before,
-html[data-anim="cold_flash"] .panel::before,
-html[data-anim="cold_flash"] .shop-panel::before {
-  content: "";
-  position: absolute;
-  inset: -40%;
-  pointer-events: none;
-  opacity: 0.0;
-  background:
-    radial-gradient(closest-side, rgba(169,200,255,0.45), transparent 60%),
-    radial-gradient(closest-side, rgba(255,255,255,0.55), transparent 62%),
-    linear-gradient(120deg,
-      transparent 20%,
-      rgba(255,255,255,0.35) 35%,
-      rgba(169,200,255,0.25) 50%,
-      transparent 65%);
-  filter: blur(2px);
-  transform: translateX(-18%) translateY(10%) rotate(10deg);
-  animation: cold_flash 5.8s ease-in-out infinite;
-}
-
-html[data-anim="cold_flash"] .card::after,
-html[data-anim="cold_flash"] .panel::after,
-html[data-anim="cold_flash"] .shop-panel::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.45;
-  background:
-    linear-gradient(180deg,
-      rgba(255,255,255,0.55),
-      rgba(255,255,255,0.0) 35%,
-      rgba(169,200,255,0.10));
-  mix-blend-mode: screen;
-  animation: cold_sheen 8.5s linear infinite;
-}
-
-/* A little “ink” edge shimmer using your --border tone */
-html[data-anim="cold_flash"] .card,
-html[data-anim="cold_flash"] .panel,
-html[data-anim="cold_flash"] .shop-panel {
-  box-shadow:
-    0 0 0 1px var(--border),
-    0 10px 28px rgba(11,15,26,0.10);
-  animation: cold_edge_pulse 4.6s ease-in-out infinite;
 }
 
 @keyframes cold_flash {
@@ -3187,77 +3105,6 @@ html[data-anim="cold_flash"] .shop-panel {
   0%, 100% { filter: saturate(1) brightness(1); }
   50%      { filter: saturate(1.05) brightness(1.03); }
 }
-
-/* ============================================================
-   2) zenin_glint → curving_bullets
-   - “curving bullets” = tiny arcing streaks that sweep across
-   - plus a sharper glint line (Zenin vibe)
-   ============================================================ */
-
-html[data-anim="curving_bullets"] .card::before,
-html[data-anim="curving_bullets"] .panel::before,
-html[data-anim="curving_bullets"] .shop-panel::before {
-  content: "";
-  position: absolute;
-  inset: -20%;
-  pointer-events: none;
-  opacity: 0.55;
-  /* three arc streaks */
-  background:
-    radial-gradient(12px 120px at 20% 60%, rgba(122,167,255,0.0) 45%, rgba(122,167,255,0.55) 55%, rgba(122,167,255,0.0) 70%),
-    radial-gradient(10px 110px at 55% 35%, rgba(255,255,255,0.0) 45%, rgba(255,255,255,0.55) 56%, rgba(255,255,255,0.0) 70%),
-    radial-gradient(9px  95px at 78% 70%, rgba(122,167,255,0.0) 45%, rgba(122,167,255,0.45) 56%, rgba(122,167,255,0.0) 70%);
-  filter: blur(0.6px);
-  transform: translateX(-22%) rotate(-18deg);
-  animation: curving_bullets 3.9s cubic-bezier(.2,.8,.2,1) infinite;
-  mix-blend-mode: screen;
-}
-
-html[data-anim="curving_bullets"] .card::after,
-html[data-anim="curving_bullets"] .panel::after,
-html[data-anim="curving_bullets"] .shop-panel::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.0;
-  /* crisp diagonal glint bar */
-  background: linear-gradient(120deg,
-    transparent 35%,
-    rgba(255,255,255,0.65) 45%,
-    rgba(191,199,214,0.45) 50%,
-    transparent 60%);
-  transform: translateX(-60%);
-  animation: zenin_glint_pass 5.2s ease-in-out infinite;
-}
-
-html[data-anim="curving_bullets"] .card,
-html[data-anim="curving_bullets"] .panel,
-html[data-anim="curving_bullets"] .shop-panel {
-  box-shadow:
-    0 0 0 1px var(--border),
-    0 14px 34px rgba(17,24,39,0.12);
-}
-
-@keyframes curving_bullets {
-  0%   { transform: translateX(-22%) rotate(-18deg) scale(1);   opacity: 0.00; }
-  15%  { opacity: 0.55; }
-  55%  { transform: translateX(16%)  rotate(-18deg) scale(1.02); opacity: 0.50; }
-  80%  { opacity: 0.10; }
-  100% { transform: translateX(22%)  rotate(-18deg) scale(1.01); opacity: 0.00; }
-}
-
-@keyframes zenin_glint_pass {
-  0%, 62% { opacity: 0; transform: translateX(-60%); }
-  70%     { opacity: 0.65; }
-  78%     { opacity: 0.00; transform: translateX(60%); }
-  100%    { opacity: 0; transform: translateX(60%); }
-}
-
-/* ========= If your UI has specific containers, add them here =========
-html[data-anim="cold_flash"] .yourSelector::before { ... }
-html[data-anim="curving_bullets"] .yourSelector::before { ... }
-*/
 .cold-flash{
   position: fixed;
   width: 220px;
