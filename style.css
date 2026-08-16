@@ -3128,3 +3128,50 @@ html[data-anim="zenin_icy_drift"] body {
   65%  { opacity: 0.65; }
   100% { transform: translate(-50%,-50%) scale(1.35); opacity: 0; }
 }
+.zenin-glint {
+  position: fixed;
+  width: 140px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.95), transparent);
+  opacity: 0.9;
+  pointer-events: none;
+  transform: rotate(var(--glint-rot, 0deg));
+  animation: zeninGlintMove linear forwards;
+}
+
+@keyframes zeninGlintMove {
+  from {
+    transform: translateX(0) rotate(var(--glint-rot, 0deg));
+    opacity: 0;
+  }
+  15% { opacity: 1; }
+  to {
+    transform: translateX(130vw) rotate(var(--glint-rot, 0deg));
+    opacity: 0;
+  }
+}
+
+.zenin-frame-pulse {
+  position: fixed;
+  width: var(--pulse-size, 60px);
+  height: var(--pulse-size, 60px);
+  border: 2px solid rgba(169, 200, 255, 0.75);
+  box-shadow: 0 0 12px rgba(169, 200, 255, 0.35);
+  border-radius: 10px;
+  pointer-events: none;
+  animation: zeninFramePulse ease-out forwards;
+}
+
+@keyframes zeninFramePulse {
+  from {
+    transform: translate(-50%, -50%) scale(0.65);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+  }
+}
