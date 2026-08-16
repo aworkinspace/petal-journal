@@ -1385,6 +1385,23 @@ else if (type === "curving_bullets") {
   p.style.setProperty("--arc", ((Math.random() * 160) - 80) + "px"); // curve amount
   p.style.setProperty("--spin", (Math.random() * 240 - 120) + "deg");
 }
+else if (type === "zenin_glint") {
+  p.className = "zenin-glint";
+  p.style.left = (-20 - Math.random() * 30) + "vw";
+  p.style.top = (Math.random() * 100) + "vh";
+  p.style.animationDuration = (Math.random() * 1.2 + 1.8) + "s";
+  p.style.animationDelay = (Math.random() * 1.2) + "s";
+  p.style.setProperty("--glint-rot", `${-12 + Math.random() * 24}deg`);
+}
+
+else if (type === "zenin_frame") {
+  p.className = "zenin-frame-pulse";
+  p.style.left = Math.random() * 100 + "vw";
+  p.style.top = Math.random() * 100 + "vh";
+  p.style.animationDuration = (Math.random() * 1.5 + 2.5) + "s";
+  p.style.animationDelay = (Math.random() * 1.5) + "s";
+  p.style.setProperty("--pulse-size", (Math.random() * 40 + 40) + "px");
+}
 
 
       // 4. ONE PIECE THEMES
@@ -1558,8 +1575,12 @@ blue_cremation: "blue_fire", fierce_wings: "red_feathers", symbol_of_fear: "void
 decay_master: "ash_decay", hellflame_sovereign: "hell_flame", one_for_all: "full_cowl",
 explosion_murder: "nitros", eraser_head: "binding_scarves",
 silent_sniper: "curving_bullets", half_cold_half_hot: "ice_and_fire", icy_heir: "cold_flash",
+  steel_ink: "curving_bullets",
   zenin_glint: "curving_bullets",
-
+  zenin_frame: "cold_flash",
+  heavenly_restriction: "curving_bullets",
+  cursed_worm: "cold_flash",
+  inverted_spear: "curving_bullets"
 
 
 
