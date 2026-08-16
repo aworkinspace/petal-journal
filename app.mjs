@@ -1602,6 +1602,23 @@ silent_sniper: "curving_bullets", half_cold_half_hot: "ice_and_fire", icy_heir: 
     "Yuji fights to give people a 'proper death.' What does a 'proper life' look like to you right now?",
     "Geto struggled with the weight of his mission. Are you carrying a burden that isn't yours to bear?",
     "Recall a moment today where you felt like you were in the 'Zone' (Black Flash). What were you doing?",
+    "Toji walked away from the world that hurt him. What is something you’ve emotionally detached from just to survive?",
+    "Toji trusted strength over sentiment. When was the last time you chose survival over softness?",
+    "Toji moved like someone with nothing left to lose. What is something you act fearless about, even if you aren’t?",
+    "Toji carried a quiet kind of emptiness. What has been feeling hollow in your life lately?",
+    "Toji rejected the systems that rejected him. Have you ever stopped trying to be accepted somewhere you knew you didn’t belong?",
+    "Toji lived by instinct. What is your gut trying to tell you that your mind keeps ignoring?",
+    "Behind Toji’s coldness was a life shaped by pain. What part of you became hardened because it had to?",
+    "Toji left destruction behind him. Is there a choice you made in survival mode that still follows you now?",
+    "Naoya believed being superior meant never showing weakness. What vulnerability do you hide because you want to stay admired?",
+    "Naoya cared deeply about status and image. How much of your confidence is real, and how much is performance?",
+    "Naoya measured worth through power. Have you ever felt threatened by someone simply because they were growing?",
+    "Naoya wanted to be seen as exceptional. How often do you feel the need to prove you’re better instead of just being enough?",
+    "Pride can protect the ego but isolate the heart. Has your pride ever stopped you from apologizing or being honest?",
+    "Naoya saw respect as something owed to him. What does genuine respect actually mean to you?",
+    "Naoya feared being overshadowed. When someone shines around you, do you feel inspired, insecure, or both?",
+    "Naoya built his identity around superiority. If you stripped away comparison, who would you be?",
+    
 
     // --- Naruto / Founding Fathers Prompts ---
     "Hashirama built the Leaf from a dream. If you were starting a village today, what would be your first rule?",
