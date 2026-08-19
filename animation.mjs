@@ -1,7 +1,7 @@
 (() => {
   const PREF_KEY = "prefs.reduceAnimations";
 
-  // 1. Initialize default preference based on OS/Browser settings if not set
+  // 1. Initialize default preference based on OS/Browser settings if unset
   if (localStorage.getItem(PREF_KEY) === null) {
     const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
     if (prefersReduced) {
@@ -9,28 +9,23 @@
     }
   }
 
-  // Helper function to check if animations are enabled
+  // Helper function: Check if animations are enabled
   window.animationsEnabled = function () {
     return localStorage.getItem(PREF_KEY) !== "1";
   };
 
-  // Sync root element class for CSS suppression
+  // Sync root <html> element class for CSS suppression
   function syncRootClass() {
     document.documentElement.classList.toggle("reduce-anim", !window.animationsEnabled());
   }
   syncRootClass();
 
-  // 2. Safe Helper to Get or Create Overlay Element
-  let overlay = null;
-  function getOrCreateOverlay() {
-    if (overlay && document.body.contains(overlay)) return overlay;
-    overlay = document.getElementById("animation-overlay");
-    if (!overlay && document.body) {
-      overlay = document.createElement("div");
-      overlay.id = "animation-overlay";
-      document.body.prepend(overlay);
-    }
-    return overlay;
+  // 2. Overlay Element Setup
+  let overlay = document.getElementById("animation-overlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "animation-overlay";
+    document.body.prepend(overlay);
   }
 
   let animationInterval = null;
@@ -42,13 +37,12 @@
       clearInterval(animationInterval);
       animationInterval = null;
     }
-    const container = getOrCreateOverlay();
-    if (container) {
-      container.innerHTML = "";
+    if (overlay) {
+      overlay.innerHTML = "";
     }
   }
 
-  // Helper to toggle animation preference dynamically
+  // Helper to update animation preference globally
   window.setAnimationsEnabled = function (enabled) {
     localStorage.setItem(PREF_KEY, enabled ? "0" : "1");
     syncRootClass();
@@ -60,7 +54,7 @@
     }
   };
 
-  // 3. Main Animation Control Function
+  // 3. Main Animation Loop Control
   function startAnimation(type) {
     currentAnimationType = type;
 
@@ -69,9 +63,6 @@
 
     // Stop if animations are disabled or type is empty
     if (!window.animationsEnabled() || !type) return;
-
-    const container = getOrCreateOverlay();
-    if (!container) return;
 
     animationInterval = setInterval(() => {
       if (!window.animationsEnabled()) {
@@ -88,7 +79,7 @@
       else if (type === "blossoms") { p.className = "blossom"; p.style.left = startX + "px"; p.style.top = "-50px"; p.style.animationDuration = (Math.random() * 4 + 5) + "s"; }
       else if (type === "sunbeams") { p.className = "sunbeam"; p.style.left = startX + "px"; p.style.top = "-150px"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; }
       else if (type === "snow") { p.className = "snowflake"; p.style.left = startX + "px"; p.style.top = "-10px"; const size = Math.random() * 4 + 2 + "px"; p.style.width = size; p.style.height = size; p.style.animationDuration = (Math.random() * 3 + 5) + "s"; }
-      
+
       // --- 2. NARUTO THEMES ---
       else if (type === "aura") { p.className = Math.random() > 0.3 ? "aura-flame" : "aura-flame aura-orange"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-100px"; p.style.animationDuration = (Math.random() * 1.5 + 1.5) + "s"; }
       else if (type === "teleport") { p.className = "flash-spark"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; const rot = Math.random() * 360; p.style.setProperty('--rot', `${rot}deg`); p.style.animationDuration = "0.25s"; }
@@ -138,31 +129,32 @@
 
       // Append element and clean up after animation finishes
       if (p.className) {
-        container.appendChild(p);
+        overlay.appendChild(p);
         const duration = parseFloat(p.style.animationDuration || "3") * 1000;
         setTimeout(() => p.remove(), duration);
       }
     }, 400);
   }
 
-  // Expose startAnimation globally
+  // Expose function globally
   window.startAnimation = startAnimation;
 
-  // 4. UI Toggle Synchronization (#toggleAnims)
-  function syncToggleUI() {
+  // 4. UI Toggle Synchronization & Event Delegation
+  function syncToggleCheckbox() {
     const toggleBtn = document.getElementById("toggleAnims");
     if (toggleBtn) {
       toggleBtn.checked = !window.animationsEnabled();
     }
   }
 
+  // Handle page load / DOMReady
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", syncToggleUI);
+    document.addEventListener("DOMContentLoaded", syncToggleCheckbox);
   } else {
-    syncToggleUI();
+    syncToggleCheckbox();
   }
 
-  // Delegated listener for dynamically rendered #toggleAnims elements
+  // Event Delegation for dynamic UI loads (e.g. profile page rendered dynamically)
   document.addEventListener("change", (e) => {
     if (e.target && e.target.id === "toggleAnims") {
       const reduce = e.target.checked;
