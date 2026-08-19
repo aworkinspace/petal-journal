@@ -1257,337 +1257,659 @@ function toast(msg) {
   document.body.prepend(overlay);
   let animationInterval = null;
 
-  function startAnimation(type) {
-    if (animationInterval) clearInterval(animationInterval);
-    overlay.innerHTML = "";
-    if (!type) return;
+  function createParticle(type) {
+    const p = document.createElement("div");
+    const startX = Math.random() * window.innerWidth;
 
-    animationInterval = setInterval(() => {
-      const p = document.createElement("div");
-      const startX = Math.random() * window.innerWidth;
-      
-            // 1. BASIC SEASONS
-      if (type === "meteors") { p.className = "meteor"; p.style.left = (startX + 400) + "px"; p.style.top = "-50px"; p.style.animationDuration = (Math.random() * 1 + 0.5) + "s"; }
-      else if (type === "leaves") { p.className = "leaf"; p.style.left = startX + "px"; p.style.top = "-50px"; p.style.animationDuration = (Math.random() * 3 + 4) + "s"; }
-      else if (type === "blossoms") { p.className = "blossom"; p.style.left = startX + "px"; p.style.top = "-50px"; p.style.animationDuration = (Math.random() * 4 + 5) + "s"; }
-      else if (type === "sunbeams") { p.className = "sunbeam"; p.style.left = startX + "px"; p.style.top = "-150px"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; }
-      else if (type === "snow") { p.className = "snowflake"; p.style.left = startX + "px"; p.style.top = "-10px"; const size = Math.random() * 4 + 2 + "px"; p.style.width = size; p.style.height = size; p.style.animationDuration = (Math.random() * 3 + 5) + "s"; }
-      
+    switch (type) {
+      // 1. BASIC SEASONS
+      case "meteors":
+        p.className = "meteor";
+        p.style.left = startX + 400 + "px";
+        p.style.top = "-50px";
+        p.style.animationDuration = Math.random() * 1 + 0.5 + "s";
+        break;
+      case "leaves":
+        p.className = "leaf";
+        p.style.left = startX + "px";
+        p.style.top = "-50px";
+        p.style.animationDuration = Math.random() * 3 + 4 + "s";
+        break;
+      case "blossoms":
+        p.className = "blossom";
+        p.style.left = startX + "px";
+        p.style.top = "-50px";
+        p.style.animationDuration = Math.random() * 4 + 5 + "s";
+        break;
+      case "sunbeams":
+        p.className = "sunbeam";
+        p.style.left = startX + "px";
+        p.style.top = "-150px";
+        p.style.animationDuration = Math.random() * 2 + 3 + "s";
+        break;
+      case "snow":
+        p.className = "snowflake";
+        p.style.left = startX + "px";
+        p.style.top = "-10px";
+        const snowSize = Math.random() * 4 + 2 + "px";
+        p.style.width = snowSize;
+        p.style.height = snowSize;
+        p.style.animationDuration = Math.random() * 3 + 5 + "s";
+        break;
+
       // 2. NARUTO THEMES
-      else if (type === "aura") { p.className = Math.random() > 0.3 ? "aura-flame" : "aura-flame aura-orange"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-100px"; p.style.animationDuration = (Math.random() * 1.5 + 1.5) + "s"; }
-      else if (type === "teleport") { p.className = "flash-spark"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; const rot = Math.random() * 360; p.style.setProperty('--rot', `${rot}deg`); p.style.animationDuration = "0.25s"; }
-      else if (type === "pearls") { p.className = "pearl"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; const s = Math.floor(Math.random() * 12 + 10) + "px"; p.style.width = s; p.style.height = s; p.style.animationDelay = (Math.random() * 5) + "s"; }
-      else if (type === "sage_history") { const isL = Math.random() > 0.3; p.className = isL ? "sage-leaf" : "ink-blot"; p.style.left = Math.random() * 100 + "vw"; p.style.top = isL ? "-20px" : (Math.random() * 100 + "vh"); p.style.animationDuration = isL ? (Math.random() * 4 + 6) + "s" : "4s"; }
-      else if (type === "snakes") { p.className = "snake-line"; p.style.left = "-50px"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = (Math.random() * 4 + 6) + "s"; } 
-      else if (type === "tomoe") { p.className = "tomoe"; p.textContent = "©"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "4s"; } 
-      else if (type === "warps") { p.className = "kamui-warp"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "3s"; } 
-      else if (type === "black_fire") { p.className = "black-flame"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; if (Math.random() > 0.5) p.style.transform = "scaleX(-1)"; }
-      else if (type === "feathers") { p.className = "feather"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-30px"; p.style.animationDuration = (Math.random() * 4 + 5) + "s"; if (Math.random() > 0.5) p.style.transform = "scaleX(-1)"; } 
-      else if (type === "truth_orbs") { p.className = "truth-orb"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDelay = (Math.random() * 5) + "s"; }
-      else if (type === "hundred_seals") { p.className = "diamond-seal"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "4s"; } 
-      else if (type === "malice") { p.className = "malice-orb"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; if (Math.random() > 0.8) { p.style.background = "#F97316"; p.style.boxShadow = "0 0 20px 4px #F97316"; } } 
-            else if (type === "wood_style") {
-        const rand = Math.random();
-        
-        if (rand > 0.92) { 
-          // 1. SAGE MARK: Forehead circle pulses from center
+      case "aura":
+        p.className = Math.random() > 0.3 ? "aura-flame" : "aura-flame aura-orange";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.bottom = "-100px";
+        p.style.animationDuration = Math.random() * 1.5 + 1.5 + "s";
+        break;
+      case "teleport":
+        p.className = "flash-spark";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.setProperty("--rot", `${Math.random() * 360}deg`);
+        p.style.animationDuration = "0.25s";
+        break;
+      case "pearls":
+        p.className = "pearl";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        const pearlSize = Math.floor(Math.random() * 12 + 10) + "px";
+        p.style.width = pearlSize;
+        p.style.height = pearlSize;
+        p.style.animationDelay = Math.random() * 5 + "s";
+        break;
+      case "sage_history":
+        const isLeaf = Math.random() > 0.3;
+        p.className = isLeaf ? "sage-leaf" : "ink-blot";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = isLeaf ? "-20px" : Math.random() * 100 + "vh";
+        p.style.animationDuration = isLeaf ? Math.random() * 4 + 6 + "s" : "4s";
+        break;
+      case "snakes":
+        p.className = "snake-line";
+        p.style.left = "-50px";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDuration = Math.random() * 4 + 6 + "s";
+        break;
+      case "tomoe":
+        p.className = "tomoe";
+        p.textContent = "©";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDuration = "4s";
+        break;
+      case "warps":
+        p.className = "kamui-warp";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDuration = "3s";
+        break;
+      case "black_fire":
+        p.className = "black-flame";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.bottom = "-20px";
+        p.style.animationDuration = Math.random() * 2 + 3 + "s";
+        if (Math.random() > 0.5) p.style.transform = "scaleX(-1)";
+        break;
+      case "feathers":
+        p.className = "feather";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = "-30px";
+        p.style.animationDuration = Math.random() * 4 + 5 + "s";
+        if (Math.random() > 0.5) p.style.transform = "scaleX(-1)";
+        break;
+      case "truth_orbs":
+        p.className = "truth-orb";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDelay = Math.random() * 5 + "s";
+        break;
+      case "hundred_seals":
+        p.className = "diamond-seal";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDuration = "4s";
+        break;
+      case "malice":
+        p.className = "malice-orb";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.bottom = "-20px";
+        p.style.animationDuration = Math.random() * 2 + 3 + "s";
+        if (Math.random() > 0.8) {
+          p.style.background = "#F97316";
+          p.style.boxShadow = "0 0 20px 4px #F97316";
+        }
+        break;
+      case "wood_style":
+        const woodRand = Math.random();
+        if (woodRand > 0.92) {
           p.className = "sage-mark";
           p.style.left = "50vw";
           p.style.top = "50vh";
           p.style.transform = "translate(-50%, -50%)";
           p.style.animationDuration = "5s";
-        } 
-        else if (rand > 0.65) { 
-          // 2. CURVED VINES: Grow and twist upward
+        } else if (woodRand > 0.65) {
           p.className = "wood-vine";
           p.style.left = Math.random() * 100 + "vw";
-          p.style.bottom = "-50px"; 
-          const randomRot = Math.random() * 360;
-          p.style.setProperty('--rot', `${randomRot}deg`);
+          p.style.bottom = "-50px";
+          p.style.setProperty("--rot", `${Math.random() * 360}deg`);
           p.style.animationDuration = "6s";
-        } 
-        else { 
-          // 3. LEAVES: Traditional wood style drift
+        } else {
           p.className = "wood-petal";
           p.style.left = Math.random() * 100 + "vw";
           p.style.top = "-20px";
-          p.style.animationDuration = (Math.random() * 3 + 4) + "s";
+          p.style.animationDuration = Math.random() * 3 + 4 + "s";
         }
-      }
-      else if (type === "bubbles") { if (Math.random() > 0.6) { p.className = "water-ripple"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; } else { p.className = "water-drop"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; } p.style.animationDuration = "4s"; }
-      else if (type === "spirals") { p.className = "uzumaki-spiral"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "5s"; } 
-      else if (type === "bolts") { p.className = "chidori-bolt"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.transform = `rotate(${Math.random() * 360}deg)`; p.style.animationDuration = "0.3s"; }
-      else if (type === "sharks") { p.className = "shark-fin"; p.style.left = "-40px"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; } 
-      else if (type === "flytraps") { p.className = "flytrap-spike"; p.style.left = Math.random() * 100 + "vw"; const isT = Math.random() > 0.5; p.style[isT ? 'top' : 'bottom'] = "-10px"; if (isT) p.style.transform = "rotate(180deg)"; p.style.animationDuration = "3s"; }
-      else if (type === "love_sand") { p.className = "love-kanji"; p.textContent = "愛"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-40px"; p.style.animationDuration = (Math.random() * 3 + 4) + "s"; }
-      else if (type === "shadows") { const edge = Math.random(); if (edge > 0.5) { p.style.bottom = "-50px"; p.style.left = Math.random() * 100 + "vw"; p.style.setProperty('--rot', `${(Math.random() * 40) - 20}deg`); } else { p.style.top = Math.random() * 100 + "vh"; p.style.left = edge > 0.25 ? "-50px" : "100vw"; p.style.setProperty('--rot', edge > 0.25 ? "90deg" : "-90deg"); } p.className = "shadow-tendril"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; }
-          else if (type === "edo_shards") {
-      p.className = "paper-sheet"; // Re-uses Konan's paper code
-      p.style.backgroundColor = "#262626";
-      p.style.boxShadow = "0 0 10px #63B3ED";
-    }
-    else if (type === "fate_lines") {
-      p.className = "fate-line";
-      p.style.top = Math.random() * 100 + "vh";
-    }
+        break;
+      case "bubbles":
+        if (Math.random() > 0.6) {
+          p.className = "water-ripple";
+          p.style.left = Math.random() * 100 + "vw";
+          p.style.top = Math.random() * 100 + "vh";
+        } else {
+          p.className = "water-drop";
+          p.style.left = Math.random() * 100 + "vw";
+          p.style.bottom = "-20px";
+        }
+        p.style.animationDuration = "4s";
+        break;
+      case "spirals":
+        p.className = "uzumaki-spiral";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDuration = "5s";
+        break;
+      case "bolts":
+        p.className = "chidori-bolt";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.transform = `rotate(${Math.random() * 360}deg)`;
+        p.style.animationDuration = "0.3s";
+        break;
+      case "sharks":
+        p.className = "shark-fin";
+        p.style.left = "-40px";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDuration = Math.random() * 2 + 3 + "s";
+        break;
+      case "flytraps":
+        p.className = "flytrap-spike";
+        p.style.left = Math.random() * 100 + "vw";
+        const isTop = Math.random() > 0.5;
+        p.style[isTop ? "top" : "bottom"] = "-10px";
+        if (isTop) p.style.transform = "rotate(180deg)";
+        p.style.animationDuration = "3s";
+        break;
+      case "love_sand":
+        p.className = "love-kanji";
+        p.textContent = "愛";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.bottom = "-40px";
+        p.style.animationDuration = Math.random() * 3 + 4 + "s";
+        break;
+      case "shadows":
+        const edge = Math.random();
+        if (edge > 0.5) {
+          p.style.bottom = "-50px";
+          p.style.left = Math.random() * 100 + "vw";
+          p.style.setProperty("--rot", `${Math.random() * 40 - 20}deg`);
+        } else {
+          p.style.top = Math.random() * 100 + "vh";
+          p.style.left = edge > 0.25 ? "-50px" : "100vw";
+          p.style.setProperty("--rot", edge > 0.25 ? "90deg" : "-90deg");
+        }
+        p.className = "shadow-tendril";
+        p.style.animationDuration = Math.random() * 2 + 3 + "s";
+        break;
+      case "edo_shards":
+        p.className = "paper-sheet";
+        p.style.backgroundColor = "#262626";
+        p.style.boxShadow = "0 0 10px #63B3ED";
+        break;
+      case "fate_lines":
+        p.className = "fate-line";
+        p.style.top = Math.random() * 100 + "vh";
+        break;
 
-      // RESTORED: AKATSUKI & AME TRIO
-      else if (type === "jashin") { p.className = "jashin-seal"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.transform = `rotate(${Math.random() * 360}deg)`; p.style.animationDuration = "5s"; }
-      else if (type === "clouds") { p.className = "red-cloud"; p.style.left = "-60px"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = (Math.random() * 10 + 15) + "s"; }
-      else if (type === "threads") { p.className = "stitch-thread"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-70px"; p.style.animationDuration = (Math.random() * 3 + 4) + "s"; }
-      else if (type === "explosive_birds") { p.className = "clay-bird"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-20px"; p.style.animationDuration = "3s"; }
-      else if (type === "puppet_strings") { p.className = "puppet-string"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "0"; }
-      else if (type === "paper") { p.className = "paper-sheet"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-30px"; p.style.animationDuration = (Math.random() * 3 + 4) + "s"; }
-      else if (type === "gravity") { p.className = "gravity-ring"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; }
-      else if (type === "tobi_swirl") { p.className = "tobi-spiral"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; }
-      else if (type === "rain") { p.className = "rain-drop"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-20px"; p.style.animationDuration = (Math.random() * 0.4 + 0.6) + "s"; }
-      else if (type === "seals") { const k = ["蝦", "蛞", "蛇"]; p.className = "kanji-seal"; p.textContent = k[Math.floor(Math.random() * k.length)]; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "5s"; }
+      // AKATSUKI & AME TRIO
+      case "jashin":
+        p.className = "jashin-seal";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.transform = `rotate(${Math.random() * 360}deg)`;
+        p.style.animationDuration = "5s";
+        break;
+      case "clouds":
+        p.className = "red-cloud";
+        p.style.left = "-60px";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDuration = Math.random() * 10 + 15 + "s";
+        break;
+      case "threads":
+        p.className = "stitch-thread";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = "-70px";
+        p.style.animationDuration = Math.random() * 3 + 4 + "s";
+        break;
+      case "explosive_birds":
+        p.className = "clay-bird";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = "-20px";
+        p.style.animationDuration = "3s";
+        break;
+      case "puppet_strings":
+        p.className = "puppet-string";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = "0";
+        break;
+      case "paper":
+        p.className = "paper-sheet";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = "-30px";
+        p.style.animationDuration = Math.random() * 3 + 4 + "s";
+        break;
+      case "gravity":
+        p.className = "gravity-ring";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        break;
+      case "tobi_swirl":
+        p.className = "tobi-spiral";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        break;
+      case "rain":
+        p.className = "rain-drop";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = "-20px";
+        p.style.animationDuration = Math.random() * 0.4 + 0.6 + "s";
+        break;
+      case "seals":
+        const kanji = ["蝦", "蛞", "蛇"];
+        p.className = "kanji-seal";
+        p.textContent = kanji[Math.floor(Math.random() * kanji.length)];
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDuration = "5s";
+        break;
 
       // 3. JJK THEMES
-      else if (type === "infinity") { p.className = "infinity-ring"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "4s"; }
-      else if (type === "slashes") { p.className = "sukuna-slash"; p.style.left = Math.random() * 80 + 10 + "vw"; p.style.top = Math.random() * 80 + 10 + "vh"; const rR = Math.random() * 360; p.style.setProperty('--rot', `${rR}deg`); p.style.animationDuration = "0.3s"; }
-      else if (type === "shikigami") { p.className = "shadow-wolf"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "10vh"; }
-      else if (type === "cursed_orbs") { p.className = "cursed-orb"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; }
-      else if (type === "blood_streaks") { p.className = "blood-streak"; p.style.left = "-100px"; p.style.top = Math.random() * 100 + "vh"; p.style.transform = `rotate(${(Math.random() * 20) - 10}deg)`; }
-      else if (type === "impacts") { p.className = "impact-ring"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; }
-      else if (type === "supernova") { p.className = "blood-orb"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "3s"; p.style.animationDelay = (Math.random() * 2) + "s"; }
-      else if (type === "clock_ticks") { p.className = "clock-hand"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; p.style.animationDuration = (Math.random() * 2 + 4) + "s"; }
-      else if (type === "summer_clouds") { p.className = "summer-cloud"; p.style.top = Math.random() * 40 + "vh"; p.style.left = "-150px"; p.style.width = (Math.random() * 100 + 100) + "px"; p.style.animationDuration = (Math.random() * 10 + 15) + "s"; }
-      else if (type === "dimensional_tears") {
-      p.className = "tear";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.top = Math.random() * 100 + "vh";
-      p.style.animationDuration = "2s";
-    }
-    else if (type === "reality_strings") {
-      p.className = "zen-shard"; // Re-use shard look
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.top = Math.random() * 100 + "vh";
-      // This logic will be slow and eerie
-      p.style.animationDuration = "10s";
-    }
-      else if (type === "cold_flash") {
-  p.className = "cold-flake";
-  p.style.left = Math.random() * 100 + "vw";
-  p.style.top  = (-10 - Math.random() * 20) + "vh"; // start slightly above
-  p.style.opacity = (Math.random() * 0.5 + 0.25).toFixed(2);
-  p.style.animationDuration = (Math.random() * 2 + 2.5) + "s";
-  p.style.animationDelay = (Math.random() * 1.5) + "s";
-  p.style.setProperty("--drift", ((Math.random() * 60) - 30) + "px");
-}
-
-else if (type === "curving_bullets") {
-  p.className = "curve-bullet";
-  p.style.left = (-40 - Math.random() * 80) + "px";
-  p.style.top  = (Math.random() * 100) + "vh";
-  p.style.animationDuration = (Math.random() * 1.2 + 1.4) + "s";
-  p.style.animationDelay = (Math.random() * 0.8) + "s";
-  p.style.setProperty("--arc", ((Math.random() * 160) - 80) + "px"); // curve amount
-  p.style.setProperty("--spin", (Math.random() * 240 - 120) + "deg");
-}
-else if (type === "zenin_glint") {
-  p.className = "zenin-glint";
-  p.style.left = (-20 - Math.random() * 30) + "vw";
-  p.style.top = (Math.random() * 100) + "vh";
-  p.style.animationDuration = (Math.random() * 1.2 + 1.8) + "s";
-  p.style.animationDelay = (Math.random() * 1.2) + "s";
-  p.style.setProperty("--glint-rot", `${-12 + Math.random() * 24}deg`);
-}
-
-else if (type === "zenin_frame") {
-  p.className = "zenin-frame-pulse";
-  p.style.left = Math.random() * 100 + "vw";
-  p.style.top = Math.random() * 100 + "vh";
-  p.style.animationDuration = (Math.random() * 1.5 + 2.5) + "s";
-  p.style.animationDelay = (Math.random() * 1.5) + "s";
-  p.style.setProperty("--pulse-size", (Math.random() * 40 + 40) + "px");
-}
-
+      case "infinity":
+        p.className = "infinity-ring";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDuration = "4s";
+        break;
+      case "slashes":
+        p.className = "sukuna-slash";
+        p.style.left = Math.random() * 80 + 10 + "vw";
+        p.style.top = Math.random() * 80 + 10 + "vh";
+        p.style.setProperty("--rot", `${Math.random() * 360}deg`);
+        p.style.animationDuration = "0.3s";
+        break;
+      case "shikigami":
+        p.className = "shadow-wolf";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.bottom = "10vh";
+        break;
+      case "cursed_orbs":
+        p.className = "cursed-orb";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        break;
+      case "blood_streaks":
+        p.className = "blood-streak";
+        p.style.left = "-100px";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+        break;
+      case "impacts":
+        p.className = "impact-ring";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        break;
+      case "supernova":
+        p.className = "blood-orb";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDuration = "3s";
+        p.style.animationDelay = Math.random() * 2 + "s";
+        break;
+      case "clock_ticks":
+        p.className = "clock-hand";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.bottom = "-20px";
+        p.style.animationDuration = Math.random() * 2 + 4 + "s";
+        break;
+      case "summer_clouds":
+        p.className = "summer-cloud";
+        p.style.top = Math.random() * 40 + "vh";
+        p.style.left = "-150px";
+        p.style.width = Math.random() * 100 + 100 + "px";
+        p.style.animationDuration = Math.random() * 10 + 15 + "s";
+        break;
+      case "dimensional_tears":
+        p.className = "tear";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDuration = "2s";
+        break;
+      case "reality_strings":
+        p.className = "zen-shard";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDuration = "10s";
+        break;
+      case "cold_flash":
+        p.className = "cold-flake";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = -10 - Math.random() * 20 + "vh";
+        p.style.opacity = (Math.random() * 0.5 + 0.25).toFixed(2);
+        p.style.animationDuration = Math.random() * 2 + 2.5 + "s";
+        p.style.animationDelay = Math.random() * 1.5 + "s";
+        p.style.setProperty("--drift", Math.random() * 60 - 30 + "px");
+        break;
+      case "curving_bullets":
+        p.className = "curve-bullet";
+        p.style.left = -40 - Math.random() * 80 + "px";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDuration = Math.random() * 1.2 + 1.4 + "s";
+        p.style.animationDelay = Math.random() * 0.8 + "s";
+        p.style.setProperty("--arc", Math.random() * 160 - 80 + "px");
+        p.style.setProperty("--spin", Math.random() * 240 - 120 + "deg");
+        break;
+      case "sniper_bullets":
+        p.className = "sniper-shot";
+        p.style.left = "-40px";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDuration = "0.6s";
+        break;
+      case "zenin_glint":
+        p.className = "zenin-glint";
+        p.style.left = -20 - Math.random() * 30 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDuration = Math.random() * 1.2 + 1.8 + "s";
+        p.style.animationDelay = Math.random() * 1.2 + "s";
+        p.style.setProperty("--glint-rot", `${-12 + Math.random() * 24}deg`);
+        break;
+      case "zenin_frame":
+        p.className = "zenin-frame-pulse";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDuration = Math.random() * 1.5 + 2.5 + "s";
+        p.style.animationDelay = Math.random() * 1.5 + "s";
+        p.style.setProperty("--pulse-size", Math.random() * 40 + 40 + "px");
+        break;
 
       // 4. ONE PIECE THEMES
-      else if (type === "air_cracks") { p.className = "air-crack"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.setProperty('--rot', `${Math.random() * 360}deg`); p.style.animationDuration = "0.4s"; }
-      else if (type === "room_scan") { p.className = "room-circle"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; }
-      else if (type === "drum_beats") { p.className = "drum-beat"; p.textContent = "DUM!"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; }
-      else if (type === "hearts") { p.className = "snowflake"; p.style.backgroundColor = "#F43F5E"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-10px"; }
-      
-      // 5. VIBE THEMES
-      else if (type === "glitch") { p.className = "glitch-box"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.backgroundColor = Math.random() > 0.5 ? "#FF007A" : "#00F3FF"; }
-      else if (type === "plankton") { p.className = "plankton"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDelay = (Math.random() * 10) + "s"; }
-      else if (type === "fireflies") { p.className = "firefly"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDelay = (Math.random() * 4) + "s"; }
-      else if (type === "fans") { p.className = "paper-fan"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-20px"; p.style.animationDuration = (Math.random() * 4 + 6) + "s"; }
-      else if (type === "arms") { p.className = "flower-arm"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; }
-      else if (type === "pixels") { p.className = "pixel-heart"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; }
-      else if (type === "cursors") { p.className = "pixel-cursor"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDelay = (Math.random() * 5) + "s"; }
-      else if (type === "crops") { p.className = "pixel-crop"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-20px"; p.style.backgroundColor = Math.random() > 0.5 ? "#FF8C00" : "#78B159"; }
-      else if (type === "steam") { p.className = "pixel-steam"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "10vh"; p.style.animationDuration = (Math.random() * 2 + 2) + "s"; }
-      else if (type === "lightning") { p.className = "lightning"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "0"; p.style.animationDuration = "0.4s"; }
-      else if (type === "paper") { p.className = "paper-sheet"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-30px"; p.style.animationDuration = (Math.random() * 3 + 4) + "s"; }
-      else if (type === "star_shards") { p.className = "star-shard"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDelay = (Math.random() * 3) + "s"; } 
-      else if (type === "dream_waves") { const isR = Math.random() > 0.4; if (isR) { p.className = "tsukuyomi-ripple"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; } else { p.className = "soul-cocoon"; p.style.left = Math.random() * 100 + "vw"; p.style.top = "-30px"; } } 
-      else if (type === "divine_aura") { p.className = "zen-shard"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDelay = (Math.random() * 5) + "s"; }
-      else if (type === "embers") { p.className = "ember"; p.style.left = Math.random() * 100 + "vw"; p.style.bottom = "-20px"; p.style.animationDuration = (Math.random() * 2 + 3) + "s"; }
-      else if (type === "sand") { p.className = "sand-grain"; p.style.left = "-10px"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = (Math.random() * 1 + 2) + "s"; }
+      case "air_cracks":
+        p.className = "air-crack";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.setProperty("--rot", `${Math.random() * 360}deg`);
+        p.style.animationDuration = "0.4s";
+        break;
+      case "room_scan":
+        p.className = "room-circle";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        break;
+      case "drum_beats":
+        p.className = "drum-beat";
+        p.textContent = "DUM!";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        break;
+      case "hearts":
+        p.className = "snowflake";
+        p.style.backgroundColor = "#F43F5E";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = "-10px";
+        break;
 
-            // --- PRIDE THEMES (Custom Movements) ---
-      else if (type === "pride_rainbow") {
+      // 5. VIBE THEMES
+      case "glitch":
+        p.className = "glitch-box";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.backgroundColor = Math.random() > 0.5 ? "#FF007A" : "#00F3FF";
+        break;
+      case "plankton":
+        p.className = "plankton";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDelay = Math.random() * 10 + "s";
+        break;
+      case "fireflies":
+        p.className = "firefly";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDelay = Math.random() * 4 + "s";
+        break;
+      case "fans":
+        p.className = "paper-fan";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = "-20px";
+        p.style.animationDuration = Math.random() * 4 + 6 + "s";
+        break;
+      case "arms":
+        p.className = "flower-arm";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        break;
+      case "pixels":
+        p.className = "pixel-heart";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        break;
+      case "cursors":
+        p.className = "pixel-cursor";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDelay = Math.random() * 5 + "s";
+        break;
+      case "crops":
+        p.className = "pixel-crop";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = "-20px";
+        p.style.backgroundColor = Math.random() > 0.5 ? "#FF8C00" : "#78B159";
+        break;
+      case "steam":
+        p.className = "pixel-steam";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.bottom = "10vh";
+        p.style.animationDuration = Math.random() * 2 + 2 + "s";
+        break;
+      case "lightning":
+        p.className = "lightning";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = "0";
+        p.style.animationDuration = "0.4s";
+        break;
+      case "star_shards":
+        p.className = "star-shard";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDelay = Math.random() * 3 + "s";
+        break;
+      case "dream_waves":
+        if (Math.random() > 0.4) {
+          p.className = "tsukuyomi-ripple";
+          p.style.left = Math.random() * 100 + "vw";
+          p.style.top = Math.random() * 100 + "vh";
+        } else {
+          p.className = "soul-cocoon";
+          p.style.left = Math.random() * 100 + "vw";
+          p.style.top = "-30px";
+        }
+        break;
+      case "divine_aura":
+        p.className = "zen-shard";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDelay = Math.random() * 5 + "s";
+        break;
+      case "embers":
+        p.className = "ember";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.bottom = "-20px";
+        p.style.animationDuration = Math.random() * 2 + 3 + "s";
+        break;
+      case "sand":
+        p.className = "sand-grain";
+        p.style.left = "-10px";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.animationDuration = Math.random() * 1 + 2 + "s";
+        break;
+
+      // PRIDE THEMES
+      case "pride_rainbow":
         p.className = "rainbow-trail";
         p.style.top = Math.random() * 100 + "vh";
-        p.style.left = "-50px"; // Starts off-screen left
-      }
-      else if (type === "pride_sunset") {
+        p.style.left = "-50px";
+        break;
+      case "pride_sunset":
         p.className = "sunset-ray";
         p.style.left = Math.random() * 100 + "vw";
-        p.style.bottom = "-60px"; // Starts off-screen bottom
-      }
-      else if (type === "pride_gay") {
+        p.style.bottom = "-60px";
+        break;
+      case "pride_gay":
         p.className = "ocean-drop";
         p.style.left = Math.random() * 100 + "vw";
-        p.style.top = "-20px"; // Starts off-screen top
-      }
-      else if (type === "pride_bi") {
+        p.style.top = "-20px";
+        break;
+      case "pride_bi":
         p.className = "bi-star";
         p.style.left = Math.random() * 100 + "vw";
-        p.style.top = Math.random() * 100 + "vh"; // Appears anywhere
-      }
-      else if (type === "pride_trans") {
+        p.style.top = Math.random() * 100 + "vh";
+        break;
+      case "pride_trans":
         p.className = "trans-bubble";
         p.style.left = Math.random() * 100 + "vw";
-        p.style.bottom = "-20px"; // Drifts up from bottom
-        const size = Math.random() * 15 + 10 + "px";
-        p.style.width = size; p.style.height = size;
+        p.style.bottom = "-20px";
+        const bubbleSize = Math.random() * 15 + 10 + "px";
+        p.style.width = bubbleSize;
+        p.style.height = bubbleSize;
+        break;
+
+      // MHA THEMES
+      case "ofa_sparks":
+        p.className = "ofa-spark";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        break;
+      case "blue_fire":
+        p.className = "blue-flame";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.bottom = "-20px";
+        p.style.animationDuration = Math.random() * 2 + 3 + "s";
+        break;
+      case "red_feathers":
+        p.className = "red-feather";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = "-20px";
+        p.style.animationDuration = Math.random() * 2 + 3 + "s";
+        break;
+      case "void_tendrils":
+        p.className = "void-tendril";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.bottom = "-50px";
+        p.style.setProperty("--rot", `${Math.random() * 40 - 20}deg`);
+        p.style.animationDuration = "4s";
+        break;
+      case "ash_decay":
+        p.className = "ash-flake";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = "-20px";
+        const flakeSize = Math.random() * 5 + 2 + "px";
+        p.style.width = flakeSize;
+        p.style.height = flakeSize;
+        p.style.animationDuration = Math.random() * 2 + 3 + "s";
+        break;
+      case "hell_flame":
+        p.className = "hell-flame";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.bottom = "-30px";
+        if (Math.random() > 0.5) p.style.background = "#F59E0B";
+        p.style.animationDuration = Math.random() * 1 + 2 + "s";
+        break;
+      case "poneglyphs":
+        const symbols = ["𓀀", "𓀁", "𓀂", "𓀃", "𓀄", "𓀅"];
+        p.className = "poneglyph";
+        p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = "-30px";
+        p.style.animationDuration = Math.random() * 5 + 5 + "s";
+        break;
+      case "full_cowl":
+        p.className = "cowl-spark";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        p.style.backgroundColor = Math.random() > 0.7 ? "#F43F5E" : "#10B981";
+        p.style.setProperty("--rot", `${Math.random() * 360}deg`);
+        break;
+      case "nitros":
+        p.className = "nitro-pop";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = Math.random() * 100 + "vh";
+        break;
+      case "binding_scarves":
+        p.className = "eraser-scarf";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.bottom = "-20px";
+        p.style.setProperty("--rot", `${Math.random() * 60 - 30}deg`);
+        p.style.animationDuration = Math.random() * 2 + 4 + "s";
+        break;
+      case "ice_and_fire":
+        const isIce = Math.random() > 0.5;
+        p.className = isIce ? "ice-shard" : "fire-spark";
+        p.style.left = Math.random() * 100 + "vw";
+        if (isIce) {
+          p.style.top = "-20px";
+          p.style.animationDuration = Math.random() * 2 + 3 + "s";
+        } else {
+          p.style.bottom = "-20px";
+          p.style.animationDuration = Math.random() * 1 + 2 + "s";
+        }
+        break;
+
+      default:
+        return null;
+    }
+
+    return p;
+  }
+
+  function startAnimation(type) {
+    if (animationInterval) clearInterval(animationInterval);
+    overlay.innerHTML = "";
+    if (!type) return;
+
+    const fastTypes = ["teleport", "bolts", "slashes", "air_cracks", "glitch", "lightning"];
+    const intervalTime = fastTypes.includes(type) ? 80 : 800;
+
+    animationInterval = setInterval(() => {
+      const particle = createParticle(type);
+      if (particle) {
+        overlay.appendChild(particle);
+        setTimeout(() => particle.remove(), 8000);
       }
-      // MHA animations
-          else if (type === "ofa_sparks") {
-      p.className = "ofa-spark";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.top = Math.random() * 100 + "vh";
-    }
-    else if (type === "blue_fire") {
-      p.className = "blue-flame";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.bottom = "-20px";
-      p.style.animationDuration = (Math.random() * 2 + 3) + "s";
-    }
-    else if (type === "red_feathers") {
-      p.className = "red-feather";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.top = "-20px";
-      // Hawks' feathers are faster than Itachi's
-      p.style.animationDuration = (Math.random() * 2 + 3) + "s";
-    }
-    else if (type === "void_tendrils") {
-      p.className = "void-tendril";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.bottom = "-50px";
-      const randomRot = (Math.random() * 40) - 20; // Slight angle
-      p.style.setProperty('--rot', `${randomRot}deg`);
-      p.style.animationDuration = "4s";
-    }
-    else if (type === "ash_decay") {
-      p.className = "ash-flake";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.top = "-20px";
-      const size = Math.random() * 5 + 2 + "px";
-      p.style.width = size; p.style.height = size;
-      p.style.animationDuration = (Math.random() * 2 + 3) + "s";
-    }
-          else if (type === "hell_flame") {
-      p.className = "hell-flame";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.bottom = "-30px";
-      // Randomly make some flames more yellow or red
-      if (Math.random() > 0.5) p.style.background = "#F59E0B";
-      p.style.animationDuration = (Math.random() * 1 + 2) + "s";
-    }
-    else if (type === "poneglyphs") {
-      const symbols = ["𓀀", "𓀁", "𓀂", "𓀃", "𓀄", "𓀅"]; // Egyptian-style placeholders for Poneglyphs
-      p.className = "poneglyph";
-      p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.top = "-30px";
-      p.style.animationDuration = (Math.random() * 5 + 5) + "s";
-    }
-    else if (type === "full_cowl") {
-      p.className = "cowl-spark";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.top = Math.random() * 100 + "vh";
-      p.style.backgroundColor = Math.random() > 0.7 ? "#F43F5E" : "#10B981"; // Mix green and pink
-      p.style.setProperty('--rot', `${Math.random() * 360}deg`);
-    }
-    else if (type === "nitros") {
-      p.className = "nitro-pop";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.top = Math.random() * 100 + "vh";
-    }
-    else if (type === "binding_scarves") {
-      p.className = "eraser-scarf";
-      p.style.left = Math.random() * 100 + "vw";
-      p.style.bottom = "-20px";
-      p.style.setProperty('--rot', `${(Math.random() * 60) - 30}deg`);
-      p.style.animationDuration = (Math.random() * 2 + 4) + "s";
-    }
-    else if (type === "curving_bullets") {
-      p.className = "sniper-shot";
-      p.style.left = "-40px";
-      p.style.top = Math.random() * 100 + "vh";
-      p.style.animationDuration = "0.6s";
-    }
-    else if (type === "ice_and_fire") {
-      const isIce = Math.random() > 0.5;
-      p.className = isIce ? "ice-shard" : "fire-spark";
-      
-      p.style.left = Math.random() * 100 + "vw";
-      
-      if (isIce) {
-        p.style.top = "-20px"; // Ice falls from top
-        p.style.animationDuration = (Math.random() * 2 + 3) + "s";
-      } else {
-        p.style.bottom = "-20px"; // Fire rises from bottom
-        p.style.animationDuration = (Math.random() * 1 + 2) + "s";
-      }
-    }
-      overlay.appendChild(p);
-      setTimeout(() => p.remove(), 8000);
-    }, (type === "teleport" || type === "bolts" || type === "slashes" || type === "air_cracks" || type === "glitch" || type === "lightning") ? 80 : 800);
+    }, intervalTime);
   }
 
   document.addEventListener("themeChanged", () => {
-    const theme = localStorage.getItem("petal_theme");
-    const map = { 
-      cosmic_starfall: "meteors", autumn_forest: "leaves", spring_blossom: "blossoms", summer_shimmer: "sunbeams", midnight_snowfall: "snow", 
-      ninja_rivalry: "sparks", copy_ninja: "lightning", medical_kunoichi: "healing", legendary_sannin: "seals", desert_love: "love_sand", 
-      god_of_shinobi: "wood_style", tactical_suiton: "bubbles", ghost_uchiha: "tomoe", crow_illusion: "feathers", yellow_flash: "teleport", 
-      lavender_pearl: "pearls", gallant_tale: "sage_history", forbidden_lab: "snakes", slug_princess: "hundred_seals", nine_tails_malice: "malice", 
-      springtime_youth: "aura", eternal_amaterasu: "black_fire", kamui_dimension: "warps", six_paths_sage: "truth_orbs", shadow_possession: "shadows", 
-      mind_transfer: "mind_waves", butterfly_mode: "butterflies", hidan_ritual: "jashin", kakuzu_hearts: "threads", art_explosion: "explosive_birds", 
-      eternal_beauty: "puppet_strings", paper_angel: "paper", six_paths_pain: "gravity", original_hope: "rain", tobi_good_boy: "tobi_swirl", 
-      monster_mist: "sharks", stinky_aloe: "flytraps", ultimate_masterpiece: "c0_explosion", hokage_dream: "spirals", uchiha_avenger: "bolts",
-      infinite_void: "infinity", malevolent_shrine: "slashes", ten_shadows: "shikigami", cursed_manipulation: "cursed_orbs", death_painting: "blood_streaks",
-      divergent_fist: "impacts", blood_brother: "supernova", ratio_sorcerer: "clock_ticks", blue_spring: "summer_clouds", strongest_man: "air_cracks",
-      surgeon_death: "room_scan", sun_god: "drum_beats", silent_heart: "hearts", legendary_merchant: "fans", flower_archeologist: "arms",
-      retro_handheld: "pixels", classic_desktop: "cursors", farm_life: "crops", cozy_cafe: "steam", infinite_tsukuyomi: "dream_waves", 
-      infinite_zen: "divine_aura", celestial_sovereignty: "star_shards", progress_pride: "pride_rainbow",
-lesbian_sunset: "pride_sunset",
-gay_ocean: "pride_gay",
-bisexual_galaxy: "pride_bi",
-trans_serenity: "pride_trans", symbol_of_peace: "ofa_sparks",
-blue_cremation: "blue_fire", fierce_wings: "red_feathers", symbol_of_fear: "void_tendrils",
-decay_master: "ash_decay", hellflame_sovereign: "hell_flame", one_for_all: "full_cowl",
-explosion_murder: "nitros", eraser_head: "binding_scarves",
-silent_sniper: "curving_bullets", half_cold_half_hot: "ice_and_fire", icy_heir: "cold_flash",
-  steel_ink: "curving_bullets",
-  zenin_glint: "curving_bullets",
-  zenin_frame: "cold_flash",
-  heavenly_restriction: "curving_bullets",
-  cursed_worm: "cold_flash",
-  inverted_spear: "curving_bullets"
+    const themeKey = localStorage.getItem("petal_theme");
+    // Look up animation type directly from THEMES config object if present
+    const animType = (typeof THEMES !== "undefined" && THEMES[themeKey]?.animation)
+      ? THEMES[themeKey].animation
+      : null;
 
-
-
-    };
-    startAnimation(map[theme] || null);
+    startAnimation(animType);
   });
 })();
+
 
 /* ------------------- Stickers & Prompts Logic ------------------- */
   const promptsList = [
