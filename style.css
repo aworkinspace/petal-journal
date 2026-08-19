@@ -3175,3 +3175,8 @@ html[data-anim="zenin_icy_drift"] body {
     opacity: 0;
   }
 }
+.reduce-anim #animation-overlay,
+.reduce-anim * {
+  animation: none !important;
+  transition: none !important;
+}
