@@ -986,40 +986,48 @@ if (currentUser) {
 }
 if ($("tokenBalance")) $("tokenBalance").textContent = tokens;
          // --- JUTSU SFX SYNC (Fixed Save & Delete) ---
-  const saveSelect = document.getElementById("sfxSelect");
-  const deleteSelect = document.getElementById("deleteSfxSelect");
-  const ownedItems = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
+ // 1. Map each SFX ID to its actual audio file path
+const sfxAudioMap = {
+  "sfx_chidori": "assets/sfx/chidori.mp3",
+  "sfx_dattebayo": "assets/sfx/dattebayo.mp3",
+  "sfx_yowaimo": "assets/sfx/yowaimo.mp3",
+  "sfx_usuratonkachi": "assets/sfx/usuratonkachi.mp3",
+  "sfx_notazenin": "assets/sfx/notazenin.mp3",
+  "sfx_sukunalaugh": "assets/sfx/sukunalaugh.mp3",
+  "sfx_sasukesayingnaruto": "assets/sfx/naruto.mp3",
+  "sfx_narutosayingsasuke": "assets/sfx/sasuke.mp3",
+  "sfx_hashirama": "assets/sfx/hashirama.mp3",
+  "sfx_domain": "assets/sfx/domain.mp3",
+  "sfx_prominence": "assets/sfx/prominence.mp3",
+  // Default fallback sounds
+  "default_save": "assets/sfx/default_save.mp3",
+  "default_delete": "assets/sfx/default_delete.mp3",
+};
 
-  const sfxNames = {
-    "sfx_chidori": "Chidori ⚡",
-    "sfx_dattebayo": "Dattebayo! 🍥",
-    "sfx_yowaimo": "Yowaimo Six Eyes 👁️",
-    "sfx_usuratonkachi": "Usuratonkachi ✨",
-    "sfx_notazenin": "Not a Zenin, Huh? 🤍",
-    "sfx_sukunalaugh": "Sukuna's Laugh 👹",
-    "sfx_sasukesayingnaruto": "NARUTOOOOOO!",
-    "sfx_narutosayingsasuke": "SASUKEEEEE!",
-    "sfx_hashirama": "Tsuna?",
-    "sfx_domain": "Ryōiki Tenkai Muryōkūsho",
-    "sfx_prominence": "PLUS ULTRA PROMINENCE BURN!",
-  };
+// 2. Helper function to play sound by ID
+function playSFX(sfxId) {
+  if (!sfxId || sfxId === "default") return;
+  
+  const audioPath = sfxAudioMap[sfxId];
+  if (!audioPath) {
+    console.warn(`No audio file mapped for ID: ${sfxId}`);
+    return;
+  }
 
-  // Loop through both dropdowns to set them up
-  [saveSelect, deleteSelect].forEach(select => {
-    if (!select) return;
-    
-    // 1. Reset the list with the correct default
-    const isSave = select.id === "sfxSelect";
-    select.innerHTML = `<option value="default">Default ${isSave ? 'Save' : 'Delete'} Sound</option>`;
-    
-    // 2. Add only the sounds the user has bought
-    ownedItems.forEach(itemId => {
-      if (itemId.startsWith("sfx_")) {
-        const opt = document.createElement("option");
-        opt.value = itemId;
-        opt.textContent = sfxNames[itemId] || "Unknown Jutsu";
-        select.appendChild(opt);
-      }
+  const audio = new Audio(audioPath);
+  audio.play().catch(err => {
+    console.error("Audio playback failed (check path or browser permissions):", err);
+  });
+}
+
+// 3. Play sound when the user picks an item from the dropdown (Preview)
+[saveSelect, deleteSelect].forEach(select => {
+  if (!select) return;
+  select.addEventListener("change", (e) => {
+    playSFX(e.target.value);
+  });
+});
+
         // --- CURSOR SYNC ---
   const cursorSelect = document.getElementById("cursorSelect");
   if (cursorSelect) {
