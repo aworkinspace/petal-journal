@@ -9,13 +9,16 @@
     }
   }
 
-  // Helper function to check if animations are reduced
+  // Helper function to check if animations are enabled
   window.animationsEnabled = function () {
     return localStorage.getItem(PREF_KEY) !== "1";
   };
 
-  // Sync class on root element
-  document.documentElement.classList.toggle("reduce-anim", !window.animationsEnabled());
+  // Sync root element class
+  function syncRootClass() {
+    document.documentElement.classList.toggle("reduce-anim", !window.animationsEnabled());
+  }
+  syncRootClass();
 
   // 2. Set up Overlay Element
   let overlay = document.getElementById("animation-overlay");
@@ -28,25 +31,42 @@
   let animationInterval = null;
   let currentAnimationType = null;
 
-  // 3. Main Animation Control Function
-  function startAnimation(type) {
-    currentAnimationType = type;
-
-    // Clear existing interval and overlay
+  // Helper to completely stop active animations and clear overlay
+  function stopAnimation() {
     if (animationInterval) {
       clearInterval(animationInterval);
       animationInterval = null;
     }
-    overlay.innerHTML = "";
+    if (overlay) {
+      overlay.innerHTML = "";
+    }
+  }
+
+  // Helper to toggle animation preference dynamically
+  window.setAnimationsEnabled = function (enabled) {
+    localStorage.setItem(PREF_KEY, enabled ? "0" : "1");
+    syncRootClass();
+
+    if (!enabled) {
+      stopAnimation();
+    } else if (currentAnimationType) {
+      startAnimation(currentAnimationType);
+    }
+  };
+
+  // 3. Main Animation Control Function
+  function startAnimation(type) {
+    currentAnimationType = type;
+
+    // Clear existing interval and overlay elements
+    stopAnimation();
 
     // Stop if animations are disabled or type is empty
     if (!window.animationsEnabled() || !type) return;
 
     animationInterval = setInterval(() => {
       if (!window.animationsEnabled()) {
-        clearInterval(animationInterval);
-        animationInterval = null;
-        overlay.innerHTML = "";
+        stopAnimation();
         return;
       }
 
@@ -105,4 +125,55 @@
 
       // --- 3. JJK THEMES ---
       else if (type === "infinity") { p.className = "infinity-ring"; p.style.left = Math.random() * 100 + "vw"; p.style.top = Math.random() * 100 + "vh"; p.style.animationDuration = "4s"; }
-      else if (type === "slashes") { p.className = "sukuna-slash"; p.style.left = Math.random() * 80 + 10 + "vw"; p.style.top = Math.random() * 80 + 10 + "vh"; const rR = Math.random() * 360; p.style.setProperty('--rot', `${rR}
+      else if (type === "slashes") { p.className = "sukuna-slash"; p.style.left = Math.random() * 80 + 10 + "vw"; p.style.top = Math.random() * 80 + 10 + "vh"; const rR = Math.random() * 360; p.style.setProperty('--rot', `${rR}deg`); p.style.animationDuration = "0.2s"; }
+
+      // Append element and clean up after animation finishes
+      if (p.className) {
+        overlay.appendChild(p);
+        const duration = parseFloat(p.style.animationDuration || "3") * 1000;
+        setTimeout(() => p.remove(), duration);
+      }
+    }, 400);
+  }
+
+  // Expose function globally
+  window.startAnimation = startAnimation;
+
+  // 4. UI Toggle Binding (#toggleAnims)
+  function setupToggleUI() {
+    const toggleBtn = document.getElementById("toggleAnims");
+    if (!toggleBtn) return;
+
+    // Set initial checkbox state (checked if reduce-animations is ON)
+    toggleBtn.checked = !window.animationsEnabled();
+
+    // Listen to changes
+    toggleBtn.onchange = (e) => {
+      const reduce = e.target.checked;
+      window.setAnimationsEnabled(!reduce);
+    };
+  }
+
+  // Initialize toggle UI binding on load or DOM readiness
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupToggleUI);
+  } else {
+    setupToggleUI();
+  }
+
+  // Delegate event handling if #toggleAnims is rendered dynamically later
+  document.addEventListener("change", (e) => {
+    if (e.target && e.target.id === "toggleAnims") {
+      const reduce = e.target.checked;
+      window.setAnimationsEnabled(!reduce);
+    }
+  });
+
+  // 5. Theme Changed Listener
+  window.addEventListener("themeChanged", (e) => {
+    const animType = e.detail?.animation || e.detail?.themeAnim;
+    if (animType) {
+      startAnimation(animType);
+    }
+  });
+})();
