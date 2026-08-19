@@ -28,6 +28,7 @@ const shopItems = [
   { id: "sfx_hashirama", name: "SFX: Tsuna?", type: "sfx", price: 50, icon: "assets/hashirama_nendo.png" },
   { id: "sfx_notazenin", name: "SFX: Not A Zenin", type: "sfx", price: 50, icon: "assets/toji_nendo.png" },
   { id: "sfx_sukunalaugh", name: "SFX: Sukuna's Laugh", type: "sfx", price: 50, icon: "assets/sukuna_nendo.png" },
+  { id: "sfx_domain", name: "SFX: Ryoiki Tenkai", type: "sfx", price: 50, icon: "assets/gojo_eye_nendo.png" },
   { id: "cursor_kunai", name: "Kunai Pointer", type: "cursor", price: 25, icon: "assets/kunai_cursor.png" },
   { id: "cursor_scythe", name: "Hidan's Scythe", type: "cursor", price: 25, icon: "assets/scythe_cursor.png" },
   { id: "cursor_mangekyo", name: "Eternal Mangekyo", type: "cursor", price: 25, icon: "assets/mangekyo_cursor.png" },
