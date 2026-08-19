@@ -14,18 +14,23 @@
     return localStorage.getItem(PREF_KEY) !== "1";
   };
 
-  // Sync root element class
+  // Sync root element class for CSS suppression
   function syncRootClass() {
     document.documentElement.classList.toggle("reduce-anim", !window.animationsEnabled());
   }
   syncRootClass();
 
-  // 2. Set up Overlay Element
-  let overlay = document.getElementById("animation-overlay");
-  if (!overlay) {
-    overlay = document.createElement("div");
-    overlay.id = "animation-overlay";
-    document.body.prepend(overlay);
+  // 2. Safe Helper to Get or Create Overlay Element
+  let overlay = null;
+  function getOrCreateOverlay() {
+    if (overlay && document.body.contains(overlay)) return overlay;
+    overlay = document.getElementById("animation-overlay");
+    if (!overlay && document.body) {
+      overlay = document.createElement("div");
+      overlay.id = "animation-overlay";
+      document.body.prepend(overlay);
+    }
+    return overlay;
   }
 
   let animationInterval = null;
@@ -37,8 +42,9 @@
       clearInterval(animationInterval);
       animationInterval = null;
     }
-    if (overlay) {
-      overlay.innerHTML = "";
+    const container = getOrCreateOverlay();
+    if (container) {
+      container.innerHTML = "";
     }
   }
 
@@ -63,6 +69,9 @@
 
     // Stop if animations are disabled or type is empty
     if (!window.animationsEnabled() || !type) return;
+
+    const container = getOrCreateOverlay();
+    if (!container) return;
 
     animationInterval = setInterval(() => {
       if (!window.animationsEnabled()) {
@@ -129,39 +138,31 @@
 
       // Append element and clean up after animation finishes
       if (p.className) {
-        overlay.appendChild(p);
+        container.appendChild(p);
         const duration = parseFloat(p.style.animationDuration || "3") * 1000;
         setTimeout(() => p.remove(), duration);
       }
     }, 400);
   }
 
-  // Expose function globally
+  // Expose startAnimation globally
   window.startAnimation = startAnimation;
 
-  // 4. UI Toggle Binding (#toggleAnims)
-  function setupToggleUI() {
+  // 4. UI Toggle Synchronization (#toggleAnims)
+  function syncToggleUI() {
     const toggleBtn = document.getElementById("toggleAnims");
-    if (!toggleBtn) return;
-
-    // Set initial checkbox state (checked if reduce-animations is ON)
-    toggleBtn.checked = !window.animationsEnabled();
-
-    // Listen to changes
-    toggleBtn.onchange = (e) => {
-      const reduce = e.target.checked;
-      window.setAnimationsEnabled(!reduce);
-    };
+    if (toggleBtn) {
+      toggleBtn.checked = !window.animationsEnabled();
+    }
   }
 
-  // Initialize toggle UI binding on load or DOM readiness
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", setupToggleUI);
+    document.addEventListener("DOMContentLoaded", syncToggleUI);
   } else {
-    setupToggleUI();
+    syncToggleUI();
   }
 
-  // Delegate event handling if #toggleAnims is rendered dynamically later
+  // Delegated listener for dynamically rendered #toggleAnims elements
   document.addEventListener("change", (e) => {
     if (e.target && e.target.id === "toggleAnims") {
       const reduce = e.target.checked;
