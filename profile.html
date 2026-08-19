@@ -1006,7 +1006,7 @@ const sfxAudioMap = {
 
 // 2. Helper function to play sound by ID
 function playSFX(sfxId) {
-  if (!sfxId || sfxId === "default") return;
+  if (!sfxId) return;
   
   const audioPath = sfxAudioMap[sfxId];
   if (!audioPath) {
@@ -1016,15 +1016,26 @@ function playSFX(sfxId) {
 
   const audio = new Audio(audioPath);
   audio.play().catch(err => {
-    console.error("Audio playback failed (check path or browser permissions):", err);
+    console.warn("Audio playback prevented or failed:", err);
   });
 }
 
-// 3. Play sound when the user picks an item from the dropdown (Preview)
-[saveSelect, deleteSelect].forEach(select => {
-  if (!select) return;
+// 3. Attach event listeners safely
+const saveSelectEl = document.getElementById("sfxSelect");
+const deleteSelectEl = document.getElementById("deleteSfxSelect");
+
+[saveSelectEl, deleteSelectEl].forEach(select => {
+  if (!select) return; // Safely skip if element isn't on the current page
+
   select.addEventListener("change", (e) => {
-    playSFX(e.target.value);
+    let selectedValue = e.target.value;
+
+    // Handle default selection preview
+    if (selectedValue === "default") {
+      selectedValue = select.id === "sfxSelect" ? "default_save" : "default_delete";
+    }
+
+    playSFX(selectedValue);
   });
 });
 
