@@ -990,19 +990,19 @@ if ($("tokenBalance")) $("tokenBalance").textContent = tokens;
   const deleteSelect = document.getElementById("deleteSfxSelect");
   const ownedItems = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
 
-  const sfxFiles = {
-  "sfx_chidori": "/assets/chidori.mp3",
-  "sfx_dattebayo": "/assets/dattebayo.mp3",
-  "sfx_yowaimo": "/assets/yowaimo.mp3",
-  "sfx_usuratonkachi": "/assets/usuratonkachi.mp3",
-  "sfx_notazenin": "/assets/notazenin.mp3",
-  "sfx_sukunalaugh": "/assets/sukunalaugh.mp3",
-  "sfx_sasukesayingnaruto": "/assets/sasukesayingnaruto.mp3",
-  "sfx_narutosayingsasuke": "/assets/narutosayingsasuke.mp3",
-  "sfx_hashirama": "/assets/hashirama.mp3",
-  "sfx_domain": "/assets/domain.mp3",
-  "sfx_plus_ultra_pb": "/assets/prominence.mp3",
-};
+  const sfxNames = {
+    "sfx_chidori": "Chidori ⚡",
+    "sfx_dattebayo": "Dattebayo! 🍥",
+    "sfx_yowaimo": "Yowaimo Six Eyes 👁️",
+    "sfx_usuratonkachi": "Usuratonkachi ✨",
+    "sfx_notazenin": "Not a Zenin, Huh? 🤍",
+    "sfx_sukunalaugh": "Sukuna's Laugh 👹",
+    "sfx_sasukesayingnaruto": "NARUTOOOOOO!",
+    "sfx_narutosayingsasuke": "SASUKEEEEE!",
+    "sfx_hashirama": "Tsuna?",
+    "sfx_domain": "Ryōiki Tenkai Muryōkūsho",
+    "sfx_prominence": "PLUS ULTRA PROMINENCE BURN!",
+  };
 
   // Loop through both dropdowns to set them up
   [saveSelect, deleteSelect].forEach(select => {
