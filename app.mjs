@@ -52,7 +52,7 @@ const normalizeTheme = (theme = {}) => ({
   ...theme,
 });
 
-const RAW_THEMES = {
+const THEMES = {
   petal: {
     "--bg": "var(--rose-50)",
     "--surface": "var(--rose-50)",
@@ -428,14 +428,27 @@ const RAW_THEMES = {
       because defaults fill them in automatically.
   */
 };
+const THEME_DEFAULTS = {
+  "--bg": "#FFFFFF",
+  "--surface": "#FFFFFF",
+  "--surface-2": "#F3F4F6",
+  "--border": "rgba(0, 0, 0, 0.12)",
+  "--primary": "#A7ABDE",
+  "--primary-soft": "rgba(167, 171, 222, 0.25)",
+  "--accent": "#FFA5D6",
+  "--text": "#2B2B33",
+  "--text-muted": "rgba(43, 43, 51, 0.65)",
+  "--bg-spot-1": "transparent",
+  "--bg-spot-2": "transparent",
+};
 
-const THEMES = Object.fromEntries(
-  Object.entries(RAW_THEMES).map(([themeId, theme]) => [
-    themeId,
-    normalizeTheme(theme),
-  ])
-);
-
+// Fill missing theme values without changing the original THEMES structure.
+for (const [themeId, theme] of Object.entries(THEMES)) {
+  THEMES[themeId] = {
+    ...THEME_DEFAULTS,
+    ...theme,
+  };
+}
 window.allThemes = THEMES;
  
 /* ------------------- Helpers (Robust & Balanced) ------------------- */
