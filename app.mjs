@@ -454,94 +454,153 @@ window.allThemes = THEMES;
 /* ------------------- Helpers (Robust & Balanced) ------------------- */
 function applyVars(vars) {
   if (!vars) return;
+
   for (const [k, v] of Object.entries(vars)) {
+    if (!k.startsWith("--")) continue;
     document.documentElement.style.setProperty(k, v);
   }
 }
 
-async function applyTheme(themeName) {
-  // 1. XP Threshold Check (Locked Themes)
-  const lockedThemes = ["golden_petal", "six_paths_sage", "celestial_sovereignty", "infinite_zen", "omniscient_origin", "reanimated_legend", "threads_of_fate", "eternal_nirvana", "empty_throne", "honored_one", "reapers_moon", "the_origin" , "void_century", "pure_zen", "the_akashic_record", "true_transcendence"
-];
+function getTotalXP() {
+  const wb = Number(localStorage.getItem("petal_whiteboard_count")) || 0;
+  const vs = Number(localStorage.getItem("petal_vision_count")) || 0;
+  const cp = Number(localStorage.getItem("petal_capsule_count")) || 0;
+  const wl = Number(localStorage.getItem("petal_well_count")) || 0;
+  const dj = Number(localStorage.getItem("petal_dojo_xp")) || 0;
+  const sm = Number(localStorage.getItem("petal_summon_xp")) || 0;
 
-  if (lockedThemes.includes(themeName)) {
-    // Safety: use Number() and || 0 to prevent NaN breaking the math
-    const wb = Number(localStorage.getItem("petal_whiteboard_count")) || 0;
-    const vs = Number(localStorage.getItem("petal_vision_count")) || 0;
-    const cp = Number(localStorage.getItem("petal_capsule_count")) || 0;
-    const wl = Number(localStorage.getItem("petal_well_count")) || 0;
-    const dj = Number(localStorage.getItem("petal_dojo_xp")) || 0;
-    const sm = Number(localStorage.getItem("petal_summon_xp")) || 0;
-    
-    let entries = [];
-    try { 
-      entries = JSON.parse(localStorage.getItem("petal_entries_v1") || "[]"); 
-    } catch (e) { entries = []; }
+  let entries = [];
 
-    let totalXP = (entries.length * 50) + (wb * 20) + (vs * 30) + (cp * 100) + (wl * 30) + dj + sm;
-    entries.forEach(e => {
-       const words = (e.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
-       totalXP += words;
-    });
-
-    // Tier validation
-    if (themeName === "golden_petal" && totalXP < 800) { themeName = "petal"; toast("Level 5 Required"); }
-    else if (themeName === "six_paths_sage" && totalXP < 1800) { themeName = "petal"; toast("Level 10 Required"); }
-    else if (themeName === "celestial_sovereignty" && totalXP < 3000) { themeName = "petal"; toast("Level 15 Required"); }
-    else if (themeName === "infinite_zen" && totalXP < 4000) { themeName = "petal"; toast("Level 20 Required"); }
-    else if (themeName === "omniscient_origin" && totalXP < 5800) { themeName = "petal"; toast("Level 30 Required"); }
-    else if (themeName === "reanimated_legend" && totalXP < 7800) { themeName = "petal"; toast("Level 40 Required"); }
-    else if (themeName === "the_origin" && totalXP < 20000) { themeName = "petal"; toast("Level 100 Required"); }
+  try {
+    entries = JSON.parse(localStorage.getItem("petal_entries_v1") || "[]");
+  } catch (e) {
+    entries = [];
   }
 
-  // 2. Apply Colors
+  let totalXP =
+    entries.length * 50 +
+    wb * 20 +
+    vs * 30 +
+    cp * 100 +
+    wl * 30 +
+    dj +
+    sm;
+
+  entries.forEach(entry => {
+    const words = String(entry.content || "")
+      .replace(/<[^>]*>/g, " ")
+      .split(/\s+/)
+      .filter(Boolean).length;
+
+    totalXP += words;
+  });
+
+  return totalXP;
+}
+
+async function applyTheme(themeName) {
+  const lockedThemeRequirements = {
+    golden_petal: { xp: 800, label: "Level 5 Required" },
+    six_paths_sage: { xp: 1800, label: "Level 10 Required" },
+    celestial_sovereignty: { xp: 3000, label: "Level 15 Required" },
+    infinite_zen: { xp: 4000, label: "Level 20 Required" },
+    omniscient_origin: { xp: 5800, label: "Level 30 Required" },
+    reanimated_legend: { xp: 7800, label: "Level 40 Required" },
+    the_origin: { xp: 20000, label: "Level 100 Required" },
+
+    // Add or adjust these if they should be locked too:
+    threads_of_fate: { xp: 3000, label: "Level 15 Required" },
+    eternal_nirvana: { xp: 4000, label: "Level 20 Required" },
+    empty_throne: { xp: 5800, label: "Level 30 Required" },
+    honored_one: { xp: 7800, label: "Level 40 Required" },
+    reapers_moon: { xp: 7800, label: "Level 40 Required" },
+    void_century: { xp: 10000, label: "Level 50 Required" },
+    pure_zen: { xp: 10000, label: "Level 50 Required" },
+    the_akashic_record: { xp: 15000, label: "Level 75 Required" },
+    true_transcendence: { xp: 20000, label: "Level 100 Required" },
+  };
+
+  const requirement = lockedThemeRequirements[themeName];
+
+  if (requirement) {
+    const totalXP = getTotalXP();
+
+    if (totalXP < requirement.xp) {
+      themeName = "petal";
+      toast(requirement.label);
+    }
+  }
+
   const theme = THEMES[themeName] || THEMES.petal;
+
   applyVars(theme);
+
+  document.body.dataset.theme = themeName;
+  document.body.dataset.animation = theme.animation || "none";
+
   localStorage.setItem("petal_theme", themeName);
 
-  // 3. Trigger updates (Animations/Spotify)
-  document.dispatchEvent(new CustomEvent('themeChanged'));
-  
-  // 4. Update UI ranks/glows immediately
-  if (typeof checkUnlocks === "function") checkUnlocks();
+  document.dispatchEvent(new CustomEvent("themeChanged"));
+
+  if (typeof checkUnlocks === "function") {
+    checkUnlocks();
+  }
 }
 
 function applySkin(skinName) {
   const notebook = document.getElementById("notebook");
   if (!notebook) return;
-  
+
   notebook.classList.remove(
-    "skin-ruled", "skin-grid", "skin-dots", 
-    "skin-dark-ruled", "skin-dark-grid", "skin-dark-dots",
-    "skin-rainy-paper", "skin-glitch-paper", "skin-holo-paper",
-    "skin-hokage-scroll", "skin-prison-realm", "skin-toji-arsenal", "skin-eternal-bond"
+    "skin-ruled",
+    "skin-grid",
+    "skin-dots",
+    "skin-dark-ruled",
+    "skin-dark-grid",
+    "skin-dark-dots",
+    "skin-rainy-paper",
+    "skin-glitch-paper",
+    "skin-holo-paper",
+    "skin-hokage-scroll",
+    "skin-prison-realm",
+    "skin-toji-arsenal",
+    "skin-eternal-bond"
   );
 
-  const formattedName = String(skinName).replace("_", "-");
+  const formattedName = String(skinName || "ruled").replace(/_/g, "-");
+
   notebook.classList.add(`skin-${formattedName}`);
-  localStorage.setItem("petal_skin", skinName);
+  localStorage.setItem("petal_skin", skinName || "ruled");
 }
 
 function applyFilter(filterId) {
   let filterOverlay = document.getElementById("screen-filter-overlay");
+
   if (!filterOverlay) {
     filterOverlay = document.createElement("div");
     filterOverlay.id = "screen-filter-overlay";
     document.body.prepend(filterOverlay);
   }
-  
-  filterOverlay.className = (filterId === "none" || !filterId) ? "" : filterId.replace("_", "-");
+
+  filterOverlay.className =
+    filterId === "none" || !filterId
+      ? ""
+      : String(filterId).replace(/_/g, "-");
+
   localStorage.setItem("petal_equipped_filter", filterId || "none");
 }
 
 function toast(msg) {
   const t = document.getElementById("toast");
   if (!t) return;
-  t.textContent = msg; 
+
+  t.textContent = msg;
   t.classList.add("show");
-  clearTimeout(toast._id); 
+
+  clearTimeout(toast._id);
   toast._id = setTimeout(() => t.classList.remove("show"), 2200);
 }
+
 
 /* ------------------- Firebase Logic (With Title Sync) ------------------- */
 (() => {
