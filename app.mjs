@@ -32,26 +32,6 @@ function applyGlobalCursor(cursorId) {
 // Initial check on page load
 applyGlobalCursor(localStorage.getItem("petal_equipped_cursor"));
 /* ----------------------------- Theme Data ----------------------------- */
-const THEME_DEFAULTS = {
-  "--bg": "#FFFFFF",
-  "--surface": "#FFFFFF",
-  "--surface-2": "#F3F4F6",
-  "--border": "rgba(0, 0, 0, 0.12)",
-  "--primary": "#A7ABDE",
-  "--primary-soft": "rgba(167, 171, 222, 0.25)",
-  "--accent": "#FFA5D6",
-  "--text": "#2B2B33",
-  "--text-muted": "rgba(43, 43, 51, 0.65)",
-  "--bg-spot-1": "transparent",
-  "--bg-spot-2": "transparent",
-  animation: "none",
-};
-
-const normalizeTheme = (theme = {}) => ({
-  ...THEME_DEFAULTS,
-  ...theme,
-});
-
 const THEMES = {
   petal: {
     "--bg": "var(--rose-50)",
