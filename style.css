@@ -54,6 +54,96 @@ body{
   color:var(--text);
   background: inherit;
 }
+/* =========================================================
+   THREE.JS 3D BACKGROUND LAYER
+   Works with <canvas id="threePetalBg"></canvas>
+   ========================================================= */
+
+#threePetalBg {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  pointer-events: none;
+  z-index: -3;
+}
+
+/* Soft glow layer above the 3D canvas but behind the app */
+.page-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -2;
+  background:
+    radial-gradient(circle at 12% 15%, color-mix(in srgb, var(--accent) 30%, transparent), transparent 32%),
+    radial-gradient(circle at 88% 12%, color-mix(in srgb, var(--primary) 24%, transparent), transparent 34%),
+    radial-gradient(circle at 50% 100%, color-mix(in srgb, var(--primary-soft) 24%, transparent), transparent 38%);
+  filter: blur(4px);
+}
+
+/* Main app content layer */
+.app-wrap {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+/* Make sure page background lets the Three.js canvas show through */
+html {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    radial-gradient(1200px 600px at 10% 0%, color-mix(in srgb, var(--bg-spot-1) 78%, transparent), transparent 70%),
+    radial-gradient(900px 500px at 90% 10%, color-mix(in srgb, var(--bg-spot-2) 78%, transparent), transparent 70%),
+    var(--bg);
+}
+
+/* Glassy panels so the 3D background subtly shows through */
+.panel {
+  background: color-mix(in srgb, var(--surface) 74%, transparent 26%);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, white 30%);
+}
+
+/* Keep menus solid/readable over the 3D background */
+.menu-panel {
+  background: color-mix(in srgb, var(--surface) 94%, white 6%) !important;
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  z-index: 99999;
+}
+
+/* Keep toast above Three.js and above normal UI */
+.toast {
+  z-index: 100000;
+}
+
+/* Existing sparkle canvas stays above everything */
+#sparkles {
+  z-index: 9999;
+}
+
+/* Filters stay above all */
+#screen-filter-overlay {
+  z-index: 100001;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  #threePetalBg {
+    opacity: 0.35;
+  }
+
+  .page-glow {
+    filter: blur(2px);
+  }
+}
 
 header{
   max-width:1200px;
