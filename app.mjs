@@ -855,7 +855,8 @@ function applyVars(vars) {
 
 async function applyTheme(themeName) {
   // 1. XP Threshold Check (Locked Themes)
-  const lockedThemes = ["golden_petal", "six_paths_sage", "celestial_sovereignty", "infinite_zen", "omniscient_origin", "reanimated_legend", "threads_of_fate", "eternal_nirvana", "empty_throne", "honored_one", "reapers_moon", "the_origin"];
+  const lockedThemes = ["golden_petal", "six_paths_sage", "celestial_sovereignty", "infinite_zen", "omniscient_origin", "reanimated_legend", "threads_of_fate", "eternal_nirvana", "empty_throne", "honored_one", "reapers_moon", "the_origin" , "void_century", "pure_zen", "the_akashic_record", "true_transcendence"
+];
 
   if (lockedThemes.includes(themeName)) {
     // Safety: use Number() and || 0 to prevent NaN breaking the math
