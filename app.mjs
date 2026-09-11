@@ -1204,23 +1204,49 @@ function toast(msg) {
         el.textContent = owned.includes(skin.shopId) ? skin.name : "🔒 Shop Item";
       }
     });
-console.log("OWNED ITEMS:", owned);
-    // 6. FILTER UNLOCKS (MOVED INSIDE)
-    const filterSelect = $("filterSelect");
-    if (filterSelect) {
-      filterSelect.innerHTML = '<option value="none">None</option>';
-      const filterMap = { "filter_crt": "📟 CRT Filter", "filter_dust": "📜 Dust Filter", "filter_vignette": "🎬 Vignette" , "filter_sepia": "🤍 Nostalgic Sepia" , filter_chakra_glow: "🔵 Chakra Glow", filter_cursed_energy: "🟣 Cursed Energy" };
-      owned.forEach(id => {
-        if (id.startsWith("filter_")) {
-          const opt = document.createElement("option");
-          opt.value = id;
-          opt.textContent = filterMap[id] || "Atmosphere"
-          filterSelect.appendChild(opt);
-        }
-      });
-      filterSelect.value = localStorage.getItem("petal_equipped_filter") || "none";
-    }
+// 6. FILTER UNLOCKS
+const filterSelect = $("filterSelect");
+
+if (filterSelect) {
+  filterSelect.innerHTML = '<option value="none">None</option>';
+
+  const filterMap = {
+    filter_crt: "📟 CRT Filter",
+    filter_dust: "📜 Dust Filter",
+    filter_vignette: "🎬 Vignette",
+    filter_sepia: "🤍 Nostalgic Sepia",
+    filter_chakra_glow: "🔵 Chakra Glow",
+    filter_cursed_energy: "🟣 Cursed Energy"
+  };
+
+  console.log("Building filters from owned:", owned);
+
+  const ownedFilters = owned.filter(id => id.startsWith("filter_"));
+
+  console.log("Owned filters:", ownedFilters);
+
+  ownedFilters.forEach(id => {
+    const opt = document.createElement("option");
+    opt.value = id;
+    opt.textContent = filterMap[id] || id.replace(/_/g, " ");
+    filterSelect.appendChild(opt);
+  });
+
+  const savedFilter = localStorage.getItem("petal_equipped_filter") || "none";
+
+  if (savedFilter !== "none" && ownedFilters.includes(savedFilter)) {
+    filterSelect.value = savedFilter;
+    applyFilter(savedFilter);
+  } else {
+    filterSelect.value = "none";
+    applyFilter("none");
   }
+
+  filterSelect.onchange = () => {
+    applyFilter(filterSelect.value);
+  };
+}
+
 
   function renderList() {
     const list = $("entryList"); if (!list) return;
