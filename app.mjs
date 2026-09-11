@@ -1204,7 +1204,7 @@ function toast(msg) {
         el.textContent = owned.includes(skin.shopId) ? skin.name : "🔒 Shop Item";
       }
     });
-
+console.log("OWNED ITEMS:", owned);
     // 6. FILTER UNLOCKS (MOVED INSIDE)
     const filterSelect = $("filterSelect");
     if (filterSelect) {
