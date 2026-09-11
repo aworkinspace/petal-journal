@@ -1334,10 +1334,13 @@ function toast(msg) {
 
 /* ------------------- Seasonal Animations (The Master Spawner) ------------------- */
 (() => {
-  const overlay = document.createElement("div");
+  let overlay = document.getElementById("animation-overlay");
+
+if (!overlay) {
+  overlay = document.createElement("div");
   overlay.id = "animation-overlay";
   document.body.prepend(overlay);
-  let animationInterval = null;
+}
 
   function createParticle(type) {
     const p = document.createElement("div");
