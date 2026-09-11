@@ -1080,135 +1080,48 @@ function toast(msg) {
 })();
 
 
-/* ------------------- Journal (Balanced & Fully Fixed) ------------------- */
+/* ------------------- Journal / Entries / Unlocks ------------------- */
 (() => {
   const $ = (id) => document.getElementById(id);
+
   const STORAGE_KEY = "petal_entries_v1";
+  const OWNED_ITEMS_KEY = "petal_owned_items";
+  const FILTER_KEY = "petal_equipped_filter";
+
   let entries = [];
   let activeId = null;
   let activeTag = null;
 
-  function getZenLevel() {
-    const wb = Number(localStorage.getItem("petal_whiteboard_count")) || 0;
-    const vs = Number(localStorage.getItem("petal_vision_count")) || 0;
-    const cp = Number(localStorage.getItem("petal_capsule_count")) || 0;
-    const wl = Number(localStorage.getItem("petal_well_count")) || 0;
-    const dj = Number(localStorage.getItem("petal_dojo_xp")) || 0;
-    const sm = Number(localStorage.getItem("petal_summon_xp")) || 0;
-    let totalXP = (entries.length * 50) + (wb * 20) + (vs * 30) + (cp * 100) + (wl * 30) + dj + sm;
-    entries.forEach(e => totalXP += (e.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length);
-    return Math.floor(totalXP / 200) + 1;
-  }
+  const themeTiers = [
+    { lvl: 5, val: "golden_petal", name: "✨ Golden Petal" },
+    { lvl: 10, val: "six_paths_sage", name: "☀️ Six Paths Sage" },
+    { lvl: 15, val: "celestial_sovereignty", name: "🌌 Celestial" },
+    { lvl: 20, val: "infinite_zen", name: "💎 Infinite Zen" },
+    { lvl: 30, val: "omniscient_origin", name: "👁️ Omniscient Origin" },
+    { lvl: 40, val: "reanimated_legend", name: "📜 Reanimated Legend" },
+    { lvl: 50, val: "threads_of_fate", name: "🧶 Threads of Fate" },
+    { lvl: 60, val: "eternal_nirvana", name: "🧘‍♂️ Eternal Nirvana" },
+    { lvl: 70, val: "empty_throne", name: "👑 Empty Throne" },
+    { lvl: 80, val: "honored_one", name: "👁️ The Honored One" },
+    { lvl: 90, val: "reapers_moon", name: "🌙 Reaper's Moon" },
+    { lvl: 100, val: "the_origin", name: "💠 THE ORIGIN" },
 
-  function checkUnlocks() {
-    const lvl = getZenLevel();
-    const owned = JSON.parse(localStorage.getItem("petal_owned_items") || "[]");
-    console.log("Checking Unlocks for Level:", lvl);
+    // High-level themes
+    { lvl: 500, val: "void_century", name: "📜 Void Century" },
+    { lvl: 600, val: "pure_zen", name: "💎 Pure Zen" },
+    { lvl: 800, val: "the_akashic_record", name: "📚 The Akashic Record" },
+    { lvl: 1000, val: "true_transcendence", name: "💠 THE ZERO POINT" }
+  ];
 
-    // 1. THEME DROPDOWN UNLOCKS
-       const tiers = [
-      { lvl: 5, val: "golden_petal", name: "✨ Golden Petal" },
-      { lvl: 10, val: "six_paths_sage", name: "☀️ Six Paths Sage" },
-      { lvl: 15, val: "celestial_sovereignty", name: "🌌 Celestial" },
-      { lvl: 20, val: "infinite_zen", name: "💎 Infinite Zen" },
-      { lvl: 30, val: "omniscient_origin", name: "👁️ Omniscient Origin" },
-      { lvl: 40, val: "reanimated_legend", name: "📜 Reanimated Legend" },
-      { lvl: 50, val: "threads_of_fate", name: "🧶 Threads of Fate" },
-      { lvl: 60, val: "eternal_nirvana", name: "🧘‍♂️ Eternal Nirvana" },
-      { lvl: 70, val: "empty_throne", name: "👑 Empty Throne" },
-      { lvl: 80, val: "honored_one", name: "👁️ The Honored One" },
-      { lvl: 90, val: "reapers_moon", name: "🌙 Reaper's Moon" },
-      { lvl: 100, val: "the_origin", name: "💠 THE ORIGIN" },
-      // --- NEW HIGH LEVELS ---
-      { lvl: 500, val: "void_century", name: "📜 Void Century" },
-      { lvl: 600, val: "pure_zen", name: "💎 Pure Zen" },
-      { lvl: 800, val: "the_akashic_record", name: "📚 The Akashic Record" },
-      { lvl: 1000, val: "true_transcendence", name: "💠 THE ZERO POINT" }
-    ];
-
-
-    tiers.forEach(tier => {
-      const opt = document.querySelector(`option[value="${tier.val}"]`);
-      if (opt) {
-        opt.disabled = lvl < tier.lvl;
-        opt.textContent = lvl >= tier.lvl ? tier.name : `🔒 Level ${tier.lvl}`;
-      }
-    });
-
-    // 2. STICKERS (Level 5)
-    document.querySelectorAll(".level-5-reward").forEach(el => el.style.display = lvl >= 5 ? "inline-flex" : "none");
-
-        // 3. UI TRANSFORMATIONS (Rank-based visuals)
-    document.querySelectorAll(".panel").forEach(p => {
-      // 1. Clear ALL special rank classes first (including the new high-level ones)
-      p.classList.remove(
-        "kage-aura", "celestial-border", "hologram-panel", 
-        "liquid-border", "cracked-stone", "floating-panel", 
-        "king-shadow", "origin-ui", "ghost-ui", "singularity-ui"
-      );
-      
-      // 2. Apply the highest tier you have earned
-      if (lvl >= 1000) {
-        p.classList.add("singularity-ui");
-      } else if (lvl >= 500) {
-        p.classList.add("ghost-ui"); // This triggers for your Level 600 status!
-      } else if (lvl >= 100) {
-        p.classList.add("origin-ui");
-      } else if (lvl >= 70) {
-        p.classList.add("king-shadow");
-      } else if (lvl >= 60) {
-        p.classList.add("floating-panel");
-      } else if (lvl >= 40) {
-        p.classList.add("cracked-stone");
-      } else if (lvl >= 30) {
-        p.classList.add("liquid-border");
-      } else if (lvl >= 20) {
-        p.classList.add("hologram-panel");
-      } else if (lvl >= 15) {
-        p.classList.add("celestial-border");
-      } else if (lvl >= 10) {
-        p.classList.add("kage-aura");
-      }
-    });
-
-
-    // 4. RANK TEXT
-    let rank = "Genin";
-    if (lvl >= 5) rank = "Jonin";
-    if (lvl >= 10) rank = "Kage";
-    if (lvl >= 15) rank = "Celestial Sage";
-    if (lvl >= 20) rank = "Transcendent One";
-    if (lvl >= 30) rank = "Omniscient Sage 👁️";
-    if (lvl >= 100) rank = "The Architect";
-    if (lvl >= 500) rank = "Voice of the Void 🌌";
-    if (lvl >= 600) rank = "Eternal Record Keeper 📜";
-    if (lvl >= 800) rank = "Sage of Six Paths ☀️"; // The ultimate level
-    if (lvl >= 1000) rank = "💠 ZERO POINT 💠";
-    if ($("ninjaRank")) $("ninjaRank").textContent = `Rank: ${rank}`;
-
-    // 5. SHOP ITEM UNLOCKS (Skins)
-    const shopSkins = [
-      { id: "optHokage", shopId: "layout_hokage", name: "📜 Hokage Scroll" },
-      { id: "optBond", shopId: "layout_bond", name: "🍥 Eternal Bond" },
-      { id: "optPrison", shopId: "layout_prison", name: "👁️ Prison Realm" },
-      { id: "optRainy", shopId: "layout_rainy", name: "🌧️ Rainy Paper" },
-      { id: "optGlitch", shopId: "layout_matrix", name: "👾 Glitch Paper" },
-      { id: "optHolo", shopId: "layout_hologram", name: "💎 Holo Paper" },
-      { id: "optToji", shopId: "layout_toji", name: "⛓️ Toji Arsenal" }
-    ];
-
-    shopSkins.forEach(skin => {
-      const el = $(skin.id);
-      if (el) {
-        el.disabled = !owned.includes(skin.shopId);
-        el.textContent = owned.includes(skin.shopId) ? skin.name : "🔒 Shop Item";
-      }
-    });
-// 6. FILTER UNLOCKS
-const filterSelect = $("filterSelect");
-
-if (filterSelect) {
-  filterSelect.innerHTML = '<option value="none">None</option>';
+  const shopSkins = [
+    { id: "optHokage", shopId: "layout_hokage", name: "📜 Hokage Scroll" },
+    { id: "optBond", shopId: "layout_bond", name: "🍥 Eternal Bond" },
+    { id: "optPrison", shopId: "layout_prison", name: "👁️ Prison Realm" },
+    { id: "optRainy", shopId: "layout_rainy", name: "🌧️ Rainy Paper" },
+    { id: "optGlitch", shopId: "layout_matrix", name: "👾 Glitch Paper" },
+    { id: "optHolo", shopId: "layout_hologram", name: "💎 Holo Paper" },
+    { id: "optToji", shopId: "layout_toji", name: "⛓️ Toji Arsenal" }
+  ];
 
   const filterMap = {
     filter_crt: "📟 CRT Filter",
@@ -1219,122 +1132,569 @@ if (filterSelect) {
     filter_cursed_energy: "🟣 Cursed Energy"
   };
 
-  Object.entries(filterMap).forEach(([id, label]) => {
-    const opt = document.createElement("option");
-    opt.value = id;
+  const rankClasses = [
+    "kage-aura",
+    "celestial-border",
+    "hologram-panel",
+    "liquid-border",
+    "cracked-stone",
+    "floating-panel",
+    "king-shadow",
+    "origin-ui",
+    "ghost-ui",
+    "singularity-ui"
+  ];
 
-    if (!owned.includes(id)) {
-      opt.textContent = `${label} 🔒`;
-      opt.disabled = true;
-    } else {
-      opt.textContent = label;
+  function getOwnedItems() {
+    try {
+      return JSON.parse(localStorage.getItem(OWNED_ITEMS_KEY) || "[]");
+    } catch {
+      return [];
+    }
+  }
+
+  function getWordCount(html = "") {
+    return html
+      .replace(/<[^>]*>/g, " ")
+      .split(/\s+/)
+      .filter(Boolean).length;
+  }
+
+  function getZenLevel() {
+    const wb = Number(localStorage.getItem("petal_whiteboard_count")) || 0;
+    const vs = Number(localStorage.getItem("petal_vision_count")) || 0;
+    const cp = Number(localStorage.getItem("petal_capsule_count")) || 0;
+    const wl = Number(localStorage.getItem("petal_well_count")) || 0;
+    const dj = Number(localStorage.getItem("petal_dojo_xp")) || 0;
+    const sm = Number(localStorage.getItem("petal_summon_xp")) || 0;
+
+    let totalXP =
+      entries.length * 50 +
+      wb * 20 +
+      vs * 30 +
+      cp * 100 +
+      wl * 30 +
+      dj +
+      sm;
+
+    entries.forEach((entry) => {
+      totalXP += getWordCount(entry.content || "");
+    });
+
+    return Math.floor(totalXP / 200) + 1;
+  }
+
+  function applyFilter(filterId) {
+    document.body.classList.forEach((cls) => {
+      if (cls.startsWith("filter-")) {
+        document.body.classList.remove(cls);
+      }
+    });
+
+    if (!filterId || filterId === "none") {
+      localStorage.setItem(FILTER_KEY, "none");
+      return;
     }
 
-    filterSelect.appendChild(opt);
-  });
+    const safeFilterClass = filterId.replace(/_/g, "-");
 
-  const savedFilter = localStorage.getItem("petal_equipped_filter") || "none";
-
-  if (savedFilter !== "none" && owned.includes(savedFilter)) {
-    filterSelect.value = savedFilter;
-    applyFilter(savedFilter);
-  } else {
-    filterSelect.value = "none";
-    applyFilter("none");
+    document.body.classList.add(`filter-${safeFilterClass}`);
+    localStorage.setItem(FILTER_KEY, filterId);
   }
 
-  filterSelect.onchange = () => {
-    applyFilter(filterSelect.value);
-  };
-}
+  function updateThemeUnlocks(lvl) {
+    themeTiers.forEach((tier) => {
+      const opt = document.querySelector(`option[value="${tier.val}"]`);
+      if (!opt) return;
 
-// This closes checkUnlocks()
-}
+      opt.disabled = lvl < tier.lvl;
+      opt.textContent = lvl >= tier.lvl ? tier.name : `🔒 Level ${tier.lvl}`;
+    });
+  }
 
-function renderList() {
-  const list = $("entryList");
-  if (!list) return;
+  function updateLevelRewards(lvl) {
+    document.querySelectorAll(".level-5-reward").forEach((el) => {
+      el.style.display = lvl >= 5 ? "inline-flex" : "none";
+    });
+  }
 
-  const q = ($("search")?.value || "").toLowerCase();
+  function updatePanelRankClasses(lvl) {
+    document.querySelectorAll(".panel").forEach((panel) => {
+      panel.classList.remove(...rankClasses);
 
-  const filtered = entries.filter(e => {
-    const matchTag = activeTag ? (e.tags || []).includes(activeTag) : true;
-    const matchSearch = ((e.title || "") + (e.content || "")).toLowerCase().includes(q);
-    return matchTag && matchSearch;
-  }).sort((a, b) => b.updatedAt - a.updatedAt);
+      if (lvl >= 1000) {
+        panel.classList.add("singularity-ui");
+      } else if (lvl >= 500) {
+        panel.classList.add("ghost-ui");
+      } else if (lvl >= 100) {
+        panel.classList.add("origin-ui");
+      } else if (lvl >= 70) {
+        panel.classList.add("king-shadow");
+      } else if (lvl >= 60) {
+        panel.classList.add("floating-panel");
+      } else if (lvl >= 40) {
+        panel.classList.add("cracked-stone");
+      } else if (lvl >= 30) {
+        panel.classList.add("liquid-border");
+      } else if (lvl >= 20) {
+        panel.classList.add("hologram-panel");
+      } else if (lvl >= 15) {
+        panel.classList.add("celestial-border");
+      } else if (lvl >= 10) {
+        panel.classList.add("kage-aura");
+      }
+    });
+  }
 
-  list.innerHTML = filtered.map(e => `
-    <div class="entry-card" data-id="${e.id}">
-      <h4>${e.title || "(Untitled)"}</h4>
-      <p>${e.date} • ${e.mood}</p>
-    </div>
-  `).join("");
+  function updateRankText(lvl) {
+    let rank = "Genin";
 
-  list.querySelectorAll(".entry-card").forEach(card => {
-    card.onclick = () => {
-      const e = entries.find(ent => ent.id === card.dataset.id);
-      activeId = e.id;
+    if (lvl >= 5) rank = "Jonin";
+    if (lvl >= 10) rank = "Kage";
+    if (lvl >= 15) rank = "Celestial Sage";
+    if (lvl >= 20) rank = "Transcendent One";
+    if (lvl >= 30) rank = "Omniscient Sage 👁️";
+    if (lvl >= 100) rank = "The Architect";
+    if (lvl >= 500) rank = "Voice of the Void 🌌";
+    if (lvl >= 600) rank = "Eternal Record Keeper 📜";
+    if (lvl >= 800) rank = "Sage of Six Paths ☀️";
+    if (lvl >= 1000) rank = "💠 ZERO POINT 💠";
 
-      if ($("date")) $("date").value = e.date;
-      if ($("mood")) $("mood").value = e.mood;
-      if ($("title")) $("title").value = e.title;
-      if ($("tagsInput")) $("tagsInput").value = (e.tags || []).join(", ");
-      if ($("content")) $("content").innerHTML = e.content;
+    const rankEl = $("ninjaRank");
+    if (rankEl) {
+      rankEl.textContent = `Rank: ${rank}`;
+    }
+  }
+
+  function updateShopSkinUnlocks(owned) {
+    shopSkins.forEach((skin) => {
+      const el = $(skin.id);
+      if (!el) return;
+
+      const isOwned = owned.includes(skin.shopId);
+
+      el.disabled = !isOwned;
+      el.textContent = isOwned ? skin.name : "🔒 Shop Item";
+    });
+  }
+
+  function updateFilterUnlocks(owned) {
+    const filterSelect = $("filterSelect");
+    if (!filterSelect) return;
+
+    filterSelect.innerHTML = `<option value="none">None</option>`;
+
+    Object.entries(filterMap).forEach(([id, label]) => {
+      const opt = document.createElement("option");
+      const isOwned = owned.includes(id);
+
+      opt.value = id;
+      opt.disabled = !isOwned;
+      opt.textContent = isOwned ? label : `${label} 🔒`;
+
+      filterSelect.appendChild(opt);
+    });
+
+    const savedFilter = localStorage.getItem(FILTER_KEY) || "none";
+
+    if (savedFilter !== "none" && owned.includes(savedFilter)) {
+      filterSelect.value = savedFilter;
+      applyFilter(savedFilter);
+    } else {
+      filterSelect.value = "none";
+      applyFilter("none");
+    }
+
+    filterSelect.onchange = () => {
+      applyFilter(filterSelect.value);
     };
-  });
+  }
 
-  if ($("count")) $("count").textContent = filtered.length;
-}
+  function checkUnlocks() {
+    const lvl = getZenLevel();
+    const owned = getOwnedItems();
+
+    console.log("Checking Unlocks for Level:", lvl);
+
+    updateThemeUnlocks(lvl);
+    updateLevelRewards(lvl);
+    updatePanelRankClasses(lvl);
+    updateRankText(lvl);
+    updateShopSkinUnlocks(owned);
+    updateFilterUnlocks(owned);
+  }
+
+  function renderList() {
+    const list = $("entryList");
+    if (!list) return;
+
+    const q = ($("search")?.value || "").toLowerCase();
+
+    const filtered = entries
+      .filter((entry) => {
+        const matchTag = activeTag ? (entry.tags || []).includes(activeTag) : true;
+
+        const searchableText = `${entry.title || ""} ${entry.content || ""}`.toLowerCase();
+        const matchSearch = searchableText.includes(q);
+
+        return matchTag && matchSearch;
+      })
+      .sort((a, b) => b.updatedAt - a.updatedAt);
+
+    list.innerHTML = filtered
+      .map(
+        (entry) => `
+          <div class="entry-card" data-id="${entry.id}">
+            <h4>${entry.title || "(Untitled)"}</h4>
+            <p>${entry.date} • ${entry.mood}</p>
+          </div>
+        `
+      )
+      .join("");
+
+    list.querySelectorAll(".entry-card").forEach((card) => {
+      card.onclick = () => {
+        const entry = entries.find((ent) => ent.id === card.dataset.id);
+        if (!entry) return;
+
+        activeId = entry.id;
+
+        if ($("date")) $("date").value = entry.date || "";
+        if ($("mood")) $("mood").value = entry.mood || "";
+        if ($("title")) $("title").value = entry.title || "";
+        if ($("tagsInput")) $("tagsInput").value = (entry.tags || []).join(", ");
+        if ($("content")) $("content").innerHTML = entry.content || "";
+      };
+    });
+
+    const countEl = $("count");
+    if (countEl) {
+      countEl.textContent = filtered.length;
+    }
+  }
 
   function renderTagChips() {
-    const row = $("tagRow"); if (!row) return;
+    const row = $("tagRow");
+    if (!row) return;
+
     const tags = new Set(["gratitude", "work", "health", "family"]);
-    entries.forEach(e => e.tags && e.tags.forEach(t => tags.add(t.toLowerCase())));
-    row.innerHTML = [...tags].sort().map(t => `<button class="chip tag ${activeTag === t ? 'active' : ''}" data-tag="${t}">${t}</button>`).join('');
-    row.querySelectorAll('.chip.tag').forEach(btn => btn.onclick = () => { activeTag = activeTag === btn.dataset.tag ? null : btn.dataset.tag; renderTagChips(); renderList(); });
+
+    entries.forEach((entry) => {
+      if (!entry.tags) return;
+
+      entry.tags.forEach((tag) => {
+        tags.add(tag.toLowerCase());
+      });
+    });
+
+    row.innerHTML = [...tags]
+      .sort()
+      .map(
+        (tag) => `
+          <button class="chip tag ${activeTag === tag ? "active" : ""}" data-tag="${tag}">
+            ${tag}
+          </button>
+        `
+      )
+      .join("");
+
+    row.querySelectorAll(".chip.tag").forEach((btn) => {
+      btn.onclick = () => {
+        activeTag = activeTag === btn.dataset.tag ? null : btn.dataset.tag;
+
+        renderTagChips();
+        renderList();
+      };
+    });
   }
 
-  $("btnSave")?.addEventListener('click', async () => {
-    const html = $("content").innerHTML;
-    const data = { id: activeId || Date.now().toString(), date: $("date").value, mood: $("mood").value, title: $("title").value, content: html, tags: $("tagsInput").value.split(',').map(t => t.trim().toLowerCase()).filter(Boolean), updatedAt: Date.now() };
-    const wordCount = (data.content || "").replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
-    let tokens = (Number(localStorage.getItem("petal_tokens")) || 0) + 5 + Math.floor(wordCount / 50);
+  async function saveEntry() {
+    const contentEl = $("content");
+    const dateEl = $("date");
+    const moodEl = $("mood");
+    const titleEl = $("title");
+    const tagsInputEl = $("tagsInput");
+
+    if (!contentEl || !dateEl || !moodEl || !titleEl || !tagsInputEl) return;
+
+    const html = contentEl.innerHTML;
+
+    const data = {
+      id: activeId || Date.now().toString(),
+      date: dateEl.value,
+      mood: moodEl.value,
+      title: titleEl.value,
+      content: html,
+      tags: tagsInputEl.value
+        .split(",")
+        .map((tag) => tag.trim().toLowerCase())
+        .filter(Boolean),
+      updatedAt: Date.now()
+    };
+
+    const wordCount = getWordCount(data.content);
+
+    const tokens =
+      (Number(localStorage.getItem("petal_tokens")) || 0) +
+      5 +
+      Math.floor(wordCount / 50);
+
     localStorage.setItem("petal_tokens", tokens);
-    
-    if (!activeId) entries.push(data); else entries = entries.map(e => e.id === activeId ? data : e);
+
+    if (!activeId) {
+      entries.push(data);
+    } else {
+      entries = entries.map((entry) => (entry.id === activeId ? data : entry));
+    }
+
+    activeId = data.id;
+
     localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
 
     if (window.firebaseAuth?.currentUser) {
       try {
-        await setDoc(doc(window.firebaseDb, "entries", data.id), { ...data, userId: window.firebaseAuth.currentUser.uid }, { merge: true });
-        await setDoc(doc(window.firebaseDb, "users", window.firebaseAuth.currentUser.uid, "stats", "zen"), { whiteboard: Number(localStorage.getItem("petal_whiteboard_count")) || 0, well: Number(localStorage.getItem("petal_well_count")) || 0, tokens: tokens, updatedAt: Date.now() }, { merge: true });
-      } catch (err) { console.error(err); }
+        await setDoc(
+          doc(window.firebaseDb, "entries", data.id),
+          {
+            ...data,
+            userId: window.firebaseAuth.currentUser.uid
+          },
+          { merge: true }
+        );
+
+        await setDoc(
+          doc(window.firebaseDb, "users", window.firebaseAuth.currentUser.uid, "stats", "zen"),
+          {
+            whiteboard: Number(localStorage.getItem("petal_whiteboard_count")) || 0,
+            well: Number(localStorage.getItem("petal_well_count")) || 0,
+            tokens,
+            updatedAt: Date.now()
+          },
+          { merge: true }
+        );
+      } catch (err) {
+        console.error("Firebase sync failed:", err);
+      }
     }
-    renderList(); renderTagChips(); checkUnlocks(); toast("Saved & Synced! ✨🪙");
-    
-    // Dynamic Save Sound
-    const equipped = localStorage.getItem("petal_equipped_sfx") || "default";
-    let audio = (equipped === "default") ? $("saveSfx") : new Audio(`assets/${equipped.replace("sfx_", "")}.mp3`);
-    if (audio) { audio.currentTime = 0; audio.play().catch(()=>{}); }
-  });
 
-  $("btnDelete")?.addEventListener('click', () => {
+    renderList();
+    renderTagChips();
+    checkUnlocks();
+
+    toast("Saved & Synced! ✨🪙");
+
+    playSaveSound();
+  }
+
+  function deleteEntry() {
     if (!activeId || !confirm("Delete?")) return;
-    entries = entries.filter(e => e.id !== activeId);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); 
-    renderList(); renderTagChips(); checkUnlocks();
-    activeId = null; if($("title")) $("title").value = ""; if($("content")) $("content").innerHTML = ""; toast("Deleted.");
-    
-    // Dynamic Delete Sound
-    const equipped = localStorage.getItem("petal_equipped_delete_sfx") || "default";
-    let audio = (equipped === "default") ? $("deleteSfx") : new Audio(`assets/${equipped.replace("sfx_", "")}.mp3`);
-    if (audio) { audio.currentTime = 0; audio.play().catch(()=>{}); }
-  });
 
-  document.addEventListener("DOMContentLoaded", () => {
-    try { entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); } catch { entries = []; }
-    renderList(); renderTagChips(); checkUnlocks();
-    $("search")?.addEventListener('input', renderList);
+    entries = entries.filter((entry) => entry.id !== activeId);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+
+    activeId = null;
+
+    if ($("title")) $("title").value = "";
+    if ($("content")) $("content").innerHTML = "";
+
+    renderList();
+    renderTagChips();
+    checkUnlocks();
+
+    toast("Deleted.");
+
+    playDeleteSound();
+  }
+
+  function playSaveSound() {
+    const equipped = localStorage.getItem("petal_equipped_sfx") || "default";
+
+    const audio =
+      equipped === "default"
+        ? $("saveSfx")
+        : new Audio(`assets/${equipped.replace("sfx_", "")}.mp3`);
+
+    if (!audio) return;
+
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+  }
+
+  function playDeleteSound() {
+    const equipped = localStorage.getItem("petal_equipped_delete_sfx") || "default";
+
+    const audio =
+      equipped === "default"
+        ? $("deleteSfx")
+        : new Audio(`assets/${equipped.replace("sfx_", "")}.mp3`);
+
+    if (!audio) return;
+
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+  }
+
+  function initEntries() {
+    try {
+      entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    } catch {
+      entries = [];
+    }
+
+    renderList();
+    renderTagChips();
+    checkUnlocks();
+
+    $("search")?.addEventListener("input", renderList);
+    $("btnSave")?.addEventListener("click", saveEntry);
+    $("btnDelete")?.addEventListener("click", deleteEntry);
+  }
+
+  document.addEventListener("DOMContentLoaded", initEntries);
+})();
+
+/* ------------------- Music & Spotify ------------------- */
+(() => {
+  const $ = (id) => document.getElementById(id);
+
+  const tracks = [
+    "assets/lofi.mp3",
+    "assets/elevator.mp3",
+    "assets/monty.mp3",
+    "assets/intro.mp3"
+  ];
+
+  const darkThemes = new Set([
+    "midnight",
+    "cosmic_starfall",
+    "dusky_rose",
+    "mauve_night",
+    "deep_sage",
+    "blueberry_dusk",
+    "cocoa_lilac",
+    "midnight_snowfall",
+    "ninja_rivalry",
+    "copy_ninja",
+    "ghost_uchiha",
+    "akatsuki_cloud",
+    "hidden_rain",
+    "legendary_sannin",
+    "springtime_youth",
+    "forbidden_lab",
+    "kamui_dimension",
+    "tactical_suiton",
+    "shadow_possession",
+    "butterfly_mode",
+    "hidan_ritual",
+    "kakuzu_hearts",
+    "eternal_beauty",
+    "monster_mist",
+    "stinky_aloe",
+    "uchiha_avenger",
+    "eternal_amaterasu",
+    "six_paths_pain",
+    "ten_shadows",
+    "cursed_manipulation",
+    "death_painting",
+    "blood_brother",
+    "infinite_tsukuyomi"
+  ]);
+
+  let trackIdx = Number(localStorage.getItem("petal_track_index") || "0") % tracks.length;
+
+  function getSpotifyTheme() {
+    const currentTheme = localStorage.getItem("petal_theme");
+    return darkThemes.has(currentTheme) ? "dark" : "light";
+  }
+
+  function renderSpotify(base) {
+    const host = $("spotifyEmbed");
+    if (!host || !base) return;
+
+    const theme = getSpotifyTheme();
+
+    host.innerHTML = `
+      <iframe
+        class="spotify-iframe"
+        style="width:100%; height:352px; border:0; border-radius:16px;"
+        src="${base}?theme=${theme}"
+        loading="lazy">
+      </iframe>
+    `;
+  }
+
+  function getSpotifyEmbedBase(url) {
+    const match = url.match(/(?:playlist|album|track|show|episode)\/([a-zA-Z0-9]+)/);
+    if (!match) return null;
+
+    let type = "playlist";
+
+    if (url.includes("album/")) type = "album";
+    if (url.includes("track/")) type = "track";
+    if (url.includes("show/")) type = "show";
+    if (url.includes("episode/")) type = "episode";
+
+    return `https://open.spotify.com/embed/${type}/${match[1]}`;
+  }
+
+  function initMusic() {
+    const bgm = $("bgm");
+    if (!bgm) return;
+
+    bgm.volume = Number(localStorage.getItem("petal_music_vol") || 0.35);
+    bgm.src = tracks[trackIdx];
+
+    $("btnMusic")?.addEventListener("click", () => {
+      if (bgm.paused) {
+        bgm.play().catch(() => {});
+      } else {
+        bgm.pause();
+      }
+
+      const btnMusic = $("btnMusic");
+      if (btnMusic) {
+        btnMusic.textContent = bgm.paused ? "Play Music" : "Pause Music";
+      }
+    });
+
+    $("btnNextTrack")?.addEventListener("click", () => {
+      trackIdx = (trackIdx + 1) % tracks.length;
+
+      bgm.src = tracks[trackIdx];
+      bgm.play().catch(() => {});
+
+      localStorage.setItem("petal_track_index", trackIdx);
+    });
+
+    const savedSpotify = localStorage.getItem("petal_spotify_embed");
+    if (savedSpotify) {
+      renderSpotify(savedSpotify);
+    }
+
+    $("btnSetSpotify")?.addEventListener("click", () => {
+      const spotifyUrl = $("spotifyUrl")?.value || "";
+      const base = getSpotifyEmbedBase(spotifyUrl);
+
+      if (!base) return;
+
+      localStorage.setItem("petal_spotify_embed", base);
+      renderSpotify(base);
+    });
+
+    $("btnClearSpotify")?.addEventListener("click", () => {
+      localStorage.removeItem("petal_spotify_embed");
+
+      const embed = $("spotifyEmbed");
+      if (embed) {
+        embed.innerHTML = "";
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", initMusic);
+
+  document.addEventListener("themeChanged", () => {
+    renderSpotify(localStorage.getItem("petal_spotify_embed"));
   });
 })();
 
