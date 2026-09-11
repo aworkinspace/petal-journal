@@ -3374,3 +3374,34 @@ body {
     transition: none;
   }
 }
+.cold-flake {
+  position: absolute;
+  width: 5px;
+  height: 16px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to bottom,
+    rgba(226, 232, 240, 0),
+    rgba(226, 232, 240, 0.9),
+    rgba(148, 163, 184, 0)
+  );
+  filter: blur(0.4px);
+  pointer-events: none;
+  animation: coldFlashFall linear forwards;
+}
+
+@keyframes coldFlashFall {
+  0% {
+    transform: translate3d(0, -20px, 0) rotate(0deg);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translate3d(var(--drift, 0px), 120vh, 0) rotate(25deg);
+    opacity: 0;
+  }
+}
