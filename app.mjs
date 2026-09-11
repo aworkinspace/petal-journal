@@ -1248,26 +1248,43 @@ if (filterSelect) {
   };
 }
 
-  function renderList() {
-    const list = $("entryList"); if (!list) return;
-    const q = ($("search")?.value || "").toLowerCase();
-    const filtered = entries.filter(e => {
-        const matchTag = activeTag ? (e.tags || []).includes(activeTag) : true;
-        const matchSearch = ((e.title||"") + (e.content||"")).toLowerCase().includes(q);
-        return matchTag && matchSearch;
-    }).sort((a,b) => b.updatedAt - a.updatedAt);
-    list.innerHTML = filtered.map(e => `<div class="entry-card" data-id="${e.id}"><h4>${e.title || '(Untitled)'}</h4><p>${e.date} • ${e.mood}</p></div>`).join('');
-    list.querySelectorAll('.entry-card').forEach(card => card.onclick = () => {
-        const e = entries.find(ent => ent.id === card.dataset.id);
-        activeId = e.id; 
-        if($("date")) $("date").value = e.date; 
-        if($("mood")) $("mood").value = e.mood; 
-        if($("title")) $("title").value = e.title; 
-        if($("tagsInput")) $("tagsInput").value = (e.tags || []).join(', '); 
-        if($("content")) $("content").innerHTML = e.content;
-    });
-    if ($("count")) $("count").textContent = filtered.length;
-  }
+// This closes checkUnlocks()
+}
+
+function renderList() {
+  const list = $("entryList");
+  if (!list) return;
+
+  const q = ($("search")?.value || "").toLowerCase();
+
+  const filtered = entries.filter(e => {
+    const matchTag = activeTag ? (e.tags || []).includes(activeTag) : true;
+    const matchSearch = ((e.title || "") + (e.content || "")).toLowerCase().includes(q);
+    return matchTag && matchSearch;
+  }).sort((a, b) => b.updatedAt - a.updatedAt);
+
+  list.innerHTML = filtered.map(e => `
+    <div class="entry-card" data-id="${e.id}">
+      <h4>${e.title || "(Untitled)"}</h4>
+      <p>${e.date} • ${e.mood}</p>
+    </div>
+  `).join("");
+
+  list.querySelectorAll(".entry-card").forEach(card => {
+    card.onclick = () => {
+      const e = entries.find(ent => ent.id === card.dataset.id);
+      activeId = e.id;
+
+      if ($("date")) $("date").value = e.date;
+      if ($("mood")) $("mood").value = e.mood;
+      if ($("title")) $("title").value = e.title;
+      if ($("tagsInput")) $("tagsInput").value = (e.tags || []).join(", ");
+      if ($("content")) $("content").innerHTML = e.content;
+    };
+  });
+
+  if ($("count")) $("count").textContent = filtered.length;
+}
 
   function renderTagChips() {
     const row = $("tagRow"); if (!row) return;
