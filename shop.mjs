@@ -77,6 +77,47 @@ const shopItems = [
   { id: "filter_dust", name: "Warm Library Dust", type: "filter", price: 400, icon: "assets/dust_icon.png" },
   { id: "filter_vignette", name: "Cinematic Focus", type: "filter", price: 400, icon: "assets/vignette_icon.png" },
   { id: "filter_sepia", name: "Nostalgic Sepia", type: "filter", price: 300, icon: "assets/sepia_icon.png" },
+    // Profile Frames
+  { id: "frame_sakura", name: "Sakura Frame", type: "frame", price: 250, icon: "assets/frame_sakura.png", rarity: "rare", description: "A soft pink profile frame with falling petal energy." },
+  { id: "frame_infinity", name: "Infinity Frame", type: "frame", price: 500, icon: "assets/frame_infinity.png", rarity: "legendary", description: "A blue limitless aura for your profile picture." },
+  { id: "frame_curse", name: "Cursed Energy Frame", type: "frame", price: 400, icon: "assets/frame_curse.png", rarity: "epic", description: "A dark purple cursed-energy profile frame." },
+
+  // Badges
+  { id: "badge_leaf", name: "Hidden Leaf Badge", type: "badge", price: 150, icon: "assets/badge_leaf.png", rarity: "common", description: "Display a small Hidden Leaf badge on your profile." },
+  { id: "badge_uchiha", name: "Uchiha Crest Badge", type: "badge", price: 250, icon: "assets/badge_uchiha.png", rarity: "rare", description: "Display the Uchiha crest on your profile." },
+  { id: "badge_strawhat", name: "Straw Hat Badge", type: "badge", price: 250, icon: "assets/badge_strawhat.png", rarity: "rare", description: "A badge for those chasing freedom." },
+  { id: "badge_hollow_purple", name: "Special Grade Badge", type: "badge", price: 500, icon: "assets/badge_hollow_purple.png", rarity: "legendary", description: "A badge reserved for terrifying potential." },
+
+  // Additional Filters
+  { id: "filter_chakra_glow", name: "Chakra Glow", type: "filter", price: 350, icon: "assets/filter_chakra.png", rarity: "rare", description: "Applies a soft blue chakra glow to the app." },
+  { id: "filter_cursed_energy", name: "Cursed Energy Overlay", type: "filter", price: 450, icon: "assets/filter_cursed.png", rarity: "epic", description: "Adds a dark purple cursed-energy overlay." },
+  
+  // More Titles
+  { id: "title_six_eyes", name: "Six Eyes Title", type: "title", price: 600, icon: "assets/title_six_eyes.png", rarity: "legendary", description: "Equip the title: The Honored One." },
+  { id: "title_limitless", name: "Limitless Title", type: "title", price: 500, icon: "assets/title_infinity.png", rarity: "epic", description: "Equip the title: Limitless." },
+  { id: "title_symbol_of_peace", name: "Symbol of Peace", type: "title", price: 500, icon: "assets/title_peace.png", rarity: "epic", description: "Equip the title: Symbol of Peace." },
+  { id: "title_shadow_monarch", name: "Shadow Monarch", type: "title", price: 700, icon: "assets/title_shadow.png", rarity: "legendary", description: "Equip the title: Shadow Monarch." },
+  { id: "title_strawhat_captain", name: "Straw Hat Captain", type: "title", price: 500, icon: "assets/title_strawhat.png", rarity: "epic", description: "Equip the title: Straw Hat Captain." },
+
+  // Premium Layouts
+  { id: "layout_infinity_void", name: "Infinity Void", type: "layout", price: 700, icon: "assets/layout_infinity_void.png", rarity: "legendary", description: "A deep cosmic layout with limitless blue highlights." },
+  { id: "layout_sakura_shrine", name: "Sakura Shrine", type: "layout", price: 450, icon: "assets/layout_sakura_shrine.png", rarity: "epic", description: "A peaceful shrine layout filled with soft petals." },
+  { id: "layout_akatsuki_night", name: "Akatsuki Night", type: "layout", price: 600, icon: "assets/layout_akatsuki.png", rarity: "legendary", description: "A dark red-cloud layout for rogue spirits." },
+  { id: "layout_ua_training", name: "U.A. Training Room", type: "layout", price: 450, icon: "assets/layout_ua.png", rarity: "epic", description: "A clean heroic layout inspired by training halls." },
+
+  // Pet Accessories
+  { id: "pet_acc_leaf_headband", name: "Leaf Headband", type: "pet_accessory", price: 150, icon: "assets/pet_acc_leaf_headband.png", rarity: "common", description: "Equip a Leaf headband on compatible companions." },
+  { id: "pet_acc_strawhat", name: "Tiny Straw Hat", type: "pet_accessory", price: 200, icon: "assets/pet_acc_strawhat.png", rarity: "rare", description: "Give compatible companions a tiny straw hat." },
+  { id: "pet_acc_blindfold", name: "Tiny Blindfold", type: "pet_accessory", price: 250, icon: "assets/pet_acc_blindfold.png", rarity: "rare", description: "Give compatible companions a mysterious blindfold." },
+  { id: "pet_acc_flame_aura", name: "Flame Aura", type: "pet_accessory", price: 300, icon: "assets/pet_acc_flame_aura.png", rarity: "epic", description: "Adds a flame aura to compatible companions." },
+
+  // More Stickers
+  { id: "sticker_leaf_symbol", name: "Leaf Symbol", type: "sticker", price: 25, icon: "assets/sticker_leaf_symbol.gif", rarity: "common", description: "A small animated Hidden Leaf sticker." },
+  { id: "sticker_strawhat", name: "Straw Hat", type: "sticker", price: 50, icon: "assets/sticker_strawhat.gif", rarity: "rare", description: "A cheerful straw hat sticker." },
+  { id: "sticker_black_flash", name: "Black Flash", type: "sticker", price: 75, icon: "assets/sticker_black_flash.gif", rarity: "epic", description: "An animated Black Flash impact sticker." },
+  { id: "sticker_blue_flame", name: "Blue Flame", type: "sticker", price: 75, icon: "assets/sticker_blue_flame.gif", rarity: "epic", description: "An animated blue flame sticker." },
+  { id: "sticker_plus_ultra", name: "Plus Ultra", type: "sticker", price: 75, icon: "assets/sticker_plus_ultra.gif", rarity: "rare", description: "A bold heroic sticker." },
+
 ];
 // 4. HELPERS
 function getTokens() { return Number(localStorage.getItem("petal_tokens")) || 0; }
