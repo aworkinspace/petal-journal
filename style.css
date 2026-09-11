@@ -3405,3 +3405,37 @@ body {
     opacity: 0;
   }
 }
+body.filter-filter-chakra-glow::before,
+body.filter-filter-cursed-energy::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 1;
+}
+
+/* Chakra Glow */
+body.filter-filter-chakra-glow::before {
+  background:
+    radial-gradient(circle at 50% 30%, rgba(80, 190, 255, 0.18), transparent 35%),
+    radial-gradient(circle at 20% 80%, rgba(0, 140, 255, 0.14), transparent 30%),
+    radial-gradient(circle at 85% 70%, rgba(130, 230, 255, 0.12), transparent 28%);
+  box-shadow:
+    inset 0 0 120px rgba(0, 170, 255, 0.18),
+    inset 0 0 260px rgba(0, 80, 255, 0.12);
+  mix-blend-mode: screen;
+}
+
+/* Cursed Energy */
+body.filter-filter-cursed-energy::before {
+  background:
+    radial-gradient(circle at 50% 35%, rgba(150, 40, 255, 0.18), transparent 38%),
+    radial-gradient(circle at 15% 75%, rgba(75, 0, 130, 0.18), transparent 32%),
+    radial-gradient(circle at 90% 80%, rgba(255, 0, 180, 0.1), transparent 30%),
+    linear-gradient(135deg, rgba(20, 0, 35, 0.12), rgba(90, 0, 120, 0.12));
+  box-shadow:
+    inset 0 0 140px rgba(130, 0, 255, 0.18),
+    inset 0 0 280px rgba(50, 0, 80, 0.16);
+  mix-blend-mode: screen;
+}
