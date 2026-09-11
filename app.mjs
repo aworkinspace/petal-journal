@@ -1688,14 +1688,14 @@ if (!overlay) {
         p.style.animationDuration = "10s";
         break;
       case "cold_flash":
-        p.className = "cold-flake";
-        p.style.left = Math.random() * 100 + "vw";
-        p.style.top = -10 - Math.random() * 20 + "vh";
-        p.style.opacity = (Math.random() * 0.5 + 0.25).toFixed(2);
-        p.style.animationDuration = Math.random() * 2 + 2.5 + "s";
-        p.style.animationDelay = Math.random() * 1.5 + "s";
-        p.style.setProperty("--drift", Math.random() * 60 - 30 + "px");
-        break;
+  p.className = "cold-flake";
+  p.style.left = Math.random() * 100 + "vw";
+  p.style.top = "-20px";
+  p.style.opacity = (Math.random() * 0.5 + 0.25).toFixed(2);
+  p.style.animationDuration = Math.random() * 2 + 2.5 + "s";
+  p.style.animationDelay = Math.random() * 1.5 + "s";
+  p.style.setProperty("--drift", Math.random() * 60 - 30 + "px");
+  break;
       case "curving_bullets":
         p.className = "curve-bullet";
         p.style.left = -40 - Math.random() * 80 + "px";
