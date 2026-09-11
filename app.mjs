@@ -1209,12 +1209,12 @@ function toast(msg) {
     const filterSelect = $("filterSelect");
     if (filterSelect) {
       filterSelect.innerHTML = '<option value="none">None</option>';
-      const filterMap = { "filter_crt": "📟 CRT Filter", "filter_dust": "📜 Dust Filter", "filter_vignette": "🎬 Vignette" };
+      const filterMap = { "filter_crt": "📟 CRT Filter", "filter_dust": "📜 Dust Filter", "filter_vignette": "🎬 Vignette" , "filter_sepia": "🤍 Nostalgic Sepia" , filter_chakra_glow: "🔵 Chakra Glow", filter_cursed_energy: "🟣 Cursed Energy" };
       owned.forEach(id => {
         if (id.startsWith("filter_")) {
           const opt = document.createElement("option");
           opt.value = id;
-          opt.textContent = filterMap[id] || "Atmosphere";
+          opt.textContent = filterMap[id] || "Atmosphere"
           filterSelect.appendChild(opt);
         }
       });
