@@ -139,7 +139,10 @@ const titleNames = {
   title_joyboy: "Warrior of Liberation",
   title_curse_king: "King of Curses",
   title_fierce_wings: "Fierce Wings",
-  title_hellflame_sovereign: "Hellflame Sovereign"
+  title_hellflame_sovereign: "Hellflame Sovereign",
+  title_six_eyes: "Six Eyes",
+  title_limitless: "Limitless",
+  title_symbol_of_peace: "Symbol of Peace",
 };
 
 function setupCursorSelect(ownedItems) {
