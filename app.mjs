@@ -1319,7 +1319,7 @@ if (filterSelect) {
     renderList(); renderTagChips(); checkUnlocks();
     $("search")?.addEventListener('input', renderList);
   });
-}();
+})();
 
 /* ------------------- Music & Spotify ------------------- */
 (() => {
