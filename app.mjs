@@ -1219,22 +1219,23 @@ if (filterSelect) {
     filter_cursed_energy: "🟣 Cursed Energy"
   };
 
-  console.log("Building filters from owned:", owned);
-
-  const ownedFilters = owned.filter(id => id.startsWith("filter_"));
-
-  console.log("Owned filters:", ownedFilters);
-
-  ownedFilters.forEach(id => {
+  Object.entries(filterMap).forEach(([id, label]) => {
     const opt = document.createElement("option");
     opt.value = id;
-    opt.textContent = filterMap[id] || id.replace(/_/g, " ");
+
+    if (!owned.includes(id)) {
+      opt.textContent = `${label} 🔒`;
+      opt.disabled = true;
+    } else {
+      opt.textContent = label;
+    }
+
     filterSelect.appendChild(opt);
   });
 
   const savedFilter = localStorage.getItem("petal_equipped_filter") || "none";
 
-  if (savedFilter !== "none" && ownedFilters.includes(savedFilter)) {
+  if (savedFilter !== "none" && owned.includes(savedFilter)) {
     filterSelect.value = savedFilter;
     applyFilter(savedFilter);
   } else {
@@ -1246,7 +1247,6 @@ if (filterSelect) {
     applyFilter(filterSelect.value);
   };
 }
-
 
   function renderList() {
     const list = $("entryList"); if (!list) return;
