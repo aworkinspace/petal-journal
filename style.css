@@ -3816,3 +3816,13 @@ textarea:focus-visible,
     transition-duration: 0.01ms !important;
   }
 }
+/* Menu layering fix */
+header { position: relative; z-index: 100010; isolation: isolate; }
+.top-actions { position: relative; z-index: 100011; }
+.menu { position: relative; z-index: 100012; isolation: isolate; }
+.menu[open] { z-index: 100013; }
+.menu-panel { position: absolute; z-index: 100014 !important; isolation: isolate; pointer-events: auto; }
+.shell, .controls-row { position: relative; z-index: 1; }
+@media (max-width: 720px) {
+  .menu-panel { position: fixed; z-index: 100014 !important; top: 72px; right: 12px; left: 12px; width: auto; max-width: none; max-height: calc(100dvh - 88px); overflow-y: auto; }
+}
