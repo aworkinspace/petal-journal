@@ -1,111 +1,74 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <link rel="icon" type="image/x-icon" href="shuriken.ico" />
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
 
     <title>Petal Journal</title>
+    <meta
+      name="description"
+      content="Petal Journal — a soft, private, simple space to write, reflect, and grow."
+    />
+    <link rel="canonical" href="/" />
+    <meta name="theme-color" content="#f7c6da" />
+
+    <!-- Icons -->
+    <link rel="icon" type="image/x-icon" href="shuriken.ico" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Petal Journal" />
+    <meta
+      property="og:description"
+      content="A soft, private, simple space to write, reflect, and grow."
+    />
+    <meta property="og:url" content="/" />
+    <meta property="og:image" content="/og-image.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
       rel="stylesheet"
     />
 
     <!-- Styles -->
+    <link rel="preload" href="style.css" as="style" />
     <link rel="stylesheet" href="style.css" />
 
-    <!-- Small index-only styles for the Three.js background layer -->
+    <!-- Manifest (PWA) -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Small index-only styles for the background and helpers -->
     <style>
-      body {
-        min-height: 100vh;
-        overflow-x: hidden;
-      }
-
-      #threePetalBg {
-        position: fixed;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -2;
-        pointer-events: none;
-      }
-
-      .page-glow {
-        position: fixed;
-        inset: 0;
-        z-index: -1;
-        pointer-events: none;
+      body { min-height: 100vh; overflow-x: hidden; }
+      #threePetalBg { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; }
+      .page-glow { position: fixed; inset: 0; z-index: -1; pointer-events: none;
         background:
           radial-gradient(circle at 15% 20%, rgba(255, 183, 213, 0.35), transparent 28%),
           radial-gradient(circle at 85% 12%, rgba(196, 181, 253, 0.28), transparent 30%),
           radial-gradient(circle at 50% 90%, rgba(186, 230, 253, 0.22), transparent 35%);
         filter: blur(2px);
       }
-
-      .skip-link {
-        position: absolute;
-        left: -999px;
-        top: 12px;
-        z-index: 9999;
-        background: white;
-        color: black;
-        padding: 8px 12px;
-        border-radius: 12px;
-      }
-
-      .skip-link:focus {
-        left: 12px;
-      }
-
-      .app-wrap {
-        position: relative;
-        z-index: 1;
-      }
+      .skip-link { position: absolute; left: -999px; top: 12px; z-index: 9999; background: white; color: black; padding: 8px 12px; border-radius: 12px; }
+      .skip-link:focus { left: 12px; }
+      .app-wrap { position: relative; z-index: 1; }
+      .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
     </style>
 
-    <!-- Firebase SDKs exposed for app.mjs -->
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-      import {
-        getAuth,
-        setPersistence,
-        browserLocalPersistence
-      } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-      import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-      import { getStorage } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyBNB-V-biC7y2-dKx_qzYCpplnwU2r5PaI",
-        authDomain: "petal-journal-final.firebaseapp.com",
-        projectId: "petal-journal-final",
-        storageBucket: "petal-journal-final.firebasestorage.app",
-        messagingSenderId: "805852798492",
-        appId: "1:805852798492:web:0e2b1e4fa74850a77a09d9",
-        measurementId: "G-WP4KPK7QD3"
-      };
-
-      const app = initializeApp(firebaseConfig);
-
-      const auth = getAuth(app);
-      setPersistence(auth, browserLocalPersistence).catch(console.error);
-
-      window.firebaseAuth = auth;
-      window.firebaseDb = getFirestore(app);
-      window.firebaseStorage = getStorage(app);
-    </script>
-
-    <!-- Lock redirect -->
-    <script>
-      if (localStorage.getItem("petal_locked") === "1") {
-        location.href = "lock.html";
-      }
-    </script>
-
-    <!-- Three.js import map -->
+    <!-- Import map for Three.js (pinned) -->
     <script type="importmap">
       {
         "imports": {
@@ -113,6 +76,27 @@
         }
       }
     </script>
+
+    <!-- Early lock redirect to keep protected pages gated -->
+    <script>
+      if (localStorage.getItem("petal_locked") === "1") {
+        location.href = "lock.html";
+      }
+    </script>
+
+    <!-- Third-party libs (deferred) -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"
+    ></script>
   </head>
 
   <body>
@@ -127,12 +111,12 @@
         <div class="brand">
           <h1>Petal Journal</h1>
           <small class="muted">soft, private, simple</small>
-          <div class="muted" id="clock" aria-label="Current time"></div>
+          <div class="muted" id="clock" aria-label="Current time" aria-live="polite" aria-atomic="true"></div>
         </div>
 
         <div class="top-actions">
           <details class="menu">
-            <summary class="btn" role="button" aria-label="Open menu">Menu</summary>
+            <summary class="btn">Menu</summary>
 
             <div class="menu-panel">
               <!-- Account Section -->
@@ -192,17 +176,17 @@
 
           <div class="section-title">Tags</div>
           <div class="chip-row" id="tagRow">
-            <button class="chip tag" data-tag="gratitude" type="button">gratitude</button>
-            <button class="chip tag" data-tag="work" type="button">work</button>
-            <button class="chip tag" data-tag="health" type="button">health</button>
-            <button class="chip tag" data-tag="family" type="button">family</button>
+            <button class="chip tag" data-tag="gratitude" type="button" aria-label="Filter by gratitude">gratitude</button>
+            <button class="chip tag" data-tag="work" type="button" aria-label="Filter by work">work</button>
+            <button class="chip tag" data-tag="health" type="button" aria-label="Filter by health">health</button>
+            <button class="chip tag" data-tag="family" type="button" aria-label="Filter by family">family</button>
           </div>
 
           <div class="divider"></div>
 
           <div class="row row-baseline">
             <div class="section-title section-title-inline">Entries</div>
-            <small class="muted" id="count"></small>
+            <small class="muted" id="count" aria-live="polite" aria-atomic="true"></small>
           </div>
 
           <div class="entry-list" id="entryList"></div>
@@ -217,7 +201,7 @@
 
             <div class="right-align">
               <div class="section-title">Mood</div>
-              <select class="input" id="mood">
+              <select class="input" id="mood" aria-label="Select mood">
                 <option value="Calm">˚˖𓍢ִ໋❀ Calm</option>
                 <option value="Happy">(˶˃ ᵕ ˂˶) Happy</option>
                 <option value="Grateful">(..◜ᴗ◝..) Grateful</option>
@@ -241,25 +225,26 @@
           </div>
 
           <div class="mt-12">
-            <div class="section-title">Entry</div>
+            <div class="section-title">
+              Entry
+              <span class="sr-only" id="entry-instructions">Rich text area. Use stickers menu for decorations.</span>
+            </div>
 
             <div class="sticker-bar" id="stickerBar">
               <details class="sticker-menu">
-                <summary class="chip" role="button" aria-label="Open stickers">
-                  Stickers
-                </summary>
+                <summary class="chip" aria-controls="stickers-panel">Stickers</summary>
 
-                <div class="sticker-panel">
-                  <button class="chip" type="button" data-sticker="assets/sparkles.gif">Sparkle</button>
-                  <button class="chip" type="button" data-sticker="assets/hearts.gif">Hearts</button>
-                  <button class="chip" type="button" data-sticker="assets/stars.gif">Stars</button>
-                  <button class="chip" type="button" data-sticker="assets/heartjar.gif">Heart Jar</button>
-                  <button class="chip" type="button" data-sticker="assets/swirlheart.gif">Swirling Heart</button>
-                  <button class="chip" type="button" data-sticker="assets/lollipop.gif">Lollipop</button>
-                  <button class="chip" type="button" data-sticker="assets/catpaw.gif">Cat Paw</button>
-                  <button class="chip" type="button" data-sticker="assets/bubbydancing.gif">Dancing Bunny</button>
-                  <button class="chip" type="button" data-sticker="assets/naruto.gif">Naruto</button>
-                  <button class="chip" type="button" data-sticker="assets/sasuke.gif">Sasuke</button>
+                <div class="sticker-panel" id="stickers-panel">
+                  <button class="chip" type="button" data-sticker="assets/sparkles.gif" aria-label="Insert Sparkle sticker">Sparkle</button>
+                  <button class="chip" type="button" data-sticker="assets/hearts.gif" aria-label="Insert Hearts sticker">Hearts</button>
+                  <button class="chip" type="button" data-sticker="assets/stars.gif" aria-label="Insert Stars sticker">Stars</button>
+                  <button class="chip" type="button" data-sticker="assets/heartjar.gif" aria-label="Insert Heart Jar sticker">Heart Jar</button>
+                  <button class="chip" type="button" data-sticker="assets/swirlheart.gif" aria-label="Insert Swirling Heart sticker">Swirling Heart</button>
+                  <button class="chip" type="button" data-sticker="assets/lollipop.gif" aria-label="Insert Lollipop sticker">Lollipop</button>
+                  <button class="chip" type="button" data-sticker="assets/catpaw.gif" aria-label="Insert Cat Paw sticker">Cat Paw</button>
+                  <button class="chip" type="button" data-sticker="assets/bubbydancing.gif" aria-label="Insert Dancing Bunny sticker">Dancing Bunny</button>
+                  <button class="chip" type="button" data-sticker="assets/naruto.gif" aria-label="Insert Naruto sticker">Naruto</button>
+                  <button class="chip" type="button" data-sticker="assets/sasuke.gif" aria-label="Insert Sasuke sticker">Sasuke</button>
 
                   <!-- Level 5 locked stickers -->
                   <button
@@ -267,6 +252,7 @@
                     type="button"
                     data-sticker="assets/golden-sprout.gif"
                     style="display:none;"
+                    aria-label="Insert Golden Sprout sticker"
                   >
                     ✨ Golden Sprout
                   </button>
@@ -276,6 +262,7 @@
                     type="button"
                     data-sticker="assets/rainbow-star.gif"
                     style="display:none;"
+                    aria-label="Insert Rainbow Star sticker"
                   >
                     ✨ Rainbow Star
                   </button>
@@ -290,6 +277,9 @@
               class="textarea rte"
               id="content"
               contenteditable="true"
+              role="textbox"
+              aria-multiline="true"
+              aria-labelledby="entry-instructions"
               data-placeholder="Start writing…"
             ></div>
           </div>
@@ -332,7 +322,7 @@
             <input class="input" id="spotifyUrl" placeholder="Paste Spotify playlist link…" />
             <button class="btn" id="btnSetSpotify" type="button">Set Spotify Item</button>
             <button class="btn" id="btnClearSpotify" type="button">Clear Link</button>
-            <small class="muted" id="spotifyMsg"></small>
+            <small class="muted" id="spotifyMsg" aria-live="polite" aria-atomic="true"></small>
             <div id="spotifyEmbed"></div>
           </div>
         </section>
@@ -545,7 +535,7 @@
     </div>
 
     <!-- UI helpers -->
-    <div class="toast" id="toast"></div>
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
     <canvas id="sparkles" aria-hidden="true"></canvas>
 
     <!-- SFX -->
@@ -558,215 +548,206 @@
     <audio id="jumpscareSfx" src="assets/jumpscare.mp3" preload="auto"></audio>
     <audio id="toreadorSfx" src="assets/toreador-march.mp3" preload="auto"></audio>
 
-    <!-- Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <!-- Firebase SDKs exposed for app.mjs (kept to avoid breaking existing logic) -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+      import {
+        getAuth,
+        setPersistence,
+        browserLocalPersistence
+      } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+      import { getStorage } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
 
-    <!-- Three.js floating petal scene -->
+      const firebaseConfig = {
+        apiKey: "AIzaSyBNB-V-biC7y2-dKx_qzYCpplnwU2r5PaI",
+        authDomain: "petal-journal-final.firebaseapp.com",
+        projectId: "petal-journal-final",
+        storageBucket: "petal-journal-final.firebasestorage.app",
+        messagingSenderId: "805852798492",
+        appId: "1:805852798492:web:0e2b1e4fa74850a77a09d9",
+        measurementId: "G-WP4KPK7QD3"
+      };
+
+      // Initialize early for compatibility; if you want to defer, wrap in an interaction handler.
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      setPersistence(auth, browserLocalPersistence).catch(console.error);
+
+      window.firebaseAuth = auth;
+      window.firebaseDb = getFirestore(app);
+      window.firebaseStorage = getStorage(app);
+    </script>
+
+    <!-- Three.js floating petal scene (lazy-start for perf) -->
     <script type="module">
       import * as THREE from "three";
 
       const canvas = document.getElementById("threePetalBg");
 
-      const scene = new THREE.Scene();
+      const startScene = () => {
+        const scene = new THREE.Scene();
 
-      const camera = new THREE.PerspectiveCamera(
-        60,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        100
-      );
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.z = 18;
 
-      camera.position.z = 18;
+        const renderer = new THREE.WebGLRenderer({
+          canvas,
+          alpha: true,
+          antialias: true,
+          powerPreference: "low-power"
+        });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(window.innerWidth, window.innerHeight);
 
-      const renderer = new THREE.WebGLRenderer({
-        canvas,
-        alpha: true,
-        antialias: true
-      });
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.setSize(window.innerWidth, window.innerHeight);
+        const petalGroup = new THREE.Group();
+        scene.add(petalGroup);
 
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
+        const materials = [
+          new THREE.MeshStandardMaterial({ color: 0xffb7d5, roughness: 0.72, metalness: 0.05, side: THREE.DoubleSide, transparent: true, opacity: 0.72 }),
+          new THREE.MeshStandardMaterial({ color: 0xc4b5fd, roughness: 0.75, metalness: 0.04, side: THREE.DoubleSide, transparent: true, opacity: 0.58 }),
+          new THREE.MeshStandardMaterial({ color: 0xfff1f7, roughness: 0.8, metalness: 0.02, side: THREE.DoubleSide, transparent: true, opacity: 0.5 })
+        ];
 
-      const petalGroup = new THREE.Group();
-      scene.add(petalGroup);
-
-      const petalMaterial = new THREE.MeshStandardMaterial({
-        color: 0xffb7d5,
-        roughness: 0.72,
-        metalness: 0.05,
-        side: THREE.DoubleSide,
-        transparent: true,
-        opacity: 0.72
-      });
-
-      const lavenderMaterial = new THREE.MeshStandardMaterial({
-        color: 0xc4b5fd,
-        roughness: 0.75,
-        metalness: 0.04,
-        side: THREE.DoubleSide,
-        transparent: true,
-        opacity: 0.58
-      });
-
-      const creamMaterial = new THREE.MeshStandardMaterial({
-        color: 0xfff1f7,
-        roughness: 0.8,
-        metalness: 0.02,
-        side: THREE.DoubleSide,
-        transparent: true,
-        opacity: 0.5
-      });
-
-      function createPetalShape() {
         const shape = new THREE.Shape();
-
         shape.moveTo(0, 0.9);
         shape.bezierCurveTo(0.65, 0.55, 0.58, -0.35, 0, -0.85);
         shape.bezierCurveTo(-0.58, -0.35, -0.65, 0.55, 0, 0.9);
+        const petalGeometry = new THREE.ShapeGeometry(shape, 24);
+        petalGeometry.center();
 
-        return shape;
-      }
+        const petals = [];
+        const petalCount = prefersReducedMotion ? 18 : 46;
 
-      const petalShape = createPetalShape();
-
-      const petalGeometry = new THREE.ShapeGeometry(petalShape, 24);
-      petalGeometry.center();
-
-      const materials = [petalMaterial, lavenderMaterial, creamMaterial];
-
-      const petals = [];
-      const petalCount = prefersReducedMotion ? 18 : 46;
-
-      for (let i = 0; i < petalCount; i++) {
-        const material = materials[i % materials.length];
-        const petal = new THREE.Mesh(petalGeometry, material.clone());
-
-        const scale = THREE.MathUtils.randFloat(0.35, 1.05);
-        petal.scale.set(scale, scale * THREE.MathUtils.randFloat(0.75, 1.25), scale);
-
-        petal.position.set(
-          THREE.MathUtils.randFloatSpread(28),
-          THREE.MathUtils.randFloatSpread(18),
-          THREE.MathUtils.randFloat(-16, 6)
-        );
-
-        petal.rotation.set(
-          Math.random() * Math.PI,
-          Math.random() * Math.PI,
-          Math.random() * Math.PI
-        );
-
-        petal.userData = {
-          speed: THREE.MathUtils.randFloat(0.002, 0.012),
-          drift: THREE.MathUtils.randFloat(0.002, 0.014),
-          spin: THREE.MathUtils.randFloat(0.002, 0.012),
-          baseX: petal.position.x,
-          phase: Math.random() * Math.PI * 2
-        };
-
-        petals.push(petal);
-        petalGroup.add(petal);
-      }
-
-      const starGeometry = new THREE.BufferGeometry();
-      const starCount = 170;
-      const starPositions = new Float32Array(starCount * 3);
-
-      for (let i = 0; i < starCount; i++) {
-        starPositions[i * 3] = THREE.MathUtils.randFloatSpread(34);
-        starPositions[i * 3 + 1] = THREE.MathUtils.randFloatSpread(22);
-        starPositions[i * 3 + 2] = THREE.MathUtils.randFloat(-20, 3);
-      }
-
-      starGeometry.setAttribute(
-        "position",
-        new THREE.BufferAttribute(starPositions, 3)
-      );
-
-      const starMaterial = new THREE.PointsMaterial({
-        color: 0xffffff,
-        size: 0.045,
-        transparent: true,
-        opacity: 0.65
-      });
-
-      const stars = new THREE.Points(starGeometry, starMaterial);
-      scene.add(stars);
-
-      const ambientLight = new THREE.AmbientLight(0xffffff, 1.8);
-      scene.add(ambientLight);
-
-      const pinkLight = new THREE.PointLight(0xff9ecb, 2.3, 40);
-      pinkLight.position.set(-8, 5, 8);
-      scene.add(pinkLight);
-
-      const blueLight = new THREE.PointLight(0xa5d8ff, 1.4, 35);
-      blueLight.position.set(8, -4, 6);
-      scene.add(blueLight);
-
-      let mouseX = 0;
-      let mouseY = 0;
-
-      window.addEventListener("pointermove", (event) => {
-        mouseX = (event.clientX / window.innerWidth - 0.5) * 2;
-        mouseY = (event.clientY / window.innerHeight - 0.5) * 2;
-      });
-
-      window.addEventListener("resize", () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      });
-
-      const clock = new THREE.Clock();
-
-      function animate() {
-        const elapsed = clock.getElapsedTime();
-
-        if (!prefersReducedMotion) {
-          petalGroup.rotation.y = mouseX * 0.035;
-          petalGroup.rotation.x = -mouseY * 0.025;
-
-          stars.rotation.y = elapsed * 0.008;
-          stars.rotation.x = elapsed * 0.004;
+        for (let i = 0; i < petalCount; i++) {
+          const m = materials[i % materials.length].clone();
+          const mesh = new THREE.Mesh(petalGeometry, m);
+          const scale = THREE.MathUtils.randFloat(0.35, 1.05);
+          mesh.scale.set(scale, scale * THREE.MathUtils.randFloat(0.75, 1.25), scale);
+          mesh.position.set(THREE.MathUtils.randFloatSpread(28), THREE.MathUtils.randFloatSpread(18), THREE.MathUtils.randFloat(-16, 6));
+          mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+          mesh.userData = {
+            speed: THREE.MathUtils.randFloat(0.002, 0.012),
+            drift: THREE.MathUtils.randFloat(0.002, 0.014),
+            spin: THREE.MathUtils.randFloat(0.002, 0.012),
+            baseX: mesh.position.x,
+            phase: Math.random() * Math.PI * 2
+          };
+          petals.push(mesh);
+          petalGroup.add(mesh);
         }
 
-        for (const petal of petals) {
-          const data = petal.userData;
+        const starGeometry = new THREE.BufferGeometry();
+        const starCount = 170;
+        const starPositions = new Float32Array(starCount * 3);
+        for (let i = 0; i < starCount; i++) {
+          starPositions[i * 3] = THREE.MathUtils.randFloatSpread(34);
+          starPositions[i * 3 + 1] = THREE.MathUtils.randFloatSpread(22);
+          starPositions[i * 3 + 2] = THREE.MathUtils.randFloat(-20, 3);
+        }
+        starGeometry.setAttribute("position", new THREE.BufferAttribute(starPositions, 3));
+        const stars = new THREE.Points(
+          starGeometry,
+          new THREE.PointsMaterial({ color: 0xffffff, size: 0.045, transparent: true, opacity: 0.65 })
+        );
+        scene.add(stars);
+
+        scene.add(new THREE.AmbientLight(0xffffff, 1.8));
+        const pinkLight = new THREE.PointLight(0xff9ecb, 2.3, 40); pinkLight.position.set(-8, 5, 8); scene.add(pinkLight);
+        const blueLight = new THREE.PointLight(0xa5d8ff, 1.4, 35); blueLight.position.set(8, -4, 6); scene.add(blueLight);
+
+        let mouseX = 0, mouseY = 0, rafId = 0, running = true;
+
+        const onMove = (event) => {
+          mouseX = (event.clientX / window.innerWidth - 0.5) * 2;
+          mouseY = (event.clientY / window.innerHeight - 0.5) * 2;
+        };
+        window.addEventListener("pointermove", onMove, { passive: true });
+
+        const onResize = () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        };
+        window.addEventListener("resize", onResize);
+
+        const clock = new THREE.Clock();
+        const frame = () => {
+          const elapsed = clock.getElapsedTime();
 
           if (!prefersReducedMotion) {
-            petal.position.y -= data.speed;
-            petal.position.x =
-              data.baseX + Math.sin(elapsed * 0.8 + data.phase) * 0.8;
+            petalGroup.rotation.y = mouseX * 0.035;
+            petalGroup.rotation.x = -mouseY * 0.025;
+            stars.rotation.y = elapsed * 0.008;
+            stars.rotation.x = elapsed * 0.004;
+          }
 
-            petal.rotation.x += data.spin * 0.45;
-            petal.rotation.y += data.spin * 0.65;
-            petal.rotation.z += data.drift;
-
-            if (petal.position.y < -11) {
-              petal.position.y = 11;
-              petal.position.x = THREE.MathUtils.randFloatSpread(28);
-              petal.userData.baseX = petal.position.x;
-              petal.position.z = THREE.MathUtils.randFloat(-16, 6);
+          for (const p of petals) {
+            const d = p.userData;
+            if (!prefersReducedMotion) {
+              p.position.y -= d.speed;
+              p.position.x = d.baseX + Math.sin(elapsed * 0.8 + d.phase) * 0.8;
+              p.rotation.x += d.spin * 0.45;
+              p.rotation.y += d.spin * 0.65;
+              p.rotation.z += d.drift;
+              if (p.position.y < -11) {
+                p.position.y = 11;
+                p.position.x = THREE.MathUtils.randFloatSpread(28);
+                p.userData.baseX = p.position.x;
+                p.position.z = THREE.MathUtils.randFloat(-16, 6);
+              }
             }
           }
-        }
 
-        renderer.render(scene, camera);
-        requestAnimationFrame(animate);
+          renderer.render(scene, camera);
+          if (running) rafId = requestAnimationFrame(frame);
+        };
+
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden) {
+            running = false;
+            cancelAnimationFrame(rafId);
+            renderer.setAnimationLoop(null);
+          } else {
+            running = true;
+            rafId = requestAnimationFrame(frame);
+          }
+        });
+
+        rafId = requestAnimationFrame(frame);
+      };
+
+      if ("requestIdleCallback" in window) {
+        requestIdleCallback(startScene, { timeout: 2000 });
+      } else {
+        setTimeout(startScene, 300);
       }
-
-      animate();
     </script>
 
     <!-- App -->
     <script type="module" src="app.mjs"></script>
+
+    <!-- Service worker registration -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/sw.js").catch(console.error);
+        });
+      }
+    </script>
+
+    <!-- Optional: Structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Petal Journal",
+      "url": "/",
+      "logo": "/icons/icon-192.png"
+    }
+    </script>
   </body>
 </html>
