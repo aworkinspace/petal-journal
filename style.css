@@ -3816,13 +3816,73 @@ textarea:focus-visible,
     transition-duration: 0.01ms !important;
   }
 }
-/* Menu layering fix */
-header { position: relative; z-index: 100010; isolation: isolate; }
-.top-actions { position: relative; z-index: 100011; }
-.menu { position: relative; z-index: 100012; isolation: isolate; }
-.menu[open] { z-index: 100013; }
-.menu-panel { position: absolute; z-index: 100014 !important; isolation: isolate; pointer-events: auto; }
-.shell, .controls-row { position: relative; z-index: 1; }
-@media (max-width: 720px) {
-  .menu-panel { position: fixed; z-index: 100014 !important; top: 72px; right: 12px; left: 12px; width: auto; max-width: none; max-height: calc(100dvh - 88px); overflow-y: auto; }
+
+/* =========================================================
+   MENU LAYERING FIX
+   Keep the open dropdown above notebook panels/cards.
+   The panels use transforms/backdrop-filter, which create
+   stacking contexts; raising only .menu-panel isn't enough
+   when its header parent sits underneath those contexts.
+   ========================================================= */
+header {
+  position: relative;
+  z-index: 100010;
+  isolation: isolate;
 }
+
+.top-actions {
+  position: relative;
+  z-index: 100011;
+}
+
+.menu {
+  position: relative;
+  z-index: 100012;
+  isolation: isolate;
+}
+
+.menu[open] {
+  z-index: 100013;
+}
+
+.menu-panel {
+  position: absolute;
+  z-index: 100014 !important;
+  isolation: isolate;
+  pointer-events: auto;
+}
+
+/* Keep the page content in a lower layer than the header dropdown. */
+.shell,
+.controls-row {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 720px) {
+  .menu-panel {
+    position: fixed;
+    z-index: 100014 !important;
+    top: 72px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-width: none;
+    max-height: calc(100dvh - 88px);
+    overflow-y: auto;
+  }
+}
+
+
+/* Shared Three.js scene: keep the transparent canvas visible behind the interface. */
+#threePetalBg {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  opacity: 0.72;
+}
+.app-wrap { position: relative; z-index: 1; }
+.page-glow { pointer-events: none; }
